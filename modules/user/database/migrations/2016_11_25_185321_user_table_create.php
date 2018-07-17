@@ -56,6 +56,7 @@ class UserTableCreate extends Migration
             $table->unsignedInteger('role_id')->nullable();
             $table->unsignedInteger('company_id')->nullable();
             $table->unsignedInteger('designation_id')->nullable();
+            $table->unsignedInteger('exam_number')->nullable();
             $table->unsignedInteger('typing_exam_code_id')->nullable();
             $table->unsignedInteger('aptitude_exam_code_id')->nullable();
             $table->unsignedInteger('mcq_exam_code_id')->nullable();

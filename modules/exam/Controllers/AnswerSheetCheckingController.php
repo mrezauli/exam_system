@@ -69,14 +69,13 @@ class AnswerSheetCheckingController extends Controller
     {
 
         $page_title = "Answer Sheet Checking";
-        $ftp_server = "qpands.com";
-        $ftp_username = "uits@qpands.com";
-        $ftp_userpass = "uitsuits";
+        $ftp_server = "ftp.binameervisa.com";
+        $ftp_username = "binameervisa.com";
+        $ftp_userpass = "58fde45c835e";
 
         $examiner_id = Auth::user()->id;
     
 
-   
 
         if($company_id == null)
         {
@@ -233,8 +232,8 @@ class AnswerSheetCheckingController extends Controller
                     $remote_file = "image_doc_files/".$file_html[2];
                     $ftp_conn = ftp_connect($ftp_server) or die("fff");
                     $login = ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
-                    //ftp_put($ftp_conn, $remote_file, $file, FTP_BINARY);
-                    //ftp_close($ftp_conn);
+                    ftp_put($ftp_conn, $remote_file, $file, FTP_BINARY);
+                    ftp_close($ftp_conn);
 
                     //***End****This code only for local host....In cpanel it will be blocked
                 }

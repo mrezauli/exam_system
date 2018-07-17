@@ -231,9 +231,9 @@ class AnswerSheetCheckingController extends Controller
                     $file = $values->answer_original_file_path;
                     $remote_file = "image_doc_files/".$file_html[2];
                     $ftp_conn = ftp_connect($ftp_server) or die("fff");
-                    $login = ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
-                    ftp_put($ftp_conn, $remote_file, $file, FTP_BINARY);
-                    ftp_close($ftp_conn);
+                    //$login = ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
+                    // ftp_put($ftp_conn, $remote_file, $file, FTP_BINARY);
+                    // ftp_close($ftp_conn);
 
                     //***End****This code only for local host....In cpanel it will be blocked
                 }

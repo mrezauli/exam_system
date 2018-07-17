@@ -668,9 +668,6 @@ $("#exam_type_bangla").attr('disabled', 'disabled');
 }
 
 
-
-
-
 function alert_message() {
 
   var typing_test_alerted = Cookies.get('typing_test_alerted');

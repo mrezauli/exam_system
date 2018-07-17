@@ -47,7 +47,6 @@ class AptitudeTestReportController extends Controller
 
 
 
-
     public function generate_aptitude_test_report(Request $request){
 
 
@@ -62,10 +61,15 @@ class AptitudeTestReportController extends Controller
         $exam_date_from = Input::get('exam_date_from');
         $exam_date_to = Input::get('exam_date_to');
         $bangla_speed = Input::get('bangla_speed');
+        $word_pass_marks = Input::get('word_pass_marks');
+        $excel_pass_marks = Input::get('excel_pass_marks');
+        $ppt_pass_marks = Input::get('ppt_pass_marks');
+
 
         $validator = Validator::make($request->all(), [
-            'bangla_speed' => 'required|integer',
+            'bangla_speed' => 'integer',
         ]);
+// dd($bangla_speed);
 
 
         if ($validator->fails()) {
@@ -179,6 +183,7 @@ class AptitudeTestReportController extends Controller
         });
 
 
+
         $eee = clone $header;
 
         $ddd = collect( $eee->get());
@@ -211,7 +216,7 @@ class AptitudeTestReportController extends Controller
         $exam_dates_string = implode(',',$exam_dates);
 
 
-        $group = ! empty($header) ? collect($header)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : '';
+        $group = ! $header->isEmpty() ? collect($header)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : '';
   
         // $all_headers = clone $header->get();
 
@@ -286,7 +291,7 @@ class AptitudeTestReportController extends Controller
 // dd($eee);
 
 
-                                
+                        // dd($model);        
 
         foreach ($model as $key => $user) {
 
@@ -303,17 +308,52 @@ class AptitudeTestReportController extends Controller
         }
 
 
+// dd($bangla_speed);
 
+        $model->each(function ($values, $key)use($bangla_speed,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks) {
 
-        $model->each(function ($values, $key) {
+            $remarks = '';
 
-            $failed_in_any_exam = $remarks = '';
+            $failed_in_any_exam = false;
 
             $values->total_answer_marks = $total_answer_marks = $values->sum('answer_marks');
 
-            $values->each(function ($data, $key)use(&$failed_in_any_exam) {
+            $values->total_question_marks = $total_question_marks = $values->sum('question_marks');
 
-                if ($data->question_marks/2 > $data->answer_marks || $data->answer_marks == null) {
+            $values->each(function ($data, $key)use(&$failed_in_any_exam,$bangla_speed,$total_question_marks,$total_answer_marks,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks) {
+
+
+
+
+                if ($bangla_speed) {
+                   
+                    if ( $total_question_marks*$bangla_speed/100 > $total_answer_marks) {
+                        $failed_in_any_exam = true;
+                    }
+
+                }elseif(isset($data->question_type)){
+
+                    if ($data->question_type == 'word' && $data->question_marks*$word_pass_marks/100 > $data->answer_marks) {
+                        
+                        $failed_in_any_exam = true;
+
+                    } elseif($data->question_type == 'excel' && $data->question_marks*$excel_pass_marks/100 > $data->answer_marks) {
+                       
+                        $failed_in_any_exam = true;
+
+                    }elseif($data->question_type == 'ppt' && $data->question_marks*$ppt_pass_marks/100 > $data->answer_marks){
+
+                        $failed_in_any_exam = true;
+
+                    }
+
+if ($failed_in_any_exam == true && $data->answer_marks > 2) {
+    //dd($data->question_type == 'word' && $data->question_marks*$word_pass_marks/100 > $data->answer_marks);
+}
+
+                    
+                }else{
+
                     $failed_in_any_exam = true;
                 }
 
@@ -352,7 +392,7 @@ class AptitudeTestReportController extends Controller
         })->sortByDesc(function ($values, $key) {
             return $values->total_answer_marks;
         });
-
+// dd($passed);
 
         $absent = $model->filter(function ($value) {
             return $value->remarks == "Absent";
@@ -384,7 +424,7 @@ class AptitudeTestReportController extends Controller
 
         $page = Input::get('page', 1);
 
-
+// dd($excel_question_no);
         $perPage = 50;
 
         $offset = ($page * $perPage) - $perPage;
@@ -395,7 +435,7 @@ class AptitudeTestReportController extends Controller
        // $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','bangla_speed'));
+        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks'));
 
 
     }

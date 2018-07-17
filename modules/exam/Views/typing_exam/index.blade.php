@@ -418,6 +418,15 @@ a.btn.btn-primary.btn-sm.start-button {
 
 <script>
 
+$(document).ready(function() {
+
+  setTimeout(function() {
+
+    $('#answered_text').focus();
+
+  }, 300);
+
+});
 //Disable Back Button ::
 
 window.history.forward();
@@ -501,6 +510,7 @@ if( (first_exam_started && ! first_exam_completed ) || (last_exam_started && ! l
 $('.typing-exam-submit-button').show();
 
   var typing_exam_time = Cookies.get('typing_exam_time');
+
   var typing_exam_time = Cookies.get('typing_exam_time');
 
   var answered_text = Cookies.get('answered_text');

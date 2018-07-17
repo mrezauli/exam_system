@@ -173,7 +173,6 @@
 
 <script>
 
-
 $('.process-button').click(function(e) {
 
 e.preventDefault();
@@ -250,7 +249,7 @@ function ajax_get_total_candidate_number(){
 
         // $('#sl_to').val(sl_to);
 
-        // $("#addData .add").html(sl_to);
+        // $("#addData .add").html(sl_to);c x
 
         
       }
@@ -273,7 +272,7 @@ function ajax_get_exam_process_code(){
 
         var exam_code = jQuery.parseJSON(data);
 
-console.log(exam_code[1]); 
+        console.log(exam_code[1]); 
 
         var company_id = exam_code[0]  != null ? exam_code[0].company_id : '';
 

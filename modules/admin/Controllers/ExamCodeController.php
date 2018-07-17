@@ -327,13 +327,22 @@ class ExamCodeController extends Controller
 
        $exam_code = DB::table('exam_code')->where('id',$_POST['exam_code_id'])->first();
 
+       $exam_number = DB::table('user AS u')
+                ->select('u.exam_number')
+                ->where('role_id',4)
+                ->where('company_id',$exam_code->company_id)
+                ->where('designation_id',$exam_code->designation_id)
+                ->max('exam_number');
+
         if($exam_code->exam_type == 'typing_test')
         {
+
             $sl_no = DB::table('user AS u')
                 ->select('u.sl')
                 ->where('role_id',4)
                 ->where('company_id',$exam_code->company_id)
                 ->where('designation_id',$exam_code->designation_id)
+                ->where('exam_number',$exam_number)
                 ->where('typing_status','inactive')
                 ->where('attended_typing_test',null)
                 ->orderBy('sl','asc')
@@ -349,6 +358,7 @@ class ExamCodeController extends Controller
                 ->where('role_id',4)
                 ->where('company_id',$exam_code->company_id)
                 ->where('designation_id',$exam_code->designation_id)
+                ->where('exam_number',$exam_number)
                 ->where('aptitude_status','inactive')
                 ->where('attended_aptitude_test',null)
                 ->orderBy('sl','asc')

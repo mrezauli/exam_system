@@ -151,6 +151,11 @@ Route::group(array('prefix'=>'exam','modules'=>'exam', 'namespace' => 'Modules\e
         'uses' => 'AnswerSheetCheckingController@create'
     ]);
 
+    Route::any('next-answer-sheet/{company_id?}/{designation_id?}/{exam_code_id?}/{exam_date?}/{shift?}', [
+        'as' => 'next-answer-sheet',
+        'uses' => 'AnswerSheetCheckingController@next_answer_sheet'
+    ]);
+
     Route::any('store-marks', [
         'as' => 'store-marks',
         'uses' => 'AnswerSheetCheckingController@store'

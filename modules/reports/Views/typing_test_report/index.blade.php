@@ -577,20 +577,16 @@ form .col-sm-12:last-child{
     <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
         <thead>
         <tr>
-            <th class="no-border"> <span>SL.</span> </th>
-            <th class="no-border"> <span>Roll No.</span> </th>
-            <th class="no-border"> <span>Exam Code</span> </th>
-            <th class="no-border"> <span>Name</span> </th>
+            <th class="no-border" rowspan="2"> SL. </th>
+            <th class="no-border" rowspan="2"> Roll No. </th>
+            <th class="no-border" rowspan="2"> Exam Code </th>
+            <th class="no-border" rowspan="2"> Name </th>
             <th colspan="4">Bangla in {{$bangla_time}} minutes</th>
             <th colspan="4">English in {{$english_time}} minutes</th>
-            <th class="no-border"> <span>Remarks</span> </th>
+            <th class="no-border" rowspan="2"> Remarks </th>
         </tr>
       
         <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
             <th>Typed Words</th>
             <th>Wrong Words</th>
             <th>Corrected Words</th>
@@ -600,9 +596,6 @@ form .col-sm-12:last-child{
             <th>Wrong Words</th>
             <th>Corrected Words</th>
             <th>Words/ Minute</th>
-            <th></th>
-
-            
         </tr>
         </thead>
         <tbody>
@@ -857,21 +850,16 @@ form .col-sm-12:last-child{
     <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
         <thead>
         <tr>
-            <th class="no-border"> <span>SL.</span> </th>
-            <th class="no-border"> <span>Roll No.</span> </th>
-            <th class="no-border"> <span>Exam Code</span> </th>
-            <th class="no-border"> <span>Name</span> </th>
+            <th class="no-border" rowspan="2"> SL. </th>
+            <th class="no-border" rowspan="2"> Roll No. </th>
+            <th class="no-border" rowspan="2"> Exam Code </th>
+            <th class="no-border" rowspan="2"> Name </th>
             <th colspan="4">Bangla in {{$bangla_time}} minutes</th>
             <th colspan="4">English in {{$english_time}} minutes</th>
-            <th class="no-border"> <span>Remarks</span> </th>
-            
+            <th class="no-border" rowspan="2"> Remarks </th>
         </tr>
       
         <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
             <th>Typed Words</th>
             <th>Wrong Words</th>
             <th>Corrected Words</th>
@@ -881,9 +869,6 @@ form .col-sm-12:last-child{
             <th>Wrong Words</th>
             <th>Corrected Words</th>
             <th>Words/ Minute</th>
-            <th></th>
-
-            
         </tr>
         </thead>
         <tbody>

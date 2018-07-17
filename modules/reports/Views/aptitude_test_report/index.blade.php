@@ -83,9 +83,31 @@ form .col-sm-12:last-child{
                     </div>
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
-                        {!! Form::label('bangla_speed', 'Pass Marks(%):', ['class' => 'control-label']) !!}
-                        <small class="required">(Req.)</small>
-                        {!! Form::text('bangla_speed', Input::get('bangla_speed')? Input::get('bangla_speed') : null,['id'=>'bangla_speed','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %','required'=>'required']) !!}
+                        {!! Form::label('bangla_speed', 'Total Pass Marks(%):', ['class' => 'control-label']) !!}
+                        {{-- <small class="required">(Req.)</small> --}}
+                        {!! Form::text('bangla_speed', Input::get('bangla_speed')? Input::get('bangla_speed') : null,['id'=>'bangla_speed','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12">
+
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('word_pass_marks', 'Word Pass Marks(%):', ['class' => 'control-label']) !!}
+                        <small class="required jprequired">(Req.)</small>
+                        {!! Form::text('word_pass_marks', Input::get('word_pass_marks')? Input::get('word_pass_marks') : null,['id'=>'word_pass_marks','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('excel_pass_marks', 'Excel Pass Marks(%):', ['class' => 'control-label']) !!}
+                        <small class="required jprequired">(Req.)</small>
+                        {!! Form::text('excel_pass_marks', Input::get('excel_pass_marks')? Input::get('excel_pass_marks') : null,['id'=>'excel_pass_marks','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('ppt_pass_marks', 'PPT Pass Marks(%):', ['class' => 'control-label']) !!}
+                        <small class="required jprequired">(Req.)</small>
+                        {!! Form::text('ppt_pass_marks', Input::get('ppt_pass_marks')? Input::get('ppt_pass_marks') : null,['id'=>'ppt_pass_marks','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
                     </div>
     
                     <div class="col-lg-2 col-md-3 col-sm-6 filter-btn">
@@ -293,7 +315,7 @@ form .col-sm-12:last-child{
                             $remarks = ''; 
 
                             $pass_percentage = $bangla_speed;          
-
+//dd($grouped_by_question_type);
 
 // dd($grouped_by_question_type['word']->sortBy('qselection_aptitude_id'));
                             ?>
@@ -318,7 +340,7 @@ form .col-sm-12:last-child{
 
                                         $pass_marks = ($data->question_marks*$pass_percentage)/100;
 
-                                        if ($pass_marks > $data->answer_marks) {
+                                        if ($values->remarks == 'Fail') {
 
                                             $failed_in_any_exam = true;
                                         }
@@ -329,11 +351,9 @@ form .col-sm-12:last-child{
 
                                     @else
 
-                                    <?php $failed_in_any_exam = true; ?>
-
                                         @for ($i = 1; $i <= $word_question_no; $i++)
 
-                                        <td>0</td>
+                                        <td>0 <?php $failed_in_any_exam = true; ?></td>
 
                                         @endfor
 
@@ -350,7 +370,7 @@ form .col-sm-12:last-child{
 
                                         $pass_marks2 = ($data->question_marks*$pass_percentage)/100;
 
-                                        if ($pass_marks2 > $data->answer_marks) {
+                                        if ($values->remarks == 'Fail') {
                                             $failed_in_any_exam = true;
                                         }
 
@@ -360,11 +380,9 @@ form .col-sm-12:last-child{
 
                                     @else
 
-                                    <?php $failed_in_any_exam = true; ?>
-
                                         @for ($i = 1; $i <= $excel_question_no; $i++)
 
-                                        <td>0</td>
+                                        <td>0 <?php $failed_in_any_exam = true; ?></td>
 
                                         @endfor
 
@@ -381,7 +399,7 @@ form .col-sm-12:last-child{
 
                                         $pass_marks3 = ($data->question_marks*$pass_percentage)/100;
 
-                                        if ($pass_marks3 > $data->answer_marks) {
+                                        if ($values->remarks == 'Fail') {
                                             $failed_in_any_exam = true;
                                         }
 
@@ -390,7 +408,6 @@ form .col-sm-12:last-child{
                                         @endforeach
 
                                     @else
-
 
                                         @for ($i = 1; $i <= $ppt_question_no; $i++)
 
@@ -409,13 +426,9 @@ form .col-sm-12:last-child{
 
                                             $remarks = 'Absent';
 
-                                        }elseif(! $failed_in_any_exam){
-
-                                            $remarks = 'Pass';
-
                                         }else{
-
-                                            $remarks = 'Fail';
+ 
+                                            $remarks = $values->remarks;
 
                                         }
 
@@ -575,10 +588,10 @@ form .col-sm-12:last-child{
     <table width="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
         <thead>
         <tr>
-            <th class="no-border"> <span>SL.</span> </th>
-            <th class="no-border"> <span>Roll No.</span> </th>
-            <th class="no-border"> <span>Exam Code</span> </th>
-            <th class="no-border"> <span>Name</span> </th>
+            <th class="no-border" rowspan="2"> SL. </th>
+            <th class="no-border" rowspan="2"> Roll No. </th>
+            <th class="no-border" rowspan="2"> Exam Code </th>
+            <th class="no-border" rowspan="2"> Name </th>
 
             @if(isset($group['word']))
 
@@ -597,18 +610,14 @@ form .col-sm-12:last-child{
             <th colspan="{{$ppt_question_no}}">MS PPT</th>
             @endif
             
-            <th class="no-border"> <span>Total Marks</span> </th>
+            <th class="no-border" rowspan="2"> Total Marks </th>
 
-            <th class="no-border"> <span>Remarks</span> </th>
+            <th class="no-border" rowspan="2"> Remarks </th>
             
         </tr>
         
         <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-
+            
             <?php $total_question_marks = 0; $j=0; $k=0; $l=0; ?>
 
             @if(! empty($group['word']))
@@ -687,10 +696,7 @@ form .col-sm-12:last-child{
             @endforeach
 
             @endif
-        
-            <th></th>
-            <th></th>
-
+     
         </tr>
         </thead>
         <tbody>
@@ -866,7 +872,7 @@ form .col-sm-12:last-child{
 
                         $remarks = 'Absent';
 
-                    }elseif(! $failed_in_any_exam){
+                    }elseif($values->remarks == 'Pass'){
 
                         $remarks = 'Pass';
                         $total_pass = $total_pass + 1;
@@ -1066,10 +1072,10 @@ form .col-sm-12:last-child{
     <table width="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
         <thead>
         <tr>
-            <th class="no-border"> <span>SL.</span> </th>
-            <th class="no-border"> <span>Roll No.</span> </th>
-            <th class="no-border"> <span>Exam Code</span> </th>
-            <th class="no-border"> <span>Name</span> </th>
+            <th class="no-border" rowspan="2"> SL. </th>
+            <th class="no-border" rowspan="2"> Roll No. </th>
+            <th class="no-border" rowspan="2"> Exam Code </th>
+            <th class="no-border" rowspan="2"> Name </th>
 
             @if(isset($group['word']))
 
@@ -1088,18 +1094,14 @@ form .col-sm-12:last-child{
             <th colspan="{{$ppt_question_no}}">MS PPT</th>
             @endif
             
-            <th class="no-border"> <span>Total Marks</span> </th>
+            <th class="no-border" rowspan="2"> Total Marks </th>
 
-            <th class="no-border"> <span>Remarks</span> </th>
+            <th class="no-border" rowspan="2"> Remarks </th>
             
         </tr>
         
         <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-
+           
             <?php $total_question_marks = 0; $j=0; $k=0; $l=0; ?>
 
             @if(! empty($group['word']))
@@ -1179,9 +1181,6 @@ form .col-sm-12:last-child{
 
             @endif
         
-            <th></th>
-            <th></th>
-
         </tr>
         </thead>
         <tbody>
@@ -1427,6 +1426,31 @@ function report_exam_code(){
 }
 
 
+
+function report_pass_marks(){
+
+    var bangla_speed = $('#bangla_speed').val();
+
+    var fields = '#word_pass_marks,#excel_pass_marks,#ppt_pass_marks';
+
+    if (bangla_speed != '') {
+
+        $(fields).prop('disabled', true).val('').trigger('change').attr('required', false);
+
+        $('.jprequired').hide();
+
+    }else{
+
+        $(fields).prop('disabled', false).attr('required', true);
+
+        $('.jprequired').show();
+
+    }
+
+}
+
+
+
     report_exam_code();
 
     $('#exam_code').keyup(function(e) {
@@ -1438,6 +1462,22 @@ function report_exam_code(){
     $('#exam_code').bind('input',function(e) {
     
         report_exam_code();
+
+    });
+
+
+
+    report_pass_marks();
+
+    $('#bangla_speed').keyup(function(e) {
+    
+        report_pass_marks();
+
+    });
+
+    $('#bangla_speed').bind('input',function(e) {
+    
+        report_pass_marks();
 
     });
 

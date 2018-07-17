@@ -47,6 +47,7 @@ class CandidateReExamController extends Controller
         $exam_code_list = [''=>'Select exam code'] + collect($exam_code_list)->flip()->intersect($exam_process_code_list)->flip()->all();
 
 
+
         // $data = CandidateReExam::with('exam_code.company','exam_code.designation')->where('status','active')->get();
 
         return view('exam::candidate_re_exam.index', compact('data', 'page_title','exam_code_list'));
@@ -154,7 +155,6 @@ class CandidateReExamController extends Controller
 
         if ($main_exam_type == 'typing_test') {
 
-
         $user->first()->exam_type = 'typing_test';
         
         $user->first()->typing_status = $data['status'];
@@ -208,6 +208,27 @@ class CandidateReExamController extends Controller
         return '';
 
     }
+
+    }
+
+
+    function ajax_get_answered_text()
+    {
+
+    $user = User::where('roll_no',$_POST['roll_no'])->where('typing_exam_code_id',$_POST['exam_code_id'])->first();
+
+    if (isset($user)) {
+
+        $answered_text = ! empty($user->typing_test_result()->where('exam_type',$_POST['exam_type'])->first()) ? $user->typing_test_result()->where('exam_type',$_POST['exam_type'])->first()->answered_text : '';
+
+    }else{
+
+        $answered_text = '';
+
+    }
+
+
+    return strip_tags($answered_text);
 
     }
 

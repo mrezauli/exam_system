@@ -101,8 +101,19 @@
                         <div class="row">
                             
                             <div class="col-sm-12">
-                                {!! Form::label('status', 'Status :', ['class' => 'control-label']) !!}
+                                {!! Form::label('status', 'Status:', ['class' => 'control-label']) !!}
                                 {!! Form::select('status', array('active'=>'Active','inactive'=>'Inactive'),Input::old('status'),['class' => 'form-control','title'=>'select status of company']) !!}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
+                        <div class="row">
+                            
+                            <div class="col-sm-12">
+                                {!! Form::label('answered_text', 'Answer Text:', ['class' => 'control-label']) !!}
+                                {!! Form::textarea('answered_text', Input::old('answered_text'), ['id'=>'answered_text', 'class' =>'answered_text', 'size' => '10x10','readonly']) !!}
                             </div>
 
                         </div>
@@ -171,6 +182,32 @@
             ajax_get_main_exam_type();
 
         });
+
+        $('#exam_type').change(function(event) {
+
+            ajax_get_answered_text();
+
+        });
+
+
+
+        function ajax_get_answered_text(){
+
+            $.ajax({
+              url: "{{Route('ajax-get-answered-text')}}",
+              type: 'POST',
+              data: $('form').serialize(),
+              success: function(answered_text){
+
+                $('#answered_text').val(answered_text);
+
+              }
+
+
+            });
+
+
+        }
 
 
        var exam_type = "{!! $exam_type !!}";

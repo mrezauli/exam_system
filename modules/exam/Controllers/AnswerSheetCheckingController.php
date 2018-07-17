@@ -87,7 +87,7 @@ class AnswerSheetCheckingController extends Controller
             $exam_code_id = Input::get('exam_code_id');
         }
         
-
+// dd($company_id);
 
         $permission_granted = ExaminerSelection::whereHas('exam_code', function ($query) use ($company_id,$designation_id,$exam_date,$shift){
             $query->where('company_id',$company_id)
@@ -136,7 +136,6 @@ class AnswerSheetCheckingController extends Controller
 
             }
 
-            
         }
 
         
@@ -180,7 +179,6 @@ class AnswerSheetCheckingController extends Controller
             'checked_answer_sheet'=>count($checked_answer_sheet),
             'my_answer_sheet'=>count($my_answer_sheet)
         ];
-
 
 
 
@@ -235,8 +233,8 @@ class AnswerSheetCheckingController extends Controller
                     $remote_file = "image_doc_files/".$file_html[2];
                     $ftp_conn = ftp_connect($ftp_server) or die("fff");
                     $login = ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
-                    ftp_put($ftp_conn, $remote_file, $file, FTP_BINARY);
-                    ftp_close($ftp_conn);
+                    //ftp_put($ftp_conn, $remote_file, $file, FTP_BINARY);
+                    //ftp_close($ftp_conn);
 
                     //***End****This code only for local host....In cpanel it will be blocked
                 }
@@ -333,13 +331,12 @@ class AnswerSheetCheckingController extends Controller
                         Session::flash('danger', "An error occured. Please Try Again.");
                     }
 
-
                 }
 
 
                 Session::flash('danger', "Answer mark must be a valid number and can't be greater than the question mark.");
 
-                return redirect()->route('start-checking',[$input['company_id'], $input['designation_id'], $input['exam_code_id'], $input['exam_date']])->withInput()->with('candidate_id',$input['candidate_id']);
+                return redirect()->route('start-checking',[$input['company_id'], $input['designation_id'], $input['exam_code_id'], $input['exam_date'], $input['shift']])->withInput()->with('candidate_id',$input['candidate_id']);
 
             }
 
@@ -354,8 +351,6 @@ class AnswerSheetCheckingController extends Controller
             $aptitude_exam_result_id = $input['marks_id_'.$i];
             $marks = $input['marks_'.$i];
             $question_marks = $input['question_marks_'.$i];
-
-          
 
          
             $input_data = [
@@ -404,7 +399,42 @@ class AnswerSheetCheckingController extends Controller
         }
 
 
-        return redirect()->route('next-checking', [$input['company_id'],$input['designation_id'],$input['exam_code_id'],$input['exam_date'],$input['shift']]);
+            $examiner_id = Auth::user()->id;
+            $company_id = Input::get('company_id');
+            $designation_id = Input::get('designation_id');
+            $exam_date = Input::get('exam_date');
+            $shift = Input::get('shift');
+            $exam_code_id = Input::get('exam_code_id');
+
+
+            $unchecked_answer_found =  User::where('aptitude_exam_code_id',$exam_code_id)->where('answer_sheet_given',1)->where('examined_status',0)->where('examined_by',$examiner_id)->where('started_exam','aptitude_test')->has('aptitude_test_result')->select('id','username','roll_no','designation_id')->first();
+
+            if ($unchecked_answer_found) {
+
+                $data = $unchecked_answer_found;
+
+            }else{
+
+                $data = User::where('aptitude_exam_code_id',$exam_code_id)->where('answer_sheet_given',0)->where('examined_status',0)->where('examined_by',null)->where('started_exam','aptitude_test')->select('id','username','roll_no','designation_id')->has('aptitude_test_result')->first();
+
+            }
+
+            // dd($data);
+
+        // return redirect()->route('next-checking', [$input['company_id'],$input['designation_id'],$input['exam_code_id'],$input['exam_date'],$input['shift']]);
+// dd('ddd');
+
+            if ($data) {
+
+                return redirect()->route('next-answer-sheet',[$input['company_id'], $input['designation_id'], $input['exam_code_id'], $input['exam_date'],$input['shift']])->withInput()->with('candidate_id',$input['candidate_id']);
+
+            }else{
+
+                return redirect()->route('next-checking', [$input['company_id'],$input['designation_id'],$input['exam_code_id'],$input['exam_date'],$input['shift']]);
+
+            }
+         
+
 
     }
 
@@ -421,6 +451,34 @@ class AnswerSheetCheckingController extends Controller
             'Content-Type: application/xlsx',
         );
         return Response::download($filename, $file[2], $headers);
+    }
+
+
+    public function next_answer_sheet($company_id = null, $designation_id = null, $exam_code_id = null, $exam_date = null, $shift = null)
+    {
+
+ 
+        if($company_id == null)
+        {
+            $company_id = Input::get('company_id');
+            $designation_id = Input::get('designation_id');
+            $exam_date = Input::get('exam_date');
+            $shift = Input::get('shift');
+            $exam_code_id = Input::get('exam_code_id');
+        }
+        
+
+
+
+        if (Session::has('candidate_id') ) {
+            $candidate_id = Session::get('candidate_id');
+        }
+
+
+
+
+        return view('exam::answer_sheet_checking.next_answer_sheet', compact('page_title','answer_html_files','company_id','designation_id','exam_code_id','exam_date','shift','data','answer_sheet_array','candidate_id'));
+        
     }
 
 }

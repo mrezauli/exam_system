@@ -190,6 +190,17 @@ if (! Number.isInteger(answer_mark) || answer_mark > question_mark) {
 
 });
 
+
+$(document).ready(function() {
+    
+fwindow.location.href = 'http://localhost/exam_system/public/answer_files/image_doc_files/441_55_ASIFUL HAQUE_ansdoc.docx';
+
+if(window.location.href.indexOf("was") > -1) {
+       alert("your url contains the name franky");
+    }
+
+});
+
 // $('form').on('submit', function(e) {
   
 

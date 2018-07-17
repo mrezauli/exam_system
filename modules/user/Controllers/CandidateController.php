@@ -135,13 +135,38 @@ class CandidateController extends Controller
             return redirect()->back();
         }*/
 
-
-        $last_user = User::select('sl')->where('company_id',$input['company_id'])->where('designation_id',$input['designation_id'])->orderBy('sl','asc')->get()->last();
-
+        $exam_number = User::select('sl')->where('company_id',$input['company_id'])->where('designation_id',$input['designation_id'])->max('exam_number');
 
 
+        $last_user = User::select('sl')->where('company_id',$input['company_id'])->where('designation_id',$input['designation_id'])->where('exam_number',$exam_number)->orderBy('sl','asc')->get()->last();
 
         
+
+
+        if ($input['exam_number'] == '0') {
+
+            $exam_number = $exam_number;
+            $sl = $last_user->sl;
+
+        }elseif ($input['exam_number'] == '1') {
+
+            $exam_number = $exam_number + 1;
+            $sl = '0';
+
+        }else{
+
+            Session::flash('danger',  'Exam number is not found.');
+            DB::rollback();
+        }
+
+
+        // if ($exam_number == '') {
+        //     $exam_number = '1';
+        // }
+
+
+
+
 
 
         //DB
@@ -155,7 +180,7 @@ class CandidateController extends Controller
                 $highestColumn      = $worksheet->getHighestColumn(); // e.g 'F'
                 $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
 
-                $sl = isset($last_user) ? $last_user->sl : 0;
+                // $sl = isset($last_user) ? $last_user->sl : 0;
                 $row = 4;
                 for ($row; $row <= $highestRow; $row++)
                 {
@@ -180,6 +205,7 @@ class CandidateController extends Controller
                                 'sl'=>$sl,
                                 'company_id'=>$input['company_id'],
                                 'designation_id'=>$input['designation_id'],
+                                'exam_number'=>$exam_number,
                                 'roll_no'=>trim($val[0]),
                                 'username'=>$val[1],
                                 'nid'=>$val[2],
@@ -207,6 +233,7 @@ class CandidateController extends Controller
 
         } catch (\Exception $e) {
             //If there are any exceptions, rollback the transaction`
+            //dd($e->getMessage());
             Session::flash('danger',  $e->getMessage());
             DB::rollback();
         }

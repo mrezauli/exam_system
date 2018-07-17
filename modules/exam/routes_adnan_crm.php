@@ -17,6 +17,11 @@ Route::any('ajax-get-main-exam-type', [
     'uses' => 'CandidateReExamController@ajax_get_main_exam_type'
 ]);
 
+Route::any('ajax-get-answered-text', [
+    'as' => 'ajax-get-answered-text',
+    'uses' => 'CandidateReExamController@ajax_get_answered_text'
+]);
+
 
 
 

@@ -264,10 +264,10 @@ p{
 
                                 
 
-
 <div class="print-section print-show">
     <div class="header-section">
         <p class="header"> {{ isset($header->company_name) ? $header->company_name : ''}}</p>
+        <p class="header">{{ isset($header->address) ? $header->address : ''}}</p>
         <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
         <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
         <p class="header">পরীক্ষা গ্রহণে - বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
@@ -317,6 +317,10 @@ p{
 
             }
 
+            $present_percentage = $present/$total * 100;
+
+            $absent_percentage = $absent/$total * 100;
+
            }
 
            $sl_no = 0;
@@ -353,7 +357,7 @@ p{
                     }
                     
                     ?>
-                      
+                    
                 </tr>
             @endforeach
         </tbody>
@@ -362,12 +366,16 @@ p{
     <table style="margin-top:20px;width:50%;margin-left: 50%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
       <tr>
         <th>উপস্থিত</th>
-        <th>অনুপস্থিত</th> 
+        <th>উপস্থিত (%)</th>
+        <th>অনুপস্থিত</th>
+        <th>অনুপস্থিত (%)</th> 
         <th>মোট</th>
       </tr>
       <tr>
         <td>{{$present}}</td>
+        <td>{{$present_percentage}}</td>
         <td>{{$absent}}</td>
+        <td>{{$absent_percentage}}</td>
         <td>{{$total}}</td>
       </tr>
     </table>

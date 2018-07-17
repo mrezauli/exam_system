@@ -26,6 +26,12 @@
     {!! Form::file('excel_file',['class'=>'form-control','required'=>'required']) !!}
 </div>
 
+
+<div class="col-sm-12 form-group">
+    {!!  Form::label('Exam Status') !!}
+    {!! Form::select('exam_number', ['' => 'Select Exam Status','0' => 'Old Exam','1' => 'New Exam'], Input::old('exam_number'),['id'=>'exam_number','class' => 'form-control','required']) !!}
+</div>
+
 <div class="clearfix"></div>
 
 <div class="col-sm-12 form-margin-btn text-right" style="float:none;">           

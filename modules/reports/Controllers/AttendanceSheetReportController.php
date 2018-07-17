@@ -101,7 +101,7 @@ class AttendanceSheetReportController extends Controller
 
 
         $typing_model = DB::table( 'user AS u' )
-         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.attended_aptitude_test','e.exam_type','e.company_id','e.designation_id','e.exam_date','c.company_name','d.designation_name')
+         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.attended_aptitude_test','e.exam_type','e.company_id','e.designation_id','e.exam_date','c.company_name','c.address','d.designation_name')
          ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')
          ->leftJoin( 'company as c', 'u.company_id', '=', 'c.id')
          ->leftJoin( 'designation as d', 'u.designation_id', '=', 'd.id')
@@ -112,7 +112,7 @@ class AttendanceSheetReportController extends Controller
 
 
         $aptitude_model = DB::table( 'user AS u' )
-         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.attended_aptitude_test','e.exam_type','e.company_id','e.designation_id','e.exam_date','c.company_name','d.designation_name')
+         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.attended_aptitude_test','e.exam_type','e.company_id','e.designation_id','e.exam_date','c.company_name','c.address','d.designation_name')
          ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.aptitude_exam_code_id')
          ->leftJoin( 'company as c', 'u.company_id', '=', 'c.id')
          ->leftJoin( 'designation as d', 'u.designation_id', '=', 'd.id')
@@ -284,7 +284,7 @@ class AttendanceSheetReportController extends Controller
 
       
             $model = DB::table( 'user AS u' )
-                     ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.attended_aptitude_test','u.company_id','u.designation_id','u.exam_date','c.company_name','d.designation_name')
+                     ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.attended_aptitude_test','u.company_id','u.designation_id','u.exam_date','c.company_name','c.address','d.designation_name')
                     ->where('u.role_id',4)
                     ->leftJoin( 'company as c', 'u.company_id', '=', 'c.id')
                     ->leftJoin( 'designation as d', 'u.designation_id', '=', 'd.id')

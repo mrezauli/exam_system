@@ -114,11 +114,11 @@
                                 <div class="col-sm-105 answer-sheet-block" style="color: blue">
 
                                     @if($ques_values['type']=='word')
-                                        <iframe width="100%" height="600px" src="https://docs.google.com/gview?url=http://qpands.com/exam_system/public/answer_files/image_doc_files/<?php echo $ques_values['file']; ?>&embedded=true" frameborder="0"></iframe>
+                                        <iframe width="100%" height="600px" src="https://docs.google.com/gview?url=http://mnzbd.com/exam_system/public/answer_files/image_doc_files/<?php echo $ques_values['file']; ?>&embedded=true" frameborder="0"></iframe>
                                     @elseif($ques_values['type']=='excel')
                                         <iframe width="100%" height="600px" src="{{URL::asset('answer_files/image_excel_files/'. $ques_values['file'])}}" frameborder="0"></iframe>
                                     @elseif($ques_values['type']=='ppt')
-                                        <iframe width="100%" height="600px" src="https://docs.google.com/gview?url=http://qpands.com/exam_system/public/answer_files/image_ppt_files/<?php echo $ques_values['file']; ?>&embedded=true" frameborder="0"></iframe>
+                                        <iframe width="100%" height="600px" src="https://docs.google.com/gview?url=http://mnzbd.com/exam_system/public/answer_files/image_ppt_files/<?php echo $ques_values['file']; ?>&embedded=true" frameborder="0"></iframe>
                                     @endif
                                 </div>
 

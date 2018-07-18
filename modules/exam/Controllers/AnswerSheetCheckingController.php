@@ -234,7 +234,7 @@ class AnswerSheetCheckingController extends Controller
                     $login = ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
 
                     // dd($remote_file);
-                    //ftp_pasv($ftp_conn, true);
+                    ftp_pasv($ftp_conn, true);
                     ftp_put($ftp_conn, $remote_file, $file, FTP_BINARY);
                     ftp_close($ftp_conn);
 
@@ -270,6 +270,7 @@ class AnswerSheetCheckingController extends Controller
                    $remote_file = "image_ppt_files/".$file_html[2];
                    $ftp_conn = ftp_connect($ftp_server) or die("fff");
                    $login = ftp_login($ftp_conn, $ftp_username, $ftp_userpass);
+                   ftp_pasv($ftp_conn, true);
                    ftp_put($ftp_conn, $remote_file, $file, FTP_BINARY);
                    ftp_close($ftp_conn);
 

@@ -176,6 +176,7 @@ form .col-sm-12:last-child{
                             <th></th>
                             <th></th>
                             <th></th>
+                            <th></th>
 
                             <?php $total_question_marks = 0; $j=0; $k=0; $l=0;?>
 

@@ -264,6 +264,8 @@ class ShortTypingTestReportController extends Controller
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
 
+            $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
+
 
 
             if(! $values->lists('attended_typing_test')->contains('true')){

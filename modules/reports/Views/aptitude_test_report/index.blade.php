@@ -58,11 +58,6 @@ form .col-sm-12:last-child{
                         <small class="required jrequired">(Required)</small>
                         {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control js-select','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
                     </div>
-  
-                </div>
-
-
-                <div class="col-sm-12">
 
                     <div class="col-lg-25 col-md-3 col-sm-6">
                       {!! Form::label('exam_date_from', 'Exam Date From:', ['class' => 'control-label']) !!}
@@ -81,16 +76,17 @@ form .col-sm-12:last-child{
                         <button class="btn btn-danger calender-button" type="button"><i class="icon-calendar"></i></button>
                       </span>
                     </div>
+  
+                </div>
+
+
+                <div class="col-sm-12">
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
                         {!! Form::label('bangla_speed', 'Total Pass Marks(%):', ['class' => 'control-label']) !!}
                         {{-- <small class="required">(Req.)</small> --}}
                         {!! Form::text('bangla_speed', Input::get('bangla_speed')? Input::get('bangla_speed') : null,['id'=>'bangla_speed','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
                     </div>
-
-                </div>
-
-                <div class="col-sm-12">
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
                         {!! Form::label('word_pass_marks', 'Word Pass Marks(%):', ['class' => 'control-label']) !!}

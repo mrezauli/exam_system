@@ -263,7 +263,7 @@ class TypingTestReportController extends Controller
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
 
-            $values->roll_no = isset($values->first->roll_no) ? $values->first()->roll_no : '';
+            $values->roll_no = isset($values->first->roll_no) ? $values->first->roll_no : '';
 
 
 

@@ -163,6 +163,7 @@ form .col-sm-12:last-child{
                         <thead>
                         <tr>
                             <th> <span>SL.</span> </th>
+                            <th> <span>Candidate SL.</span> </th>
                             <th> <span>Roll No.</span> </th>
                             <th> <span>Exam Code</span> </th>
                             <th> <span>Name</span> </th>
@@ -220,6 +221,7 @@ form .col-sm-12:last-child{
                                 <tr class="gradeX">
                                                            
                                     <td>{{$i}}</td>
+                                    <td>{{$values[0]->sl}}</td>
                                     <td>{{$values[0]->roll_no}}</td>
                                     <td>{{$values[0]->exam_code_name}}</td>
                                     <td class="table-name">

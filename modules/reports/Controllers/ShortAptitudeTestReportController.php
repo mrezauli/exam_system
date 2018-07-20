@@ -293,6 +293,8 @@ class ShortAptitudeTestReportController extends Controller
 
             $values->total_answer_marks = $total_answer_marks = $values->sum('answer_marks');
 
+            $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
+
             $values->each(function ($data, $key)use(&$failed_in_any_exam) {
 
                 if ($data->question_marks/2 > $data->answer_marks || $data->answer_marks == null) {
@@ -323,25 +325,50 @@ class ShortAptitudeTestReportController extends Controller
 
 
 
+        $makeComparer = function($criteria) {
+          $comparer = function ($first, $second) use ($criteria) {
+            foreach ($criteria as $key => $orderType) {
+        // normalize sort direction
+
+              $orderType = strtolower($orderType);
+
+              if ($first->{$key} < $second->{$key}) {
+                return $orderType === "asc" ? -1 : 1;
+            } else if ($first->{$key} > $second->{$key}) {
+                return $orderType === "asc" ? 1 : -1;
+            }
+        }
+        // all elements were equal
+        return 0;
+        };
+        return $comparer;
+        };
+
+
         $passed = $model->filter(function ($value) {
             return $value->remarks == "Pass";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_answer_marks;
         });
-
 
         $failed = $model->filter(function ($value) {
             return $value->remarks == "Fail";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_answer_marks;
         });
-
+        // dd($passed);
 
         $absent = $model->filter(function ($value) {
             return $value->remarks == "Absent";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_answer_marks;
         });
+
+
+        $criteria = ["total_answer_marks" => "desc", "roll_no" => "asc"];
+
+        $comparer = $makeComparer($criteria);
+        $passed = $passed->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $failed = $failed->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $absent = $absent->sort($comparer);
 
 
 

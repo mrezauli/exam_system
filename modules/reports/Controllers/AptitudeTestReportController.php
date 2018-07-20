@@ -320,6 +320,8 @@ class AptitudeTestReportController extends Controller
 
             $values->total_question_marks = $total_question_marks = $values->sum('question_marks');
 
+            $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
+
             $values->each(function ($data, $key)use(&$failed_in_any_exam,$bangla_speed,$total_question_marks,$total_answer_marks,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks) {
 
 
@@ -347,9 +349,9 @@ class AptitudeTestReportController extends Controller
 
                     }
 
-if ($failed_in_any_exam == true && $data->answer_marks > 2) {
-    //dd($data->question_type == 'word' && $data->question_marks*$word_pass_marks/100 > $data->answer_marks);
-}
+                    if ($failed_in_any_exam == true && $data->answer_marks > 2) {
+                        //dd($data->question_type == 'word' && $data->question_marks*$word_pass_marks/100 > $data->answer_marks);
+                    }
 
                     
                 }else{
@@ -378,27 +380,50 @@ if ($failed_in_any_exam == true && $data->answer_marks > 2) {
         });
 
 
+        $makeComparer = function($criteria) {
+          $comparer = function ($first, $second) use ($criteria) {
+            foreach ($criteria as $key => $orderType) {
+            // normalize sort direction
+
+              $orderType = strtolower($orderType);
+
+              if ($first->{$key} < $second->{$key}) {
+                return $orderType === "asc" ? -1 : 1;
+            } else if ($first->{$key} > $second->{$key}) {
+                return $orderType === "asc" ? 1 : -1;
+            }
+        }
+        // all elements were equal
+        return 0;
+        };
+        return $comparer;
+        };
 
 
         $passed = $model->filter(function ($value) {
             return $value->remarks == "Pass";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_answer_marks;
         });
-
 
         $failed = $model->filter(function ($value) {
             return $value->remarks == "Fail";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_answer_marks;
         });
-// dd($passed);
+        // dd($passed);
 
         $absent = $model->filter(function ($value) {
             return $value->remarks == "Absent";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_answer_marks;
         });
+
+
+        $criteria = ["total_answer_marks" => "desc", "roll_no" => "asc"];
+
+        $comparer = $makeComparer($criteria);
+        $passed = $passed->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $failed = $failed->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $absent = $absent->sort($comparer);
 
 
 

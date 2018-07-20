@@ -113,7 +113,7 @@ class TypingTestReportController extends Controller
 
 
         $model = DB::table( 'user AS u' )
-         ->select('u.id','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','u.id as user_id','e.company_id','e.designation_id','e.exam_code_name','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
+         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','u.id as user_id','e.company_id','e.designation_id','e.exam_code_name','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
          ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')         
         ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
         ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
@@ -132,12 +132,12 @@ class TypingTestReportController extends Controller
                 $model = $model->where('e.company_id','=',$company_id);
             }
 
+
             if(isset($designation_id) && !empty($designation_id)){
 
                 $model = $model->where('e.designation_id','=',$designation_id);
 
             }
-
 
             if($exam_date_from == '' && $exam_date_to != ''){
 
@@ -263,9 +263,9 @@ class TypingTestReportController extends Controller
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
 
-            $values->roll_no = isset($values->first->roll_no) ? $values->first->roll_no : '';
+            $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
-
+// dd($values);
 
             if(! $values->lists('attended_typing_test')->contains('true')){
 
@@ -289,35 +289,52 @@ class TypingTestReportController extends Controller
 
         $model = collect($ddd);
 
+        $makeComparer = function($criteria) {
+          $comparer = function ($first, $second) use ($criteria) {
+            foreach ($criteria as $key => $orderType) {
+        // normalize sort direction
 
+              $orderType = strtolower($orderType);
 
-        $passed = $model->filter(function ($value) {
-            return $value->remarks == "Pass";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_typing_speed;
-        })->sortByDesc(function ($values, $key) {
-            return $values->roll_no;
-        });
+              if ($first->{$key} < $second->{$key}) {
+                return $orderType === "asc" ? -1 : 1;
+            } else if ($first->{$key} > $second->{$key}) {
+                return $orderType === "asc" ? 1 : -1;
+            }
+        }
+        // all elements were equal
+        return 0;
+        };
+        return $comparer;
+        };
+
+         $passed = $model->filter(function ($value) {
+                return $value->remarks == "Pass";
+            });
 
 
         $failed = $model->filter(function ($value) {
             return $value->remarks == "Fail";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_typing_speed;
-        })->sortByDesc(function ($values, $key) {
-            return $values->roll_no;
         });
 
 
         $absent = $model->filter(function ($value) {
             return $value->remarks == "Absent";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_typing_speed;
-        })->sortByDesc(function ($values, $key) {
-            return $values->roll_no;
         });
 
-        // dd($failed);
+        // dd($passed);
+
+
+        $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
+
+        $comparer = $makeComparer($criteria);
+        $passed = $passed->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $failed = $failed->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $absent = $absent->sort($comparer);
 
 
         $model = $passed->merge($failed);
@@ -962,23 +979,28 @@ class TypingTestReportController extends Controller
 
             $passed = $model->filter(function ($value) {
                 return $value->remarks == "Pass";
-            })->sortByDesc(function ($values, $key) {
-                return $values->total_typing_speed;
             });
 
 
             $failed = $model->filter(function ($value) {
                 return $value->remarks == "Fail";
-            })->sortByDesc(function ($values, $key) {
-                return $values->total_typing_speed;
             });
 
 
             $absent = $model->filter(function ($value) {
                 return $value->remarks == "Absent";
-            })->sortByDesc(function ($values, $key) {
-                return $values->total_typing_speed;
             });
+
+
+            $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
+            $comparer = $makeComparer($criteria);
+            $passed = $passed->sort($comparer);
+
+            $comparer = $makeComparer($criteria);
+            $failed = $failed->sort($comparer);
+
+            $comparer = $makeComparer($criteria);
+            $absent = $absent->sort($comparer);
 
 
         

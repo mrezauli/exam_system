@@ -217,7 +217,6 @@ form .col-sm-12:last-child{
 
                     $english_times[] = isset($english->exam_time) ? $english->exam_time - 1: 1;
 
-
                 }
 
 
@@ -235,6 +234,7 @@ form .col-sm-12:last-child{
                         <thead>
                         <tr>
                             <th class="no-border"> <span>SL.</span> </th>
+                            <th class="no-border"> <span>Candidate SL.</span> </th>
                             <th class="no-border"> <span>Roll No.</span> </th>
                             <th class="no-border"> <span>Exam Code</span> </th>
                             <th class="no-border"> <span>Name</span> </th>
@@ -247,6 +247,7 @@ form .col-sm-12:last-child{
                        
 
                         <tr>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -292,9 +293,7 @@ form .col-sm-12:last-child{
 
                         }
 
-
-
-                         ?>
+                        ?>
 
                             @foreach($model as $values)
 
@@ -337,11 +336,11 @@ form .col-sm-12:last-child{
 
                             $english_wpm = round_to_integer($english_wpm);
 
-
                             ?>
                                 <tr class="gradeX">
                                                            
                                     <td>{{$i}}</td>
+                                    <td>{{$values[0]->sl}}</td>
                                     <td>{{$values[0]->roll_no}}</td>
                                     <td>{{$values[0]->exam_code_name}}</td>
                                     <td class="table-name">

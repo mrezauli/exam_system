@@ -285,25 +285,52 @@ class ShortTypingTestReportController extends Controller
         });   
 
 
+        $makeComparer = function($criteria) {
+          $comparer = function ($first, $second) use ($criteria) {
+            foreach ($criteria as $key => $orderType) {
+        // normalize sort direction
+
+              $orderType = strtolower($orderType);
+
+              if ($first->{$key} < $second->{$key}) {
+                return $orderType === "asc" ? -1 : 1;
+            } else if ($first->{$key} > $second->{$key}) {
+                return $orderType === "asc" ? 1 : -1;
+            }
+        }
+        // all elements were equal
+        return 0;
+        };
+        return $comparer;
+        };
+
+
         $passed = $model->filter(function ($value) {
             return $value->remarks == "Pass";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_typing_speed;
         });
 
 
         $failed = $model->filter(function ($value) {
             return $value->remarks == "Fail";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_typing_speed;
         });
 
 
         $absent = $model->filter(function ($value) {
             return $value->remarks == "Absent";
-        })->sortByDesc(function ($values, $key) {
-            return $values->total_typing_speed;
         });
+
+
+
+        $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
+        
+        $comparer = $makeComparer($criteria);
+        $passed = $passed->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $failed = $failed->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $absent = $absent->sort($comparer);
 
 
         $passed_count = $passed->count();
@@ -972,23 +999,29 @@ class ShortTypingTestReportController extends Controller
 
             $passed = $model->filter(function ($value) {
                 return $value->remarks == "Pass";
-            })->sortByDesc(function ($values, $key) {
-                return $values->total_typing_speed;
             });
 
 
             $failed = $model->filter(function ($value) {
                 return $value->remarks == "Fail";
-            })->sortByDesc(function ($values, $key) {
-                return $values->total_typing_speed;
             });
 
 
             $absent = $model->filter(function ($value) {
                 return $value->remarks == "Absent";
-            })->sortByDesc(function ($values, $key) {
-                return $values->total_typing_speed;
             });
+
+
+            $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
+
+            $comparer = $makeComparer($criteria);
+            $passed = $passed->sort($comparer);
+
+            $comparer = $makeComparer($criteria);
+            $failed = $failed->sort($comparer);
+
+            $comparer = $makeComparer($criteria);
+            $absent = $absent->sort($comparer);
 
 
             if ($remarks == 'passed') {

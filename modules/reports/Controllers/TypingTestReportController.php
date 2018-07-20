@@ -225,7 +225,7 @@ class TypingTestReportController extends Controller
         $ddd = [];
         
         $model->each(function ($values, $key)use($bangla_speed,$english_speed,&$ddd) {
-            
+           
         
             $values = collect($values);
             $null_object = StdClass::fromArray();
@@ -263,6 +263,8 @@ class TypingTestReportController extends Controller
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
 
+            $values->roll_no = isset($values->first->roll_no) ? $values->first()->roll_no : '';
+
 
 
             if(! $values->lists('attended_typing_test')->contains('true')){
@@ -293,6 +295,8 @@ class TypingTestReportController extends Controller
             return $value->remarks == "Pass";
         })->sortByDesc(function ($values, $key) {
             return $values->total_typing_speed;
+        })->sortByDesc(function ($values, $key) {
+            return $values->roll_no;
         });
 
 
@@ -300,6 +304,8 @@ class TypingTestReportController extends Controller
             return $value->remarks == "Fail";
         })->sortByDesc(function ($values, $key) {
             return $values->total_typing_speed;
+        })->sortByDesc(function ($values, $key) {
+            return $values->roll_no;
         });
 
 
@@ -307,6 +313,8 @@ class TypingTestReportController extends Controller
             return $value->remarks == "Absent";
         })->sortByDesc(function ($values, $key) {
             return $values->total_typing_speed;
+        })->sortByDesc(function ($values, $key) {
+            return $values->roll_no;
         });
 
         // dd($failed);

@@ -115,7 +115,7 @@ class ShortTypingTestReportController extends Controller
 
 
         $model = DB::table( 'user AS u' )
-         ->select('u.id','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','u.id as user_id','e.company_id','e.designation_id','e.exam_code_name','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
+         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','u.id as user_id','e.company_id','e.designation_id','e.exam_code_name','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
          ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')         
         ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
         ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')

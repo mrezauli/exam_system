@@ -315,7 +315,6 @@ $username = $user->username;
 <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/js/cookie.js') }}"></script>
 
-
 <script>
 
 

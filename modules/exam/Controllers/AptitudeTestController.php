@@ -267,12 +267,12 @@ class AptitudeTestController extends Controller
 
                             $attachment->move($upload_folder, $file_original_name);
 
-                            $attachment = $upload_folder . $file_original_name;
+                            $attachment3 = $upload_folder . $file_original_name;
 
                             $input['qselection_aptitude_id'] = $original_file[1];
                             $input['user_id'] = $user_id;
                             $input['question_type'] = 'word';
-                            $input['answer_original_file_path'] = $attachment;
+                            $input['answer_original_file_path'] = $attachment3;
                             $input['status'] = 'active';
 
 
@@ -303,12 +303,12 @@ class AptitudeTestController extends Controller
                             $upload_folder = 'answer_files/org_excel_files/';
 
                             $attachment->move($upload_folder, $file_original_name);
-                            $attachment = $upload_folder . $file_original_name;
+                            $attachment3 = $upload_folder . $file_original_name;
 
                             $input['qselection_aptitude_id'] = $original_file[1];
                             $input['user_id'] = $user_id;
                             $input['question_type'] = 'excel';
-                            $input['answer_original_file_path'] = $attachment;
+                            $input['answer_original_file_path'] = $attachment3;
                             $input['status'] = 'active';
 
                             $model = new AptitudeExamResult();
@@ -332,12 +332,12 @@ class AptitudeTestController extends Controller
                             $upload_folder = 'answer_files/org_ppt_files/';
 
                             $attachment->move($upload_folder, $file_original_name);
-                            $attachment = $upload_folder . $file_original_name;
+                            $attachment3 = $upload_folder . $file_original_name;
 
                             $input['qselection_aptitude_id'] = $original_file[1];
                             $input['user_id'] = $user_id;
                             $input['question_type'] = 'ppt';
-                            $input['answer_original_file_path'] = $attachment;
+                            $input['answer_original_file_path'] = $attachment3;
                             $input['status'] = 'active';
 
                             $model = new AptitudeExamResult();
@@ -366,7 +366,6 @@ class AptitudeTestController extends Controller
                     return redirect()->back()
                         ->withErrors($validator)
                         ->withInput();
-
                 }
             }
         }
@@ -487,26 +486,48 @@ class AptitudeTestController extends Controller
                         $file_original_name = $attachment->getClientOriginalName();
                         $original_file = (explode('_',$file_original_name));
 
+
+                        $input['qselection_aptitude_id'] = $original_file[1];
+                            $input['user_id'] = $user_id;
+                            $input['re_submit_flag'] = 0;
+                            $input['status'] = 'active';
+
+
+
                         if($original_file[3] == 'ansdoc.docx')
                         {
 
                             $model = AptitudeExamResult::where('user_id',$user_id)->where('qselection_aptitude_id',$original_file[1])->first();
 
-                            if (empty($model)) {
-
-                                return $this->answer_submit($request);
-                                
-                            }
-
                             $upload_folder = 'answer_files/org_doc_files/';
+
+                            
+
 
                             $attachment->move($upload_folder, $file_original_name);
 
-                            $input['re_submit_flag'] = 0;
                             
                             DB::beginTransaction();
                             try{
+
+                                if (empty($model)) {
+
+                                $input['answer_original_file_path'] = $upload_folder . $file_original_name;
+
+                                $input['question_type'] = 'word';
+
+                                $model = new AptitudeExamResult();
+
+                                $model->create($input);
+
+                                //return $this->answer_submit($request);
+                                
+                            }else{
+
                                 $model->update($input);
+
+                            }
+                                
                                 //Session::flash('message','Success !! Files Successfully Submited !');
                                 DB::commit();
 
@@ -519,27 +540,36 @@ class AptitudeTestController extends Controller
                         elseif($original_file[3] == 'ansexcel.xlsx')
                         {
 
-
                             $model = AptitudeExamResult::where('user_id',$user_id)->where('qselection_aptitude_id',$original_file[1])->first();
-
-                            if (empty($model)) {
-
-                                return $this->answer_submit($request);
-
-                            }
 
                             $upload_folder = 'answer_files/org_excel_files/';
 
+                            
+
+
                             $attachment->move($upload_folder, $file_original_name);
 
-                            $input['status'] = 'active';
-
-                            $input['re_submit_flag'] = 0;
-
-
+                            
                             DB::beginTransaction();
                             try{
+
+                                if (empty($model)) {
+
+                                $input['answer_original_file_path'] = $upload_folder . $file_original_name;
+
+                                $input['question_type'] = 'excel';
+
+                                $model = new AptitudeExamResult();
+
+                                $model->create($input);
+
+                                //return $this->answer_submit($request);
+                                
+                            }else{
+
                                 $model->update($input);
+
+                            }
                                 DB::commit();
 
                             }catch(\Exception $e) {
@@ -554,24 +584,35 @@ class AptitudeTestController extends Controller
 
                             $model = AptitudeExamResult::where('user_id',$user_id)->where('qselection_aptitude_id',$original_file[1])->first();
 
-                            if (empty($model)) {
-
-                                return $this->answer_submit($request);
-                                
-                            }
-
                             $upload_folder = 'answer_files/org_ppt_files/';
+
+                            
+
 
                             $attachment->move($upload_folder, $file_original_name);
 
-                            $input['status'] = 'active';
-
-                            $input['re_submit_flag'] = 0;
                             
                             DB::beginTransaction();
                             try{
+
+                                if (empty($model)) {
+
+                                $input['answer_original_file_path'] = $upload_folder . $file_original_name;
+
+                                $input['question_type'] = 'ppt';
+
+                                $model = new AptitudeExamResult();
+
+                                $model->create($input);
+
+                                //return $this->answer_submit($request);
+                                
+                            }else{
+
                                 $model->update($input);
-                                DB::commit();
+
+                            }
+                            DB::commit();
 
                             }catch(\Exception $e) {
 

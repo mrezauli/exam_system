@@ -317,9 +317,9 @@ p{
 
             }
 
-            $present_percentage = $present/$total * 100;
+            $present_percentage = round($present/$total * 100,2);
 
-            $absent_percentage = $absent/$total * 100;
+            $absent_percentage = round($absent/$total * 100,2);
 
            }
 

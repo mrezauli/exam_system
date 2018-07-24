@@ -876,7 +876,6 @@ form .col-sm-12:last-child{
                         $remarks = 'Pass';
                         $total_pass = $total_pass + 1;
 
-
                     }else{
 
                         $remarks = 'Fail';
@@ -910,7 +909,6 @@ form .col-sm-12:last-child{
       </tr>
     </table>
 
-
     </div>
 
     <footer class="print-show" style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
@@ -918,28 +916,6 @@ form .col-sm-12:last-child{
 </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -467,7 +467,7 @@ class AptitudeTestController extends Controller
 
         if($count != $file_count){
 
-            return redirect()->back()->with('ddd','1');
+            //return redirect()->back()->with('ddd','1');
 
         }
 

@@ -29,7 +29,7 @@ class ShortTypingTestReportController extends Controller
 {
 
 
-    public function typing_test_report($roll_wise = ''){
+    public function typing_test_report(){
 
 
         $page_title = 'Typing Test Report (Short)';
@@ -51,7 +51,7 @@ class ShortTypingTestReportController extends Controller
 
         $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','typing_test')->where('status','active')->orderBy('id','desc')->lists('exam_code_name','id')->all();
 
-        return view('reports::short_typing_test_report.index', compact('page_title','company_list','designation_list','exam_code_list','status','header','exam_dates_string','model_all','bangla_speed','english_speed','passed_count','failed_count','show_count','remarks','roll_wise'));
+        return view('reports::short_typing_test_report.index', compact('page_title','company_list','designation_list','exam_code_list','status','header','exam_dates_string','model_all','bangla_speed','english_speed','passed_count','failed_count','show_count','remarks'));
 
 
     }
@@ -59,7 +59,7 @@ class ShortTypingTestReportController extends Controller
  
 
 
-    public function generate_typing_test_report(Request $request, $roll_wise = ''){
+    public function generate_typing_test_report(Request $request){
 
 
         $page_title = 'Typing Test Report (Short)';
@@ -119,7 +119,7 @@ class ShortTypingTestReportController extends Controller
          ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')         
         ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
         ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
-        ->orderBy('u.roll_no');
+        ->orderBy('u.id');
 
 
         if ($exam_code != ''){
@@ -288,22 +288,33 @@ class ShortTypingTestReportController extends Controller
 
 
         $makeComparer = function($criteria) {
-          $comparer = function ($first, $second) use ($criteria) {
+
+        $comparer = function ($first, $second) use ($criteria) {
+
             foreach ($criteria as $key => $orderType) {
+                
         // normalize sort direction
 
               $orderType = strtolower($orderType);
 
-              if ($first->{$key} < $second->{$key}) {
+            if ( (int) $first->{$key} < (int) $second->{$key}) {
+
                 return $orderType === "asc" ? -1 : 1;
-            } else if ($first->{$key} > $second->{$key}) {
+
+            } else if ( (int) $first->{$key} > (int) $second->{$key}) {
+
                 return $orderType === "asc" ? 1 : -1;
+
             }
         }
+
         // all elements were equal
         return 0;
+
         };
+
         return $comparer;
+
         };
 
 
@@ -353,12 +364,7 @@ class ShortTypingTestReportController extends Controller
         }
 
         if ($remarks == 'all') {
-            
-            if ($roll_wise != 'roll_wise') {
-            
-                $model = $passed->merge($failed);
-
-            }
+            $model = $passed->merge($failed)->merge($absent);
         }
 
 
@@ -379,7 +385,7 @@ class ShortTypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::short_typing_test_report.index', compact('page_title','status','company_id','designation_id','exam_code','exam_date','exam_time','company_list','designation_list','exam_code_list','model','model_all','bangla_speed','english_speed','remarks','exam_date_from','exam_date_to','header','exam_dates_string','passed_count','failed_count','show_count','roll_wise'));
+        return view('reports::short_typing_test_report.index', compact('page_title','status','company_id','designation_id','exam_code','exam_date','exam_time','company_list','designation_list','exam_code_list','model','model_all','bangla_speed','english_speed','remarks','exam_date_from','exam_date_to','header','exam_dates_string','passed_count','failed_count','show_count'));
 
     }
 
@@ -983,6 +989,8 @@ class ShortTypingTestReportController extends Controller
 
                 $values->total_typing_speed = $bangla_wpm + $english_wpm;
 
+                $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
+
 
 
                 if(! $values->lists('attended_typing_test')->contains('true')){
@@ -1017,6 +1025,37 @@ class ShortTypingTestReportController extends Controller
             $absent = $model->filter(function ($value) {
                 return $value->remarks == "Absent";
             });
+
+
+        $makeComparer = function($criteria) {
+
+        $comparer = function ($first, $second) use ($criteria) {
+
+            foreach ($criteria as $key => $orderType) {
+                
+        // normalize sort direction
+
+              $orderType = strtolower($orderType);
+
+            if ( (int) $first->{$key} < (int) $second->{$key}) {
+
+                return $orderType === "asc" ? -1 : 1;
+
+            } else if ( (int) $first->{$key} > (int) $second->{$key}) {
+
+                return $orderType === "asc" ? 1 : -1;
+
+            }
+        }
+
+        // all elements were equal
+        return 0;
+
+        };
+
+        return $comparer;
+
+        };
 
 
             $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];

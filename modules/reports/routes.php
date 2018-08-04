@@ -87,12 +87,12 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
 
 
 
-    Route::any('typing-test-report/{roll_wise?}', [
+    Route::any('typing-test-report', [
         'as' => 'typing-test-report',
         'uses' => 'TypingTestReportController@typing_test_report'
     ]);
 
-    Route::any('generate-typing-test-report/{roll_wise?}', [
+    Route::any('generate-typing-test-report', [
         'as' => 'generate-typing-test-report',
         'uses' => 'TypingTestReportController@generate_typing_test_report'
     ]);
@@ -131,12 +131,56 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
 
 
 
-    Route::any('short-typing-test-report/{roll_wise?}', [
+    Route::any('roll-wise-typing-test-report', [
+        'as' => 'roll-wise-typing-test-report',
+        'uses' => 'RollWiseTypingTestReportController@typing_test_report'
+    ]);
+
+    Route::any('generate-roll-wise-typing-test-report', [
+        'as' => 'generate-roll-wise-typing-test-report',
+        'uses' => 'RollWiseTypingTestReportController@generate_typing_test_report'
+    ]);
+
+    Route::any('roll-wise-typing-test-details/{bangla_exam_id}/{english_exam_id}', [
+        'as' => 'roll-wise-typing-test-details',
+        'uses' => 'RollWiseTypingTestReportController@typing_test_details'
+    ]);
+
+    Route::any('edit-roll-wise-typing-test-details/{id}', [
+        'as' => 'edit-roll-wise-typing-test-details',
+        'uses' => 'RollWiseTypingTestReportController@edit_typing_test_details'
+    ]);
+
+    Route::any('update-roll-wise-typing-test-details/{id}', [
+        'as' => 'update-roll-wise-typing-test-details',
+        'uses' => 'RollWiseTypingTestReportController@update_typing_test_details'
+    ]);
+
+    Route::any('roll-wise-typing-test-manual-checking-details/{bangla_exam_id}/{english_exam_id}', [
+        'as' => 'roll-wise-typing-test-manual-checking-details',
+        'uses' => 'RollWiseTypingTestReportController@typing_test_manual_checking_details'
+    ]);
+
+    Route::any('roll-wise-all-graph-report', [
+        'as' => 'roll-wise-all-graph-report',
+        'uses' => 'RollWiseTypingTestReportController@all_graph_report'
+    ]);
+
+    Route::any('roll-wise-typing-test-report-pdf/{company_id}/{designation_id}/{exam_date_from}/{exam_date_to}/{bangla_speed}/{english_speed}', [
+        //'middleware' => 'acl_access:reports/meeting-detail/{company_id}/{meeting_id}',
+        'as' => 'roll-wise-typing-test-report-pdf',
+        'uses' => 'RollWiseTypingTestReportController@typing_test_report_pdf'
+    ]);
+
+
+
+
+    Route::any('short-typing-test-report', [
         'as' => 'short-typing-test-report',
         'uses' => 'ShortTypingTestReportController@typing_test_report'
     ]);
 
-    Route::any('generate-short-typing-test-report/{roll_wise?}', [
+    Route::any('generate-short-typing-test-report', [
         'as' => 'generate-short-typing-test-report',
         'uses' => 'ShortTypingTestReportController@generate_typing_test_report'
     ]);
@@ -173,6 +217,50 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
     ]);
 
 
+
+    
+
+
+    Route::any('roll-wise-short-typing-test-report', [
+        'as' => 'roll-wise-short-typing-test-report',
+        'uses' => 'RollWiseShortTypingTestReportController@typing_test_report'
+    ]);
+
+    Route::any('generate-roll-wise-short-typing-test-report', [
+        'as' => 'generate-roll-wise-short-typing-test-report',
+        'uses' => 'RollWiseShortTypingTestReportController@generate_typing_test_report'
+    ]);
+
+    Route::any('roll-wise-short-typing-test-details/{bangla_exam_id}/{english_exam_id}', [
+        'as' => 'roll-wise-short-typing-test-details',
+        'uses' => 'RollWiseShortTypingTestReportController@typing_test_details'
+    ]);
+
+    Route::any('edit-roll-wise-short-typing-test-details/{id}', [
+        'as' => 'edit-roll-wise-short-typing-test-details',
+        'uses' => 'RollWiseShortTypingTestReportController@edit_typing_test_details'
+    ]);
+
+    Route::any('update-roll-wise-short-typing-test-details/{id}', [
+        'as' => 'update-roll-wise-short-typing-test-details',
+        'uses' => 'RollWiseShortTypingTestReportController@update_typing_test_details'
+    ]);
+
+    Route::any('roll-wise-short-typing-test-manual-checking-details/{bangla_exam_id}/{english_exam_id}', [
+        'as' => 'roll-wise-short-typing-test-manual-checking-details',
+        'uses' => 'RollWiseShortTypingTestReportController@typing_test_manual_checking_details'
+    ]);
+
+    Route::any('roll-wise-all-short-graph-report', [
+        'as' => 'roll-wise-all-short-graph-report',
+        'uses' => 'RollWiseShortTypingTestReportController@all_graph_report'
+    ]);
+
+    Route::any('roll-wise-short-typing-test-report-pdf/{company_id}/{designation_id}/{exam_date_from}/{exam_date_to}/{bangla_speed}/{english_speed}', [
+        //'middleware' => 'acl_access:reports/meeting-detail/{company_id}/{meeting_id}',
+        'as' => 'roll-wise-short-typing-test-report-pdf',
+        'uses' => 'RollWiseShortTypingTestReportController@typing_test_report_pdf'
+    ]);
 
 
 

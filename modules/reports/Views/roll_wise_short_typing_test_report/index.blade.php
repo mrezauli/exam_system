@@ -24,51 +24,7 @@ form .col-sm-12:last-child{
     margin-bottom: 30px;
 }
 
-.table-primary tbody tr td:nth-child(6) {
-    border-left: 1.7px solid #8189fd !important;
-}
-
-
-.table-primary thead tr th:nth-child(6) {
-    border-left: 1.7px solid #8189fd !important;
-}
-
-
-
-
-
-.table-primary tbody tr td:nth-child(10) {
-    border-left: 1.7px solid #8189fd !important;
-}
-
-
-.table-primary thead tr:first-child th:nth-child(7) {
-    border-left: 1.7px solid #8189fd !important;
-}
-
-.table-primary thead tr:last-child th:nth-child(10) {
-    border-left: 1.7px solid #8189fd !important;
-}
-
-
-
-
-
-.table-primary tbody tr td:nth-child(13) {
-    border-right: 1.7px solid #8189fd !important;
-}
-
-
-.table-primary thead tr:first-child th:nth-child(7) {
-    border-right: 1.7px solid #8189fd !important;
-}
-
-.table-primary thead tr:last-child th:nth-child(13) {
-    border-right: 1.7px solid #8189fd !important;
-}
-
 </style>
-
 
 <div class="row task-report-index report-index">
     <div class="col-sm-12">
@@ -83,7 +39,7 @@ form .col-sm-12:last-child{
                     <li class="msg"></li>
                 </ul>
                 {{-------------- Filter :Starts ------------------------------------------}}
-                {!! Form::open(['method' =>'GET','route'=>'generate-typing-test-report','class'=>'report-form']) !!}
+                {!! Form::open(['method' =>'GET','route'=>'generate-roll-wise-short-typing-test-report','class'=>'report-form']) !!}
                 <div class="col-sm-12">
 
                     <div class="col-lg-25 col-md-3 col-sm-6">
@@ -138,6 +94,12 @@ form .col-sm-12:last-child{
                         {!! Form::text('english_speed', Input::get('english_speed')? Input::get('english_speed') : null,['english_speed'=>'english_speed','class' => 'form-control','placeholder'=>'english speed', 'title'=>'english speed','required'=>'required']) !!}
                     </div>
 
+                    <div class="col-lg-25 col-md-3 col-sm-6">
+                        {!! Form::label('remarks', 'Remarks:', ['class' => 'control-label']) !!}
+                        <small class="required jrequired">(Required)</small>
+                        {!! Form::Select('remarks',['passed'=>'Pass','failed'=>'Fail','all'=>'All'], @Input::get('remarks')? Input::get('remarks') : null,['id'=>'remarks','class' => 'form-control remarks','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
+                    </div>
+
                     <div class="col-lg-1 col-md-3 col-sm-6 filter-btn">
 
                       {!! Form::submit('Generate Result', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'submit-button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
@@ -151,44 +113,18 @@ form .col-sm-12:last-child{
 
                 {{-- <a href="{{ route('typing-test-report-pdf', [$company_id,$designation_id,$exam_date_from,$exam_date_to,$bangla_speed,$english_speed]) }}" class="pdf_report_button pull-right" target="_blank"><img src="{{ URL::asset('assets/img/pdf-icon.png') }}" alt=""></a> --}}
 
-                <?php  $ddd = URL('/') . '/reports/all-graph-report' . '?exam_code=' . $exam_code . '&company_id=' . $company_id . '&designation_id=' . $designation_id . '&exam_date_from='. $exam_date_from . '&exam_date_to=' . $exam_date_to. '&bangla_speed=' . $bangla_speed . '&english_speed=' . $english_speed; ?>
+                <?php  
+
+                $ddd = URL('/') . '/reports/roll-wise-all-short-graph-report' . '?exam_code=' . $exam_code . '&company_id=' . $company_id . '&designation_id=' . $designation_id . '&exam_date_from='. $exam_date_from . '&exam_date_to=' . $exam_date_to . '&bangla_speed=' . $bangla_speed . '&english_speed=' . $english_speed . '&remarks=' . $remarks; ?>
 
                 <div class="btn btn-primary btn-sm pull-right"><a target="_blank" style="color:white" href="{{ $ddd }}">View All Answer Scripts</a></div>
 
                 <a href="#" class="btn btn-danger print-button pull-right">Print Result with Remarks</a>
 
-                <a href="#" class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>
+                <a href="#" class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>  
 
-               
-               {{--  <div class="col-lg-3 col-sm-6 input-group">
 
-                    <input type="text" class="form-control search_roll_no" value="Search Roll No." id="search_roll_no" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search Roll No.';}">
-
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary search-button" type="button"></button>
-                    </span>
-                </div> --}}
-
-                    
                 </div>
-
-                <style>
-                    
-                    .search-button, .search-button:active {
-                        background: url("{{URL::asset('/assets/img/search.png')}}") no-repeat 0px -5px;
-                        width: 40px;
-                        height: 31.7px;
-                        border: none;
-                        padding: 0;
-                        border: none;
-                        outline: none;
-                        color: #FFFFFF;
-                        left: -32px;
-                        background-size: cover;
-                        z-index: 1000 !important;
-                    }
-
-                </style>
                 @endif
 
                 <p><br><br><br></p>
@@ -196,34 +132,27 @@ form .col-sm-12:last-child{
 
                 <?php
 
+                function round_to_integer($number){
+                   
+                   if (is_integer($number)) {
 
+                       return $number;
 
-                $bangla_times = [];
+                   }
+                    
+                   $parts = explode(".",$number);
+                
+                   if (isset($parts[1]) && (int)$parts[1] >= 5) {
 
-                $english_times = [];
+                       return $parts[0] + 1;
 
+                   }else{
 
+                       return $number;
 
-                foreach ($model_all as $key => $value) {
-
-                    $grouped_by_exam_type = $value->groupBy('exam_type');
-
-                    $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
-
-                    $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
-
-
-                    $bangla_times[] = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
-
-                    $english_times[] = isset($english->exam_time) ? $english->exam_time - 1: 1;
+                   }
 
                 }
-
-
-                $bangla_time = collect($bangla_times)->max();
-
-                $english_time = collect($english_times)->max();
-
 
                 ?>
 
@@ -233,73 +162,24 @@ form .col-sm-12:last-child{
                     <table width="100%" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered report-table" id="examples_report">
                         <thead>
                         <tr>
-                            <th class="no-border"> <span>SL.</span> </th>
-                            <th class="no-border"> <span>Candidate SL.</span> </th>
-                            <th class="no-border"> <span>Roll No.</span> </th>
-                            <th class="no-border"> <span>Exam Code</span> </th>
-                            <th class="no-border"> <span>Name</span> </th>
-                            <th class="no-border" style="border-right: 1.7px solid #8189fd !important"> <span>Answer Scripts View</span> </th>
-                            <th colspan="4" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$bangla_time}} minutes</th>
-                            <th colspan="4">English in {{$english_time}} minutes</th>
-                            <th class="no-border"> <span>Remarks</span> </th>
-                            <th class="no-border"> <span>Update</span> </th>
-                        </tr>
-                       
-
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th style="border-right: 1.7px solid #8189fd !important"></th>
-                            <th>Typed Words</th>
-                            <th>Wrong Words</th>
-                            <th>Corrected Words</th>
-                            <th style="border-right: 1.7px solid #8189fd !important">Words/ Minute</th>
-
-                            <th>Typed Words</th>
-                            <th>Wrong Words</th>
-                            <th>Corrected Words</th>
-                            <th>Words/ Minute</th>
-                            <th></th>
-                            <th></th>
+                            <th> <span>SL.</span> </th>
+                            <th> <span>Candidate SL.</span> </th>
+                            <th> <span>Roll No.</span> </th>
+                            <th> <span>Exam Code</span> </th>
+                            <th> <span>Name</span> </th>
+                            <th style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;""> <span>Remarks</span> </th>
                         </tr>
                         </thead>
                         <tbody>
                         
                         @if($status==2)
-                        <?php $i = isset($_GET['page']) ? ($_GET['page']-1)*1 + 0: 0;
-
-                        function round_to_integer($number){
-                           
-                           if (is_integer($number)) {
-
-                               return $number;
-
-                           }
-                            
-                           $parts = explode(".",$number);
-                    
-                           if (isset($parts[1]) && (int)$parts[1] >= 5) {
-
-                               return $parts[0] + 1;
-
-                           }else{
-
-                               return $number;
-
-                           }
-
-                        }
-
-                        ?>
+                        <?php $i = isset($_GET['page']) ? ($_GET['page']-1)*1 + 0: 0; ?>
 
                             @foreach($model as $values)
 
                             <?php $i++; 
-
-                          
+                            
+                    
                             $values = collect($values);
                             $null_object = StdClass::fromArray();
                         
@@ -315,13 +195,13 @@ form .col-sm-12:last-child{
                             $bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
 
                             $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
+  
 
-
-
-                            //$bangla_exam_time = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
+                          
+                            //$bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time: 1;
                             $bangla_exam_time = $bangla_speed;
 
-                            //$english_exam_time = isset($english->exam_time) ? $english->exam_time - 1: 1;
+                            //$english_exam_time3 = isset($english->exam_time) ? $english->exam_time: 1;
                             $english_exam_time = $english_speed;
 
                             $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
@@ -336,6 +216,7 @@ form .col-sm-12:last-child{
 
                             $english_wpm = round_to_integer($english_wpm);
 
+
                             ?>
                                 <tr class="gradeX">
                                                            
@@ -349,44 +230,7 @@ form .col-sm-12:last-child{
 
                                     </td>
 
-                                    <td style="border-right: 1.7px solid #8189fd !important">
-
-                                    <?php 
-
-                                    $bangla_exam_id = ! empty($bangla->exam_id) ? $bangla->exam_id : 0;
-
-                                    $english_exam_id = ! empty($english->exam_id) ? $english->exam_id : 0;  
-
-                                    ?>
-
-                                    @if($bangla->exam_id != 0 || $english->exam_id != 0)
-    
-                                    <a target="_blank" href="{{ route('typing-test-details',[$bangla_exam_id, $english_exam_id]) }}" class="btn btn-info btn-xs" data-placement="top" data-content="view">View</a>
-
-                                    <a target="_blank" href="{{ route('typing-test-manual-checking-details',[$bangla_exam_id, $english_exam_id]) }}" class="btn btn-primary btn-xs" data-placement="top" data-content="view">Manual Checking</a>
-
-                                    @else
-
-                                    {{'View'}}
-
-                                    {{'Manual Checking'}}
-
-                                    @endif
-
-                                
-                                    </td>
-
-
-                                    <td>{{isset($bangla->typed_words) ? $bangla->typed_words : '0'}}</td>
-                                    <td>{{isset($bangla->inserted_words) ? $bangla->inserted_words : '0'}}</td>
-                                    <td>{{$bangla_corrected_words}}</td>
-                                    <td style="border-right: 1.7px solid #8189fd !important">{{$bangla_wpm}}</td>
-
-                                    <td>{{isset($english->typed_words) ? $english->typed_words : '0'}}</td>
-                                    <td>{{isset($english->inserted_words) ? $english->inserted_words : '0'}}</td>
-                                    <td>{{$english_corrected_words}}</td>
-                                    <td>{{$english_wpm}}</td>
-                                    <td>
+                                    <td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">
                                    
                                         @if(! $values->lists('attended_typing_test')->contains('true'))
                                         
@@ -403,24 +247,7 @@ form .col-sm-12:last-child{
                                         @endif
 
                                    </td>
-                                   <td>
-                                       @if($bangla->exam_id != 0 || $english->exam_id != 0)
-                                       
-                                       {{-- <a class="btn btn-xs btn-success" data-toggle="modal" href="#addData">Update</a> --}}
-{{-- {{dd($values[0])}} --}}
-                                           <?php
-                                               $role_name = Session::get('role_title');
-                                           ?>
-                                           @if($role_name == 'super-admin')
-                                           <a href="{{ route('edit-typing-test-details', $values[0]->id) }}" class="btn btn-primary btn-xs edit-link" data-toggle="modal" data-target="#etsbModal" data-placement="top" data-content="update"><i class="fa fa-edit"></i></a>
-                                           @endif
-                                       @else
-
-                                       {{'Update'}}
-
-                                       @endif
-                                   </td>
-                                   
+                                  
                                 </tr>
                             @endforeach
                         @endif
@@ -428,7 +255,7 @@ form .col-sm-12:last-child{
                     </table>
                 </div>
                 @if($status==2)
-                    {{-- <span class="pull-right">{!! str_replace('/?', '?',  $model->appends(Input::except('page'))->render() ) !!} </span> --}}
+                    <span class="pull-right">{!! str_replace('/?', '?',  $model->appends(Input::except('page'))->render() ) !!} </span>
                 @endif
             </div>
         </div>
@@ -451,15 +278,13 @@ form .col-sm-12:last-child{
 
 <style>
 
-    .print-show{
-        display: none;
-
-    }
-
     table thead tr th:last-child{
         border-right: 1px solid #333 !important;
     }
 
+    .print-show{
+        display: none;
+    }
 
 
     @media print{      
@@ -537,7 +362,7 @@ form .col-sm-12:last-child{
         table.report-table thead th {
             padding: 10px;
             font-weight: 600;
-            color: #333;
+            color: #377;
             text-align: center;
         }
 
@@ -573,30 +398,18 @@ form .col-sm-12:last-child{
     </div>
 
 <div class="table-primary report-table-wrapper">
-    <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
+    <table width="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
         <thead>
         <tr>
-            <th class="no-border" rowspan="2"> SL. </th>
-            <th class="no-border" rowspan="2"> Roll No. </th>
-            <th class="no-border" rowspan="2"> Exam Code </th>
-            <th class="no-border" rowspan="2"> Name </th>
-            <th colspan="4">Bangla in {{$bangla_time}} minutes</th>
-            <th colspan="4">English in {{$english_time}} minutes</th>
-            <th class="no-border" rowspan="2"> Remarks </th>
-        </tr>
-      
-        <tr>
-            <th>Typed Words</th>
-            <th>Wrong Words</th>
-            <th>Corrected Words</th>
-            <th>Words/ Minute</th>
-
-            <th>Typed Words</th>
-            <th>Wrong Words</th>
-            <th>Corrected Words</th>
-            <th>Words/ Minute</th>
+            <th> <span>SL.</span> </th>
+            <th> <span>Roll No.</span> </th>
+            <th> <span>Exam Code</span> </th>
+            <th> <span>Name</span> </th>
+            <th> <span>Remarks</span> </th>
+            
         </tr>
         </thead>
+
         <tbody>
         
         @if($status==2)
@@ -607,6 +420,7 @@ form .col-sm-12:last-child{
             <?php $i++; 
 
 
+
             $values = collect($values);
         
             $grouped_by_exam_type = $values->groupBy('exam_type');
@@ -615,27 +429,23 @@ form .col-sm-12:last-child{
 
             $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
 
-           
+
             $bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
 
             $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
 
 
-            $english_exam_time = $english_speed;
-
             $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
 
             $bangla_wpm = round($bangla_corrected_words/$bangla_exam_time3,1);
 
-            $bangla_wpm = round_to_integer($bangla_wpm);
-
+            $bangla_wpm = round_to_integer($bangla_wpm);            
 
             $english_corrected_words = $english->typed_words - $english->inserted_words;
 
             $english_wpm = round($english_corrected_words/$english_exam_time3,1);
 
             $english_wpm = round_to_integer($english_wpm);
-
         
             ?>
                 <tr class="gradeX">
@@ -648,16 +458,6 @@ form .col-sm-12:last-child{
                         {{trim($values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name)}}
 
                     </td>
-
-                    <td>{{isset($bangla->typed_words) ? $bangla->typed_words : '0'}}</td>
-                    <td>{{isset($bangla->inserted_words) ? $bangla->inserted_words : '0'}}</td>
-                    <td>{{$bangla_corrected_words}}</td>
-                    <td>{{$bangla_wpm}}</td>
-
-                    <td>{{isset($english->typed_words) ? $english->typed_words : '0'}}</td>
-                    <td>{{isset($english->inserted_words) ? $english->inserted_words : '0'}}</td>
-                    <td>{{$english_corrected_words}}</td>
-                    <td>{{$english_wpm}}</td>
                     <td>
                    
                         @if(! $values->lists('attended_typing_test')->contains('true'))
@@ -682,16 +482,48 @@ form .col-sm-12:last-child{
         </tbody>
     </table>
 
-    <table style="margin:20px;width:30%;margin-left:71%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
-      <tr>
-        <th>Pass</th>
-        <th>Fail</th>
-      </tr>
-      <tr>
-        <td>{{$passed_count}}</td>
-        <td>{{$failed_count}}</td>
-      </tr>
-    </table>
+
+
+
+{{-- @if ($remarks == 'all') 
+    
+<table style="margin:20px;width:30%;margin-left:70%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+  <tr>
+    <th>Pass</th>
+    <th>Fail</th>
+  </tr>
+  <tr>
+    <td>{{$passed_count}}</td>
+    <td>{{$failed_count}}</td>
+  </tr>
+</table>
+
+
+@elseif($remarks == 'passed')
+
+<table style="margin:20px;width:17%;margin-left:83%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+  <tr>
+    <th>Pass</th>
+  </tr>
+  <tr>
+    <td>{{$passed_count}}</td>
+  </tr>
+</table>
+
+
+@elseif($remarks == 'failed')
+
+<table style="margin:20px;width:17%;margin-left:83%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+  <tr>
+    <th>Fail</th>
+  </tr>
+  <tr>
+    <td>{{$failed_count}}</td>
+  </tr>
+</table>
+
+@endif --}}
+
 
 </div>
 
@@ -700,6 +532,14 @@ form .col-sm-12:last-child{
 </div>
 
 </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -725,14 +565,13 @@ form .col-sm-12:last-child{
 
 <style>
 
-    .print-show{
-        display: none;
-    }
-
     table thead tr th:last-child{
         border-right: 1px solid #333 !important;
     }
 
+    .print-show{
+        display: none;
+    }
 
 
     @media print{      
@@ -810,7 +649,7 @@ form .col-sm-12:last-child{
         table.report-table thead th {
             padding: 10px;
             font-weight: 600;
-            color: #333;
+            color: #377;
             text-align: center;
         }
 
@@ -846,30 +685,18 @@ form .col-sm-12:last-child{
     </div>
 
 <div class="table-primary report-table-wrapper">
-    <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
+    <table width="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
         <thead>
         <tr>
-            <th class="no-border" rowspan="2"> SL. </th>
-            <th class="no-border" rowspan="2"> Roll No. </th>
-            <th class="no-border" rowspan="2"> Exam Code </th>
-            <th class="no-border" rowspan="2"> Name </th>
-            <th colspan="4">Bangla in {{$bangla_time}} minutes</th>
-            <th colspan="4">English in {{$english_time}} minutes</th>
-            <th class="no-border" rowspan="2"> Remarks </th>
-        </tr>
-      
-        <tr>
-            <th>Typed Words</th>
-            <th>Wrong Words</th>
-            <th>Corrected Words</th>
-            <th>Words/ Minute</th>
-
-            <th>Typed Words</th>
-            <th>Wrong Words</th>
-            <th>Corrected Words</th>
-            <th>Words/ Minute</th>
+            <th> <span>SL.</span> </th>
+            <th> <span>Roll No.</span> </th>
+            <th> <span>Exam Code</span> </th>
+            <th> <span>Name</span> </th>
+            <th> <span>Remarks</span> </th>
+            
         </tr>
         </thead>
+
         <tbody>
         
         @if($status==2)
@@ -878,6 +705,7 @@ form .col-sm-12:last-child{
             @foreach($model_all as $values)
 
             <?php $i++; 
+
 
 
             $values = collect($values);
@@ -898,15 +726,13 @@ form .col-sm-12:last-child{
 
             $bangla_wpm = round($bangla_corrected_words/$bangla_exam_time3,1);
 
-            $bangla_wpm = round_to_integer($bangla_wpm);
-
+            $bangla_wpm = round_to_integer($bangla_wpm);            
 
             $english_corrected_words = $english->typed_words - $english->inserted_words;
 
             $english_wpm = round($english_corrected_words/$english_exam_time3,1);
 
             $english_wpm = round_to_integer($english_wpm);
-
         
             ?>
                 <tr class="gradeX">
@@ -919,16 +745,6 @@ form .col-sm-12:last-child{
                         {{trim($values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name)}}
 
                     </td>
-
-                    <td>{{isset($bangla->typed_words) ? $bangla->typed_words : '0'}}</td>
-                    <td>{{isset($bangla->inserted_words) ? $bangla->inserted_words : '0'}}</td>
-                    <td>{{$bangla_corrected_words}}</td>
-                    <td>{{$bangla_wpm}}</td>
-
-                    <td>{{isset($english->typed_words) ? $english->typed_words : '0'}}</td>
-                    <td>{{isset($english->inserted_words) ? $english->inserted_words : '0'}}</td>
-                    <td>{{$english_corrected_words}}</td>
-                    <td>{{$english_wpm}}</td>
                     <td></td>
                    
                 </tr>
@@ -953,29 +769,6 @@ form .col-sm-12:last-child{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- page end-->
 
 <!--script for this page only-->
@@ -984,17 +777,6 @@ form .col-sm-12:last-child{
 
     <script>
 
-
-
-
-
-$('.search_roll_no').keyup(function(event) {
-    
-
-
-
-
-});
 
 function report_exam_code(){
 
@@ -1089,7 +871,6 @@ function report_exam_code(){
 
         });
 
-
         $('.print-button-wr').click(function(event) {
 
         w=window.open();
@@ -1105,14 +886,10 @@ function report_exam_code(){
 
 
 
+
 @section('custom-script')
 <script>
     
-    // var column_index = ['1','2'];
-    // create_dropdown_column(column_index);
-// var table = $('#examples3').DataTable();
-
-
 var table = $('#examples_report').DataTable( {
   "language": {
     "search": "Search Roll No:"
@@ -1120,7 +897,6 @@ var table = $('#examples_report').DataTable( {
   "aaSorting": [],
   "pageLength": 50,
 } );
-
 
 
 $('#examples_report_filter input').on('keyup', function(){
@@ -1131,5 +907,6 @@ $('#examples_report_filter input').on('keyup', function(){
    .draw();
 
  });
+
 </script>
 @stop

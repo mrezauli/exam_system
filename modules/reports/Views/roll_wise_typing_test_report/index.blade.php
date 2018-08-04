@@ -83,7 +83,7 @@ form .col-sm-12:last-child{
                     <li class="msg"></li>
                 </ul>
                 {{-------------- Filter :Starts ------------------------------------------}}
-                {!! Form::open(['method' =>'GET','route'=>'generate-typing-test-report','class'=>'report-form']) !!}
+                {!! Form::open(['method' =>'GET','route'=>['generate-roll-wise-typing-test-report'],'class'=>'report-form']) !!}
                 <div class="col-sm-12">
 
                     <div class="col-lg-25 col-md-3 col-sm-6">
@@ -151,7 +151,7 @@ form .col-sm-12:last-child{
 
                 {{-- <a href="{{ route('typing-test-report-pdf', [$company_id,$designation_id,$exam_date_from,$exam_date_to,$bangla_speed,$english_speed]) }}" class="pdf_report_button pull-right" target="_blank"><img src="{{ URL::asset('assets/img/pdf-icon.png') }}" alt=""></a> --}}
 
-                <?php  $ddd = URL('/') . '/reports/all-graph-report' . '?exam_code=' . $exam_code . '&company_id=' . $company_id . '&designation_id=' . $designation_id . '&exam_date_from='. $exam_date_from . '&exam_date_to=' . $exam_date_to. '&bangla_speed=' . $bangla_speed . '&english_speed=' . $english_speed; ?>
+                <?php  $ddd = URL('/') . '/reports/roll-wise-all-graph-report' . '?exam_code=' . $exam_code . '&company_id=' . $company_id . '&designation_id=' . $designation_id . '&exam_date_from='. $exam_date_from . '&exam_date_to=' . $exam_date_to. '&bangla_speed=' . $bangla_speed . '&english_speed=' . $english_speed; ?>
 
                 <div class="btn btn-primary btn-sm pull-right"><a target="_blank" style="color:white" href="{{ $ddd }}">View All Answer Scripts</a></div>
 
@@ -361,9 +361,9 @@ form .col-sm-12:last-child{
 
                                     @if($bangla->exam_id != 0 || $english->exam_id != 0)
     
-                                    <a target="_blank" href="{{ route('typing-test-details',[$bangla_exam_id, $english_exam_id]) }}" class="btn btn-info btn-xs" data-placement="top" data-content="view">View</a>
+                                    <a target="_blank" href="{{ route('roll-wise-typing-test-details',[$bangla_exam_id, $english_exam_id]) }}" class="btn btn-info btn-xs" data-placement="top" data-content="view">View</a>
 
-                                    <a target="_blank" href="{{ route('typing-test-manual-checking-details',[$bangla_exam_id, $english_exam_id]) }}" class="btn btn-primary btn-xs" data-placement="top" data-content="view">Manual Checking</a>
+                                    <a target="_blank" href="{{ route('roll-wise-typing-test-manual-checking-details',[$bangla_exam_id, $english_exam_id]) }}" class="btn btn-primary btn-xs" data-placement="top" data-content="view">Manual Checking</a>
 
                                     @else
 
@@ -412,7 +412,7 @@ form .col-sm-12:last-child{
                                                $role_name = Session::get('role_title');
                                            ?>
                                            @if($role_name == 'super-admin')
-                                           <a href="{{ route('edit-typing-test-details', $values[0]->id) }}" class="btn btn-primary btn-xs edit-link" data-toggle="modal" data-target="#etsbModal" data-placement="top" data-content="update"><i class="fa fa-edit"></i></a>
+                                           <a href="{{ route('edit-roll-wise-typing-test-details', $values[0]->id) }}" class="btn btn-primary btn-xs edit-link" data-toggle="modal" data-target="#etsbModal" data-placement="top" data-content="update"><i class="fa fa-edit"></i></a>
                                            @endif
                                        @else
 

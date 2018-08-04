@@ -183,8 +183,8 @@
         <ul class="sub">
             <li><a href="{{URL::to('reports/typing-test-report')}}">Typing Test Report</a></li>
             <li><a href="{{URL::to('reports/short-typing-test-report')}}">Typing Test Report (Short)</a></li>
-            <li><a href="{{URL::to('reports/typing-test-report/roll_wise')}}">Roll Wise Typing Test Report</a></li>
-            <li><a href="{{URL::to('reports/short-typing-test-report/roll_wise')}}">Roll Wise Typing Test Report (Short)</a></li>
+            <li><a href="{{URL::to('reports/roll-wise-typing-test-report')}}">Roll Wise Typing Test Report</a></li>
+            <li><a href="{{URL::to('reports/roll-wise-short-typing-test-report')}}">Roll Wise Typing Test Report (Short)</a></li>
             <li><a href="{{URL::to('reports/aptitude-test-report')}}">Aptitude Test Report</a></li>
             <li><a href="{{URL::to('reports/short-aptitude-test-report')}}">Aptitude Test Report (Short)</a></li>
             <li><a href="{{URL::to('reports/attendance-sheet-report')}}">Attendance Sheet Report</a></li>

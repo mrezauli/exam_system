@@ -87,12 +87,12 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
 
 
 
-    Route::any('typing-test-report', [
+    Route::any('typing-test-report/{roll_wise?}', [
         'as' => 'typing-test-report',
         'uses' => 'TypingTestReportController@typing_test_report'
     ]);
 
-    Route::any('generate-typing-test-report', [
+    Route::any('generate-typing-test-report/{roll_wise?}', [
         'as' => 'generate-typing-test-report',
         'uses' => 'TypingTestReportController@generate_typing_test_report'
     ]);
@@ -131,12 +131,12 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
 
 
 
-    Route::any('short-typing-test-report', [
+    Route::any('short-typing-test-report/{roll_wise?}', [
         'as' => 'short-typing-test-report',
         'uses' => 'ShortTypingTestReportController@typing_test_report'
     ]);
 
-    Route::any('generate-short-typing-test-report', [
+    Route::any('generate-short-typing-test-report/{roll_wise?}', [
         'as' => 'generate-short-typing-test-report',
         'uses' => 'ShortTypingTestReportController@generate_typing_test_report'
     ]);

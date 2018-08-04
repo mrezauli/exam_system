@@ -101,13 +101,10 @@ class ExamProcessController extends Controller
         // }
 
 
-       
-
 
         $input_candidate['exam_type']= $input['exam_type'];
         $input_candidate['exam_date']= $input['exam_date'];
         $input_candidate['shift']= $input['shift'];
-
 
 
 
@@ -142,6 +139,7 @@ class ExamProcessController extends Controller
                             ->whereBetween('sl', [$input['sl_from'], $input['sl_to']])
                             ->where('typing_status','inactive')
                             ->where('attended_typing_test',null)->get();
+
 
 
             $input_candidate['typing_exam_code_id']= $input['exam_code_id'];

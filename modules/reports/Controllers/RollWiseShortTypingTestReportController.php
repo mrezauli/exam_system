@@ -334,7 +334,7 @@ class RollWiseShortTypingTestReportController extends Controller
 
 
 
-        $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
+        $criteria = ["roll_no" => "asc"];
         
         $comparer = $makeComparer($criteria);
         $passed = $passed->sort($comparer);

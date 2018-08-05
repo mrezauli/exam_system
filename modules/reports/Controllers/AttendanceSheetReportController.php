@@ -28,7 +28,7 @@ class AttendanceSheetReportController extends Controller
     public function attendance_sheet_report(){
 
 
-        $page_title = 'Attendance Sheet Report';
+        $page_title = 'Roll Wise Attendance Sheet Report';
 
         $status = 1;
 
@@ -51,7 +51,7 @@ class AttendanceSheetReportController extends Controller
     public function generate_attendance_sheet_report(Request $request){
 
 
-        $page_title = 'Attendance Sheet Report';
+        $page_title = 'Roll Wise Attendance Sheet Report';
 
         $status = 2;
 
@@ -129,7 +129,7 @@ class AttendanceSheetReportController extends Controller
 
     }elseif($company_id !=''){
        
-       
+
         if(isset($company_id) && !empty($company_id)){
 
             $typing_model = $typing_model->where('e.company_id','=',$company_id);

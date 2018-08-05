@@ -416,7 +416,7 @@ form .col-sm-12:last-child{
                                            @endif
                                        @else
 
-                                       {{'Update'}}
+                                       {{-- {{'Update'}} --}}
 
                                        @endif
                                    </td>

@@ -351,7 +351,7 @@ class TypingTestReportController extends Controller
         $absent = $absent->sort($comparer);
 
 
-        $model = $passed->merge($failed)->merge($absent);
+        $model = $passed->merge($failed);
 
         $model_all = $model;
 
@@ -1056,7 +1056,7 @@ class TypingTestReportController extends Controller
 
 
         
-            // $model = $passed->merge($failed)->merge($absent);
+            // $model = $passed->merge($failed);
             
 
             return view('reports::typing_test_report.all_graph_report', compact('page_title','model','user'));

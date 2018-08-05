@@ -364,7 +364,7 @@ class ShortTypingTestReportController extends Controller
         }
 
         if ($remarks == 'all') {
-            $model = $passed->merge($failed)->merge($absent);
+            $model = $passed->merge($failed);
         }
 
 
@@ -1079,7 +1079,7 @@ class ShortTypingTestReportController extends Controller
             }
 
             if ($remarks == 'all') {
-                $model = $passed->merge($failed)->merge($absent);
+                $model = $passed->merge($failed);
             }
 
 

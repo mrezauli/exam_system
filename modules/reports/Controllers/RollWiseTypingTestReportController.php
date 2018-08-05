@@ -352,6 +352,8 @@ class RollWiseTypingTestReportController extends Controller
         });
 
 
+        //$model = $model->diff($absent);
+
 
         $model_all = $model;
 

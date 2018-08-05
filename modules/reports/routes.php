@@ -338,4 +338,29 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
     ]);
 
 
+
+
+
+    Route::any('roll-wise-attendance-sheet-report', [
+        'as' => 'roll-wise-attendance-sheet-report',
+        'uses' => 'RollWiseAttendanceSheetReportController@attendance_sheet_report'
+    ]);
+
+    Route::any('generate-roll-wise-attendance-sheet-report', [
+        'as' => 'generate-roll-wise-attendance-sheet-report',
+        'uses' => 'RollWiseAttendanceSheetReportController@generate_attendance_sheet_report'
+    ]);
+
+    Route::any('roll-wise-attendance-sheet-details/{user_id}', [
+        'as' => 'roll-wise-attendance-sheet-details',
+        'uses' => 'RollWiseAttendanceSheetReportController@attendance_sheet_details'
+    ]);
+
+    Route::any('attendance-sheet-report-pdf/{company_id}/{exam_date_from?}/{designation_id}/{exam_date_to?}', [
+        //'middleware' => 'acl_access:reports/meeting-detail/{company_id}/{meeting_id}',
+        'as' => 'attendance-sheet-report-pdf',
+        'uses' => 'AttendanceSheetReportController@attendance_sheet_report_pdf'
+    ]);
+
+
 });

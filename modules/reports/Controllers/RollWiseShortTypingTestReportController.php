@@ -369,6 +369,8 @@ class RollWiseShortTypingTestReportController extends Controller
             $model = $model->sortBy(function ($value, $key) {
                 return (int)$value->roll_no;
             });
+
+            //$model = $model->diff($absent);
         }
 
 

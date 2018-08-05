@@ -188,6 +188,7 @@
             <li><a href="{{URL::to('reports/aptitude-test-report')}}">Aptitude Test Report</a></li>
             <li><a href="{{URL::to('reports/short-aptitude-test-report')}}">Aptitude Test Report (Short)</a></li>
             <li><a href="{{URL::to('reports/attendance-sheet-report')}}">Attendance Sheet Report</a></li>
+            <li><a href="{{URL::to('reports/roll-wise-attendance-sheet-report')}}">Roll Wise Attendance Sheet Report</a></li>
         </ul>
     </li>
 @endif

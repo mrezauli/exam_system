@@ -6,14 +6,14 @@
 
 @section('content')
 
-        <!-- page start-->
+<!-- page start-->
 
 <div class="inner-wrapper index-page qbank-aptitude-test-page">
 <div class="row">
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
-                {{ $page_title }}
+                <span>{{ $page_title }}</span> <a class="btn btnmd btn-primary" target="_blank" href="https://cloudconvert.com/">HTML Conversion Link</a>
             </header>
             @if($errors->any())
                 <div class="alert alert-danger">
@@ -195,6 +195,20 @@
 <div class="modal fade" id="estbModal" tabindex="" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
 
 </div>
+
+
+<style>
+    
+.panel-heading{
+
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    
+}
+
+
+</style>
 
 <!-- modal -->
 @stop

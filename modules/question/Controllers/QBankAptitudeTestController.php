@@ -8,6 +8,7 @@
 
 namespace Modules\Question\Controllers;
 require public_path() . '/assets/cloudconvert/vendor/autoload.php';
+use COM;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -19,7 +20,7 @@ use Session;
 use Input;
 use \CloudConvert\Api;
 use \CloudConvert\Process;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 
 
 class QBankAptitudeTestController extends Controller
@@ -34,6 +35,8 @@ class QBankAptitudeTestController extends Controller
 
     public function index()
     {
+
+
  
         $page_title = "Aptitude Test Question";
         $ms_word_data = QBankAptitudeTest::where('question_type','word')->orderBy('id','desc')->where('status','active')->get();
@@ -129,18 +132,52 @@ class QBankAptitudeTestController extends Controller
             $orginal_relative_file_path = $orginal_relative_path . '/' . $generated_original_file_name;
             $image_relative_file_path = $image_relative_path . '/' . $generated_image_file_name;
             
-            $file->move($orginal_folder_path,$generated_original_file_name);
+// dd($generated_image_file_name);
+
+            // $file->move($orginal_folder_path,$generated_original_file_name);
+
+            $file->move($image_folder_path,$generated_image_file_name);
 
 
-            //dd($orginal_file_path);
-            $api->convert([
-                    'inputformat' => $input_format,
-                    'outputformat' => 'html',
-                    'input' => 'upload',
-                    'file' => fopen('file://' . $orginal_file_path, 'r'),
-                ])
-                ->wait()
-                ->download('file://' . $image_file_path);
+            // dd($orginal_file_path);
+            // $api->convert([
+            //         'inputformat' => $input_format,
+            //         'outputformat' => 'html',
+            //         'input' => 'upload',
+            //         'file' => fopen('file://' . $orginal_file_path, 'r'),
+            //     ])
+            //     ->wait()
+            //     ->download('file://' . $image_file_path);
+
+
+
+
+            // $word = new COM("word.application") or die("ERROR: Unable to instantiate Word");
+
+            // echo "Loaded Word, version {$word->Version}\
+            // ";
+
+            // //bring it to front
+            // $word->Visible = 1;
+
+            // //Set $FilePath and $DocFileName
+            // //$FilePath = "D:\saju2";
+            // $FilePath = "/var/www/html/rems-test";
+            // $DocFilename = $orginal_file_path;
+
+            // $stat = $word->Documents->Open(realpath("$DocFilename")) or die ("ERROR: Could not open Word Doc");
+
+            // $word->Documents[1]->SaveAs("$FilePath", 17);
+            // $word->Documents[1]->Close();
+
+            // //closing word
+            // $word->Quit();
+
+            // //free the object
+            // $word = null;
+
+
+
 
                 $values[] = ['title' => $input['title'],
                           'question_type' => $input['question_type'],

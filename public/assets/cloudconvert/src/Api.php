@@ -112,6 +112,7 @@ class Api
             $options['headers']['Authorization'] = 'Bearer ' . $this->api_key;
         }
 
+
         try {
             $response = $this->http_client->request($method, $url, $options);
             if ($response->getHeader('Content-Type')

@@ -200,7 +200,6 @@
 <style>
     
 .panel-heading{
-
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -209,6 +208,11 @@
 
 .conversion-button{
     background-color: #18b50eed !important;
+    border-color:#18b50eed !important;
+}
+
+.conversion-button:hover{
+    background-color: #299e23ed !important;
     border-color:#18b50eed !important;
 }
 

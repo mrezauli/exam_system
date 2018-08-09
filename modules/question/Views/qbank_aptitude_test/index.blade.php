@@ -13,7 +13,7 @@
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
-                <span>{{ $page_title }}</span> <a class="btn btnmd btn-primary" target="_blank" href="https://cloudconvert.com/">HTML Conversion Link</a>
+                <span>{{ $page_title }}</span> <a class="btn btn-primary conversion-button" target="_blank" href="https://cloudconvert.com/">HTML Conversion Link</a>
             </header>
             @if($errors->any())
                 <div class="alert alert-danger">
@@ -204,7 +204,12 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    
+
+}
+
+.conversion-button{
+    background-color: #18b50eed !important;
+    border-color:#18b50eed !important;
 }
 
 

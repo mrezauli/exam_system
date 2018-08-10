@@ -755,4 +755,12 @@ $(".disable-button").one("click", function() {
     $(this).click(function () { return false; });
 });
 
+$("form").submit(function(e) {
+
+    $(this).submit(function() {
+        return false;
+    });
+    return true;
+});
+
 </script>

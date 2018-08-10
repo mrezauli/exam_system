@@ -69,11 +69,10 @@ class TypingTestController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-         */
-        public function index()
+    */
+    public function index()
     {
        
-     
         $page_title = "Typing Test";
 
         $user = Auth::user();
@@ -177,11 +176,20 @@ class TypingTestController extends Controller
             ];
 
 
+            $answer_created = Examination::where('qselection_typing_id',$question->id)->where('user_id',$user_id)->where('exam_type',$exam_type)->first();
+
+
+
             /* Transaction Start Here */
             DB::beginTransaction();
             try {
-    
-                $task = Examination::create($input);    
+
+                if (! $answer_created) {
+
+                    $task = Examination::create($input);    
+
+                }
+                
 
                 //dd($task);
                 DB::commit();

@@ -2,6 +2,7 @@
 
 namespace Modules\Reports\Controllers;
 
+use Validator;
 use Illuminate\Http\Request;
 use App\Helpers\LogFileHelper;
 use App\Http\Requests;
@@ -18,7 +19,6 @@ use Modules\Admin\Designation;
 use Modules\Exam\Examination;
 use Dompdf\Dompdf;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Validator;
 
 
 class AptitudeTestReportController extends Controller

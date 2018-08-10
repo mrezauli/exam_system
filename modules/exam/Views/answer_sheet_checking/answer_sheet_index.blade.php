@@ -201,6 +201,14 @@ if(window.location.href.indexOf("was") > -1) {
 
 });
 
+
+$("form").submit(function() {
+    $(this).submit(function() {
+        return false;
+    });
+    return true;
+});
+
 // $('form').on('submit', function(e) {
   
 

@@ -29,10 +29,7 @@ class TypingTestReportController extends Controller
 {
 
 
-
-
     public function typing_test_report(){
-
 
         $page_title = 'Typing Test Report';
         //$bangla_speed = $english_speed = ExamTime::where('exam_type','typing_exam')->first()->exam_time;
@@ -265,7 +262,7 @@ class TypingTestReportController extends Controller
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
-// dd($values);
+            // dd($values);
 
             if(! $values->lists('attended_typing_test')->contains('true')){
 

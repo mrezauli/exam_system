@@ -6,7 +6,7 @@
 
 @section('content')
 
-        <!-- page start-->
+<!-- page start-->
 
 <div class="inner-wrapper index-page">
 
@@ -39,7 +39,7 @@
 
                         <p> &nbsp;</p>
                         <p> &nbsp;</p>
-                        {{-------------- Filter :Ends ----------------------------------------- --}}
+                        {{-------------- Filter :Ends --------------------------------------------}}
 
                         {!! Form::open(['route' => 'start-checking','id' => 'jq-validation-form','class' => 'default-form mt-30']) !!}
 

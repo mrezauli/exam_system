@@ -88,16 +88,51 @@ form .col-sm-12:last-child{
                         {!! Form::Select('remarks',['passed'=>'Pass','failed'=>'Fail','all'=>'All'], @Input::get('remarks')? Input::get('remarks') : null,['id'=>'remarks','class' => 'form-control remarks','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
                     </div>
     
+                  {{--   <div class="col-lg-2 col-md-3 col-sm-6 filter-btn">
+  
+                      {!! Form::submit('Generate Report', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
+                    </div> --}}
+
+                </div>
+
+                <div class="col-sm-12">
+
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('bangla_speed', 'Total Pass Marks(%):', ['class' => 'control-label']) !!}
+                        {{-- <small class="required">(Req.)</small> --}}
+                        {!! Form::text('bangla_speed', Input::get('bangla_speed')? Input::get('bangla_speed') : null,['id'=>'bangla_speed','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('word_pass_marks', 'Word Pass Marks(%):', ['class' => 'control-label']) !!}
+                        <small class="required jprequired">(Req.)</small>
+                        {!! Form::text('word_pass_marks', Input::get('word_pass_marks')? Input::get('word_pass_marks') : null,['id'=>'word_pass_marks','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('excel_pass_marks', 'Excel Pass Marks(%):', ['class' => 'control-label']) !!}
+                        <small class="required jprequired">(Req.)</small>
+                        {!! Form::text('excel_pass_marks', Input::get('excel_pass_marks')? Input::get('excel_pass_marks') : null,['id'=>'excel_pass_marks','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('ppt_pass_marks', 'PPT Pass Marks(%):', ['class' => 'control-label']) !!}
+                        <small class="required jprequired">(Req.)</small>
+                        {!! Form::text('ppt_pass_marks', Input::get('ppt_pass_marks')? Input::get('ppt_pass_marks') : null,['id'=>'ppt_pass_marks','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
+                    </div>
+    
                     <div class="col-lg-2 col-md-3 col-sm-6 filter-btn">
   
                       {!! Form::submit('Generate Report', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
                     </div>
 
-                    @if(isset($model) && ! $model->isEmpty())
+                   @if(isset($model) && ! $model->isEmpty())
 
                     {{-- <a href="{{ route('aptitude-test-report-pdf', [$company_id,$designation_id,$exam_date]) }}" class="pdf_report_button" target="_blank"><img src="{{ URL::asset('assets/img/pdf-icon.png') }}" alt=""></a> --}}
+                    <div class="clearfix"></div>
+                    <div class="pull-left"><a href="#" class="btn btn-danger print-button pdf_report_button">Print</a>
 
-                    <a href="#" class="btn btn-danger print-button pdf_report_button">Print</a>
+                    <a href="#" class="btn btn-danger short-print-button pdf_report_button">Short Report Print</a></div>
                     
                     @endif
 
@@ -380,6 +415,206 @@ form .col-sm-12:last-child{
 
 
 
+
+
+
+
+
+
+
+
+
+
+<div class="table-primary print-short-report-table-wrapper">
+
+
+<style>
+
+    .print-show{
+        display: none;
+    }
+
+
+    @media print{      
+
+        *{
+            text-align: center !important;
+            font-size: 14px !important;
+        }
+
+        #examples * {
+            border: none;
+        }
+
+        table#examples{
+            border-collapse: collapse !important;
+        }
+
+        thead tr th, tbody tr td {
+            border: 1px solid #ccc !important;
+        }
+
+        thead tr th:empty{
+            border-right:none !important;
+            border-top:none !important;
+        }   
+
+        thead:first-child tr, thead tr th.no-border{
+            border-bottom:0 !important;
+        }
+
+        .print-hide{
+            display: none !important;
+        }
+
+        .print-show{
+            display: block !important;
+        }
+
+        .header{
+          /*  font-family: SolaimanLipi !important;
+            font-size: 15px !important;*/
+            text-align: center;
+            max-width: 400px;
+            margin: 5px auto;
+        }
+
+        .header-section{
+            margin-bottom: 20px;
+        }
+
+        .table-primary thead tr th:empty {
+            border-right: none !important;
+            border-top: none !important;
+        }
+
+
+        table.report-table thead th {
+            padding: 10px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+
+
+        table thead th, table tfoot th {
+            font-weight: 600 !important;
+            color: #333 !important;
+            padding-left: 0 !important;
+        }
+
+        footer{
+            font-size: 16px !important;
+        }
+
+        thead tr th, tbody tr td,table tr th, table tr td {
+            border: 1px solid #333 !important;
+            color: #333 !important;
+            /*font-weight: 500;*/
+        }
+
+    } 
+
+</style>
+                       
+
+<div class="print-section print-show">
+    <div class="header-section">
+        <p class="header">{{ isset($header->company_name) ? $header->company_name : ''}}</p>
+        <p class="header">{{ isset($header->address) ? $header->address : ''}}</p>
+        <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
+        <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
+        <p class="header">পরীক্ষা গ্রহণে - বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+    </div>
+
+
+
+    <table width="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
+        <thead>
+        <tr>
+            <th> <span>SL.</span> </th>
+            <th> <span>Roll No.</span> </th>
+            <th> <span>Remarks</span> </th>
+            
+        </tr>
+        </thead>
+
+        <tbody>
+        
+        @if($status==2)
+
+        <?php 
+
+        $t =1;
+
+        $sl_no = isset($_GET['page']) ? ($_GET['page']-1)*2 + 0: 0; ?>
+
+     
+            @foreach($model_all as $values)
+
+
+            <?php $sl_no++; ?>
+                <tr class="gradeX">
+                                           
+                    <td>{{$sl_no}}</td>
+                    <td>{{$values[0]->roll_no}}</td>
+                    <td>{{$values->remarks}}</td>
+                   
+                </tr>
+
+            @endforeach
+        @endif
+        </tbody>
+    </table>
+
+
+
+
+{{--     @if ($remarks == 'all') 
+        
+    <table style="margin:20px;width:30%;margin-left:70%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+      <tr>
+        <th>Pass</th>
+        <th>Fail</th>
+      </tr>
+      <tr>
+        <td>{{$passed_count}}</td>
+        <td>{{$failed_count}}</td>
+      </tr>
+    </table>
+
+
+    @elseif($remarks == 'passed')
+
+    <table style="margin:20px;width:17%;margin-left:83%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+      <tr>
+        <th>Pass</th>
+      </tr>
+      <tr>
+        <td>{{$passed_count}}</td>
+      </tr>
+    </table>
+
+
+    @elseif($remarks == 'failed')
+
+    <table style="margin:20px;width:17%;margin-left:83%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+      <tr>
+        <th>Fail</th>
+      </tr>
+      <tr>
+        <td>{{$failed_count}}</td>
+      </tr>
+    </table>
+
+    @endif --}}
+
+    </div>
+
+    <footer class="print-show" style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
+
+</div>
+
 <!-- page end-->
 
 <!--script for this page only-->
@@ -427,6 +662,47 @@ function report_exam_code(){
     });
 
     // $('select, #exam_date').not('#exam_code_list, #exam_type').prop('disabled', true);
+
+
+
+    function report_pass_marks(){
+
+    var bangla_speed = $('#bangla_speed').val();
+
+    var fields = '#word_pass_marks,#excel_pass_marks,#ppt_pass_marks';
+
+    if (bangla_speed != '') {
+
+        $(fields).prop('disabled', true).val('').trigger('change').attr('required', false);
+
+        $('.jprequired').hide();
+
+    }else{
+
+        $(fields).prop('disabled', false).attr('required', true);
+
+        $('.jprequired').show();
+
+    }
+
+    }
+
+
+    report_pass_marks();
+
+    $('#bangla_speed').keyup(function(e) {
+    
+        report_pass_marks();
+
+    });
+
+    $('#bangla_speed').bind('input',function(e) {
+    
+        report_pass_marks();
+
+    });
+
+
                         
     $('form').on('submit', function(e) {
         $('select, #exam_date').prop('disabled', false);
@@ -452,6 +728,15 @@ function report_exam_code(){
 
     w=window.open();
     w.document.write(document.getElementsByClassName('print-report-table-wrapper')[0].outerHTML);
+    w.print();
+    w.close();
+
+    });
+
+    $('.short-print-button').click(function(event) {
+
+    w=window.open();
+    w.document.write(document.getElementsByClassName('print-short-report-table-wrapper')[0].outerHTML);
     w.print();
     w.close();
 

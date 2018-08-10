@@ -121,7 +121,9 @@ form .col-sm-12:last-child{
 
                 <a href="#" class="btn btn-danger print-button pull-right">Print Result with Remarks</a>
 
-                <a href="#" class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>  
+                <a href="#" class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>
+
+                <a href="#" class="btn btn-danger print-button-short pull-right">Print Short Result</a>    
 
 
                 </div>
@@ -769,6 +771,269 @@ form .col-sm-12:last-child{
 
 
 
+
+
+
+
+
+
+
+
+<div class="table-primary print-short-report-table-wrapper">
+
+
+<style>
+
+    table thead tr th:last-child{
+        border-right: 1px solid #333 !important;
+    }
+
+    .print-show{
+        display: none;
+    }
+
+
+    @media print{      
+
+        *{
+            text-align: center !important;
+            font-size: 14px !important;
+        }
+
+        #examples * {
+            border: none;
+        }
+
+        table#examples{
+            border-collapse: collapse !important;
+        }
+
+        thead tr th, tbody tr td {
+            border: 1px solid #333 !important;
+        }
+
+        thead tr th:empty{
+            border-right:none !important;
+            border-top:none !important;
+        }   
+
+        thead:first-child tr, thead tr th.no-border{
+            border-bottom:0 !important;
+        }
+
+
+        .no-border span{
+            position: relative;
+            top: 18px;
+        }
+
+        .print-hide{
+            display: none !important;
+        }
+
+        .print-show{
+            display: block !important;
+        }
+
+        .header{
+            font-family: SolaimanLipi !important;
+            font-size: 15px !important;
+            text-align: center;
+            max-width: 400px;
+            margin: 5px auto;
+        }
+
+        .header-section{
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #333 !important;
+        }
+
+        .table-primary thead tr th:empty {
+            /*border-right: none !important;*/
+            border-top: none !important;
+        }
+
+        table thead tr th:last-child{
+            border-right: 1px solid #333 !important;
+        }
+
+        .no-border span {
+            position: relative;
+            top: 18px;
+        }
+
+        table.report-table thead th {
+            padding: 10px;
+            font-weight: 600;
+            color: #377;
+            text-align: center;
+        }
+
+
+        table thead th, table tfoot th {
+            font-weight: 600 !important;
+            color: #333 !important;
+            padding-left: 0 !important;
+        }
+
+        .graph-button{
+            color: inherit;
+            text-decoration: none;
+        }
+
+        footer{
+            font-size: 16px !important;
+        }
+
+    } 
+
+</style>
+             
+
+
+<div class="print-section print-show">
+    <div class="header-section">
+        <p class="header">{{ isset($header->company_name) ? $header->company_name : ''}}</p>
+        <p class="header">{{ isset($header->address) ? $header->address : ''}}</p>
+        <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
+        <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
+        <p class="header">পরীক্ষা গ্রহণে - বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+    </div>
+
+<div class="table-primary report-table-wrapper">
+    <table width="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
+        <thead>
+        <tr>
+            <th> <span>SL.</span> </th>
+            <th> <span>Roll No.</span> </th>
+            <th> <span>Remarks</span> </th>
+            
+        </tr>
+        </thead>
+
+        <tbody>
+        
+        @if($status==2)
+        <?php $i = isset($_GET['page']) ? ($_GET['page']-1)*1 + 0: 0; ?>
+
+            @foreach($model_all as $values)
+
+            <?php $i++; 
+
+
+
+            $values = collect($values);
+        
+            $grouped_by_exam_type = $values->groupBy('exam_type');
+   
+            $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
+
+            $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
+
+
+            $bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
+
+            $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
+
+
+            $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
+
+            $bangla_wpm = round($bangla_corrected_words/$bangla_exam_time3,1);
+
+            $bangla_wpm = round_to_integer($bangla_wpm);            
+
+            $english_corrected_words = $english->typed_words - $english->inserted_words;
+
+            $english_wpm = round($english_corrected_words/$english_exam_time3,1);
+
+            $english_wpm = round_to_integer($english_wpm);
+        
+            ?>
+                <tr class="gradeX">
+                                           
+                    <td>{{$i}}</td>
+                    <td>{{$values[0]->roll_no}}</td>
+                    <td>
+                   
+                        @if(! $values->lists('attended_typing_test')->contains('true'))
+                        
+                        {{'Absent'}}
+            
+                        @elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+
+                        {{'Pass'}}
+
+                        @else
+
+                        {{'Fail'}}
+                        
+                        @endif
+
+                   </td>
+                   
+                </tr>
+            @endforeach
+        @endif
+        </tbody>
+    </table>
+
+
+
+
+{{-- @if ($remarks == 'all') 
+    
+<table style="margin:20px;width:30%;margin-left:70%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+  <tr>
+    <th>Pass</th>
+    <th>Fail</th>
+  </tr>
+  <tr>
+    <td>{{$passed_count}}</td>
+    <td>{{$failed_count}}</td>
+  </tr>
+</table>
+
+
+@elseif($remarks == 'passed')
+
+<table style="margin:20px;width:17%;margin-left:83%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+  <tr>
+    <th>Pass</th>
+  </tr>
+  <tr>
+    <td>{{$passed_count}}</td>
+  </tr>
+</table>
+
+
+@elseif($remarks == 'failed')
+
+<table style="margin:20px;width:17%;margin-left:83%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+  <tr>
+    <th>Fail</th>
+  </tr>
+  <tr>
+    <td>{{$failed_count}}</td>
+  </tr>
+</table>
+
+@endif --}}
+
+
+</div>
+
+<footer style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
+
+</div>
+
+</div>
+
+
+
+
 <!-- page end-->
 
 <!--script for this page only-->
@@ -875,6 +1140,15 @@ function report_exam_code(){
 
         w=window.open();
         w.document.write(document.getElementsByClassName('print-report-table-wr-wrapper')[0].outerHTML);
+        w.print();
+        w.close();
+
+        });
+
+        $('.print-button-short').click(function(event) {
+
+        w=window.open();
+        w.document.write(document.getElementsByClassName('print-short-report-table-wrapper')[0].outerHTML);
         w.print();
         w.close();
 

@@ -426,6 +426,22 @@ $(document).ready(function() {
 
   }, 300);
 
+
+$("form").submit(function(e) {
+
+    $(this).submit(function() {
+        return false;
+    });
+    return true;
+});
+
+
+
+$(".start-button").one("click", function() {
+    $(this).click(function () { return false; });
+});
+
+
 });
 //Disable Back Button ::
 
@@ -474,10 +490,6 @@ var answered_text = '';
 
 
 // });
-
-
-
-
 
 
 

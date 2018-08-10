@@ -2,6 +2,8 @@
 
 namespace Modules\Reports\Controllers;
 
+use Validator;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use App\Helpers\LogFileHelper;
 use App\Http\Requests;
@@ -15,7 +17,6 @@ use App\User;
 use Modules\Admin\Company;
 use Modules\Admin\Designation;
 use Modules\Exam\Examination;
-use Dompdf\Dompdf;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 
@@ -62,6 +63,25 @@ class ShortAptitudeTestReportController extends Controller
         $exam_date_from = Input::get('exam_date_from');
         $exam_date_to = Input::get('exam_date_to');
         $remarks = Input::get('remarks');
+        $bangla_speed = Input::get('bangla_speed');
+        $word_pass_marks = Input::get('word_pass_marks');
+        $excel_pass_marks = Input::get('excel_pass_marks');
+        $ppt_pass_marks = Input::get('ppt_pass_marks');
+
+
+
+        $validator = Validator::make($request->all(), [
+            'bangla_speed' => 'integer',
+        ]);
+
+
+        if ($validator->fails()) {
+
+            Session::flash('danger', "Pass Marks must be an integer.");
+            return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
 
         $company_list =  [''=>'Select organization'] + Company::where('status','active')->orderBy('id','desc')->lists('company_name','id')->all();
@@ -287,21 +307,56 @@ class ShortAptitudeTestReportController extends Controller
         }
 
 
-        $model->each(function ($values, $key) {
+                $model->each(function ($values, $key)use($bangla_speed,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks) {
 
-            $failed_in_any_exam = $remarks = '';
+            $remarks = '';
+
+            $failed_in_any_exam = false;
 
             $values->total_answer_marks = $total_answer_marks = $values->sum('answer_marks');
 
+            $values->total_question_marks = $total_question_marks = $values->sum('question_marks');
+
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
-            $values->each(function ($data, $key)use(&$failed_in_any_exam) {
+            $values->each(function ($data, $key)use(&$failed_in_any_exam,$bangla_speed,$total_question_marks,$total_answer_marks,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks) {
 
-                if ($data->question_marks/2 > $data->answer_marks || $data->answer_marks == null) {
+
+
+
+                if ($bangla_speed) {
+                   
+                    if ( $total_question_marks*$bangla_speed/100 > $total_answer_marks) {
+                        $failed_in_any_exam = true;
+                    }
+
+                }elseif(isset($data->question_type)){
+
+                    if ($data->question_type == 'word' && $data->question_marks*$word_pass_marks/100 > $data->answer_marks) {
+                        
+                        $failed_in_any_exam = true;
+
+                    } elseif($data->question_type == 'excel' && $data->question_marks*$excel_pass_marks/100 > $data->answer_marks) {
+                       
+                        $failed_in_any_exam = true;
+
+                    }elseif($data->question_type == 'ppt' && $data->question_marks*$ppt_pass_marks/100 > $data->answer_marks){
+
+                        $failed_in_any_exam = true;
+
+                    }
+
+                    if ($failed_in_any_exam == true && $data->answer_marks > 2) {
+                        //dd($data->question_type == 'word' && $data->question_marks*$word_pass_marks/100 > $data->answer_marks);
+                    }
+
+                    
+                }else{
+
                     $failed_in_any_exam = true;
                 }
 
-        });
+            });
 
 
 
@@ -320,6 +375,7 @@ class ShortAptitudeTestReportController extends Controller
             }
 
         });
+
 
 
 
@@ -414,7 +470,7 @@ class ShortAptitudeTestReportController extends Controller
 
 
 
-        return view('reports::short_aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','exam_date_from','exam_date_to','exam_dates_string','question_marks','total_question_marks','remarks','passed_count','failed_count'));
+        return view('reports::short_aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','exam_date_from','exam_date_to','exam_dates_string','question_marks','total_question_marks','remarks','passed_count','failed_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks'));
 
     }
 

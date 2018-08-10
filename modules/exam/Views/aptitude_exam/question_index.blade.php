@@ -309,7 +309,7 @@ $username = $user->username;
                         @foreach($final_submit as $values)
                             @if ($values->qsel_apt_test->qbank_aptitude_id == $qbank_aptitude_id && $values->re_submit_flag==0) 
 
-                        <a href="{{ route('answer-redownload', $values->id) }}" class="btn btn-primary btn-xs re-ans-dow{{$values->id}}" onclick="re_ans_dow({{$values->id}})" data-placement="top"><strong>Review Answer Sheet</strong></a>
+                        <a href="{{ route('answer-redownload', $values->id) }}" class="btn btn-primary btn-xs disable-button re-ans-dow{{$values->id}}" onclick="re_ans_dow({{$values->id}})" data-placement="top"><strong>Review Answer Sheet</strong></a>
 
                             @endif
                         @endforeach
@@ -340,7 +340,7 @@ $username = $user->username;
                 @else
                     <tr class="{{$btn_class.$i}}">
                         <td>
-                            <a href="{{ route($route, $ques_values->id) }}" class="btn btn-primary btn-xs {{$btn_class.$i}}" onclick="download_hide({{$i}})" data-placement="top" style="margin: 5px 5px;"><strong>Answer Sheet</strong></a>
+                            <a href="{{ route($route, $ques_values->id) }}" class="btn btn-primary disable-button btn-xs {{$btn_class.$i}}" onclick="download_hide({{$i}})" data-placement="top" style="margin: 5px 5px;"><strong>Answer Sheet</strong></a>
                             <a href="" style="visibility:hidden;margin:5px;" class="btn btn-primary btn-xs">ddd</a>
                         </td>
                     </tr>
@@ -385,7 +385,7 @@ $username = $user->username;
                     </div>
                 </div>
                 <div class="col-sm-offset-15 col-sm-6">{!! Form::submit('Re-Submit', ['class' => 'btn btn-primary pull-left','data-placement'=>'top']) !!}
-                <a style="margin-left:20px" href="#" class="btn btn-primary pull-right terminate_exam">Terminate Your Exam</a>
+                <a style="margin-left:20px" href="#" class="btn btn-primary pull-right disable-button terminate_exam">Terminate Your Exam</a>
                 </div>
                 <div class="col-sm-offset-15 col-sm-3">&nbsp;</div>
 
@@ -751,5 +751,8 @@ set_clock(remaining_time*1000);
 
 
 
+$(".disable-button").one("click", function() {
+    $(this).click(function () { return false; });
+});
 
 </script>

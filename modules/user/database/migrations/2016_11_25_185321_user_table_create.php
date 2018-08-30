@@ -64,8 +64,8 @@ class UserTableCreate extends Migration
             $table->date('exam_date')->nullable();
             $table->enum('shift',array('s1','s2','s3','s4','s5'))->nullable();
             $table->enum('status',array('active','inactive','cancel'))->nullable();
-            $table->enum('typing_status',array('active','inactive'))->nullable();
-            $table->enum('aptitude_status',array('active','inactive'))->nullable();
+            $table->enum('typing_status',array('active','inactive','cancelled','expelled'))->nullable();
+            $table->enum('aptitude_status',array('active','inactive','cancelled','expelled'))->nullable();
             $table->enum('mcq_status',array('active','inactive'))->nullable();
             $table->enum('attended_typing_test',array('true','false'))->nullable();
             $table->enum('attended_aptitude_test',array('true','false'))->nullable();
@@ -74,6 +74,9 @@ class UserTableCreate extends Migration
             $table->tinyInteger('answer_sheet_given')->default(0);
             $table->tinyInteger('examined_status')->default(0);
             $table->unsignedInteger('examined_by')->nullable();
+            $table->unsignedInteger('aptitude_exam_review_comments')->nullable();
+            $table->unsignedInteger('typing_exam_cancel_comments')->nullable();
+            $table->unsignedInteger('aptitude_exam_cancel_comments')->nullable();
             $table->unsignedInteger('department_id')->nullable();
             $table->dateTime('last_visit')->nullable();
             $table->dateTime('expire_date')->nullable();

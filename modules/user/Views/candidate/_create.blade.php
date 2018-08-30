@@ -36,7 +36,7 @@
 
 <div class="col-sm-12 form-margin-btn text-right" style="float:none;">           
     <a href="{{route('candidate-list')}}" class=" btn btn-default mt-23" data-placement="top" data-content="click close button for close this entry form">Close</a>
-    {!! Form::submit('Upload', ['id'=>'btn-disabled','class' => 'btn btn-primary mt-23','data-placement'=>'top','data-content'=>'click save changes button for save role information']) !!}
+    {!! Form::submit('Upload', ['id'=>'btn-disabled','class' => 'btn btn-primary mt-23 upload-button','data-placement'=>'top','data-content'=>'click save changes button for save role information']) !!}
 </div>
 
 

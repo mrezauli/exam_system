@@ -99,6 +99,7 @@
                         <tr> 
                             <th> Select Question </th>
                             <th> Question Mark</th>
+                            {{-- <th> Question Name </th> --}}
                             <th> Question Title </th>
                             <th> Question Type </th>
                             <th> Created Date </th>
@@ -111,6 +112,7 @@
                         <tr> 
                             <th> Select Question </th>
                             <th> Question Mark</th>
+                            {{-- <th> Question Name </th> --}}
                             <th> Question Title </th>
                             <th> Question Type </th>
                             <th> Created Date </th>
@@ -161,6 +163,10 @@ $question_mark = isset($data->aptitude_questions->keyBy('id')->get($id)->pivot->
                                     <td>
                                         <input id="question_mark" data-id="{{$values->id}}" class="form-control question-mark" name="question_marks[]" type="text" value="{{$question_mark}}">
                                     </td>
+
+                                    {{-- <td>
+                                        <input id="question_name" class="form-control question-name" name="question_name[]" type="text" value="">
+                                    </td> --}}
 
                                     <td>{{ucfirst($values->title)}}</td> 
                                     <td>{{ucfirst($values->question_type)}}</td>
@@ -213,7 +219,7 @@ $question_mark = isset($data->aptitude_questions->keyBy('id')->get($id)->pivot->
 
 <script>
 
-var column_index = ['3'];
+var column_index = ['4'];
 create_dropdown_column(column_index);
 
 

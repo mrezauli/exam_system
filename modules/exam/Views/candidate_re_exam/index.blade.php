@@ -99,10 +99,10 @@
 
                     <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
                         <div class="row">
-                            
+                  
                             <div class="col-sm-12">
                                 {!! Form::label('status', 'Status:', ['class' => 'control-label']) !!}
-                                {!! Form::select('status', array('active'=>'Active','inactive'=>'Inactive'),Input::old('status'),['class' => 'form-control','title'=>'select status of company']) !!}
+                                {!! Form::select('status', array('active'=>'Active','inactive'=>'Inactive','cancelled'=>'Cancelled','expelled'=>'Expelled'),Input::old('status'),['class' => 'form-control status','title'=>'select status of company']) !!}
                             </div>
 
                         </div>
@@ -118,6 +118,19 @@
 
                         </div>
                     </div>
+
+                    <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t cancel_comments_block">
+                        <div class="row">
+                            
+                            <div class="col-sm-12">
+                                {!! Form::label('cancel_comments', 'Comment/Reason:', ['class' => 'control-label']) !!}
+                                {!! Form::textarea('cancel_comments', Input::old('cancel_comments'), ['id'=>'cancel_comments', 'class' =>'form-control cancel_comments', 'size' => '10x5']) !!}
+                            </div>
+
+                        </div>
+                    </div>
+
+
 
                     <p> &nbsp; </p>
 
@@ -145,6 +158,13 @@
 
 <!--script for this page only-->
 
+<style>
+    
+.cancel_comments_block{
+    display: none;
+}
+
+</style>
 
 
 @if($errors->any())
@@ -174,7 +194,27 @@
              format: 'yyyy-mm-dd'
          });
 
-     });
+        });
+
+
+
+        $('.status').change(function(event) {
+
+            var status = $(this).val();
+
+            if (status == 'cancelled' || status == 'expelled') {
+
+                $('.cancel_comments_block').show();
+
+            }else{
+
+                $('.cancel_comments_block').hide().find('.form-control').val('');
+            }
+
+        });
+
+
+
 
 
         $('#exam_process_code_list').change(function(event) {

@@ -511,9 +511,10 @@ form input:not(.btn), .question-mark {
 }
 
 
-.question-mark{
+.question-mark,.question-name{
     border: 1px solid #aaa !important; 
-    width: 70px !important;
+    /*width: 70px !important;*/
+    float: left !important;
 }
 
 table.question-paper-set-table tfoot tr th:nth-child(2) input {

@@ -21,17 +21,17 @@ Route::group(array('prefix'=>'exam','modules'=>'exam', 'namespace' => 'Modules\e
     ]);
 
 
-    Route::any('down-new-doc/{selection_id}', [
+    Route::any('down-new-doc/{selection_id}/{qbank_aptitude_id}', [
         'as' => 'down-new-doc',
         'uses' => 'AptitudeTestController@download_new_doc'
     ]);
 
-    Route::any('down-csv-file/{selection_id}', [
+    Route::any('down-csv-file/{selection_id}/{qbank_aptitude_id}', [
         'as' => 'down-csv-file',
         'uses' => 'AptitudeTestController@down_csv_file'
     ]);
 
-    Route::any('down-ppt-file/{selection_id}', [
+    Route::any('down-ppt-file/{selection_id}/{qbank_aptitude_id}', [
         'as' => 'down-ppt-file',
         'uses' => 'AptitudeTestController@down_ppt_file'
     ]);
@@ -41,7 +41,7 @@ Route::group(array('prefix'=>'exam','modules'=>'exam', 'namespace' => 'Modules\e
         'uses' => 'AptitudeTestController@answer_submit'
     ]);
 
-    Route::any('answer-redownload/{aptitude_exam_result_id}', [
+    Route::any('answer-redownload/{aptitude_exam_result_id}/{qbank_aptitude_id}', [
         'as' => 'answer-redownload',
         'uses' => 'AptitudeTestController@answer_redownload'
     ]);

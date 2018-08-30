@@ -109,45 +109,47 @@ class AptitudeTestReportController extends Controller
     if ($exam_code != ''){
 
         $model = $model->where('e.exam_code_name','=',$exam_code);
-        $header = $header->where('e.exam_code_name','=',$exam_code);
+        $header = $header_all = $header->where('e.exam_code_name','=',$exam_code);
 
     }else{
 
         if(isset($company_id) && !empty($company_id)){
             $model = $model->where('e.company_id','=',$company_id);
-            $header = $header->where('e.company_id','=',$company_id);
+            $header = $header_all = $header->where('e.company_id','=',$company_id);
         }
 
 
         if(isset($designation_id) && !empty($designation_id)){
             $model = $model->where('e.designation_id','=',$designation_id);
-            $header = $header->where('e.designation_id','=',$designation_id);
+            $header = $header_all = $header->where('e.designation_id','=',$designation_id);
         }
 
         if(isset($exam_date) && !empty($exam_date)){
             $model = $model->where('e.exam_date','=',$exam_date);
-            $header = $header->where('e.exam_date','=',$exam_date);
+            $header = $header_all = $header->where('e.exam_date','=',$exam_date);
         }
 
 
         if($exam_date_from == '' && $exam_date_to != ''){
 
             $model = $model->where('e.exam_date','=',$exam_date_to);
-            $header = $header->where('e.exam_date','=',$exam_date_to);
+            $header = $header_all = $header->where('e.exam_date','=',$exam_date_to);
 
 
         }
         if($exam_date_from != '' && $exam_date_to == ''){
 
             $model = $model->where('e.exam_date','=',$exam_date_from);
-            $header = $header->where('e.exam_date','=',$exam_date_from);
+            $header = $header_all = $header->where('e.exam_date','=',$exam_date_from);
 
         }
 
         if($exam_date_from != '' && $exam_date_to != ''){
 
             $model = $model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
-            $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
+            $header_all = (clone $header)->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
+            $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_from));
+
 
         }
 
@@ -161,7 +163,6 @@ class AptitudeTestReportController extends Controller
     $model_collection = collect($model->get());
 
     
-
 
         $model = $model_collection->map(function ($values, $key)use($question_marks) {
        
@@ -203,7 +204,36 @@ class AptitudeTestReportController extends Controller
         return $values;
 
         });
-      
+
+
+        $group = ! $header->isEmpty() ? collect($header)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : '';
+
+
+
+        $eee = clone $header_all;
+
+        $ttt = collect( $eee->get());
+
+        $header_all = $ttt->map(function ($values, $key) {
+
+          if (! empty($values->question_mark)) {
+
+             $values->question_marks = $values->question_mark;
+
+         }else{
+
+            $values->question_marks = 0;
+
+        }
+
+        return $values;
+
+        });
+
+
+        $all_group = ! $header_all->isEmpty() ? collect($header_all)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : '';
+
+
 
 
         $exam_dates = $model_collection->groupBy('exam_date')->keys()->map(function ($values, $key) {
@@ -215,16 +245,35 @@ class AptitudeTestReportController extends Controller
 
         $exam_dates_string = implode(',',$exam_dates);
 
+        
 
-        $group = ! $header->isEmpty() ? collect($header)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : '';
+
+     
+
+        
   
         // $all_headers = clone $header->get();
+
+
+        //  $group = $group->map(function ($values, $key) {
+
+        //     foreach ($values as $key => $value) {
+        //         dd($values);
+        //     }
+
+        //     return $values->groupBy('exam_date');
+
+        // });
+
+
 
         $header = $header->first();
 
         $model = $model->groupBy('user_id');
          
-   
+        
+        // dd($header_all);
+
 
 
         if (isset($model[''])) {
@@ -291,13 +340,13 @@ class AptitudeTestReportController extends Controller
 // dd($eee);
 
 
-                        // dd($model);        
+        // dd($model);        
 
         foreach ($model as $key => $user) {
 
             $eee = $user->pluck('qselection_aptitude_id')->all();
 
-            foreach ($ddd as $group_key => $group_value) {
+            foreach ($ttt as $group_key => $group_value) {
 
                 if (! in_array($group_value->qselection_aptitude_id, $eee)) {
 
@@ -308,7 +357,7 @@ class AptitudeTestReportController extends Controller
         }
 
 
-// dd($bangla_speed);
+        // dd($model);
 
         $model->each(function ($values, $key)use($bangla_speed,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks) {
 
@@ -460,7 +509,7 @@ class AptitudeTestReportController extends Controller
        // $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks'));
+        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks'));
 
 
     }

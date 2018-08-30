@@ -17,6 +17,7 @@ use Modules\Admin\ExamCode;
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Modules\Exam\FileDownloadPermission;
+use Modules\Question\QBankAptitudeTest;
 use Modules\Question\QSelectionAptitudeTest;
 use Session;
 use Cookie;
@@ -107,12 +108,16 @@ class AptitudeTestController extends Controller
         return view('exam::aptitude_exam.question_index', compact('remove_alert_cookie','page_title','apt_test_questions','final_submit','default_time','start_time','default_time','remaining_time','exam_code'));
     }
 
-    public function download_new_doc($selection_id)
+    public function download_new_doc($selection_id,$qbank_aptitude_id)
     {
 
 
         $user_id = Auth::user()->id;
         $user_name = Auth::user()->username;
+
+        $question_title = QBankAptitudeTest::where('id',$qbank_aptitude_id)->first()->title;
+
+        
 
         $input['qselection_aptitude_id'] = $selection_id;
         $input['user_id'] = $user_id;
@@ -127,7 +132,7 @@ class AptitudeTestController extends Controller
         $downloadfolder = 'attachment/';
         $filename = $downloadfolder."sample_doc.docx";
 
-        $file = $user_id.'_'.$selection_id.'_'.$user_name.'_ansdoc.docx';
+        $file = $user_id.'_'.$selection_id.'_'.$user_name.'_ansdoc'.'_'.$question_title.'.docx';
 
         if (file_exists($filename)) {
 
@@ -145,11 +150,13 @@ class AptitudeTestController extends Controller
 
     }
 
-    public function down_csv_file($selection_id)
+    public function down_csv_file($selection_id,$qbank_aptitude_id)
     {
 
         $user_id = Auth::user()->id;
         $user_name = Auth::user()->username;
+
+        $question_title = QBankAptitudeTest::where('id',$qbank_aptitude_id)->first()->title;
 
         $input['qselection_aptitude_id'] = $selection_id;
         $input['user_id'] = $user_id;
@@ -161,7 +168,7 @@ class AptitudeTestController extends Controller
         $model->create($input);
 
 
-        $file_name = $user_id.'_'.$selection_id.'_'.$user_name.'_ansexcel';
+        $file_name = $user_id.'_'.$selection_id.'_'.$user_name.'_ansexcel'.'_'.$question_title;
 
         Excel::create($file_name, function($excel) {
 
@@ -186,11 +193,13 @@ class AptitudeTestController extends Controller
         //return Response::download('attachment/sample_excel.csv', $user_id.'_'.$selection_id.'_ansexcel.csv', ['Content-Type: text/cvs']);
     }
 
-    public function down_ppt_file($selection_id)
+    public function down_ppt_file($selection_id,$qbank_aptitude_id)
     {
         
         $user_id = Auth::user()->id;
         $user_name = Auth::user()->username;
+
+        $question_title = QBankAptitudeTest::where('id',$qbank_aptitude_id)->first()->title;
 
         $input['qselection_aptitude_id'] = $selection_id;
         $input['user_id'] = $user_id;
@@ -204,7 +213,7 @@ class AptitudeTestController extends Controller
         $downloadfolder = 'attachment/';
         $filename = $downloadfolder."sample_ppt.pptx";
 
-        $file = $user_id.'_'.$selection_id.'_'.$user_name.'_ansppt.pptx';
+        $file = $user_id.'_'.$selection_id.'_'.$user_name.'_ansppt'.'_'.$question_title.'.pptx';
 
         if (file_exists($filename)) {
 
@@ -237,7 +246,7 @@ class AptitudeTestController extends Controller
 
 
 
-        /*if($count != $file_count){
+        /*if($count!= $file_count){
 
             return redirect()->back()->with('ddd','1');
 
@@ -259,7 +268,9 @@ class AptitudeTestController extends Controller
                         $file_original_name = $attachment->getClientOriginalName();
                         $original_file = (explode('_',$file_original_name));
 
-                        if($original_file[3] == 'ansdoc.docx')
+                        // dd($original_file);
+
+                        if($original_file['3'] == 'ansdoc')
                         {
                             $upload_folder = 'answer_files/org_doc_files/';
 
@@ -286,19 +297,19 @@ class AptitudeTestController extends Controller
 
 
                                 DB::commit();
-                                Session::flash('message','Success !! Files Successfully Submited !');
+                                Session::flash('message','Success!!' . ' ' . $file_count . ' ' . 'Files Successfully Submited!');
 
                             }catch(\Exception $e) {
 
                                 DB::rollback();
 
                                 //dd($e->getMessage());
-                                Session::flash('danger','ERROR !! Files Not Submited ! Before Submit Save All Files Then Close All Files.');
+                                Session::flash('danger','ERROR!! Files Not Submited! Before Submit Save All Files Then Close All Files.');
                             }
 
                         }
 
-                        elseif($original_file[3] == 'ansexcel.xlsx')
+                        elseif($original_file['3'] == 'ansexcel')
                         {
                             $upload_folder = 'answer_files/org_excel_files/';
 
@@ -316,7 +327,7 @@ class AptitudeTestController extends Controller
                             DB::beginTransaction();
                             try{
 
-                                Session::flash('message','Success !! Files Successfully Submited !');
+                                Session::flash('message','Success!!' . ' ' . $file_count . ' ' . 'Files Successfully Submited!');
 
                                 $model->create($input);
                                 DB::commit();
@@ -324,10 +335,10 @@ class AptitudeTestController extends Controller
                             }catch(\Exception $e) {
 
                                 DB::rollback();
-                                Session::flash('danger','ERROR !! Files Not Submited ! Before Submit Save All Files Then Close All Files.');
+                                Session::flash('danger','ERROR!! Files Not Submited! Before Submit Save All Files Then Close All Files.');
                             }
 
-                        }elseif($original_file[3] == 'ansppt.pptx')
+                        }elseif($original_file['3'] == 'ansppt')
                         {
                             $upload_folder = 'answer_files/org_ppt_files/';
 
@@ -348,12 +359,12 @@ class AptitudeTestController extends Controller
                                 $model->create($input);
                                 DB::commit();
 
-                                Session::flash('message','Success !! Files Successfully Submited !');
+                                Session::flash('message','Success!!' . ' ' . $file_count . ' ' . 'Files Successfully Submited!');
 
                             }catch(\Exception $e) {
 
                                 DB::rollback();
-                                Session::flash('danger','ERROR !! Files Not Submited ! Before Submit Save All Files Then Close All Files.');
+                                Session::flash('danger','ERROR!! Files Not Submited! Before Submit Save All Files Then Close All Files.');
                             }
 
                         }
@@ -389,20 +400,23 @@ class AptitudeTestController extends Controller
     }
 
 
-    public function answer_redownload($aptitude_exam_result_id)
+    public function answer_redownload($aptitude_exam_result_id,$qbank_aptitude_id)
     {
 
         $user_id = Auth::user()->id;
         $user_name = Auth::user()->username;
 
-
         $aptitude_exam_result = AptitudeExamResult::where('id', $aptitude_exam_result_id)->first();
         $answer_original_file_path = $aptitude_exam_result->answer_original_file_path;
+
+        $question_title = QBankAptitudeTest::where('id',$qbank_aptitude_id)->first()->title;
+
+
 
         if($aptitude_exam_result->question_type == 'word')
         {
 
-            $file_name = $user_id.'_'.$aptitude_exam_result->qselection_aptitude_id.'_'.$user_name.'_ansdoc.docx';
+            $file_name = $user_id.'_'.$aptitude_exam_result->qselection_aptitude_id.'_'.$user_name.'_ansdoc'.'_'.$question_title.'.docx';
 
             $input['re_submit_flag'] = 1;
             $model = AptitudeExamResult::where('id',$aptitude_exam_result_id)->first();
@@ -419,7 +433,7 @@ class AptitudeTestController extends Controller
         elseif($aptitude_exam_result->question_type == 'excel')
         {
 
-            $file_name = $user_id.'_'.$aptitude_exam_result->qselection_aptitude_id.'_'.$user_name.'_ansexcel.xlsx';
+            $file_name = $user_id.'_'.$aptitude_exam_result->qselection_aptitude_id.'_'.$user_name.'_ansexcel'.'_'.$question_title.'.xlsx';
 
             $input['re_submit_flag'] = 1;
             $model = AptitudeExamResult::where('id',$aptitude_exam_result_id)->first();
@@ -434,7 +448,7 @@ class AptitudeTestController extends Controller
         elseif($aptitude_exam_result->question_type == 'ppt')
         {
 
-            $file_name = $user_id.'_'.$aptitude_exam_result->qselection_aptitude_id.'_'.$user_name.'_ansppt.pptx';
+            $file_name = $user_id.'_'.$aptitude_exam_result->qselection_aptitude_id.'_'.$user_name.'_ansppt'.'_'.$question_title.'.pptx';
 
             $input['re_submit_flag'] = 1;
             $model = AptitudeExamResult::where('id',$aptitude_exam_result_id)->first();
@@ -464,7 +478,7 @@ class AptitudeTestController extends Controller
         $file_count = count($attachments);
 
 
-        if($count != $file_count){
+        if($count!= $file_count){
 
             //return redirect()->back()->with('ddd','1');
 
@@ -494,7 +508,7 @@ class AptitudeTestController extends Controller
 
 
 
-                        if($original_file[3] == 'ansdoc.docx')
+                        if($original_file['3'] == 'ansdoc')
                         {
 
                             $model = AptitudeExamResult::where('user_id',$user_id)->where('qselection_aptitude_id',$original_file[1])->first();
@@ -528,16 +542,16 @@ class AptitudeTestController extends Controller
 
                             }
                                 
-                                //Session::flash('message','Success !! Files Successfully Submited !');
+                                //Session::flash('message','Success!! Files Successfully Submited!');
                                 DB::commit();
 
                             }catch(\Exception $e) {
 
                                 DB::rollback();
-                                Session::flash('danger','ERROR !! Files Not Submited ! Before Submit Save All Files Then Close All Files.');
+                                Session::flash('danger','ERROR!! Files Not Submited! Before Submit Save All Files Then Close All Files.');
                             }
                         }
-                        elseif($original_file[3] == 'ansexcel.xlsx')
+                        elseif($original_file['3'] == 'ansexcel')
                         {
 
                             $model = AptitudeExamResult::where('user_id',$user_id)->where('qselection_aptitude_id',$original_file[1])->first();
@@ -575,11 +589,11 @@ class AptitudeTestController extends Controller
                             }catch(\Exception $e) {
 
                                 DB::rollback();
-                                Session::flash('danger','ERROR !! Files Not Submited ! Before Submit Save All Files Then Close All Files.');
+                                Session::flash('danger','ERROR!! Files Not Submited! Before Submit Save All Files Then Close All Files.');
                             }
 
                         }
-                        elseif($original_file[3] == 'ansppt.pptx')
+                        elseif($original_file['3'] == 'ansppt')
                         {
 
                             $model = AptitudeExamResult::where('user_id',$user_id)->where('qselection_aptitude_id',$original_file[1])->first();
@@ -617,7 +631,7 @@ class AptitudeTestController extends Controller
                             }catch(\Exception $e) {
 
                                 DB::rollback();
-                                Session::flash('danger','ERROR !! Files Not Submited ! Before Submit Save All Files Then Close All Files.');
+                                Session::flash('danger','ERROR!! Files Not Submited! Before Submit Save All Files Then Close All Files.');
                             }
 
                         }
@@ -634,7 +648,7 @@ class AptitudeTestController extends Controller
             }
         }
 
-        Session::flash('message','Success !! Files Successfully Updated !');
+        Session::flash('message','Success!!' . ' ' . $file_count . ' ' . 'Files Successfully Updated!');
 
         $url = URL::previous();
 
@@ -703,11 +717,11 @@ class AptitudeTestController extends Controller
 
     
 
-            $file_upload_start_time = isset($_COOKIE['file_upload_start_time']) ? $_COOKIE['file_upload_start_time'] : date('Y-m-d H:i:s');
+            $file_upload_start_time = isset($_COOKIE['file_upload_start_time']) ? $_COOKIE['file_upload_start_time'] : date('Y-m-d H:i:s'); 
 
             $passed_time = time()-strtotime($file_upload_start_time);
 
-            $remaining_time = 5*60 - $passed_time;
+            $remaining_time = 15*60 - $passed_time;
 
             //dd($remaining_time);
 
@@ -728,7 +742,7 @@ class AptitudeTestController extends Controller
 
       $re_submit_flag = isset($exams->where('re_submit_flag',1)->first()->re_submit_flag) ? $exams->where('re_submit_flag',1)->first()->re_submit_flag : 0;
 
-      if ($exams->count() != $question_no || $re_submit_flag) {
+      if ($exams->count()!= $question_no || $re_submit_flag) {
 
           return 'all_files_not_submitted';
 
@@ -771,7 +785,7 @@ class AptitudeTestController extends Controller
                 try{
 
                     unlink($download_full_path);
-                    Session::flash('message','Success !! Files Successfully Submited !');
+                    Session::flash('message','Success!! Files Successfully Submited!');
 
                     $model->create($input);
                     DB::commit();
@@ -779,7 +793,7 @@ class AptitudeTestController extends Controller
                 }catch(\Exception $e) {
 
                     DB::rollback();
-                    Session::flash('danger','ERROR !! Files Not Submited ! Before Submit Save All Files Then Close All Files.');
+                    Session::flash('danger','ERROR!! Files Not Submited! Before Submit Save All Files Then Close All Files.');
                 }
             }
             elseif($value->question_type == 'excel')
@@ -800,7 +814,7 @@ class AptitudeTestController extends Controller
                 try{
 
                     unlink($download_full_path);
-                    Session::flash('message','Success !! Files Successfully Submited !');
+                    Session::flash('message','Success!! Files Successfully Submited!');
 
                     $model->create($input);
                     DB::commit();
@@ -808,7 +822,7 @@ class AptitudeTestController extends Controller
                 }catch(\Exception $e) {
 
                     DB::rollback();
-                    Session::flash('danger','ERROR !! Files Not Submited ! Before Submit Save All Files Then Close All Files.');
+                    Session::flash('danger','ERROR!! Files Not Submited! Before Submit Save All Files Then Close All Files.');
                 }
             }
         }
@@ -893,7 +907,7 @@ class AptitudeTestController extends Controller
 
                     unlink($download_full_path);
 
-                    Session::flash('message','Success !! Files Successfully Submited !');
+                    Session::flash('message','Success!! Files Successfully Submited!');
 
                     //$input['re_submit_flag'] = 0;
                     //$model = AptitudeExamResult::where('id',$aptitude_exam_result_id)->first();
@@ -902,12 +916,12 @@ class AptitudeTestController extends Controller
                 }catch(\Exception $e) {
 
                     DB::rollback();
-                    Session::flash('danger','ERROR !! Files Not Re-Submited ! Before Re-Submit Save All Files Then Close All Files.');
+                    Session::flash('danger','ERROR!! Files Not Re-Submited! Before Re-Submit Save All Files Then Close All Files.');
                 }
             }
             else
             {
-                Session::flash('danger','ERROR !! Files Not Re-Submited ! Before Re-Submit Download The File And Save Then Close The File.');
+                Session::flash('danger','ERROR!! Files Not Re-Submited! Before Re-Submit Download The File And Save Then Close The File.');
             }
         }
         elseif($aptitude_exam_result->question_type == 'excel')
@@ -928,7 +942,7 @@ class AptitudeTestController extends Controller
 
                     unlink($download_full_path);
 
-                    Session::flash('message','Success !! Files Successfully Submited !');
+                    Session::flash('message','Success!! Files Successfully Submited!');
 
                     //$input['re_submit_flag'] = 0;
                     //$model = AptitudeExamResult::where('id',$aptitude_exam_result_id)->first();
@@ -937,12 +951,12 @@ class AptitudeTestController extends Controller
                 }catch(\Exception $e) {
 
                     DB::rollback();
-                    Session::flash('danger','ERROR !! Files Not Re-Submited ! Before Re-Submit Save All Files Then Close All Files.');
+                    Session::flash('danger','ERROR!! Files Not Re-Submited! Before Re-Submit Save All Files Then Close All Files.');
                 }
             }
             else
             {
-                Session::flash('danger','ERROR !! Files Not Re-Submited ! Before Re-Submit Download The File And Save Then Close The File.');
+                Session::flash('danger','ERROR!! Files Not Re-Submited! Before Re-Submit Download The File And Save Then Close The File.');
             }
 
         }

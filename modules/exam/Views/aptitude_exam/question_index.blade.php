@@ -301,6 +301,7 @@ $username = $user->username;
             <div class="col-sm-12" style="position:static; color: blue; background-color:silver">
                 {{-- <span><b>&nbsp;Question No :: &nbsp; {{$i}}</b></span>&nbsp;&nbsp;&nbsp; --}}
                 <span><b>&nbsp;Q.{{$i}}</b></span>&nbsp;&nbsp;&nbsp;
+                <span><b>&nbsp;Name: {{$ques_values->qbank_aptitude_question->title}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span><b>&nbsp;Marks: {{$question_mark}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                 @if(isset($final_submit))
@@ -309,7 +310,7 @@ $username = $user->username;
                         @foreach($final_submit as $values)
                             @if ($values->qsel_apt_test->qbank_aptitude_id == $qbank_aptitude_id && $values->re_submit_flag==0) 
 
-                        <a href="{{ route('answer-redownload', $values->id) }}" class="btn btn-primary btn-xs disable-button re-ans-dow{{$values->id}}" onclick="re_ans_dow({{$values->id}})" data-placement="top"><strong>Review Answer Sheet</strong></a>
+                        <a href="{{ route('answer-redownload', [$values->id,$qbank_aptitude_id]) }}" class="btn btn-primary btn-xs disable-button re-ans-dow{{$values->id}}" onclick="re_ans_dow({{$values->id}})" data-placement="top"><strong>Review Answer Sheet</strong></a>
 
                             @endif
                         @endforeach
@@ -340,7 +341,7 @@ $username = $user->username;
                 @else
                     <tr class="{{$btn_class.$i}}">
                         <td>
-                            <a href="{{ route($route, $ques_values->id) }}" class="btn btn-primary disable-button btn-xs {{$btn_class.$i}}" onclick="download_hide({{$i}})" data-placement="top" style="margin: 5px 5px;"><strong>Answer Sheet</strong></a>
+                            <a href="{{ route($route, [$ques_values->id,$ques_values->qbank_aptitude_question->id]) }}" class="btn btn-primary disable-button btn-xs {{$btn_class.$i}}" onclick="download_hide({{$i}})" data-placement="top" style="margin: 5px 5px;"><strong>Download Answer Sheet</strong></a>
                             <a href="" style="visibility:hidden;margin:5px;" class="btn btn-primary btn-xs">ddd</a>
                         </td>
                     </tr>
@@ -348,9 +349,8 @@ $username = $user->username;
             </div>
             
             <div class="col-sm-12" style="color: blue">
-
-
-                <iframe src="{{URL::asset($ques_values->qbank_aptitude_question->image_file_path)}}" width="100%;" height="600px;"></iframe>
+                <p><br><br><br></p>
+                {{-- <iframe src="{{URL::asset($ques_values->qbank_aptitude_question->image_file_path)}}" width="100%;" height="600px;"></iframe> --}}
             </div>
         </div>
             <?php $i++; ?>

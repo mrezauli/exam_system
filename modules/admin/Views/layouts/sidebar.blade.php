@@ -141,6 +141,7 @@
         </a>
         <ul class="sub">
             <li><a  href="{{URL::to('exam/answer-checking')}}">Answer Sheet Checking</a></li>
+            <li><a  href="{{URL::to('exam/answer-sheet-review')}}">Answer Sheet Review</a></li>
         </ul>
     </li>
 @endif

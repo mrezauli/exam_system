@@ -130,16 +130,15 @@ class ExamProcessController extends Controller
 
 
 
-
         if($input['exam_type'] == 'typing_test')
         {
 
             $model = User::where('company_id',$input['company_id'])
                             ->where('designation_id',$input['designation_id'])
-                            ->whereBetween('sl', [$input['sl_from'], $input['sl_to']])
+                            ->whereBetween('sl', [$input['sl_from'], $input['sl_to']])   
+                            ->where('aptitude_exam_code_id',null)
                             ->where('typing_status','inactive')
                             ->where('attended_typing_test',null)->get();
-
 
 
             $input_candidate['typing_exam_code_id']= $input['exam_code_id'];
@@ -152,6 +151,7 @@ class ExamProcessController extends Controller
             $model = User::where('company_id',$input['company_id'])
                             ->where('designation_id',$input['designation_id'])
                             ->whereBetween('sl', [$input['sl_from'], $input['sl_to']])
+                            ->where('typing_exam_code_id',null)
                             ->where('aptitude_status','inactive')
                             ->where('attended_aptitude_test',null)->get();
 

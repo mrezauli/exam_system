@@ -59,7 +59,7 @@ class AnswerSheetCheckingController extends Controller
 
         $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id', 'desc')->lists('designation_name','id')->all();
 
-        $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','aptitude_test')->where('status','active')->orderBy('id','desc')->lists('exam_code_name','id')->all();
+        $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','aptitude_test')->where('status','active')->orderBy('id','desc')->take('5')->get()->lists('exam_code_name','id')->all();
 
 
         return view('exam::answer_sheet_checking.index', compact('page_title', 'company_list', 'designation_list','exam_code_list'));

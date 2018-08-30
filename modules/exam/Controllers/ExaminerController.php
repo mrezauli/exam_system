@@ -52,7 +52,7 @@ class ExaminerController extends Controller
 
         $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->lists('designation_name','id')->all();
 
-        $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','aptitude_test')->where('status','active')->orderBy('id','desc')->lists('exam_code_name','id')->all();
+        $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','aptitude_test')->where('status','active')->orderBy('id','desc')->take('5')->get()->lists('exam_code_name','id')->all();
 
 
 

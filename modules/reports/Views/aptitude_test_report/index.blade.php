@@ -262,7 +262,7 @@ form .col-sm-12:last-child{
                             
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody> 
                         
                         @if($status==2)
 
@@ -272,15 +272,21 @@ form .col-sm-12:last-child{
 
                         $sl_no = isset($_GET['page']) ? ($_GET['page']-1)*2 + 0: 0;
                         
+                        //$model = collect(['0' => $model->get('1')]);
                         
-
+                        //dd($model);
                          ?>
 
                       
+
+
                             @foreach($model as $values)
 
-
                             <?php 
+
+//dd($values);
+
+
 
                             $sl_no++; 
  
@@ -288,9 +294,9 @@ form .col-sm-12:last-child{
 
                             $grouped_by_question_type = $values->groupBy('question_type')->sortBy('qselection_aptitude_id');
 
-                            foreach ($group as $group_key => $value) {
+                            foreach ($all_group as $group_key => $value) {
 
-                                foreach ($group[$group_key] as $key => $value) {
+                                foreach ($all_group[$group_key] as $key => $value) {
 
                                     if (isset($grouped_by_question_type[$group_key])) {
 
@@ -298,7 +304,7 @@ form .col-sm-12:last-child{
 
                                         if (! in_array($value->qselection_aptitude_id, $ddd)) {
 
-                                         $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
+                                         $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'exam_date'=>$value->exam_date,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
                                         }  
                                     }
 
@@ -312,7 +318,27 @@ form .col-sm-12:last-child{
 
                             $remarks = ''; 
 
-                            $pass_percentage = $bangla_speed;          
+                            $pass_percentage = $bangla_speed;    
+
+                            unset($grouped_by_question_type['']);    
+
+
+
+                            foreach ($grouped_by_question_type as $key => $question_group) {
+                                  
+                                $exam_date = $question_group->where('attended_aptitude_test','true')->first()->exam_date;
+
+                                foreach ($question_group as $key => $value) {
+                                    if ($value->exam_date != $exam_date) {
+                                        unset($question_group[$key]);
+                                    }
+                                    
+                                }
+
+                                //dd($ddd);
+
+                              }  
+
 //dd($grouped_by_question_type);
 
 // dd($grouped_by_question_type['word']->sortBy('qselection_aptitude_id'));
@@ -729,9 +755,11 @@ form .col-sm-12:last-child{
 
             $grouped_by_question_type = $values->groupBy('question_type')->sortBy('qselection_aptitude_id');
 
-                            foreach ($group as $group_key => $value) {
 
-                                foreach ($group[$group_key] as $key => $value) {
+
+                            foreach ($all_group as $group_key => $value) {
+
+                                foreach ($all_group[$group_key] as $key => $value) {
 
                                     if (isset($grouped_by_question_type[$group_key])) {
 
@@ -739,13 +767,15 @@ form .col-sm-12:last-child{
 
                                         if (! in_array($value->qselection_aptitude_id, $ddd)) {
 
-
-                                         $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
+                                         $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'exam_date'=>$value->exam_date,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
                                         }  
                                     }
 
                                 }
-                            }    
+                            }
+
+
+                            unset($grouped_by_question_type['']);
 
 
 
@@ -1182,9 +1212,9 @@ form .col-sm-12:last-child{
 
              $grouped_by_question_type = $values->groupBy('question_type')->sortBy('qselection_aptitude_id');
 
-                            foreach ($group as $group_key => $value) {
+                            unset($grouped_by_question_type['']);foreach ($all_group as $group_key => $value) {
 
-                                foreach ($group[$group_key] as $key => $value) {
+                                foreach ($all_group[$group_key] as $key => $value) {
 
                                     if (isset($grouped_by_question_type[$group_key])) {
 
@@ -1192,17 +1222,19 @@ form .col-sm-12:last-child{
 
                                         if (! in_array($value->qselection_aptitude_id, $ddd)) {
 
-
-                                         $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
+                                         $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'exam_date'=>$value->exam_date,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
                                         }  
                                     }
 
                                 }
                             }
+                            
 
-            $total_answer_marks = 0;
+                            unset($grouped_by_question_type['']);
 
-            $failed_in_any_exam = '';
+                            $total_answer_marks = 0;
+
+                            $failed_in_any_exam = '';
             
 
           

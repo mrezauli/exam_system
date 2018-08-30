@@ -115,7 +115,7 @@ class QSelectionTypingTestController extends Controller
       }
 
 
-        $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','typing_test')->where('status','active')->orderBy('id','desc')->lists('exam_code_name','id')->all();
+        $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','typing_test')->where('status','active')->orderBy('id','desc')->lists('exam_code_name','id')->take('5')->all();
 
 
         return view('question::qselection_typing_test.create',compact('data','page_title','company_list','designation_list','exam_code_list','selected_questions_id'));

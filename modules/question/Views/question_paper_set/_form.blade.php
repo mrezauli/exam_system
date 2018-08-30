@@ -93,11 +93,12 @@
 
                     <p> &nbsp;</p>
 
-                    <table  class="display table table-bordered table-striped question-paper-set-table" id="example">
+                    <table class="display table table-bordered table-striped question-paper-set-table" id="example">
                         <thead>
                         <tr> 
                             <th> Select Question </th>
                             <th> Question Mark </th>
+                            {{-- <th> Question Name </th> --}}
                             <th> Question Title </th>
                             <th> Question Type </th>
                             <th> Created Date </th>
@@ -105,11 +106,11 @@
                         </tr>
                         </thead>
 
-
                         <tfoot class="search-section">
                         <tr> 
                             <th> Select Question </th>
                             <th> Question Mark </th>
+                            {{-- <th> Question Name </th> --}}
                             <th> Question Title </th>
                             <th> Question Type </th>
                             <th> Created Date </th>
@@ -135,6 +136,10 @@
                                     <td>
                                         <input id="question_mark" data-id="{{$values->id}}" class="form-control question-mark" name="question_marks[]" type="text" value="">
                                     </td>
+
+                                    {{-- <td>
+                                        <input id="question_name" class="form-control question-name" name="question_name[]" type="text" value="">
+                                    </td> --}}
 
 
                                     <td>{{ucfirst($values->title)}}</td>

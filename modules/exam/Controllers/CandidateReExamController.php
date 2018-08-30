@@ -44,6 +44,8 @@ class CandidateReExamController extends Controller
 
         $exam_process_code_list =  ExamProcess::lists('exam_code_id')->all();
 
+        $exam_process_code_list =  ExamProcess::orderBy('id','desc')->take('5')->get()->lists('exam_code_id')->all();
+
         $exam_code_list = [''=>'Select exam code'] + collect($exam_code_list)->flip()->intersect($exam_process_code_list)->flip()->all();
 
 
@@ -73,7 +75,7 @@ class CandidateReExamController extends Controller
 
             unset($user_data['exam_code_id']);
 
-            $user = User::where($user_data)->get();
+            $user = User::where($user_data)->get(); 
 
         }else{
 
@@ -111,10 +113,11 @@ class CandidateReExamController extends Controller
 
         if ($main_exam_type == 'aptitude_test') {
 
-
             $user->first()->exam_type = 'aptitude_test';
             
             $user->first()->aptitude_status = $data['status'];
+
+            $user->first()->aptitude_exam_cancel_comments = $data['cancel_comments'];
 
             $user->first()->started_exam = null;
 
@@ -158,6 +161,9 @@ class CandidateReExamController extends Controller
         $user->first()->exam_type = 'typing_test';
         
         $user->first()->typing_status = $data['status'];
+
+        $user->first()->typing_exam_cancel_comments = $data['cancel_comments'];
+
 
 
         

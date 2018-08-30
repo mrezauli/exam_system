@@ -129,6 +129,28 @@
 <!-- modal -->
 
 <script>
+
+
+$(document).ready(function() {
+    
+
+$("form").submit(function(e) {
+
+    $(this).submit(function() {
+        return false;
+    });
+    return true;
+});
+
+
+
+$(".upload-button").one("click", function() {
+    $(this).click(function () { return false; });
+});
+
+});
+
+
     function open_modal(){
         document.getElementById('load').style.visibility="visible";
     }

@@ -343,10 +343,10 @@ class ExamCodeController extends Controller
                 ->where('company_id',$exam_code->company_id)
                 ->where('designation_id',$exam_code->designation_id)
                 ->where('exam_number',$exam_number)
-                //->where('typing_status','inactive')
-                //->where('attended_typing_test',null)
-                ->where('typing_exam_code_id',null)
-                ->where('aptitude_exam_code_id',null)
+                ->where('typing_status','inactive')
+                ->where('attended_typing_test',null)
+                //->where('typing_exam_code_id',null)
+                //->where('aptitude_exam_code_id',null)
                 ->orderBy('sl','asc')
                 ->get();
 
@@ -361,10 +361,10 @@ class ExamCodeController extends Controller
                 ->where('company_id',$exam_code->company_id)
                 ->where('designation_id',$exam_code->designation_id)
                 ->where('exam_number',$exam_number)
-                //->where('aptitude_status','inactive')
-                //->where('attended_aptitude_test',null)
-                ->where('typing_exam_code_id',null)
-                ->where('aptitude_exam_code_id',null)
+                ->where('aptitude_status','inactive')
+                ->where('attended_aptitude_test',null)
+                //->where('typing_exam_code_id',null)
+                //->where('aptitude_exam_code_id',null)
                 ->orderBy('sl','asc')
                 ->get();
 
@@ -417,8 +417,6 @@ class ExamCodeController extends Controller
 
 
 
-
-
        if($exam_code->exam_type == 'typing_test')
        {
 
@@ -450,7 +448,6 @@ class ExamCodeController extends Controller
 
 
        return json_encode([$total_candidate_number]);
-
 
     }
 

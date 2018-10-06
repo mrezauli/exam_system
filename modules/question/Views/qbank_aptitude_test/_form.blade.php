@@ -2,7 +2,7 @@
     <div class="row">
 
     <div class="col-sm-offset-1 col-sm-10">
-      {!! Form::label('title', 'Title', ['class' => 'control-label']) !!}
+      {!! Form::label('title', 'Question Name', ['class' => 'control-label']) !!}
        <small class="required">*</small>
       {!! Form::text('title', Input::old('title'), ['id'=>'title', 'class' => 'form-control title','required'=>'required']) !!}
     </div>

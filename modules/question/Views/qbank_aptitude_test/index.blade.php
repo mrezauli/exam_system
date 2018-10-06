@@ -52,7 +52,7 @@
                                     <table class="display table table-bordered table-striped" id="example">
                                         <thead>
                                         <tr>
-                                            <th> Title </th>
+                                            <th> Question Name</th>
                                             <th> Action </th>
                                         </tr>
                                         </thead>
@@ -100,7 +100,7 @@
                                     <table class="display table table-bordered table-striped ms-excel" id="example">
                                         <thead>
                                         <tr>
-                                            <th> Title </th>
+                                            <th> Question Name </th>
                                             <th> Action </th>
                                         </tr>
                                         </thead>
@@ -148,7 +148,7 @@
                                     <table class="display table table-bordered table-striped ms-ppt" id="example">
                                         <thead>
                                         <tr>
-                                            <th>Title</th>
+                                            <th>Question Name</th>
                                             <th> Action </th>
                                         </tr>
                                         </thead>

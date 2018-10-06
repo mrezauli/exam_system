@@ -85,7 +85,7 @@ form .col-sm-12:last-child{
                     <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('remarks', 'Remarks:', ['class' => 'control-label']) !!}
                         <small class="required jrequired">(Required)</small>
-                        {!! Form::Select('remarks',['passed'=>'Pass','failed'=>'Fail','all'=>'All'], @Input::get('remarks')? Input::get('remarks') : null,['id'=>'remarks','class' => 'form-control remarks','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
+                        {!! Form::Select('remarks',['passed'=>'Pass','failed'=>'Fail','expelled'=>'Expelled','cancelled'=>'Cancelled','all'=>'All'], @Input::get('remarks')? Input::get('remarks') : null,['id'=>'remarks','class' => 'form-control remarks','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
                     </div>
     
                   {{--   <div class="col-lg-2 col-md-3 col-sm-6 filter-btn">
@@ -190,7 +190,7 @@ form .col-sm-12:last-child{
                                     {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}       
                                     </td>
 
-                                    <td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">{{$values->remarks}}</td>
+                                    <td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">{{ucfirst($values->remarks)}}</td>
                                    
                                 </tr>
                             @endforeach
@@ -356,7 +356,7 @@ form .col-sm-12:last-child{
                     {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}       
                     </td>
 
-                    <td>{{$values->remarks}}</td>
+                    <td>{{ucfirst($values->remarks)}}</td>
                    
                 </tr>
 
@@ -701,6 +701,29 @@ function report_exam_code(){
         report_pass_marks();
 
     });
+
+    var all_fields = '#bangla_speed,#word_pass_marks,#excel_pass_marks,#ppt_pass_marks';
+
+    $('#remarks').change(function(e) {
+    
+        $value = $(this).val();
+
+        if ($value == 'cancelled' || $value == 'expelled') {
+
+            $(all_fields).prop('disabled', true).val('').trigger('change').attr('required', false);
+
+            $('.jprequired').hide();
+
+        } else {
+
+            $(all_fields).prop('disabled', false).attr('required', true);
+
+            $('.jprequired').show();
+        }
+
+    });
+
+    $('#remarks').trigger('change');
 
 
                         

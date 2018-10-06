@@ -101,7 +101,7 @@ class ShortAptitudeTestReportController extends Controller
 
 
         $model = DB::table( 'user AS u' )
-        ->select('u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.id as user_id','e.company_id','e.designation_id','e.exam_date','e.exam_code_name','u.attended_typing_test','u.attended_aptitude_test','q.id as qselection_aptitude_id','q.question_type','a.answer_marks','q.question_set_id','q.qbank_aptitude_id')
+        ->select('u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.id as user_id','e.company_id','e.designation_id','e.exam_date','e.exam_code_name','u.aptitude_status','u.attended_typing_test','u.attended_aptitude_test','q.id as qselection_aptitude_id','q.question_type','a.answer_marks','q.question_set_id','q.qbank_aptitude_id')
                 ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.aptitude_exam_code_id')
                 ->leftJoin( 'aptitude_exam_result as a', 'a.user_id', '=', 'u.id')
                 ->leftJoin( 'qselection_aptitude_test as q', 'a.qselection_aptitude_id', '=', 'q.id')
@@ -307,7 +307,7 @@ class ShortAptitudeTestReportController extends Controller
         }
 
 
-                $model->each(function ($values, $key)use($bangla_speed,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks) {
+            $model->each(function ($values, $key)use($bangla_speed,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks,$exam_dates) {
 
             $remarks = '';
 
@@ -315,7 +315,7 @@ class ShortAptitudeTestReportController extends Controller
 
             $values->total_answer_marks = $total_answer_marks = $values->sum('answer_marks');
 
-            $values->total_question_marks = $total_question_marks = $values->sum('question_marks');
+            $values->total_question_marks = $total_question_marks = $values->sum('question_marks')/count($exam_dates);;
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
@@ -374,6 +374,12 @@ class ShortAptitudeTestReportController extends Controller
 
             }
 
+            if ($values->first()->aptitude_status =='cancelled' || $values->first()->aptitude_status == 'expelled') {
+
+                $values->remarks = $values->first()->aptitude_status;
+
+            }
+
         });
 
 
@@ -408,10 +414,17 @@ class ShortAptitudeTestReportController extends Controller
         $failed = $model->filter(function ($value) {
             return $value->remarks == "Fail";
         });
-        // dd($passed);
-
+        
         $absent = $model->filter(function ($value) {
             return $value->remarks == "Absent";
+        });
+
+        $expelled = $model->filter(function ($value) {
+            return $value->remarks == "expelled";
+        });
+
+        $cancelled = $model->filter(function ($value) {
+            return $value->remarks == "cancelled";
         });
 
 
@@ -426,6 +439,13 @@ class ShortAptitudeTestReportController extends Controller
         $comparer = $makeComparer($criteria);
         $absent = $absent->sort($comparer);
 
+        $comparer = $makeComparer($criteria);
+        $expelled = $expelled->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $cancelled = $cancelled->sort($comparer);
+
+
 
 
         if ($remarks == 'passed') {
@@ -434,6 +454,14 @@ class ShortAptitudeTestReportController extends Controller
 
         if ($remarks == 'failed') {
             $model = $failed;
+        }
+
+        if ($remarks == 'expelled') {
+            $model = $expelled;
+        }
+
+        if ($remarks == 'cancelled') {
+            $model = $cancelled;
         }
 
         if ($remarks == 'all') {

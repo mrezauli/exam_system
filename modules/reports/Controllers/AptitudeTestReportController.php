@@ -359,7 +359,7 @@ class AptitudeTestReportController extends Controller
 
         // dd($model);
 
-        $model->each(function ($values, $key)use($bangla_speed,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks) {
+        $model->each(function ($values, $key)use($bangla_speed,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks,$exam_dates) {
 
             $remarks = '';
 
@@ -367,13 +367,11 @@ class AptitudeTestReportController extends Controller
 
             $values->total_answer_marks = $total_answer_marks = $values->sum('answer_marks');
 
-            $values->total_question_marks = $total_question_marks = $values->sum('question_marks');
+            $values->total_question_marks = $total_question_marks = $values->sum('question_marks')/count($exam_dates);
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
             $values->each(function ($data, $key)use(&$failed_in_any_exam,$bangla_speed,$total_question_marks,$total_answer_marks,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks) {
-
-
 
 
                 if ($bangla_speed) {

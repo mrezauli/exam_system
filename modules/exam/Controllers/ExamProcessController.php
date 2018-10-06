@@ -74,13 +74,15 @@ class ExamProcessController extends Controller
             $i++;
 
             if($i == '6'){
+
                 break;
+
             }
 
         }
             
 
-    
+        $exam_code_list = $ddd;
 
         // $exam_code_list = collect($exam_code_list)->get('6');
 

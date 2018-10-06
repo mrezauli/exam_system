@@ -302,7 +302,7 @@ $username = $user->username;
                 {{-- <span><b>&nbsp;Question No :: &nbsp; {{$i}}</b></span>&nbsp;&nbsp;&nbsp; --}}
                 <span><b>&nbsp;Q.{{$i}}</b></span>&nbsp;&nbsp;&nbsp;
                 <span><b>&nbsp;Question Name: {{$ques_values->qbank_aptitude_question->title}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span><b>&nbsp;Marks: {{$question_mark}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {{-- <span><b>&nbsp;Marks: {{$question_mark}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --}}
 
                 @if(isset($final_submit))
                     @if(count($final_submit)>0)
@@ -331,7 +331,7 @@ $username = $user->username;
 
                 ?>
 
-                <a href="" style="visibility:hidden;margin:5px;" class="btn btn-primary btn-xs">ddd</a>
+                {{-- <a href="" style="visibility:hidden;margin:5px;" class="btn btn-primary btn-xs">ddd</a> --}}
                 @if(isset($ques_values['file_download'][0]))
                     @if($ques_values['file_download'][0]['open_flag']==1)
                         <tr>
@@ -346,6 +346,8 @@ $username = $user->username;
                         </td>
                     </tr>
                 @endif
+
+                <span><b>&nbsp;Marks: {{$question_mark}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             
             <div class="col-sm-12" style="color: blue">

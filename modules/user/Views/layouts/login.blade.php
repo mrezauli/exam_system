@@ -113,9 +113,9 @@
 
 
 
-<script type="text/javascript" src="{{ URL::asset('assets/js/jquery.flot.pie.js') }}"></script>
-<script type="text/javascript" src="{{ URL::asset('assets/js/curvedLines.js') }}"></script>
-<script type="text/javascript" src="{{ URL::asset('assets/js/spline.index.js') }}"></script>
+{{-- <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.flot.pie.js') }}"></script> --}}
+{{-- <script type="text/javascript" src="{{ URL::asset('assets/js/curvedLines.js') }}"></script> --}}
+{{-- <script type="text/javascript" src="{{ URL::asset('assets/js/spline.index.js') }}"></script> --}}
 <script type="text/javascript" src="{{ URL::asset('assets/js/metisMenu.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/js/icheck.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.peity.min.js') }}"></script>
@@ -125,6 +125,7 @@
 <script type="text/javascript" src="{{ URL::asset('assets/js/charts.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap-datepicker.js') }}"></script>
 
+@yield('custom-script')
 
 {{--<script src="assets/js/jquery.flot.pie.js"></script>
 <script src="assets/js/curvedLines.js"></script>

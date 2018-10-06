@@ -77,5 +77,21 @@
             </div>
         </div>
     </div>
+
 @stop
 
+
+@section('custom-script')
+    <script>
+    
+$('form').submit(function(){
+
+if ($(this).valid()){
+    
+  $(this).find(':submit').attr('disabled','disabled');
+}
+
+});
+
+</script>
+@stop

@@ -424,8 +424,10 @@ class ExamCodeController extends Controller
                            ->where('role_id',4)
                            ->where('company_id',$exam_code->company_id)
                            ->where('designation_id',$exam_code->designation_id)
-                           ->where('typing_status','inactive')
-                           ->where('attended_typing_test',null)
+                           // ->where('typing_status','inactive')
+                           // ->where('attended_typing_test',null)
+                           ->where('typing_exam_code_id',null)
+                           ->where('aptitude_exam_code_id',null)
                            ->orderBy('sl','asc')
                            ->count();
 
@@ -438,8 +440,10 @@ class ExamCodeController extends Controller
                         ->where('role_id',4)
                         ->where('company_id',$exam_code->company_id)
                         ->where('designation_id',$exam_code->designation_id)
-                        ->where('aptitude_status','inactive')
-                        ->where('attended_aptitude_test',null)
+                        //->where('aptitude_status','inactive')
+                        //->where('attended_aptitude_test',null)
+                        ->where('typing_exam_code_id',null)
+                        ->where('aptitude_exam_code_id',null)
                         ->orderBy('sl','asc')
                         ->count();
 

@@ -294,6 +294,8 @@ $username = $user->username;
 
             $question_mark = isset($question_set->aptitude_questions->keyBy('id')->get($qbank_aptitude_id)->pivot->question_mark) ? $question_set->aptitude_questions->keyBy('id')->get($qbank_aptitude_id)->pivot->question_mark : '0';
 
+            $review_answer_sheet = '0';
+
 
 ?>
             
@@ -309,6 +311,8 @@ $username = $user->username;
 
                         @foreach($final_submit as $values)
                             @if ($values->qsel_apt_test->qbank_aptitude_id == $qbank_aptitude_id && $values->re_submit_flag==0) 
+
+                            <?php $review_answer_sheet = '1'; ?>
 
                         <a href="{{ route('answer-redownload', [$values->id,$qbank_aptitude_id]) }}" class="btn btn-primary btn-xs disable-button re-ans-dow{{$values->id}}" onclick="re_ans_dow({{$values->id}})" data-placement="top"><strong>Review Answer Sheet</strong></a>
 
@@ -338,13 +342,15 @@ $username = $user->username;
                             <td><a href="" style="visibility:hidden;margin:5px;" class="btn btn-primary btn-xs">ddd</a></td>
                         </tr>
                     @endif
-                @elseif($values->qsel_apt_test->qbank_aptitude_id != $qbank_aptitude_id)
+                @elseif($review_answer_sheet != '1')
+
                     <tr class="{{$btn_class.$i}}">
                         <td>
                             <a href="{{ route($route, [$ques_values->id,$ques_values->qbank_aptitude_question->id]) }}" class="btn btn-primary disable-button btn-xs {{$btn_class.$i}}" onclick="download_hide({{$i}})" data-placement="top" style="margin: 5px 5px;"><strong>Create Answer Sheet</strong></a>
                             <a href="" style="visibility:hidden;margin:5px;" class="btn btn-primary btn-xs">ddd</a>
                         </td>
                     </tr>
+
                 @endif
 
                 <span><b>&nbsp;Marks: {{$question_mark}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

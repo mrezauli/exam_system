@@ -130,16 +130,18 @@
 
 <script>
 
-
 $(document).ready(function() {
-    
 
 $("form").submit(function(e) {
 
     $(this).submit(function() {
+
         return false;
+
     });
+
     return true;
+
 });
 
 

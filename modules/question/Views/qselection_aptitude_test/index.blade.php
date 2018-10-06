@@ -89,7 +89,7 @@
                                     <td>
                                         <a href="{{ route('edit-qselection-aptitude-test', $values->id) }}" class="btn btn-primary btn-xs edit-meeting"><i class="fa fa-edit"></i></a>
                                         <a href="{{ route('delete-qselection-aptitude-test', $values->id) }}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure to Delete?')" data-placement="top" data-content="delete"><i class="fa fa-trash-o"></i></a>
-                                        <a data-id={{$values->id}} class="btn btn-info btn-xs print-button" href="">print</a>
+                                        {{-- <a data-id={{$values->id}} class="btn btn-info btn-xs print-button" href="">print</a> --}}
                                     </td>
                                 </tr>
                             @endforeach

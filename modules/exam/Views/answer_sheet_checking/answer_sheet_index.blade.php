@@ -94,8 +94,8 @@
  
                         <div class="row">
                             <div class="col-sm-12" style="color: blue; background-color:silver">
-                                <span><b>&nbsp;Answer No :: &nbsp; {{$i}}</b></span>&nbsp;&nbsp;&nbsp;
-                                <span><b>&nbsp;Question Mark :: &nbsp; {{$ques_values['mark']}}</b></span>&nbsp;&nbsp;&nbsp;
+                                <span><b>&nbsp; {{$i}}.</b></span>&nbsp;&nbsp;&nbsp;
+                                <span><b>&nbsp;Question Name :: &nbsp; {{$ques_values['question_name']}}</b></span>&nbsp;&nbsp;&nbsp;
                                 @if(1)
                                 <tr>
                                     <td>
@@ -105,6 +105,8 @@
                                 @else
                                 <a href="" class="btn btn-primary btn-sm" data-placement="top" style="margin: 5px 5px;visibility:hidden"><strong>Download Answer Sheet</strong></a>
                                 @endif
+
+                                <span><b>&nbsp;Question Marks :: &nbsp; {{$ques_values['mark']}}</b></span>&nbsp;&nbsp;&nbsp;
                             </div>
 
 

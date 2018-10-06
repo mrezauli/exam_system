@@ -136,6 +136,8 @@ class AnswerSheetReviewController extends Controller
               
                 $question_set = QuestionPaperSet::with('aptitude_questions')->where('id',$question_set_id)->where('status','active')->first();
 
+                $question_name = isset($values->qsel_apt_test) ? $values->qsel_apt_test->qbank_aptitude_question->title : '';
+
 
                 $question_mark = isset($question_set->aptitude_questions->keyBy('id')->get($qbank_aptitude_id)->pivot->question_mark) ? $question_set->aptitude_questions->keyBy('id')->get($qbank_aptitude_id)->pivot->question_mark : '0';
 
@@ -154,6 +156,7 @@ class AnswerSheetReviewController extends Controller
                 $filename_html = explode('.', $file_html[2]);
                 $answer_html_files[$m]['type'] = $values->question_type;
                 $answer_html_files[$m]['id'] = $values->id;
+                $answer_html_files[$m]['question_name'] = $question_name;
                 $answer_html_files[$m]['question_mark'] = $question_mark;
                 $answer_html_files[$m]['answer_mark'] = $answer_marks;
 

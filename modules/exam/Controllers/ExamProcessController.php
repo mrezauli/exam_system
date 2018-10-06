@@ -63,9 +63,26 @@ class ExamProcessController extends Controller
             unset($exam_code_list[$value]);
         }
 
+        $ddd = [];
+        $i = 0;
 
-        $exam_code_list = collect($exam_code_list)->take('6');
 
+        foreach ($exam_code_list as $key => $value) {
+
+            $ddd[$key] = $value; 
+
+            $i++;
+
+            if($i == '6'){
+                break;
+            }
+
+        }
+            
+
+    
+
+        // $exam_code_list = collect($exam_code_list)->get('6');
 
 
         /*$exam_code_list = DB::table('exam_code as e')

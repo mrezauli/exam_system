@@ -64,7 +64,8 @@ class ExamProcessController extends Controller
         }
 
 
-        $exam_code_list = array_slice($exam_code_list,0,6);
+        $exam_code_list = collect($exam_code_list)->take('6');
+
 
 
         /*$exam_code_list = DB::table('exam_code as e')

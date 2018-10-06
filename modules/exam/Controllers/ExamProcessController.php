@@ -55,14 +55,14 @@ class ExamProcessController extends Controller
 
         $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('status','active')->orderBy('id', 'desc')->lists('exam_code_name','id')->all();
 
-        // $exam_process_code_list =  ExamProcess::orderBy('id','desc')->take('5')->get()->lists('exam_code_id')->all();
+        $exam_process_code_list =  ExamProcess::where('status','active')->lists('exam_code_id')->all();
 
-        // $exam_code_list = [''=>'Select exam code'] + collect($exam_code_list)->flip()->intersect($exam_process_code_list)->flip()->all();
 
 
         foreach ($exam_process_code_list as $key => $value) {
             unset($exam_code_list[$value]);
         }
+
 
         $exam_code_list = array_slice($exam_code_list,0,6);
 

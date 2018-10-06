@@ -301,7 +301,7 @@ $username = $user->username;
             <div class="col-sm-12" style="position:static; color: blue; background-color:silver">
                 {{-- <span><b>&nbsp;Question No :: &nbsp; {{$i}}</b></span>&nbsp;&nbsp;&nbsp; --}}
                 <span><b>&nbsp;Q.{{$i}}</b></span>&nbsp;&nbsp;&nbsp;
-                <span><b>&nbsp;Name: {{$ques_values->qbank_aptitude_question->title}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span><b>&nbsp;Question Name: {{$ques_values->qbank_aptitude_question->title}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span><b>&nbsp;Marks: {{$question_mark}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                 @if(isset($final_submit))

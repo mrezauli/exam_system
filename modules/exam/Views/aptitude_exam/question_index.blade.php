@@ -338,7 +338,7 @@ $username = $user->username;
                             <td><a href="" style="visibility:hidden;margin:5px;" class="btn btn-primary btn-xs">ddd</a></td>
                         </tr>
                     @endif
-                @else
+                @elseif($values->qsel_apt_test->qbank_aptitude_id != $qbank_aptitude_id)
                     <tr class="{{$btn_class.$i}}">
                         <td>
                             <a href="{{ route($route, [$ques_values->id,$ques_values->qbank_aptitude_question->id]) }}" class="btn btn-primary disable-button btn-xs {{$btn_class.$i}}" onclick="download_hide({{$i}})" data-placement="top" style="margin: 5px 5px;"><strong>Create Answer Sheet</strong></a>

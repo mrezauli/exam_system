@@ -31,9 +31,10 @@
             <span style="color: #AA0055">
 
                 <a href="https://chrome.google.com/webstore/detail/downloads-overwrite-exist/fkomnceojfhfkgjgcijfahmgeljomcfk?hl=en" target="_blank" class="btn btn-primary btn-xs" id="chrom" ata-placement="top" style="margin-right: 50px"><strong>Plugins</strong></a>
+                
             </span>
         </div>
-        
+
         <div class="col-md-12">
             <div class="text-center m-b-sm">
                 <div id="logo-login" class="light-version">

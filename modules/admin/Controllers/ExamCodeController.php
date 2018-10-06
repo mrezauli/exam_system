@@ -344,8 +344,8 @@ class ExamCodeController extends Controller
                 ->where('exam_number',$exam_number)
                 ->where('typing_status','inactive')
                 ->where('attended_typing_test',null)
-                //->where('typing_exam_code_id',null)
-                //->where('aptitude_exam_code_id',null)
+                ->where('typing_exam_code_id',null)
+                ->where('aptitude_exam_code_id',null)
                 ->orderBy('sl','asc')
                 ->get();
 
@@ -362,8 +362,8 @@ class ExamCodeController extends Controller
                 ->where('exam_number',$exam_number)
                 ->where('aptitude_status','inactive')
                 ->where('attended_aptitude_test',null)
-                //->where('typing_exam_code_id',null)
-                //->where('aptitude_exam_code_id',null)
+                ->where('typing_exam_code_id',null)
+                ->where('aptitude_exam_code_id',null)
                 ->orderBy('sl','asc')
                 ->get();
 

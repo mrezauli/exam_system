@@ -324,7 +324,6 @@ class ExamCodeController extends Controller
     public function ajax_get_exam_process_code()
     {
 
-
        $exam_code = DB::table('exam_code')->where('id',$_POST['exam_code_id'])->first();
 
        $exam_number = DB::table('user AS u')

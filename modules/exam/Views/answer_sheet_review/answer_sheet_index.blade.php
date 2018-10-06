@@ -85,14 +85,14 @@
                                 @if(1)
                                 <tr>
                                     <td>
-                                        <a href="{{ route('download-candidate-answersheet', $ques_values['id']) }}" class="btn btn-primary btn-sm" data-placement="top" style="margin: 5px 5px;"><strong>Download Answer Sheet (if required)</strong></a>
+                                        <a href="{{ route('download-candidate-answersheet', $ques_values['id']) }}" class="btn btn-primary btn-sm" data-placement="top" style="margin: 5px 5px;"><strong>Download Answer Sheet</strong></a>
                                     </td>
                                 </tr>
                                 @else
                                 <a href="" class="btn btn-primary btn-sm" data-placement="top" style="margin: 5px 5px;visibility:hidden"><strong>Download Answer Sheet</strong></a>
                                 @endif
 
-                                <span><b>&nbsp;Question Marks :: &nbsp; {{$ques_values['mark']}}</b></span>&nbsp;&nbsp;&nbsp;
+                                <span><b>&nbsp;Question Marks :: &nbsp; {{$ques_values['question_marks']}}</b></span>&nbsp;&nbsp;&nbsp;
                             </div>
 
 
@@ -116,7 +116,7 @@
 
                                     <input type="text" class="answer-marks" name="marks_<?php echo $i; ?>" required value="<?php echo $ques_values['answer_mark']; ?>" style="width: 100px;height: 50px;border: double" />
 
-                                    <input type="hidden"  class="question-marks" name="question_marks_<?php echo $i; ?>" value="<?php echo $ques_values['question_mark']; ?>" style="width: 50px;" />
+                                    <input type="hidden"  class="question-marks" name="question_marks_<?php echo $i; ?>" value="<?php echo $ques_values['question_marks']; ?>" style="width: 50px;" />
 
                                     <div class="alert-message" style="display:none;color:red;">Answer mark must be a valid number and can't be greater than the question mark.</div>
                                 </div>

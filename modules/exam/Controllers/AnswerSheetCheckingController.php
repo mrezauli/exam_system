@@ -210,7 +210,7 @@ class AnswerSheetCheckingController extends Controller
                 $question_name = isset($values->qsel_apt_test) ? $values->qsel_apt_test->qbank_aptitude_question->title : '';
 
 
-                $question_mark = isset($question_set->aptitude_questions->keyBy('id')->get($qbank_aptitude_id)->pivot->question_mark) ? $question_set->aptitude_questions->keyBy('id')->get($qbank_aptitude_id)->pivot->question_mark : '0';
+                $question_marks = isset($question_set->aptitude_questions->keyBy('id')->get($qbank_aptitude_id)->pivot->question_mark) ? $question_set->aptitude_questions->keyBy('id')->get($qbank_aptitude_id)->pivot->question_mark : '0';
                     
             
                 $file_html = explode('/', $values->answer_original_file_path);
@@ -218,7 +218,7 @@ class AnswerSheetCheckingController extends Controller
                 $answer_html_files[$m]['type'] = $values->question_type;
                 $answer_html_files[$m]['id'] = $values->id;
                 $answer_html_files[$m]['question_name'] = $question_name;
-                $answer_html_files[$m]['mark'] = $question_mark;
+                $answer_html_files[$m]['question_marks'] = $question_marks;
 
 
                 if($values->question_type == 'word')

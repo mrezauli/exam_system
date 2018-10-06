@@ -350,14 +350,24 @@ class AptitudeTestReportController extends Controller
 
                 if (! in_array($group_value->qselection_aptitude_id, $eee)) {
 
-                   $model[$key]->push((object)(['qselection_aptitude_id'=>$group_value->qselection_aptitude_id,'question_marks'=>$group_value->question_marks,'answer_marks'=>'0']));
+                    if ($user[0]->exam_date == $group_value->exam_date) {
+
+                        $model[$key]->push((object)(['qselection_aptitude_id'=>$group_value->qselection_aptitude_id,'question_marks'=>$group_value->question_marks,'answer_marks'=>'0','absent'=>'1']));
+
+                    }else {
+
+                        //$model[$key]->push((object)(['qselection_aptitude_id'=>$group_value->qselection_aptitude_id,'question_marks'=>$group_value->question_marks,'answer_marks'=>'0','absent'=>'0']));
+
+                    }
+
+                  
                 }  
             }
 
         }
+ 
 
-
-        // dd($model);
+        
 
         $model->each(function ($values, $key)use($bangla_speed,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks,$exam_dates) {
 
@@ -387,7 +397,7 @@ class AptitudeTestReportController extends Controller
                         $failed_in_any_exam = true;
 
                     } elseif($data->question_type == 'excel' && $data->question_marks*$excel_pass_marks/100 > $data->answer_marks) {
-                       
+                      
                         $failed_in_any_exam = true;
 
                     }elseif($data->question_type == 'ppt' && $data->question_marks*$ppt_pass_marks/100 > $data->answer_marks){
@@ -400,13 +410,19 @@ class AptitudeTestReportController extends Controller
                         //dd($data->question_type == 'word' && $data->question_marks*$word_pass_marks/100 > $data->answer_marks);
                     }
 
-                    
-                }else{
+                }elseif(isset($data->absent) && $data->absent == '1'){
 
                     $failed_in_any_exam = true;
+
+                }else{
+
+                    //$failed_in_any_exam = true;
                 }
 
             });
+
+
+
 
 
 
@@ -425,6 +441,9 @@ class AptitudeTestReportController extends Controller
             }
 
         });
+
+
+// dd($model); 
 
 
         $makeComparer = function($criteria) {

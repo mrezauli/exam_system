@@ -300,7 +300,11 @@ class ShortAptitudeTestReportController extends Controller
 
                 if (! in_array($group_value->qselection_aptitude_id, $eee)) {
 
-                   $model[$key]->push((object)(['qselection_aptitude_id'=>$group_value->qselection_aptitude_id,'question_marks'=>$group_value->question_marks,'answer_marks'=>'0']));
+                    if ($user[0]->exam_date == $group_value->exam_date) {
+
+                        $model[$key]->push((object)(['qselection_aptitude_id'=>$group_value->qselection_aptitude_id,'question_marks'=>$group_value->question_marks,'answer_marks'=>'0','absent'=>'1']));
+
+                    }
                 }  
             }
 
@@ -351,9 +355,13 @@ class ShortAptitudeTestReportController extends Controller
                     }
 
                     
-                }else{
+                }elseif(isset($data->absent) && $data->absent == '1'){
 
                     $failed_in_any_exam = true;
+
+                }else{
+
+                    //$failed_in_any_exam = true;
                 }
 
             });

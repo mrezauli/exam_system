@@ -716,7 +716,7 @@ function report_exam_code(){
 
         } else {
 
-            $(all_fields).prop('disabled', false).attr('required', true);
+            $(all_fields).prop('disabled', false);
 
             $('.jprequired').show();
         }

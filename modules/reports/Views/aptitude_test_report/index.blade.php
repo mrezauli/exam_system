@@ -284,7 +284,7 @@ form .col-sm-12:last-child{
 
                             <?php 
 
-//dd($values);
+
 
 
 
@@ -778,15 +778,35 @@ form .col-sm-12:last-child{
                             unset($grouped_by_question_type['']);
 
 
+                            $total_answer_marks = 0;
 
-            $total_answer_marks = 0;
+                            $failed_in_any_exam = '';
 
-            $failed_in_any_exam = '';
+                            $remarks = ''; 
+
+                            $pass_percentage = $bangla_speed;    
+
+                            unset($grouped_by_question_type['']);    
+
+
+
+                            foreach ($grouped_by_question_type as $key => $question_group) {
+                                  
+                                $exam_date = $question_group->where('attended_aptitude_test','true')->first()->exam_date;
+
+                                foreach ($question_group as $key => $value) {
+                                    if ($value->exam_date != $exam_date) {
+                                        unset($question_group[$key]);
+                                    }
+                                    
+                                }
+ 
+                              }  
             
 
           
-
             ?>
+
                 <tr class="gradeX">
                                            
                     <td>{{$sl_no}}</td>
@@ -1212,7 +1232,9 @@ form .col-sm-12:last-child{
 
              $grouped_by_question_type = $values->groupBy('question_type')->sortBy('qselection_aptitude_id');
 
-                            unset($grouped_by_question_type['']);foreach ($all_group as $group_key => $value) {
+                            unset($grouped_by_question_type['']);
+
+                            foreach ($all_group as $group_key => $value) {
 
                                 foreach ($all_group[$group_key] as $key => $value) {
 
@@ -1231,12 +1253,31 @@ form .col-sm-12:last-child{
                             
 
                             unset($grouped_by_question_type['']);
-
+            
                             $total_answer_marks = 0;
 
                             $failed_in_any_exam = '';
-            
 
+                            $remarks = ''; 
+
+                            $pass_percentage = $bangla_speed;    
+
+                            unset($grouped_by_question_type['']);    
+
+
+
+                            foreach ($grouped_by_question_type as $key => $question_group) {
+                                  
+                                $exam_date = $question_group->where('attended_aptitude_test','true')->first()->exam_date;
+
+                                foreach ($question_group as $key => $value) {
+                                    if ($value->exam_date != $exam_date) {
+                                        unset($question_group[$key]);
+                                    }
+                                    
+                                }
+ 
+                            }
           
 
             ?>

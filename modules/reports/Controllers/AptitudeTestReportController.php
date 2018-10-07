@@ -377,7 +377,7 @@ class AptitudeTestReportController extends Controller
 
             $values->total_answer_marks = $total_answer_marks = $values->sum('answer_marks');
 
-            $values->total_question_marks = $total_question_marks = $values->sum('question_marks')/count($exam_dates);
+            $values->total_question_marks = $total_question_marks = $values->sum('question_marks');
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
@@ -385,7 +385,7 @@ class AptitudeTestReportController extends Controller
 
 
                 if ($bangla_speed) {
-                   
+           
                     if ( $total_question_marks*$bangla_speed/100 > $total_answer_marks) {
                         $failed_in_any_exam = true;
                     }

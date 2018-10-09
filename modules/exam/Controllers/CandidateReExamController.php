@@ -127,7 +127,7 @@ class CandidateReExamController extends Controller
             DB::beginTransaction();
             try {
 
-                if (! in_array($request->get('aptitude_status'), ['cancelled','expelled']) ) {
+                if (! in_array($request->get('status'), ['cancelled','expelled']) ) {
 
                 AptitudeExamResult::where('user_id',$user->first()->id)->where('question_type', 'word')->delete();
                 AptitudeExamResult::where('user_id',$user->first()->id)->where('question_type', 'excel')->delete();
@@ -174,8 +174,8 @@ class CandidateReExamController extends Controller
         DB::beginTransaction();
         try {
 
-            if (! in_array($request->get('typing_status'), ['cancelled','expelled']) ) {
-            
+            if (! in_array($request->get('status'), ['cancelled','expelled']) ) {
+
             if ($request->get('exam_type') != 'all') {
 
                 Examination::where('user_id',$user->first()->id)->where('exam_type', $request->get('exam_type'))->delete();

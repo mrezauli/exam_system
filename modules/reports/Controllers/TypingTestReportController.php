@@ -33,7 +33,7 @@ class TypingTestReportController extends Controller
 
         $page_title = 'Typing Test Report';
         //$bangla_speed = $english_speed = ExamTime::where('exam_type','typing_exam')->first()->exam_time;
-        $bangla_speed = $english_speed = $passed_count = $failed_count = '';
+        $bangla_speed = $english_speed = $passed_count = $failed_count = $expelled_count = $cancelled_count = '';
 
 
         
@@ -51,7 +51,7 @@ class TypingTestReportController extends Controller
 
         $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','typing_test')->where('status','active')->orderBy('id','desc')->lists('exam_code_name','id')->all();
 
-        return view('reports::typing_test_report.index', compact('page_title','company_list','designation_list','exam_code_list','status','header','exam_dates_string','model_all','bangla_speed','english_speed','passed_count','failed_count'));
+        return view('reports::typing_test_report.index', compact('page_title','company_list','designation_list','exam_code_list','status','header','exam_dates_string','model_all','bangla_speed','english_speed','passed_count','failed_count','expelled_count','cancelled_count'));
 
 
     }
@@ -110,7 +110,7 @@ class TypingTestReportController extends Controller
 
 
         $model = DB::table( 'user AS u' )
-         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','u.id as user_id','e.company_id','e.designation_id','e.exam_code_name','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
+         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','u.id as user_id','u.typing_status','e.company_id','e.designation_id','e.exam_code_name','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
          ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')         
         ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
         ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
@@ -320,6 +320,7 @@ class TypingTestReportController extends Controller
 
 
         $passed = $model->filter(function ($value) {
+            
             return $value->remarks == "Pass";
         });
 
@@ -332,6 +333,22 @@ class TypingTestReportController extends Controller
         $absent = $model->filter(function ($value) {
             return $value->remarks == "Absent";
         });
+
+
+        $expelled = $model->filter(function ($value) {
+            return $value['0']->typing_status == "expelled";
+        });
+
+
+        $cancelled = $model->filter(function ($value) {
+            return $value['0']->typing_status == "cancelled";
+        });
+
+        $expelled_count = $expelled->count();
+
+        $cancelled_count = $cancelled->count();
+
+ 
 
         // dd($passed);
 
@@ -368,7 +385,7 @@ class TypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::typing_test_report.index', compact('page_title','status','company_id','designation_id','exam_code','exam_date','exam_time','company_list','designation_list','exam_code_list','model','model_all','bangla_speed','english_speed','exam_date_from','exam_date_to','header','exam_dates_string','passed_count','failed_count'));
+        return view('reports::typing_test_report.index', compact('page_title','status','company_id','designation_id','exam_code','exam_date','exam_time','company_list','designation_list','exam_code_list','model','model_all','bangla_speed','english_speed','exam_date_from','exam_date_to','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count'));
 
     }
 

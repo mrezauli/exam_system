@@ -97,7 +97,7 @@ form .col-sm-12:last-child{
                     <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('remarks', 'Remarks:', ['class' => 'control-label']) !!}
                         <small class="required jrequired">(Required)</small>
-                        {!! Form::Select('remarks',['passed'=>'Pass','failed'=>'Fail','all'=>'All'], @Input::get('remarks')? Input::get('remarks') : null,['id'=>'remarks','class' => 'form-control remarks','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
+                        {!! Form::Select('remarks',['passed'=>'Pass','failed'=>'Fail','expelled'=>'Expelled','cancelled'=>'Cancelled','all'=>'All'], @Input::get('remarks')? Input::get('remarks') : null,['id'=>'remarks','class' => 'form-control remarks','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
                     </div>
 
                     <div class="col-lg-1 col-md-3 col-sm-6 filter-btn">
@@ -233,18 +233,36 @@ form .col-sm-12:last-child{
                                     <td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">
                                    
                                         @if(! $values->lists('attended_typing_test')->contains('true'))
-                                        
-                                        {{'Absent'}}
-                            
-                                        @elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
 
-                                        {{'Pass'}}
+                                        <?php $remarks = 'Absent'; ?>
 
                                         @else
 
-                                        {{'Fail'}}
-                                        
+                                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+
+                                        <?php $remarks = 'Pass'; ?>
+
+                                        @else
+
+                                        <?php $remarks = 'Fail'; ?>
+
                                         @endif
+
+                                        @if($values->lists('typing_status')->contains('cancelled'))
+
+                                        <?php $remarks = 'Cancelled'; ?>
+
+                                        @endif
+
+                                        @if($values->lists('typing_status')->contains('expelled'))
+
+                                        <?php $remarks = 'Expelled'; ?>
+
+                                        @endif
+
+                                        @endif
+
+                                        {{$remarks}} 
 
                                    </td>
                                   
@@ -462,17 +480,35 @@ form .col-sm-12:last-child{
                    
                         @if(! $values->lists('attended_typing_test')->contains('true'))
                         
-                        {{'Absent'}}
-            
-                        @elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+                        <?php $remarks = 'Absent'; ?>
+                        
+                        @else
 
-                        {{'Pass'}}
+                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+
+                        <?php $remarks = 'Pass'; ?>
 
                         @else
 
-                        {{'Fail'}}
+                        <?php $remarks = 'Fail'; ?>
                         
                         @endif
+
+                        @if($values->lists('typing_status')->contains('cancelled'))
+                        
+                        <?php $remarks = 'Cancelled'; ?>
+                        
+                        @endif
+
+                        @if($values->lists('typing_status')->contains('expelled'))
+                        
+                        <?php $remarks = 'Expelled'; ?>
+                        
+                        @endif
+
+                        @endif
+
+                        {{$remarks}}
 
                    </td>
                    

@@ -333,13 +333,16 @@ class ShortTypingTestReportController extends Controller
             return $value->remarks == "Fail";
         });
 
+
         $absent = $model->filter(function ($value) {
             return $value->remarks == "Absent";
         });
 
-         $expelled = $model->filter(function ($value) {
+
+        $expelled = $model->filter(function ($value) {
             return $value->remarks == "expelled";
         });
+
 
         $cancelled = $model->filter(function ($value) {
             return $value->remarks == "cancelled";
@@ -396,7 +399,7 @@ class ShortTypingTestReportController extends Controller
         }
 
         if ($remarks == 'all') {
-            $model = $passed->merge($failed);
+            $model = $passed->merge($failed)->merge($expelled)->merge($cancelled);
         }
 
 

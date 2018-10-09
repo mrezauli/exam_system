@@ -32,7 +32,7 @@ class AptitudeTestReportController extends Controller
 
         $status = 1;
 
-        $header = $passed_count = $failed_count = $total_pass = $total_fail = $bangla_speed = '';
+        $header = $passed_count = $failed_count = $expelled_count = $cancelled_count = $total_pass = $total_fail = $bangla_speed = '';
 
         $exam_dates_string = '';
 
@@ -40,7 +40,7 @@ class AptitudeTestReportController extends Controller
 
         $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
 
-        return view('reports::aptitude_test_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','passed_count','failed_count','total_pass','total_fail','bangla_speed'));
+        return view('reports::aptitude_test_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','total_pass','total_fail','bangla_speed'));
 
 
     }
@@ -98,7 +98,7 @@ class AptitudeTestReportController extends Controller
 
 
         $model = DB::table( 'user AS u' )
-        ->select('u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.id as user_id','e.company_id','e.designation_id','e.exam_date','e.exam_code_name','u.attended_typing_test','u.attended_aptitude_test','q.id as qselection_aptitude_id','q.question_type','a.answer_marks','q.question_set_id','q.qbank_aptitude_id')
+        ->select('u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.id as user_id','e.company_id','e.designation_id','e.exam_date','e.exam_code_name','u.attended_typing_test','u.attended_aptitude_test','u.aptitude_status','q.id as qselection_aptitude_id','q.question_type','a.answer_marks','q.question_set_id','q.qbank_aptitude_id')
                 ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.aptitude_exam_code_id')
                 ->leftJoin( 'aptitude_exam_result as a', 'a.user_id', '=', 'u.id')
                 ->leftJoin( 'qselection_aptitude_test as q', 'a.qselection_aptitude_id', '=', 'q.id')
@@ -423,20 +423,33 @@ class AptitudeTestReportController extends Controller
 
 
 
-
-
-
             if(! $values->lists('attended_aptitude_test')->contains('true')){
 
                 $values->remarks = 'Absent';
 
-            }elseif(! $failed_in_any_exam){
-
-                $values->remarks = 'Pass';
-
             }else{
 
-                $values->remarks = 'Fail';
+                if(! $failed_in_any_exam){
+
+                    $values->remarks = 'Pass';
+
+                }else{
+
+                    $values->remarks = 'Fail';
+
+                }
+
+                if($values->lists('aptitude_status')->contains('expelled')){
+
+                $values->remarks = 'Expelled';
+
+                }
+
+                if($values->lists('aptitude_status')->contains('cancelled')){
+
+                $values->remarks = 'Cancelled';
+
+            }
 
             }
 
@@ -473,10 +486,17 @@ class AptitudeTestReportController extends Controller
         $failed = $model->filter(function ($value) {
             return $value->remarks == "Fail";
         });
-        // dd($passed);
 
         $absent = $model->filter(function ($value) {
             return $value->remarks == "Absent";
+        });
+
+        $expelled = $model->filter(function ($value) {
+            return $value->remarks == "Expelled";
+        });
+
+        $cancelled = $model->filter(function ($value) {
+            return $value->remarks == "Cancelled";
         });
 
 
@@ -491,9 +511,15 @@ class AptitudeTestReportController extends Controller
         $comparer = $makeComparer($criteria);
         $absent = $absent->sort($comparer);
 
+        $comparer = $makeComparer($criteria);
+        $expelled = $expelled->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $cancelled = $cancelled->sort($comparer);
 
 
-        $model = $passed->merge($failed);
+
+        $model = $passed->merge($failed)->merge($expelled)->merge($cancelled);
 
 
 
@@ -504,6 +530,10 @@ class AptitudeTestReportController extends Controller
         $passed_count = $passed->count();
 
         $failed_count = $failed->count();
+
+        $expelled_count = $expelled->count();
+
+        $cancelled_count = $cancelled->count();
 
 
 
@@ -526,7 +556,7 @@ class AptitudeTestReportController extends Controller
        // $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks'));
+        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks'));
 
 
     }

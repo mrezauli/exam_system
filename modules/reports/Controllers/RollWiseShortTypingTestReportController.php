@@ -115,7 +115,7 @@ class RollWiseShortTypingTestReportController extends Controller
 
 
         $model = DB::table( 'user AS u' )
-         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','u.id as user_id','e.company_id','e.designation_id','e.exam_code_name','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
+         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','u.id as user_id','u.typing_status','e.company_id','e.designation_id','e.exam_code_name','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
          ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')         
         ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
         ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
@@ -282,6 +282,13 @@ class RollWiseShortTypingTestReportController extends Controller
                 
             }
 
+
+            if ($values->first()->typing_status =='expelled' || $values->first()->typing_status == 'cancelled') {
+
+                $values->remarks = $values->first()->typing_status;
+
+            }
+
             // dd($values);
 
         });   
@@ -333,6 +340,16 @@ class RollWiseShortTypingTestReportController extends Controller
         });
 
 
+        $expelled = $model->filter(function ($value) {
+            return $value->remarks == "expelled";
+        });
+
+
+        $cancelled = $model->filter(function ($value) {
+            return $value->remarks == "cancelled";
+        });
+
+
 
         $criteria = ["roll_no" => "asc"];
         
@@ -345,10 +362,20 @@ class RollWiseShortTypingTestReportController extends Controller
         $comparer = $makeComparer($criteria);
         $absent = $absent->sort($comparer);
 
+        $comparer = $makeComparer($criteria);
+        $expelled = $expelled->sort($comparer);
+
+        $comparer = $makeComparer($criteria);
+        $cancelled = $cancelled->sort($comparer);
+
 
         $passed_count = $passed->count();
 
         $failed_count = $failed->count();
+
+        $expelled_count = $expelled->count();
+
+        $cancelled_count = $cancelled->count();
 
 
 
@@ -362,6 +389,18 @@ class RollWiseShortTypingTestReportController extends Controller
             $show_count = 'Fail:' . ' ' . $failed_count;
 
         }
+
+        if ($remarks == 'expelled') {
+            $show_count = 'Expelled:' . ' ' . $expelled_count;
+            $model = $expelled;
+        }
+
+        if ($remarks == 'cancelled') {
+            $show_count = 'Cancelled:' . ' ' . $cancelled_count;
+            $model = $cancelled;
+        }
+
+     
 
         if ($remarks == 'all') {
             //$model = $passed->merge($failed);

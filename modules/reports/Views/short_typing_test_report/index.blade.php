@@ -234,27 +234,37 @@ form .col-sm-12:last-child{
 
                                     <td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">
 
-                                        @if($values[0]->typing_status =='expelled' || $values[0]->typing_status == 'cancelled')
+                                        @if(! $values->lists('attended_typing_test')->contains('true'))
+                                        
+                                        <?php $remarks = 'Absent'; ?>
+                            
+                                        @else
 
-                                            {{ucfirst($values[0]->typing_status)}}
+                                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+
+                                        <?php $remarks = 'Pass'; ?>
 
                                         @else
-                                   
-                                            @if(! $values->lists('attended_typing_test')->contains('true'))
-                                            
-                                            {{'Absent'}}
 
-                                            @elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+                                        <?php $remarks = 'Fail'; ?>
+                                        
+                                        @endif
 
-                                            {{'Pass'}}
+                                        @if($values->lists('typing_status')->contains('cancelled'))
+                                        
+                                        <?php $remarks = 'Cancelled'; ?>
+                            
+                                        @endif
 
-                                            @else
-
-                                            {{'Fail'}}
-                                            
-                                            @endif
+                                        @if($values->lists('typing_status')->contains('expelled'))
+                                        
+                                        <?php $remarks = 'Expelled'; ?>
+                            
+                                        @endif
 
                                         @endif
+
+                                        {{$remarks}}
 
                                    </td>
                                   
@@ -470,27 +480,37 @@ form .col-sm-12:last-child{
                     </td>
                     <td>
                    
-                        @if($values[0]->typing_status =='expelled' || $values[0]->typing_status == 'cancelled')
+                        @if(! $values->lists('attended_typing_test')->contains('true'))
+                        
+                        <?php $remarks = 'Absent'; ?>
+                        
+                        @else
 
-                        {{ucfirst($values[0]->typing_status)}}
+                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+
+                        <?php $remarks = 'Pass'; ?>
 
                         @else
+
+                        <?php $remarks = 'Fail'; ?>
                         
-                            @if(! $values->lists('attended_typing_test')->contains('true'))
-                            
-                            {{'Absent'}}
+                        @endif
 
-                            @elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+                        @if($values->lists('typing_status')->contains('cancelled'))
+                        
+                        <?php $remarks = 'Cancelled'; ?>
+                        
+                        @endif
 
-                            {{'Pass'}}
-
-                            @else
-
-                            {{'Fail'}}
-                            
-                            @endif
+                        @if($values->lists('typing_status')->contains('expelled'))
+                        
+                        <?php $remarks = 'Expelled'; ?>
+                        
+                        @endif
 
                         @endif
+
+                        {{$remarks}}
 
                    </td>
                    
@@ -974,27 +994,37 @@ form .col-sm-12:last-child{
                     <td>{{$values[0]->roll_no}}</td>
                     <td>
                    
-                        @if($values[0]->typing_status =='expelled' || $values[0]->typing_status == 'cancelled')
+                        @if(! $values->lists('attended_typing_test')->contains('true'))
+                        
+                        <?php $remarks = 'Absent'; ?>
+                        
+                        @else
 
-                        {{ucfirst($values[0]->typing_status)}}
+                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+
+                        <?php $remarks = 'Pass'; ?>
 
                         @else
+
+                        <?php $remarks = 'Fail'; ?>
                         
-                            @if(! $values->lists('attended_typing_test')->contains('true'))
-                            
-                            {{'Absent'}}
+                        @endif
 
-                            @elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+                        @if($values->lists('typing_status')->contains('cancelled'))
+                        
+                        <?php $remarks = 'Cancelled'; ?>
+                        
+                        @endif
 
-                            {{'Pass'}}
-
-                            @else
-
-                            {{'Fail'}}
-                            
-                            @endif
+                        @if($values->lists('typing_status')->contains('expelled'))
+                        
+                        <?php $remarks = 'Expelled'; ?>
+                        
+                        @endif
 
                         @endif
+
+                        {{$remarks}}
 
                    </td>
                    

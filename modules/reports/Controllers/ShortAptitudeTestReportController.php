@@ -372,19 +372,29 @@ class ShortAptitudeTestReportController extends Controller
 
                 $values->remarks = 'Absent';
 
-            }elseif(! $failed_in_any_exam){
-
-                $values->remarks = 'Pass';
-
             }else{
 
-                $values->remarks = 'Fail';
+                if(! $failed_in_any_exam){
+
+                    $values->remarks = 'Pass';
+
+                }else{
+
+                    $values->remarks = 'Fail';
+
+                }
+
+                if($values->lists('aptitude_status')->contains('expelled')){
+
+                $values->remarks = 'Expelled';
+
+                }
+
+                if($values->lists('aptitude_status')->contains('cancelled')){
+
+                $values->remarks = 'Cancelled';
 
             }
-
-            if ($values->first()->aptitude_status =='cancelled' || $values->first()->aptitude_status == 'expelled') {
-
-                $values->remarks = $values->first()->aptitude_status;
 
             }
 
@@ -428,11 +438,11 @@ class ShortAptitudeTestReportController extends Controller
         });
 
         $expelled = $model->filter(function ($value) {
-            return $value->remarks == "expelled";
+            return $value->remarks == "Expelled";
         });
 
         $cancelled = $model->filter(function ($value) {
-            return $value->remarks == "cancelled";
+            return $value->remarks == "Cancelled";
         });
 
 
@@ -473,7 +483,7 @@ class ShortAptitudeTestReportController extends Controller
         }
 
         if ($remarks == 'all') {
-            $model = $passed->merge($failed);
+            $model = $passed->merge($failed)->merge($expelled)->merge($cancelled);
         }
 
 

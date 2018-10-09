@@ -390,17 +390,35 @@ form .col-sm-12:last-child{
                                    
                                         @if(! $values->lists('attended_typing_test')->contains('true'))
                                         
-                                        {{'Absent'}}
+                                        <?php $remarks = 'Absent'; ?>
                             
-                                        @elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+                                        @else
 
-                                        {{'Pass'}}
+                                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+
+                                        <?php $remarks = 'Pass'; ?>
 
                                         @else
 
-                                        {{'Fail'}}
+                                        <?php $remarks = 'Fail'; ?>
                                         
                                         @endif
+
+                                        @if($values->lists('typing_status')->contains('cancelled'))
+                                        
+                                        <?php $remarks = 'Cancelled'; ?>
+                            
+                                        @endif
+
+                                        @if($values->lists('typing_status')->contains('expelled'))
+                                        
+                                        <?php $remarks = 'Expelled'; ?>
+                            
+                                        @endif
+
+                                        @endif
+
+                                        {{$remarks}}
 
                                    </td>
                                    <td>
@@ -661,18 +679,36 @@ form .col-sm-12:last-child{
                     <td>
                    
                         @if(! $values->lists('attended_typing_test')->contains('true'))
-                        
-                        {{'Absent'}}
-            
-                        @elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
 
-                        {{'Pass'}}
+                        <?php $remarks = 'Absent'; ?>
 
                         @else
 
-                        {{'Fail'}}
-                        
+                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+
+                        <?php $remarks = 'Pass'; ?>
+
+                        @else
+
+                        <?php $remarks = 'Fail'; ?>
+
                         @endif
+
+                        @if($values->lists('typing_status')->contains('cancelled'))
+
+                        <?php $remarks = 'Cancelled'; ?>
+
+                        @endif
+
+                        @if($values->lists('typing_status')->contains('expelled'))
+
+                        <?php $remarks = 'Expelled'; ?>
+
+                        @endif
+
+                        @endif
+
+                        {{$remarks}}
 
                    </td>
                    
@@ -686,10 +722,14 @@ form .col-sm-12:last-child{
       <tr>
         <th>Pass</th>
         <th>Fail</th>
+        <th>Expel</th>
+        <th>Cancel</th>
       </tr>
       <tr>
         <td>{{$passed_count}}</td>
         <td>{{$failed_count}}</td>
+        <td>{{$expelled_count}}</td>
+        <td>{{$cancelled_count}}</td>
       </tr>
     </table>
 

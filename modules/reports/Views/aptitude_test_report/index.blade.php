@@ -952,10 +952,14 @@ form .col-sm-12:last-child{
       <tr>
         <th>Pass</th>
         <th>Fail</th>
+        <th>Expel</th>
+        <th>Cancel</th>
       </tr>
       <tr>
         <td>{{$total_pass}}</td>
         <td>{{$total_fail}}</td>
+        <td>{{$expelled_count}}</td>
+        <td>{{$cancelled_count}}</td>
       </tr>
     </table>
 

@@ -340,6 +340,40 @@ class RollWiseTypingTestReportController extends Controller
             return $value['0']->typing_status == "cancelled";
         });
 
+
+
+
+        $passed_count = $model->filter(function ($value) {
+
+            if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
+
+                return false;
+
+            }else{
+
+                return $value->remarks == "Pass";
+            }
+        
+
+        })->count();
+
+
+
+        $failed_count = $model->filter(function ($value) {
+
+            if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
+
+                return false;
+
+            }else{
+
+                return $value->remarks == "Fail";
+            }
+        
+
+        })->count();
+
+
         $expelled_count = $expelled->count();
 
         $cancelled_count = $cancelled->count();
@@ -370,10 +404,7 @@ class RollWiseTypingTestReportController extends Controller
 
 
         $model_all = $model;
-
-        $passed_count = $passed->count();
-
-        $failed_count = $failed->count();
+        
         
         // dd($model);
         

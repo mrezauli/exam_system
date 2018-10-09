@@ -344,13 +344,45 @@ class TypingTestReportController extends Controller
             return $value['0']->typing_status == "cancelled";
         });
 
+    
+        $passed_count = $model->filter(function ($value) {
+
+            if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
+
+                return false;
+
+            }else{
+
+                return $value->remarks == "Pass";
+            }
+        
+
+        })->count();
+
+
+
+        $failed_count = $model->filter(function ($value) {
+
+            if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
+
+                return false;
+
+            }else{
+
+                return $value->remarks == "Fail";
+            }
+        
+
+        })->count();
+
+
         $expelled_count = $expelled->count();
 
         $cancelled_count = $cancelled->count();
 
  
 
-        // dd($passed);
+    
 
 
         $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
@@ -369,9 +401,6 @@ class TypingTestReportController extends Controller
 
         $model_all = $model;
 
-        $passed_count = $passed->count();
-
-        $failed_count = $failed->count();
         
         // dd($model);
         

@@ -921,16 +921,9 @@ form .col-sm-12:last-child{
 
                         $remarks = 'Absent';
 
-                    }elseif($values->remarks == 'Pass'){
-
-                        $remarks = 'Pass';
-                        $total_pass = $total_pass + 1;
-
                     }else{
-
-                        $remarks = 'Fail';
-
-                        $total_fail = $total_fail + 1;
+ 
+                        $remarks = $values->remarks;
 
                     }
 
@@ -956,8 +949,8 @@ form .col-sm-12:last-child{
         <th>Cancel</th>
       </tr>
       <tr>
-        <td>{{$total_pass}}</td>
-        <td>{{$total_fail}}</td>
+        <td>{{$passed_count}}</td>
+        <td>{{$failed_count}}</td>
         <td>{{$expelled_count}}</td>
         <td>{{$cancelled_count}}</td>
       </tr>

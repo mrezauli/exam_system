@@ -109,7 +109,7 @@ class CandidateReExamController extends Controller
 
         // }
 
-
+ 
 
         if ($main_exam_type == 'aptitude_test') {
 
@@ -127,6 +127,8 @@ class CandidateReExamController extends Controller
             DB::beginTransaction();
             try {
 
+                if (! in_array($request->get('aptitude_status'), ['cancelled','expelled']) ) {
+
                 AptitudeExamResult::where('user_id',$user->first()->id)->where('question_type', 'word')->delete();
                 AptitudeExamResult::where('user_id',$user->first()->id)->where('question_type', 'excel')->delete();
                 AptitudeExamResult::where('user_id',$user->first()->id)->where('question_type', 'ppt')->delete();
@@ -135,6 +137,8 @@ class CandidateReExamController extends Controller
                 FileDownloadPermission::where('user_id',$user->first()->id)->where('question_type', 'word')->delete();
                 FileDownloadPermission::where('user_id',$user->first()->id)->where('question_type', 'excel')->delete();
                 FileDownloadPermission::where('user_id',$user->first()->id)->where('question_type', 'ppt')->delete();
+
+                }
 
 
                 $user->first()->save();
@@ -170,8 +174,9 @@ class CandidateReExamController extends Controller
         DB::beginTransaction();
         try {
 
+            if (! in_array($request->get('typing_status'), ['cancelled','expelled']) ) {
+            
             if ($request->get('exam_type') != 'all') {
-
 
                 Examination::where('user_id',$user->first()->id)->where('exam_type', $request->get('exam_type'))->delete();
 
@@ -180,6 +185,8 @@ class CandidateReExamController extends Controller
                 Examination::where('user_id',$user->first()->id)->where('exam_type', 'bangla')->delete();
 
                 Examination::where('user_id',$user->first()->id)->where('exam_type', 'english')->delete();
+
+            }
 
             }
 

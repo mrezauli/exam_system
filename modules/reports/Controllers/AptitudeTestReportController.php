@@ -148,6 +148,9 @@ class AptitudeTestReportController extends Controller
 
             $model = $model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
             $header_all = (clone $header)->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
+
+            $exam_date_from = collect($header_all->get())->sortBy('exam_date')->groupBy('exam_date')->keys()['0'];
+
             $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_from));
 
 
@@ -162,7 +165,8 @@ class AptitudeTestReportController extends Controller
 
     $model_collection = collect($model->get());
 
-    
+
+
 
         $model = $model_collection->map(function ($values, $key)use($question_marks) {
        
@@ -184,10 +188,21 @@ class AptitudeTestReportController extends Controller
         });
 
 
-
+    
         $eee = clone $header;
 
         $ddd = collect( $eee->get());
+
+
+
+
+         $ddd = $ddd->isEmpty() ? (clone $header_all)->groupBy('exam_date')->get() : $ddd;
+
+         // dd($header->get());
+
+
+
+
 
         $header = $ddd->map(function ($values, $key) {
 
@@ -206,7 +221,7 @@ class AptitudeTestReportController extends Controller
         });
 
 
-        $group = ! $header->isEmpty() ? collect($header)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : '';
+        $group = ! $header->isEmpty() ? collect($header)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : collect($header_all)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id');
 
 
 
@@ -235,7 +250,6 @@ class AptitudeTestReportController extends Controller
 
 
 
-
         $exam_dates = $model_collection->groupBy('exam_date')->keys()->map(function ($values, $key) {
 
             return implode('-', array_reverse(explode('-', $values)));
@@ -247,8 +261,6 @@ class AptitudeTestReportController extends Controller
 
         
 
-
-     
 
         
   
@@ -272,7 +284,7 @@ class AptitudeTestReportController extends Controller
         $model = $model->groupBy('user_id');
          
         
-        // dd($header_all);
+        //dd($header);
 
 
 

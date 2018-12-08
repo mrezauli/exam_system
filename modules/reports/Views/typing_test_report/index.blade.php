@@ -19,7 +19,6 @@ form .col-sm-12{
     margin-bottom: 20px;
 }
 
-
 form .col-sm-12:last-child{
     margin-bottom: 30px;
 }
@@ -28,19 +27,13 @@ form .col-sm-12:last-child{
     border-left: 1.7px solid #8189fd !important;
 }
 
-
 .table-primary thead tr th:nth-child(6) {
     border-left: 1.7px solid #8189fd !important;
 }
 
-
-
-
-
 .table-primary tbody tr td:nth-child(10) {
     border-left: 1.7px solid #8189fd !important;
 }
-
 
 .table-primary thead tr:first-child th:nth-child(7) {
     border-left: 1.7px solid #8189fd !important;
@@ -50,14 +43,9 @@ form .col-sm-12:last-child{
     border-left: 1.7px solid #8189fd !important;
 }
 
-
-
-
-
 .table-primary tbody tr td:nth-child(13) {
     border-right: 1.7px solid #8189fd !important;
 }
-
 
 .table-primary thead tr:first-child th:nth-child(7) {
     border-right: 1.7px solid #8189fd !important;
@@ -196,12 +184,9 @@ form .col-sm-12:last-child{
 
                 <?php
 
-
-
                 $bangla_times = [];
 
                 $english_times = [];
-
 
 
                 foreach ($model_all as $key => $value) {
@@ -1148,8 +1133,8 @@ function report_exam_code(){
 @section('custom-script')
 <script>
     
-    // var column_index = ['1','2'];
-    // create_dropdown_column(column_index);
+// var column_index = ['1','2'];
+// create_dropdown_column(column_index);
 // var table = $('#examples3').DataTable();
 
 
@@ -1159,17 +1144,15 @@ var table = $('#examples_report').DataTable( {
   },
   "aaSorting": [],
   "pageLength": 50,
-} );
+});
 
 
 
 $('#examples_report_filter input').on('keyup', function(){
-
    table
-   .column(1)
+   .column(2)
    .search(this.value)
    .draw();
-
  });
 </script>
 @stop

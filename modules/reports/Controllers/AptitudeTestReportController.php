@@ -129,14 +129,12 @@ class AptitudeTestReportController extends Controller
             $header = $header_all = $header->where('e.exam_date','=',$exam_date);
         }
 
-
         if($exam_date_from == '' && $exam_date_to != ''){
 
             $model = $model->where('e.exam_date','=',$exam_date_to);
             $header = $header_all = $header->where('e.exam_date','=',$exam_date_to);
-
-
         }
+
         if($exam_date_from != '' && $exam_date_to == ''){
 
             $model = $model->where('e.exam_date','=',$exam_date_from);
@@ -147,11 +145,18 @@ class AptitudeTestReportController extends Controller
         if($exam_date_from != '' && $exam_date_to != ''){
 
             $model = $model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
-            $header_all = (clone $header)->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
 
-            $exam_date_from = collect($header_all->get())->sortBy('exam_date')->groupBy('exam_date')->keys()['0'];
+            $std = clone $header;
+
+            $header_all = $std->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
+
+
+            $exam_dates = collect($header_all->get())->sortBy('exam_date')->groupBy('exam_date')->keys();
+
+            $exam_date_from = isset($exam_dates['0']) ? $exam_dates['0'] : '';
 
             $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_from));
+
 
 
         }
@@ -169,7 +174,6 @@ class AptitudeTestReportController extends Controller
 
 
         $model = $model_collection->map(function ($values, $key)use($question_marks) {
-       
 
              $question_mark = $question_marks->where('question_set_id',$values->question_set_id)->where('qbank_aptitude_id',$values->qbank_aptitude_id)->first();
 
@@ -191,12 +195,13 @@ class AptitudeTestReportController extends Controller
     
         $eee = clone $header;
 
-        $ddd = collect( $eee->get());
+        $ddd = collect($eee->get());
+
+        $ddt = clone $header_all;
 
 
-
-
-         $ddd = $ddd->isEmpty() ? (clone $header_all)->groupBy('exam_date')->get() : $ddd;
+        
+        $ddd = $ddd->isEmpty() ? collect($ddt->groupBy('exam_date')->get()) : $ddd;
 
          // dd($header->get());
 

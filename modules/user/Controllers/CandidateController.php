@@ -217,7 +217,6 @@ class CandidateController extends Controller
                                 'aptitude_status'=> 'inactive',
                                 'mcq_status'=> 'inactive',
                                 'status'=> 'active',                        
-
                             ];
 
                             User::create($input_data);

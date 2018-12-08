@@ -439,8 +439,6 @@ class AnswerSheetCheckingController extends Controller
                 return redirect()->route('next-checking', [$input['company_id'],$input['designation_id'],$input['exam_code_id'],$input['exam_date'],$input['shift']]);
 
             }
-         
-
 
     }
 
@@ -456,7 +454,9 @@ class AnswerSheetCheckingController extends Controller
         $headers = array(
             'Content-Type: application/xlsx',
         );
+
         return Response::download($filename, $file[2], $headers);
+        
     }
 
 
@@ -474,13 +474,9 @@ class AnswerSheetCheckingController extends Controller
         }
         
 
-
-
         if (Session::has('candidate_id') ) {
             $candidate_id = Session::get('candidate_id');
         }
-
-
 
 
         return view('exam::answer_sheet_checking.next_answer_sheet', compact('page_title','answer_html_files','company_id','designation_id','exam_code_id','exam_date','shift','data','answer_sheet_array','candidate_id'));

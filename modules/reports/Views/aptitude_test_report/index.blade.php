@@ -156,7 +156,7 @@ form .col-sm-12:last-child{
 
                             @if(isset($group['excel']))
 
-                            <th style="border-right: 1.7px solid #8189fd !important; colspan="{{$excel_question_no}}">MS Excel</th>
+                            <th style="border-right: 1.7px solid #8189fd !important;" colspan="{{$excel_question_no}}">MS Excel</th>
                             @endif
 
 
@@ -283,10 +283,6 @@ form .col-sm-12:last-child{
                             @foreach($model as $values)
 
                             <?php 
-
-
-
-
 
                             $sl_no++; 
  

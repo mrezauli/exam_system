@@ -275,7 +275,7 @@ form .col-sm-12:last-child{
                         //$model = collect(['0' => $model->get('1')]);
                         
                         //dd($model);
-                         ?>
+                        ?>
 
                       
 
@@ -290,13 +290,25 @@ form .col-sm-12:last-child{
 
                             $grouped_by_question_type = $values->groupBy('question_type')->sortBy('qselection_aptitude_id');
 
+                            $exam_code_id = $values->groupBy('exam_code_id')->keys()->first();
+
+                            $all_group = ! empty($exam_code_id) ? $header_all->groupBy('exam_code_id')->keyBy($exam_code_id) : $all_group;
+
+
+
+                            dd($all_group);
+
                             foreach ($all_group as $group_key => $value) {
 
                                 foreach ($all_group[$group_key] as $key => $value) {
 
+                                    //dd($all_group[$group_key]);
+
                                     if (isset($grouped_by_question_type[$group_key])) {
 
                                         $ddd = $grouped_by_question_type[$group_key]->pluck('qselection_aptitude_id')->all();
+
+                                        //dd($ddd);
 
                                         if (! in_array($value->qselection_aptitude_id, $ddd)) {
 
@@ -307,6 +319,7 @@ form .col-sm-12:last-child{
                                 }
                             }
 
+                            //dd($grouped_by_question_type);
 
                             $total_answer_marks = 0;
 
@@ -1209,7 +1222,7 @@ form .col-sm-12:last-child{
 
         $t = 1;
 
-       $sl_no = isset($_GET['page']) ? ($_GET['page']-1)*2 + 0: 0; ?>
+        $sl_no = isset($_GET['page']) ? ($_GET['page']-1)*2 + 0: 0; ?>
 
     
             @foreach($model_all as $values)
@@ -1237,7 +1250,7 @@ form .col-sm-12:last-child{
 
                                         if (! in_array($value->qselection_aptitude_id, $ddd)) {
 
-                                         $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'exam_date'=>$value->exam_date,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
+                                        $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'exam_date'=>$value->exam_date,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
                                         }  
                                     }
 

@@ -86,7 +86,7 @@ class AptitudeTestReportController extends Controller
 
 
         $header = DB::table( 'qselection_aptitude_test AS q' )
-                    ->select('q.id as qselection_aptitude_id','e.company_id','e.designation_id','e.exam_date','q.question_type','q.shift','qa.question_mark','q.question_set_id','q.qbank_aptitude_id','c.company_name','c.address','d.designation_name')
+                    ->select('q.id as qselection_aptitude_id','e.company_id','e.designation_id','e.exam_date','q.question_type','q.shift','qa.question_mark','q.exam_code_id','q.question_set_id','q.qbank_aptitude_id','c.company_name','c.address','d.designation_name')
                     ->join('question_set_qbank_aptitude_test as qa', function ($join) {
                     $join->on('qa.qbank_aptitude_id', '=', 'q.qbank_aptitude_id')->on('qa.question_set_id', '=', 'q.question_set_id');    
                     })
@@ -98,7 +98,7 @@ class AptitudeTestReportController extends Controller
 
 
         $model = DB::table( 'user AS u' )
-        ->select('u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.id as user_id','e.company_id','e.designation_id','e.exam_date','e.exam_code_name','u.attended_typing_test','u.attended_aptitude_test','u.aptitude_status','q.id as qselection_aptitude_id','q.question_type','a.answer_marks','q.question_set_id','q.qbank_aptitude_id')
+        ->select('u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.id as user_id','e.company_id','e.designation_id','e.exam_date','e.exam_code_name','u.attended_typing_test','u.attended_aptitude_test','u.aptitude_status','q.id as qselection_aptitude_id','q.question_type','e.id as exam_code_id','a.answer_marks','q.question_set_id','q.qbank_aptitude_id')
                 ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.aptitude_exam_code_id')
                 ->leftJoin( 'aptitude_exam_result as a', 'a.user_id', '=', 'u.id')
                 ->leftJoin( 'qselection_aptitude_test as q', 'a.qselection_aptitude_id', '=', 'q.id')
@@ -156,8 +156,6 @@ class AptitudeTestReportController extends Controller
             $exam_date_from = isset($exam_dates['0']) ? $exam_dates['0'] : '';
 
             $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_from));
-
-
 
         }
 
@@ -252,6 +250,8 @@ class AptitudeTestReportController extends Controller
 
 
         $all_group = ! $header_all->isEmpty() ? collect($header_all)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : '';
+
+        //dd($all_group);
 
 
 
@@ -568,7 +568,6 @@ class AptitudeTestReportController extends Controller
 
                 return $value->remarks == "Fail";
             }
-        
 
         })->count();
 
@@ -587,7 +586,8 @@ class AptitudeTestReportController extends Controller
 
         $page = Input::get('page', 1);
 
-// dd($excel_question_no);
+        // dd($group);
+
         $perPage = 50;
 
         $offset = ($page * $perPage) - $perPage;
@@ -598,7 +598,7 @@ class AptitudeTestReportController extends Controller
        // $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks'));
+        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks','header_all'));
 
 
     }

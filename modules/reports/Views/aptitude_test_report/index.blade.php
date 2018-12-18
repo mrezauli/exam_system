@@ -292,11 +292,11 @@ form .col-sm-12:last-child{
 
                             $exam_code_id = $values->groupBy('exam_code_id')->keys()->first();
 
-                            $all_group = ! empty($exam_code_id) ? $header_all->groupBy('exam_code_id')->keyBy($exam_code_id) : $all_group;
+                            $all_group = ! empty($exam_code_id) ? $header_all->groupBy('exam_code_id')->get($exam_code_id)->groupBy('question_type') : $all_group;
 
 
 
-                            dd($all_group);
+                        
 
                             foreach ($all_group as $group_key => $value) {
 
@@ -312,7 +312,7 @@ form .col-sm-12:last-child{
 
                                         if (! in_array($value->qselection_aptitude_id, $ddd)) {
 
-                                         $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'exam_date'=>$value->exam_date,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
+                                        $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'exam_date'=>$value->exam_date,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
                                         }  
                                     }
 

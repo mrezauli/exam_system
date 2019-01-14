@@ -133,6 +133,7 @@ class TypingTestReportController extends Controller
             if(isset($designation_id) && !empty($designation_id)){
 
                 $model = $model->where('e.designation_id','=',$designation_id);
+                $header = $header->where('e.designation_id','=',$designation_id);
 
             }
 
@@ -974,7 +975,6 @@ class TypingTestReportController extends Controller
                 $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
 
             }
-
 
         }
 

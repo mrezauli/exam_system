@@ -15,7 +15,10 @@ class CreateCompanyTable extends Migration
         Schema::create('company', function (Blueprint $table) {
             $table->increments('id');
             $table->string('company_name',512)->nullable();
-            $table->text('address')->nullable();
+            $table->string('address_one',512)->nullable();
+            $table->string('address_two',512)->nullable();
+            $table->string('address_three',512)->nullable();
+            $table->string('address_four',512)->nullable();
             $table->string('contact_person',64)->nullable();
             $table->string('designation',64)->nullable();
             $table->string('phone',64)->nullable();

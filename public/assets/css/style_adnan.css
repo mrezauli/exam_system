@@ -1164,7 +1164,7 @@ select:active, select:hover {
 
 .no-border span{
     position: relative;
-    top: 18px;
+    top: 0;
 }
 
 

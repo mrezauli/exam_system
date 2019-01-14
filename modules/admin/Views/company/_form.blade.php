@@ -75,11 +75,39 @@
 <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
         <div class="col-sm-12">
-            {!! Form::label('address', 'Address :', ['class' => 'control-label']) !!}
-            {!! Form::textarea('address', Input::old('address'), ['id'=>'address', 'class' => 'form-control', 'size' => '12x3','address'=>'enter company address']) !!}
+            {!! Form::label('address_one', 'Address One:', ['class' => 'control-label']) !!}
+            {!! Form::text('address_one', Input::old('address_one'), ['id'=>'address_one', 'class' => 'form-control','address_one'=>'enter company address one']) !!}
         </div>
     </div>
 </div>
+
+<div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
+    <div class="row">
+        <div class="col-sm-12">
+            {!! Form::label('address_two', 'Address Two:', ['class' => 'control-label']) !!}
+            {!! Form::text('address_two', Input::old('address_two'), ['id'=>'address_two', 'class' => 'form-control','address_two'=>'enter company address two']) !!}
+        </div>
+    </div>
+</div>
+
+<div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
+    <div class="row">
+        <div class="col-sm-12">
+            {!! Form::label('address_three', 'Address Three:', ['class' => 'control-label']) !!}
+            {!! Form::text('address_three', Input::old('address_three'), ['id'=>'address_three', 'class' => 'form-control','address_three'=>'enter company address three']) !!}
+        </div>
+    </div>
+</div>
+
+<div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
+    <div class="row">
+        <div class="col-sm-12">
+            {!! Form::label('address_four', 'Address Four:', ['class' => 'control-label']) !!}
+            {!! Form::text('address_four', Input::old('address_four'), ['id'=>'address_four', 'class' => 'form-control','address_four'=>'enter company address four']) !!}
+        </div>
+    </div>
+</div>
+
 
 
 <p> &nbsp; </p>

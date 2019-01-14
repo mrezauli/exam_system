@@ -102,7 +102,7 @@ class TypingTestReportController extends Controller
 
 
         $header = DB::table( 'qselection_typing_test AS q' )
-                    ->select('e.exam_date','c.company_name','c.address','d.designation_name')
+                    ->select('e.exam_date','c.company_name','c.address_one','d.designation_name')
                     ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
                     ->leftJoin( 'company as c', 'e.company_id', '=', 'c.id')
                     ->leftJoin( 'designation as d', 'e.designation_id', '=', 'd.id');
@@ -425,7 +425,7 @@ class TypingTestReportController extends Controller
 
 
             $header = DB::table( 'qselection_typing_test AS q' )
-                        ->select('q.exam_date','c.company_name','c.address','d.designation_name')
+                        ->select('q.exam_date','c.company_name','c.address_one','d.designation_name')
                         ->leftJoin( 'company as c', 'q.company_id', '=', 'c.id')
                         ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id')
                         ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id');
@@ -605,7 +605,7 @@ class TypingTestReportController extends Controller
 
                 <div class="header-section">
                     <p class="header">' . $header->company_name . '</p>
-                    <p class="header">' . $header->address . '</p>
+                    <p class="header">' . $header->address_one . '</p>
                     <p class="header">Designation: ' . $header->designation_name . '</p>
                     <p class="header">Exam Date: ' . $header->exam_date . '</p>
                 </div>

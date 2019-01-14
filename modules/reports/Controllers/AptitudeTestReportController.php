@@ -40,7 +40,7 @@ class AptitudeTestReportController extends Controller
 
         $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
 
-        return view('reports::aptitude_test_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','total_pass','total_fail','bangla_speed'));
+        return view('reports::aptitude_test_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','total_count','total_pass','total_fail','bangla_speed'));
 
 
     }
@@ -585,6 +585,8 @@ class AptitudeTestReportController extends Controller
 
         $cancelled_count = $cancelled->count();
 
+        $total_count = $passed_count + $failed_count + $expelled_count + $cancelled_count;
+
 
 
         $word_question_no = isset($group['word']) ? $group['word']->count() : 0;
@@ -607,7 +609,7 @@ class AptitudeTestReportController extends Controller
        // $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks','header_all'));
+        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','total_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks','header_all'));
 
 
     }

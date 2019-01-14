@@ -579,7 +579,7 @@ form .col-sm-12:last-child{
         <p class="header">{{ isset($header->address_four) ? $header->address_four : ''}}</p>
         <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
         <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
-        <p class="header">পরীক্ষা গ্রহণে - বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+        <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
     </div>
 
 <div class="table-primary report-table-wrapper">
@@ -716,12 +716,14 @@ form .col-sm-12:last-child{
         <th>Fail</th>
         <th>Expel</th>
         <th>Cancel</th>
+        <th>Total</th>
       </tr>
       <tr>
         <td>{{$passed_count}}</td>
         <td>{{$failed_count}}</td>
         <td>{{$expelled_count}}</td>
         <td>{{$cancelled_count}}</td>
+        <td>{{$total_count}}</td>
       </tr>
     </table>
 
@@ -885,7 +887,7 @@ form .col-sm-12:last-child{
         <p class="header">{{ isset($header->address_four) ? $header->address_four : ''}}</p>
         <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
         <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
-        <p class="header">পরীক্ষা গ্রহণে - বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+        <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
     </div>
 
 <div class="table-primary report-table-wrapper">

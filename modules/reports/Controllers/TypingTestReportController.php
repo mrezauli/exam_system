@@ -33,7 +33,7 @@ class TypingTestReportController extends Controller
 
         $page_title = 'Typing Test Report';
         //$bangla_speed = $english_speed = ExamTime::where('exam_type','typing_exam')->first()->exam_time;
-        $bangla_speed = $english_speed = $passed_count = $failed_count = $expelled_count = $cancelled_count = '';
+        $bangla_speed = $english_speed = $passed_count = $failed_count = $expelled_count = $cancelled_count = $total_count = '';
 
 
         
@@ -51,7 +51,7 @@ class TypingTestReportController extends Controller
 
         $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','typing_test')->where('status','active')->orderBy('id','desc')->lists('exam_code_name','id')->all();
 
-        return view('reports::typing_test_report.index', compact('page_title','company_list','designation_list','exam_code_list','status','header','exam_dates_string','model_all','bangla_speed','english_speed','passed_count','failed_count','expelled_count','cancelled_count'));
+        return view('reports::typing_test_report.index', compact('page_title','company_list','designation_list','exam_code_list','status','header','exam_dates_string','model_all','bangla_speed','english_speed','passed_count','failed_count','expelled_count','cancelled_count','total_count'));
 
 
     }
@@ -380,6 +380,8 @@ class TypingTestReportController extends Controller
 
         $cancelled_count = $cancelled->count();
 
+        $total_count = $passed_count + $failed_count + $expelled_count + $cancelled_count;
+
  
 
     
@@ -414,7 +416,7 @@ class TypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::typing_test_report.index', compact('page_title','status','company_id','designation_id','exam_code','exam_date','exam_time','company_list','designation_list','exam_code_list','model','model_all','bangla_speed','english_speed','exam_date_from','exam_date_to','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count'));
+        return view('reports::typing_test_report.index', compact('page_title','status','company_id','designation_id','exam_code','exam_date','exam_time','company_list','designation_list','exam_code_list','model','model_all','bangla_speed','english_speed','exam_date_from','exam_date_to','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','total_count'));
 
     }
 

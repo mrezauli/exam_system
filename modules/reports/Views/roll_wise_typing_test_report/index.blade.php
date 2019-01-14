@@ -487,6 +487,10 @@ form .col-sm-12:last-child{
             font-size: 14px !important;
         }
 
+        .report-table th{
+            vertical-align: top !important;
+        }
+
         #examples * {
             border: none;
         }
@@ -590,7 +594,7 @@ form .col-sm-12:last-child{
         <p class="header">{{ isset($header->address_four) ? $header->address_four : ''}}</p>
         <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
         <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
-        <p class="header">পরীক্ষা গ্রহণে - বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+        <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
     </div>
 
 <div class="table-primary report-table-wrapper">
@@ -728,6 +732,7 @@ form .col-sm-12:last-child{
         <th>Expel</th>
         <th>Cancel</th>
         <th>Absent</th>
+        <td>Total</td>
       </tr>
       <tr>
         <td>{{$passed_count}}</td>
@@ -735,6 +740,7 @@ form .col-sm-12:last-child{
         <td>{{$expelled_count}}</td>
         <td>{{$cancelled_count}}</td>
         <td>{{$absent_count}}</td>
+        <td>{{$total_count}}</td>
       </tr>
     </table>
 
@@ -785,6 +791,10 @@ form .col-sm-12:last-child{
         *{
             text-align: center !important;
             font-size: 14px !important;
+        }
+
+        .report-table th{
+            vertical-align: top !important;
         }
 
         #examples * {
@@ -890,7 +900,7 @@ form .col-sm-12:last-child{
         <p class="header">{{ isset($header->address_four) ? $header->address_four : ''}}</p>
         <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
         <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
-        <p class="header">পরীক্ষা গ্রহণে - বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+        <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
     </div>
 
 <div class="table-primary report-table-wrapper">

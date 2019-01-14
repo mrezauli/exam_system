@@ -377,6 +377,8 @@ class RollWiseShortTypingTestReportController extends Controller
 
         $cancelled_count = $cancelled->count();
 
+        $total_count = $passed_count + $failed_count + $expelled_count + $cancelled_count;
+
 
 
         if ($remarks == 'passed') {

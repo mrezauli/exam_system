@@ -98,7 +98,7 @@ class AptitudeTestReportController extends Controller
 
 
         $model = DB::table( 'user AS u' )
-        ->select('u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.id as user_id','e.company_id','e.designation_id','e.exam_date','e.exam_code_name','u.attended_typing_test','u.attended_aptitude_test','u.aptitude_status','q.id as qselection_aptitude_id','q.question_type','e.id as exam_code_id','a.answer_marks','q.question_set_id','q.qbank_aptitude_id')
+        ->select('u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.id as user_id','e.company_id','e.designation_id','e.exam_date','e.exam_code_name','e.id as exam_code_id','u.attended_typing_test','u.attended_aptitude_test','u.aptitude_status','q.id as qselection_aptitude_id','q.question_type','a.answer_marks','q.question_set_id','q.qbank_aptitude_id')
                 ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.aptitude_exam_code_id')
                 ->leftJoin( 'aptitude_exam_result as a', 'a.user_id', '=', 'u.id')
                 ->leftJoin( 'qselection_aptitude_test as q', 'a.qselection_aptitude_id', '=', 'q.id')
@@ -230,7 +230,7 @@ class AptitudeTestReportController extends Controller
 
         $eee = clone $header_all;
 
-        $ttt = collect( $eee->get());
+        $ttt = collect($eee->get());
 
         $header_all = $ttt->map(function ($values, $key) {
 
@@ -361,15 +361,24 @@ class AptitudeTestReportController extends Controller
 
         foreach ($model as $key => $user) {
 
-            $eee = $user->pluck('qselection_aptitude_id')->all();
+           $eee = $user->pluck('qselection_aptitude_id')->all();
 
-            foreach ($ttt as $group_key => $group_value) {
+           $exam_code_id = $user->groupBy('exam_code_id')->keys()->first();
+
+           $exam_code_id = empty($exam_code_id) ? $header_all->groupBy('exam_code_id')->keys()->first() : $exam_code_id;
+
+           $ggg = $ttt->groupBy('exam_code_id')->get($exam_code_id);
+
+          
+
+
+            foreach ($ggg as $group_key => $group_value) {
 
                 if (! in_array($group_value->qselection_aptitude_id, $eee)) {
 
                     if ($user[0]->exam_date == $group_value->exam_date) {
 
-                        $model[$key]->push((object)(['qselection_aptitude_id'=>$group_value->qselection_aptitude_id,'question_marks'=>$group_value->question_marks,'answer_marks'=>'0','absent'=>'1']));
+                        $model[$key]->push((object)(['qselection_aptitude_id'=>$group_value->qselection_aptitude_id,'exam_code_id'=>$group_value->exam_code_id,'question_marks'=>$group_value->question_marks,'answer_marks'=>'0','absent'=>'1']));
 
                     }else {
 
@@ -377,7 +386,6 @@ class AptitudeTestReportController extends Controller
 
                     }
 
-                  
                 }  
             }
 
@@ -394,7 +402,8 @@ class AptitudeTestReportController extends Controller
 
             $values->total_answer_marks = $total_answer_marks = $values->sum('answer_marks');
 
-            $values->total_question_marks = $total_question_marks = $values->sum('question_marks');
+            $values->total_question_marks = $total_question_marks = $values->groupBy('exam_code_id')->first()->sum('question_marks');
+
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
@@ -402,7 +411,7 @@ class AptitudeTestReportController extends Controller
 
 
                 if ($bangla_speed) {
-           
+      
                     if ( $total_question_marks*$bangla_speed/100 > $total_answer_marks) {
                         $failed_in_any_exam = true;
                     }

@@ -276,10 +276,7 @@ form .col-sm-12:last-child{
                         
                         //dd($model);
                         ?>
-
-                      
-
-
+                    
                             @foreach($model as $values)
 
                             <?php 
@@ -295,8 +292,6 @@ form .col-sm-12:last-child{
                             $all_group = ! empty($exam_code_id) ? $header_all->groupBy('exam_code_id')->get($exam_code_id)->groupBy('question_type') : $all_group;
 
 
-
-                        
 
                             foreach ($all_group as $group_key => $value) {
 
@@ -763,6 +758,10 @@ form .col-sm-12:last-child{
             $grouped_by_question_type = $values->groupBy('question_type');
 
             $grouped_by_question_type = $values->groupBy('question_type')->sortBy('qselection_aptitude_id');
+
+            $exam_code_id = $values->groupBy('exam_code_id')->keys()->first();
+
+            $all_group = ! empty($exam_code_id) ? $header_all->groupBy('exam_code_id')->get($exam_code_id)->groupBy('question_type') : $all_group;
 
 
 

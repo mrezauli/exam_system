@@ -1988,3 +1988,7 @@ input[type="file"]{
 .default-form input[type="file"], .modal form input[type="file"], input[type="file"]{
     height: 35.7px !important;
 }
+
+.report-table th{
+    vertical-align: top !important;
+}

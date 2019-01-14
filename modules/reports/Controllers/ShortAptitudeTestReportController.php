@@ -90,7 +90,7 @@ class ShortAptitudeTestReportController extends Controller
 
 
         $header = DB::table( 'qselection_aptitude_test AS q' )
-                    ->select('q.id as qselection_aptitude_id','e.company_id','e.designation_id','e.exam_date','q.question_type','q.shift','q.question_set_id','qa.question_mark','q.qbank_aptitude_id','c.company_name','c.address','d.designation_name')
+                    ->select('q.id as qselection_aptitude_id','e.company_id','e.designation_id','e.exam_date','e.id as exam_code_id','q.question_type','q.shift','q.exam_code_id','q.question_set_id','qa.question_mark','q.qbank_aptitude_id','c.company_name','c.address','d.designation_name')
                     ->join('question_set_qbank_aptitude_test as qa', function ($join) {
                     $join->on('qa.qbank_aptitude_id', '=', 'q.qbank_aptitude_id')->on('qa.question_set_id', '=', 'q.question_set_id');
                     })
@@ -101,7 +101,7 @@ class ShortAptitudeTestReportController extends Controller
 
 
         $model = DB::table( 'user AS u' )
-        ->select('u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.id as user_id','e.company_id','e.designation_id','e.exam_date','e.exam_code_name','u.aptitude_status','u.attended_typing_test','u.attended_aptitude_test','q.id as qselection_aptitude_id','q.question_type','a.answer_marks','q.question_set_id','q.qbank_aptitude_id')
+        ->select('u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.id as user_id','e.company_id','e.designation_id','e.exam_date','e.exam_code_name','e.id as exam_code_id','u.aptitude_status','u.attended_typing_test','u.attended_aptitude_test','q.id as qselection_aptitude_id','q.question_type','a.answer_marks','q.question_set_id','q.qbank_aptitude_id')
                 ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.aptitude_exam_code_id')
                 ->leftJoin( 'aptitude_exam_result as a', 'a.user_id', '=', 'u.id')
                 ->leftJoin( 'qselection_aptitude_test as q', 'a.qselection_aptitude_id', '=', 'q.id')
@@ -221,6 +221,8 @@ class ShortAptitudeTestReportController extends Controller
 
         $group = ! empty($header) ? collect($header)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : '';
 
+        $header_all = clone $header;
+
         $header = $header->first();
 
         $model = $model->groupBy('user_id');
@@ -296,7 +298,15 @@ class ShortAptitudeTestReportController extends Controller
 
             $eee = $user->pluck('qselection_aptitude_id')->all();
 
-            foreach ($ddd as $group_key => $group_value) {
+            $exam_code_id = $user->groupBy('exam_code_id')->keys()->first();
+
+            $exam_code_id = empty($exam_code_id) ? $header_all->groupBy('exam_code_id')->keys()->first() : $exam_code_id;
+
+            $ggg = $ddd->groupBy('exam_code_id')->get($exam_code_id);
+
+
+
+            foreach ($ggg as $group_key => $group_value) {
 
                 if (! in_array($group_value->qselection_aptitude_id, $eee)) {
 
@@ -311,6 +321,10 @@ class ShortAptitudeTestReportController extends Controller
         }
 
 
+
+
+
+
             $model->each(function ($values, $key)use($bangla_speed,$word_pass_marks,$excel_pass_marks,$ppt_pass_marks,$exam_dates) {
 
             $remarks = '';
@@ -319,7 +333,7 @@ class ShortAptitudeTestReportController extends Controller
 
             $values->total_answer_marks = $total_answer_marks = $values->sum('answer_marks');
 
-            $values->total_question_marks = $total_question_marks = $values->sum('question_marks');
+            $values->total_question_marks = $total_question_marks = $values->groupBy('exam_code_id')->first()->sum('question_marks');
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 

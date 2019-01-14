@@ -472,6 +472,10 @@ form .col-sm-12:last-child{
             font-size: 14px !important;
         }
 
+        .report-table th{
+            vertical-align: top !important;
+        }
+
         #examples * {
             border: none;
         }
@@ -758,6 +762,10 @@ form .col-sm-12:last-child{
         border-right: 1px solid #333 !important;
     }
 
+    .report-table th{
+        vertical-align: top !important;
+    }
+
 
 
     @media print{      
@@ -783,6 +791,10 @@ form .col-sm-12:last-child{
             border-right:none !important;
             border-top:none !important;
         }   
+
+        .report-table th{
+            vertical-align: top !important;
+        }
 
         thead:first-child tr, thead tr th.no-border{
             border-bottom:0 !important;

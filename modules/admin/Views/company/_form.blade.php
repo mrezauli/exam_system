@@ -65,10 +65,6 @@
             {!! Form::label('web_address', 'Website :', ['class' => 'control-label']) !!}
             {!! Form::text('web_address', Input::old('web_address'), ['id'=>'web_address', 'class' => 'form-control', 'mobile'=>'enter website address, example :: www.asretex.com']) !!}
         </div>
-        <div class="col-sm-6">
-            {!! Form::label('status', 'Status :', ['class' => 'control-label']) !!}
-            {!! Form::select('status', array('active'=>'Active','inactive'=>'Inactive'),Input::old('status'),['class' => 'form-control','title'=>'select status of company']) !!}
-        </div>
     </div>
 </div>
 
@@ -104,6 +100,15 @@
         <div class="col-sm-12">
             {!! Form::label('address_four', 'Address Four:', ['class' => 'control-label']) !!}
             {!! Form::text('address_four', Input::old('address_four'), ['id'=>'address_four', 'class' => 'form-control','address_four'=>'enter company address four']) !!}
+        </div>
+    </div>
+</div>
+
+<div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
+    <div class="row">
+        <div class="col-sm-6">
+            {!! Form::label('status', 'Status :', ['class' => 'control-label']) !!}
+            {!! Form::select('status', array('active'=>'Active','inactive'=>'Inactive'),Input::old('status'),['class' => 'form-control','title'=>'select status of company']) !!}
         </div>
     </div>
 </div>

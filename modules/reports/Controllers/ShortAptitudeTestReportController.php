@@ -90,7 +90,7 @@ class ShortAptitudeTestReportController extends Controller
 
 
         $header = DB::table( 'qselection_aptitude_test AS q' )
-                    ->select('q.id as qselection_aptitude_id','e.company_id','e.designation_id','e.exam_date','e.id as exam_code_id','q.question_type','q.shift','q.exam_code_id','q.question_set_id','qa.question_mark','q.qbank_aptitude_id','c.company_name','c.address','d.designation_name')
+                    ->select('q.id as qselection_aptitude_id','e.company_id','e.designation_id','e.exam_date','e.id as exam_code_id','q.question_type','q.shift','q.exam_code_id','q.question_set_id','qa.question_mark','q.qbank_aptitude_id','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
                     ->join('question_set_qbank_aptitude_test as qa', function ($join) {
                     $join->on('qa.qbank_aptitude_id', '=', 'q.qbank_aptitude_id')->on('qa.question_set_id', '=', 'q.question_set_id');
                     })
@@ -545,7 +545,7 @@ class ShortAptitudeTestReportController extends Controller
 
 
             $header = DB::table( 'qselection_aptitude_test AS q' )
-                        ->select('q.exam_date','c.company_name','c.address','d.designation_name')
+                        ->select('q.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
                         ->leftJoin( 'company as c', 'q.company_id', '=', 'c.id')
                         ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id');
                         

@@ -1161,12 +1161,10 @@ select:active, select:hover {
     border-bottom:0 !important;
 }
 
-
 .no-border span{
     position: relative;
     top: 0;
 }
-
 
 .pdf_report_button img {
     float: right;
@@ -1176,7 +1174,6 @@ select:active, select:hover {
     top: -3px;
     margin-right: 7px;
 }
-
 
 table.dataTable.report-table thead th{
     padding: 13px 7px !important;

@@ -102,7 +102,7 @@ class RollWiseTypingTestReportController extends Controller
 
 
         $header = DB::table( 'qselection_typing_test AS q' )
-                    ->select('e.exam_date','c.company_name','c.address','d.designation_name')
+                    ->select('e.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
                     ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
                     ->leftJoin( 'company as c', 'e.company_id', '=', 'c.id')
                     ->leftJoin( 'designation as d', 'e.designation_id', '=', 'd.id');
@@ -431,7 +431,7 @@ class RollWiseTypingTestReportController extends Controller
 
 
             $header = DB::table( 'qselection_typing_test AS q' )
-                        ->select('q.exam_date','c.company_name','c.address','d.designation_name')
+                        ->select('q.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
                         ->leftJoin( 'company as c', 'q.company_id', '=', 'c.id')
                         ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id')
                         ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id');
@@ -926,7 +926,7 @@ class RollWiseTypingTestReportController extends Controller
 
 
             $header = DB::table( 'qselection_typing_test AS q' )
-                        ->select('e.exam_date','c.company_name','c.address','d.designation_name')
+                        ->select('e.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
                         ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
                         ->leftJoin( 'company as c', 'q.company_id', '=', 'c.id')
                         ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id');

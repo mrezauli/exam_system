@@ -269,6 +269,10 @@ p{
         text-align: left;
     }
 
+    .table-name{
+        text-align: left !important;
+    }
+
 
     @media print{      
 

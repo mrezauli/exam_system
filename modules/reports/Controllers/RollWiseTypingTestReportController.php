@@ -34,7 +34,7 @@ class RollWiseTypingTestReportController extends Controller
 
         $page_title = 'Roll Wise Typing Test Report';
         //$bangla_speed = $english_speed = ExamTime::where('exam_type','typing_exam')->first()->exam_time;
-        $bangla_speed = $english_speed = $passed_count = $failed_count = $expelled_count = $cancelled_count = $absent_count = '';
+        $bangla_speed = $english_speed = $passed_count = $failed_count = $expelled_count = $cancelled_count = $absent_count = $total_count = '';
 
 
         

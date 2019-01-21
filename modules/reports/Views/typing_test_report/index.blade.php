@@ -463,6 +463,10 @@ form .col-sm-12:last-child{
         border-right: 1px solid #333 !important;
     }
 
+    .table-name{
+        text-align: left !important;
+    }
+
 
 
     @media print{      
@@ -470,6 +474,10 @@ form .col-sm-12:last-child{
         *{
             text-align: center !important;
             font-size: 14px !important;
+        }
+
+        .table-name{
+            text-align: left !important;
         }
 
         .report-table th{
@@ -778,6 +786,10 @@ form .col-sm-12:last-child{
         *{
             text-align: center !important;
             font-size: 14px !important;
+        }
+
+        .table-name{
+            text-align: !important;
         }
 
         #examples * {

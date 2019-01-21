@@ -306,12 +306,20 @@ form .col-sm-12:last-child{
         display: none;
     }
 
+    .table-name{
+        text-align: left !important;
+    }
+
 
     @media print{      
 
         *{
             text-align: center !important;
             font-size: 14px !important;
+        }
+
+        .table-name{
+            text-align: left !important;
         }
 
         .report-table th{

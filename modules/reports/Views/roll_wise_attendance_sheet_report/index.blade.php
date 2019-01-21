@@ -265,12 +265,20 @@ p{
         display: none;
     }
 
+    .table-name{
+        text-align: left;
+    }
+
 
     @media print{      
 
         *{
             text-align: center !important;
             font-size: 14px !important;
+        }
+
+        .table-name{
+            text-align: left !important;
         }
 
         .report-table th{

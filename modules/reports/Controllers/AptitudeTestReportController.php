@@ -32,7 +32,7 @@ class AptitudeTestReportController extends Controller
 
         $status = 1;
 
-        $header = $passed_count = $failed_count = $expelled_count = $cancelled_count = $total_pass = $total_fail = $bangla_speed = '';
+        $header = $passed_count = $failed_count = $expelled_count = $cancelled_count = $total_pass = $total_fail = $total_count = $bangla_speed = '';
 
         $exam_dates_string = '';
 

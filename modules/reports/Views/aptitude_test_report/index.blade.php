@@ -494,7 +494,6 @@ form .col-sm-12:last-child{
 
 <div class="table-primary print-report-table-wrapper">
 
-
 <style>
 
     .print-show{
@@ -503,7 +502,11 @@ form .col-sm-12:last-child{
 
     table thead tr th:last-child{
         border-right: 1px solid #333 !important;
-    } 
+    }
+
+    .table-name{
+        text-align: left;
+    }
 
 
     @media print{      
@@ -511,6 +514,10 @@ form .col-sm-12:last-child{
         *{
             text-align: center !important;
             font-size: 14px !important;
+        }
+
+        .table-name{
+            text-align: left !important;
         }
 
 
@@ -980,7 +987,7 @@ form .col-sm-12:last-child{
 
 
 
-
+ 
 
 <div class="table-primary print-report-table-wr-wrapper">
 
@@ -993,6 +1000,10 @@ form .col-sm-12:last-child{
 
     table thead tr th:last-child{
         border-right: 1px solid #333 !important;
+    }
+
+    .table-name{
+        text-align: left !important;
     } 
 
 
@@ -1001,6 +1012,10 @@ form .col-sm-12:last-child{
         *{
             text-align: center !important;
             font-size: 14px !important;
+        }
+
+        .table-name{
+            text-align: left !important;
         }
 
         .report-table th{

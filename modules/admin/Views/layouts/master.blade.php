@@ -261,6 +261,8 @@ $(document).ready(function() {
 
     /* For dropdown searching */
 
+    $('.datepicker').attr('autocomplete', 'off');
+
     $(".js-select").select2();
 
     $('.js-select').closest('form').find('input.btn').click(function(event) {

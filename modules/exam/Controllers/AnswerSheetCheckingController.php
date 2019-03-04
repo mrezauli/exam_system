@@ -98,7 +98,7 @@ class AnswerSheetCheckingController extends Controller
        
         $permission_granted = ExaminerSelection::where('exam_code_id',$exam_code_id)->first();
 
-        
+
 
         if (empty($permission_granted)) {
 
@@ -227,7 +227,17 @@ class AnswerSheetCheckingController extends Controller
                     $answer_html_files[$m]['file'] = $filename_html[0].'.docx';
 
                     //This line for all server
+
+                    $file_exists = file_exists($values->answer_original_file_path);
+
+                    if ($file_exists) {
+                
                     copy($values->answer_original_file_path , 'answer_files/image_doc_files/'.$file_html[2]);
+
+                    }else{
+
+                        Session::flash('danger', 'Word File in'. ' ' . $values->answer_original_file_path . ' ' . "doesn't exists.");
+                    }
 
                     //***Start****This code only for local host....In cpanel it will be blocked
 
@@ -252,12 +262,23 @@ class AnswerSheetCheckingController extends Controller
 
                     $inputFileName = "answer_files/org_excel_files/".$file_html[2];
 
-                    $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+                    $file_exists = file_exists($inputFileName);
 
+                    if ($file_exists) {
+
+                    $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+     
                     // $ddd = $objPHPExcel->getActiveSheet()->toArray();
 
                     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');
                     $objWriter->save("answer_files/image_excel_files/".$filename_html[0].'.html');
+
+                    }else{
+
+                        Session::flash('danger', 'Excel File in' . ' '. $inputFileName . ' '. "doesn't exists.");
+
+                    }
+
                 }
                 elseif($values->question_type == 'ppt')
                 {
@@ -265,7 +286,18 @@ class AnswerSheetCheckingController extends Controller
                    $answer_html_files[$m]['file'] = $filename_html[0].'.pptx';
 
                    //This line for all server
-                   copy($values->answer_original_file_path , 'answer_files/image_ppt_files/'.$file_html[2]);
+
+                   $file_exists = file_exists($values->answer_original_file_path);
+
+                   if ($file_exists) {
+                
+                    copy($values->answer_original_file_path , 'answer_files/image_ppt_files/'.$file_html[2]);
+
+                   }else{
+
+                    Session::flash('danger', 'PPT File in' . ' '. $values->answer_original_file_path . ' '. "doesn't exists.");
+
+                   }
 
                    //***Start****This code only for local host....In cpanel it will be blocked
 
@@ -279,7 +311,9 @@ class AnswerSheetCheckingController extends Controller
 
                    //***End****This code only for local host....In cpanel it will be blocked
                 }
+
                 $m++;
+
             }
         }
         else{

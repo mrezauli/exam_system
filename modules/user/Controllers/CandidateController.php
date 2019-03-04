@@ -61,7 +61,15 @@ class CandidateController extends Controller
 
         $designation_list =  [''=>'Select name of the post'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
 
-        $model = User::with('relCompany','relDesignation')->where('username','!=','super-admin')->where('role_id',4)->orderBy('id', 'asc')->where('status','active')->orWhereNull('status')->get();
+        $model = User::select('id','sl','role_id','roll_no','username','dob','nid','company_id','designation_id','status','typing_status','aptitude_status')->with(['relCompany' => function ($query) {
+
+            $query->select('id','company_name','status');
+
+        }])->with(['relDesignation' => function ($query) {
+
+            $query->select('id','designation_name','status');
+
+        }])->where('username','!=','super-admin')->where('role_id',4)->orderBy('id', 'asc')->where('status','active')->orWhereNull('status')->get();
 
 
         return view('user::candidate.index', ['model' => $model, 'pageTitle'=> $pageTitle,'company_list'=>$company_list,'designation_list'=>$designation_list]);

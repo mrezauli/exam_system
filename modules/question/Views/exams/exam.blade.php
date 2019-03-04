@@ -41,8 +41,8 @@ input.exam_type{
 }
 
 .form-group.image .row{
-background: #2681a3;
-opacity: .97;
+  background: #2681a3;
+  opacity: .97;
 }
 
 .page-title{
@@ -130,9 +130,8 @@ label {
       <div class="row">
   
   <div class="col-sm-offset-2 col-sm-8">
-      
-  
-      {!! Form::textarea('original_text', Input::old('original_text'), ['id'=>'original_text', 'class' => 'form-control', 'size' => '10x7','disabled']) !!}
+    
+    {!! Form::textarea('original_text', Input::old('original_text'), ['id'=>'original_text', 'class' => 'form-control', 'size' => '10x7','disabled']) !!}
 
   </div>
   

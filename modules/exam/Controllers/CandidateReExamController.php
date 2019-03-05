@@ -225,8 +225,7 @@ class CandidateReExamController extends Controller
     }
 
 
-    function ajax_get_answered_text()
-    {
+    function ajax_get_answered_text(){
 
     $user = User::where('roll_no',$_POST['roll_no'])->where('typing_exam_code_id',$_POST['exam_code_id'])->first();
 
@@ -244,5 +243,31 @@ class CandidateReExamController extends Controller
     return strip_tags($answered_text);
 
     }
+
+
+
+    function ajax_get_remarks(){
+
+    $exam_code_field = $_POST['exam_type'] . '_' . 'code_id';
+
+    $remarks_field = $_POST['exam_type'] . '_' . 'cancel_comments';
+
+    $user = User::where('roll_no',$_POST['roll_no'])->where($exam_code_field,$_POST['exam_code_id'])->first();
+
+    if (isset($user)) {
+
+        $remarks = $user->{$remarks_field};
+
+    }else{
+
+        $remarks = '';
+
+    }
+
+
+    return strip_tags($remarks);
+
+    }
+
 
 }

@@ -244,8 +244,25 @@
 
             });
 
+        }
+
+        function ajax_get_remarks(){
+
+            $.ajax({
+              url: "{{Route('ajax-get-get-remarks')}}",
+              type: 'POST',
+              data: $('form').serialize(),
+              success: function(answered_text){
+
+                $('#answered_text').val(answered_text);
+
+              }
+
+
+            });
 
         }
+
 
 
        var exam_type = "{!! $exam_type !!}";

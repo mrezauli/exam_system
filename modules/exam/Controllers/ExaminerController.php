@@ -36,7 +36,7 @@ class ExaminerController extends Controller
     {
         $page_title = "Examiners Selection";
 
-        $data = ExaminerSelection::with('exam_code.company','exam_code.designation')->groupBy('exam_code_id')->where('status','active')->get();
+        $data = ExaminerSelection::with('exam_code.company','exam_code.designation')->groupBy('exam_code_id')->orderBy('id','desc')->where('status','active')->get();
 
         return view('exam::examiner.index', compact('data', 'page_title'));
     }

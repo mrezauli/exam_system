@@ -22,6 +22,11 @@ Route::any('ajax-get-answered-text', [
     'uses' => 'CandidateReExamController@ajax_get_answered_text'
 ]);
 
+Route::any('ajax-get-remarks', [
+    'as' => 'ajax-get-remarks',
+    'uses' => 'CandidateReExamController@ajax_get_remarks'
+]);
+
 
 
 

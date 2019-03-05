@@ -342,11 +342,12 @@
 
                  $("#exam_type option[value='aptitude_test']").prop('selected', 'selected');
 
+                 $('.answered_text_block').hide();
+
                 }
 
                 $('#exam_type_previous').val(exam_type);
 
-                $('.answered_text_block').hide();
 
               }
 

@@ -7,7 +7,7 @@
  */
 
 namespace Modules\Question\Controllers;
-require public_path() . '/assets/cloudconvert/vendor/autoload.php';
+//require public_path() . '/assets/cloudconvert/vendor/autoload.php';
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\User;

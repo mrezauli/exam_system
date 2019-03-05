@@ -108,7 +108,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
+                    <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t answered_text_block">
                         <div class="row">
                             
                             <div class="col-sm-12">
@@ -123,7 +123,7 @@
                         <div class="row">
                             
                             <div class="col-sm-12">
-                                {!! Form::label('cancel_comments', 'Comment/Reason:', ['class' => 'control-label']) !!}
+                                {!! Form::label('cancel_comments', 'Remarks:', ['class' => 'control-label']) !!}
                                 {!! Form::textarea('cancel_comments', Input::old('cancel_comments'), ['id'=>'cancel_comments', 'class' =>'form-control cancel_comments', 'size' => '10x5']) !!}
                             </div>
 
@@ -155,16 +155,14 @@
 
 <?php $exam_type = Session::has('exam_type') ? Session::get('exam_type') : ''; ?>
 
-
-<!--script for this page only-->
-
 <style>
     
-.cancel_comments_block{
+.answered_text_block{
     display: none;
 }
 
 </style>
+<!--script for this page only-->
 
 
 @if($errors->any())
@@ -204,11 +202,11 @@
 
             if (status == 'cancelled' || status == 'expelled') {
 
-                $('.cancel_comments_block').show();
+                //$('.cancel_comments_block').show();
 
             }else{
 
-                $('.cancel_comments_block').hide().find('.form-control').val('');
+                //$('.cancel_comments_block').hide().find('.form-control').val('');
             }
 
         });
@@ -253,6 +251,7 @@
        var exam_type = "{!! $exam_type !!}";
 
        if(exam_type == 'aptitude_test'){
+
            $('#exam_type').append('<option value="aptitude_test" selected="selected">Aptitude Test</option>');
 
        }
@@ -325,6 +324,8 @@
                  // $("#exam_type option[value='aptitude_test']").removeAttr('selected');
                  // $('#exam_type').removeAttr('readonly');
 
+                 $('.answered_text_block').show();
+
                 }
 
 
@@ -344,6 +345,8 @@
                 }
 
                 $('#exam_type_previous').val(exam_type);
+
+                $('.answered_text_block').hide();
 
               }
 

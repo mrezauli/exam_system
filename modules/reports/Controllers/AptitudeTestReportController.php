@@ -25,7 +25,7 @@ class AptitudeTestReportController extends Controller
 {
 
 
-    public function aptitude_test_report(){
+    public function aptitude_test_report($roll_wise=''){
 
 
         $page_title = 'Aptitude Test Report';
@@ -40,20 +40,20 @@ class AptitudeTestReportController extends Controller
 
         $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
 
-        return view('reports::aptitude_test_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','total_count','total_pass','total_fail','bangla_speed'));
+        return view('reports::aptitude_test_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','total_count','total_pass','total_fail','bangla_speed','roll_wise'));
 
 
     }
 
 
 
-    public function generate_aptitude_test_report(Request $request){
+    public function generate_aptitude_test_report(Request $request,$roll_wise = ''){
 
 
         $page_title = 'Aptitude Test Report';
 
         $status = 2;
-
+// dd($roll_wise);
 
         $exam_code = Input::get('exam_code');
         $company_id = Input::get('company_id');
@@ -543,9 +543,19 @@ class AptitudeTestReportController extends Controller
         $comparer = $makeComparer($criteria);
         $cancelled = $cancelled->sort($comparer);
 
+        if ($roll_wise) {
 
+            $model = $model->sortBy(function ($value, $key) {
 
-        $model = $passed->merge($failed)->merge($expelled)->merge($cancelled);
+                return (int)$value->roll_no;
+
+            });
+
+        }else{
+
+            $model = $passed->merge($failed)->merge($expelled)->merge($cancelled);
+
+        }
 
         $model_all = $model;
 
@@ -609,7 +619,7 @@ class AptitudeTestReportController extends Controller
        // $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','total_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks','header_all'));
+        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','total_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks','header_all','roll_wise'));
 
 
     }

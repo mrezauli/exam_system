@@ -266,12 +266,12 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
 
 
 
-    Route::any('aptitude-test-report', [
+    Route::any('aptitude-test-report/{roll_wise?}', [
         'as' => 'aptitude-test-report',
         'uses' => 'AptitudeTestReportController@aptitude_test_report'
     ]);
 
-    Route::any('generate-aptitude-test-report', [
+    Route::any('generate-aptitude-test-report/{roll_wise?}', [
         'as' => 'generate-aptitude-test-report',
         'uses' => 'AptitudeTestReportController@generate_aptitude_test_report'
     ]);
@@ -292,12 +292,12 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
 
 
 
-    Route::any('short-aptitude-test-report', [
+    Route::any('short-aptitude-test-report/{roll_wise?}', [
         'as' => 'short-aptitude-test-report',
         'uses' => 'ShortAptitudeTestReportController@aptitude_test_report'
     ]);
 
-    Route::any('generate-short-aptitude-test-report', [
+    Route::any('generate-short-aptitude-test-report/{roll_wise?}', [
         'as' => 'generate-short-aptitude-test-report',
         'uses' => 'ShortAptitudeTestReportController@generate_aptitude_test_report'
     ]);

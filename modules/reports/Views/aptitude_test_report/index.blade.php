@@ -39,7 +39,7 @@ form .col-sm-12:last-child{
                 </ul>
 
                 {{-------------- Filter :Starts ------------------------------------------}}
-                {!! Form::open(['method' =>'GET','route'=>'generate-aptitude-test-report','class'=>'report-form']) !!}
+                {!! Form::open(['method' =>'GET','route'=>['generate-aptitude-test-report',$roll_wise],'class'=>'report-form']) !!}
                 <div class="col-sm-12">
 
                     <div class="col-lg-25 col-md-3 col-sm-6">

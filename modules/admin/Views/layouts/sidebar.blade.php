@@ -191,6 +191,8 @@
             <li><a href="{{URL::to('reports/roll-wise-short-typing-test-report')}}">Roll Wise Typing Test Report (Short)</a></li>
             <li><a href="{{URL::to('reports/aptitude-test-report')}}">Aptitude Test Report</a></li>
             <li><a href="{{URL::to('reports/short-aptitude-test-report')}}">Aptitude Test Report (Short)</a></li>
+            <li><a href="{{URL::to('reports/aptitude-test-report/roll_wise')}}">Roll Wise Aptitude Test Report</a></li>
+            <li><a href="{{URL::to('reports/short-aptitude-test-report/roll_wise')}}">Roll Wise Aptitude Test Report (Short)</a></li>
             <li><a href="{{URL::to('reports/attendance-sheet-report')}}">Attendance Sheet Report</a></li>
             <li><a href="{{URL::to('reports/roll-wise-attendance-sheet-report')}}">Roll Wise Attendance Sheet Report</a></li>
         </ul>

@@ -24,7 +24,7 @@ class ShortAptitudeTestReportController extends Controller
 {
 
 
-    public function aptitude_test_report(){
+    public function aptitude_test_report($roll_wise = ''){
 
 
         $page_title = 'Aptitude Test Report (Short)';
@@ -41,7 +41,7 @@ class ShortAptitudeTestReportController extends Controller
 
         $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
 
-        return view('reports::short_aptitude_test_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','total_question_marks','passed_count','failed_count','remarks'));
+        return view('reports::short_aptitude_test_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','total_question_marks','passed_count','failed_count','remarks','roll_wise'));
 
 
     }
@@ -49,7 +49,7 @@ class ShortAptitudeTestReportController extends Controller
 
 
 
-    public function generate_aptitude_test_report(Request $request){
+    public function generate_aptitude_test_report(Request $request, $roll_wise = ''){
 
 
         $page_title = 'Aptitude Test Report (Short)';
@@ -460,7 +460,18 @@ class ShortAptitudeTestReportController extends Controller
         });
 
 
-        $criteria = ["total_answer_marks" => "desc", "roll_no" => "asc"];
+
+        if ($roll_wise) {
+            
+            $criteria = ["roll_no" => "asc"];
+
+        }else{
+
+            $criteria = ["total_answer_marks" => "desc", "roll_no" => "asc"];
+
+        }
+
+
 
         $comparer = $makeComparer($criteria);
         $passed = $passed->sort($comparer);
@@ -501,6 +512,18 @@ class ShortAptitudeTestReportController extends Controller
         }
 
 
+
+        if ($roll_wise && $remarks == 'all') {
+
+            $model = $model->sortBy(function ($value, $key) {
+
+                return (int)$value->roll_no;
+
+            });
+
+        }
+
+
         $model_all = $model;
 
         $passed_count = $passed->count();
@@ -530,7 +553,7 @@ class ShortAptitudeTestReportController extends Controller
 
 
 
-        return view('reports::short_aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','exam_date_from','exam_date_to','exam_dates_string','question_marks','total_question_marks','remarks','passed_count','failed_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks'));
+        return view('reports::short_aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','exam_date_from','exam_date_to','exam_dates_string','question_marks','total_question_marks','remarks','passed_count','failed_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks','roll_wise'));
 
     }
 

@@ -328,12 +328,15 @@ form .col-sm-12:last-child{
 
 
 
+
                             foreach ($grouped_by_question_type as $key => $question_group) {
                                   
-                                $exam_date = $question_group->where('attended_aptitude_test','true')->first()->exam_date;
+                                $question_paper = $question_group->where('attended_aptitude_test','true')->first();
+
+                                $exam_date = isset($question_paper) ?  $question_paper->exam_date : '';
 
                                 foreach ($question_group as $key => $value) {
-                                    if ($value->exam_date != $exam_date) {
+                                    if ($exam_date && $value->exam_date != $exam_date) {
                                         unset($question_group[$key]);
                                     }
                                     
@@ -810,10 +813,12 @@ form .col-sm-12:last-child{
 
                             foreach ($grouped_by_question_type as $key => $question_group) {
                                   
-                                $exam_date = $question_group->where('attended_aptitude_test','true')->first()->exam_date;
+                                $question_paper = $question_group->where('attended_aptitude_test','true')->first();
+
+                                $exam_date = isset($question_paper) ? $question_paper->exam_date : '';
 
                                 foreach ($question_group as $key => $value) {
-                                    if ($value->exam_date != $exam_date) {
+                                    if ($exam_date && $value->exam_date != $exam_date) {
                                         unset($question_group[$key]);
                                     }
                                     
@@ -965,6 +970,9 @@ form .col-sm-12:last-child{
         <th>Fail</th>
         <th>Expel</th>
         <th>Cancel</th>
+        @if($roll_wise)
+        <th>Absent</th>
+        @endif
         <th>Total</th>
       </tr>
       <tr>
@@ -972,6 +980,9 @@ form .col-sm-12:last-child{
         <td>{{$failed_count}}</td>
         <td>{{$expelled_count}}</td>
         <td>{{$cancelled_count}}</td>
+        @if($roll_wise)
+        <td>{{$absent_count}}</td>
+        @endif
         <td>{{$total_count}}</td>
       </tr>
     </table>
@@ -1298,10 +1309,12 @@ form .col-sm-12:last-child{
 
                             foreach ($grouped_by_question_type as $key => $question_group) {
                                   
-                                $exam_date = $question_group->where('attended_aptitude_test','true')->first()->exam_date;
+                                $question_paper = $question_group->where('attended_aptitude_test','true')->first();
+
+                                $exam_date = isset($question_paper) ? $question_paper->exam_date : '';
 
                                 foreach ($question_group as $key => $value) {
-                                    if ($value->exam_date != $exam_date) {
+                                    if ($exam_date && $value->exam_date != $exam_date) {
                                         unset($question_group[$key]);
                                     }
                                     

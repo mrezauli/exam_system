@@ -25,10 +25,20 @@ class AptitudeTestReportController extends Controller
 {
 
 
-    public function aptitude_test_report($roll_wise=''){
+    public function aptitude_test_report($roll_wise = ''){
+
+        if ($roll_wise) {
+
+            $title = 'Roll Wise' . ' ';
+
+        }else{
+
+            $title = '';
+
+        }
 
 
-        $page_title = 'Aptitude Test Report';
+        $page_title = $title . 'Aptitude Test Report';
 
         $status = 1;
 
@@ -40,7 +50,7 @@ class AptitudeTestReportController extends Controller
 
         $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
 
-        return view('reports::aptitude_test_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','total_count','total_pass','total_fail','bangla_speed','roll_wise'));
+        return view('reports::aptitude_test_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','absent_count','total_count','total_pass','total_fail','bangla_speed','roll_wise'));
 
 
     }
@@ -49,8 +59,18 @@ class AptitudeTestReportController extends Controller
 
     public function generate_aptitude_test_report(Request $request,$roll_wise = ''){
 
+        if ($roll_wise) {
 
-        $page_title = 'Aptitude Test Report';
+            $title = 'Roll Wise' . ' ';
+
+        }else{
+
+            $title = '';
+
+        }
+
+
+        $page_title = $title . 'Aptitude Test Report';
 
         $status = 2;
 // dd($roll_wise);
@@ -525,6 +545,10 @@ class AptitudeTestReportController extends Controller
             return $value->remarks == "Cancelled";
         });
 
+        $absent = $model->filter(function ($value) {
+            return $value->remarks == "Absent";
+        });
+
 
         $criteria = ["total_answer_marks" => "desc", "roll_no" => "asc"];
 
@@ -543,6 +567,9 @@ class AptitudeTestReportController extends Controller
         $comparer = $makeComparer($criteria);
         $cancelled = $cancelled->sort($comparer);
 
+        $comparer = $makeComparer($criteria);
+        $absent = $absent->sort($comparer);
+
         if ($roll_wise) {
 
             $model = $model->sortBy(function ($value, $key) {
@@ -558,6 +585,7 @@ class AptitudeTestReportController extends Controller
         }
 
         $model_all = $model;
+
 
 
 
@@ -595,7 +623,16 @@ class AptitudeTestReportController extends Controller
 
         $cancelled_count = $cancelled->count();
 
+        $absent_count = $absent->count();
+
         $total_count = $passed_count + $failed_count + $expelled_count + $cancelled_count;
+
+
+        if ($roll_wise) {
+
+            $total_count = $total_count + $absent_count;
+            
+        }
 
 
 
@@ -619,7 +656,7 @@ class AptitudeTestReportController extends Controller
        // $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','total_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks','header_all','roll_wise'));
+        return view('reports::aptitude_test_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','model_all','header','all_group','exam_date_from','exam_date_to','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','absent_count','total_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks','header_all','roll_wise'));
 
 
     }
@@ -1069,10 +1106,6 @@ class AptitudeTestReportController extends Controller
 
                 // Output the generated PDF to Browser
                 $dompdf->stream('exam_system.pdf',array('Attachment'=>0));
-
-
-
-
 
         }
 

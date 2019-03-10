@@ -26,8 +26,19 @@ class ShortAptitudeTestReportController extends Controller
 
     public function aptitude_test_report($roll_wise = ''){
 
+        if ($roll_wise) {
 
-        $page_title = 'Aptitude Test Report (Short)';
+            $title = 'Roll Wise' . ' ';
+
+        }else{
+
+            $title = '';
+
+        }
+
+
+
+        $page_title = $title . 'Aptitude Test Report (Short)';
 
         $status = 1;
 
@@ -51,8 +62,18 @@ class ShortAptitudeTestReportController extends Controller
 
     public function generate_aptitude_test_report(Request $request, $roll_wise = ''){
 
+        if ($roll_wise) {
 
-        $page_title = 'Aptitude Test Report (Short)';
+            $title = 'Roll Wise' . ' ';
+
+        }else{
+
+            $title = '';
+
+        }
+
+
+        $page_title = $title . 'Aptitude Test Report (Short)';
 
         $status = 2;
 
@@ -219,7 +240,7 @@ class ShortAptitudeTestReportController extends Controller
         });
 
 
-        $group = ! empty($header) ? collect($header)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : '';
+        $group = ! $header->isEmpty() ? collect($header)->groupBy('shift')->first()->groupBy('question_type')->sortBy('qselection_aptitude_id') : '';
 
         $header_all = clone $header;
 

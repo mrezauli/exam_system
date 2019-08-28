@@ -52,14 +52,18 @@ class CandidateController extends Controller
         return Input::server("REQUEST_METHOD") == "POST";
     }
 
-    public function index()
+    public function index(Request $request)
     {
 
         $pageTitle = "Candidate List";
 
+        $input = $request->all();
+
         $company_list =  [''=>'Select organization'] + Company::where('status','active')->orderBy('id','desc')->lists('company_name','id')->all();
 
         $designation_list =  [''=>'Select name of the post'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
+
+        $start = microtime(true);
 
         $model = User::select('id','sl','role_id','roll_no','username','dob','nid','company_id','designation_id','status','typing_status','aptitude_status')->with(['relCompany' => function ($query) {
 
@@ -69,10 +73,29 @@ class CandidateController extends Controller
 
             $query->select('id','designation_name','status');
 
-        }])->where('username','!=','super-admin')->where('role_id',4)->orderBy('id', 'asc')->where('status','active')->orWhereNull('status')->paginate(30);
+        }])->where('username','!=','super-admin')->where('role_id',4)->where('company_id',$request->company_id)->where('designation_id',$request->designation_id)->orderBy('username', 'asc')->where('status','active')->orWhere(function ($query) use($request) {
+
+            $query->whereNull('status');
+
+            if ($request->company_id) {
+                
+                $query->where('company_id',$request->company_id);
+            
+            }
+
+            if ($request->designation_id) {
+                
+                $query->where('designation_id',$request->designation_id); 
+
+            }
+
+        })->get();
 
 
+        $time = microtime(true) - $start;
 
+
+        //dd($request->all());
 
         return view('user::candidate.index', ['model' => $model, 'pageTitle'=> $pageTitle,'company_list'=>$company_list,'designation_list'=>$designation_list]);
     }

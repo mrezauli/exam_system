@@ -33,9 +33,35 @@
 
                 <p> &nbsp;</p>
 
+                {!! Form::open(['method' =>'GET','route'=>'candidate-list','class'=>'report-form','']) !!}
+                <div class="col-sm-12 ddd_margin">
+
+                <div class="col-lg-25 col-md-3 col-sm-6">
+                        {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
+                        <small class="required jrequired">(Required)</small>
+                        {!! Form::Select('company_id',$company_list, @Input::get('company_id')? Input::get('company_id') : null,['id'=>'company_list','class' => 'form-control js-select','placeholder'=>'select company', 'title'=>'select company','requiredz'=>'requiredz']) !!}
+                    </div>
+
+                <div class="col-lg-25 col-md-3 col-sm-6">
+                        {!! Form::label('designation_id', 'Post Name:', ['class' => 'control-label']) !!}
+                        <small class="required jrequired">(Required)</small>
+                        {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control js-select','placeholder'=>'select industry type', 'title'=>'select industry type','requiredz'=>'requiredz']) !!}
+                    </div>
+
+                <div class="col-lg-1 col-md-3 col-sm-6 filter-btn">
+
+                      {!! Form::submit('Generate Result', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'submit-button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
+                    </div>
+                    
+                </div>
+
+                {!! Form::close() !!}  
+
+                <p> &nbsp;</p>
+
                 {{------------- Filter :Ends --------------------------------------------}}
                 <div class="adv-table">
-                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered no_pagination" id="example">
+                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered no_paginationz" id="example">
                         <thead>
                         <tr>
                             <th> SL No </th>
@@ -71,8 +97,8 @@
                             @foreach($model as $values)
                                 <tr class="gradeX">
                                     <td>{{$values->sl}}</td>
-                                    <td>{{isset($values->relCompany->company_name)?$values->relCompany->company_name:''}}</td>
-                                    <td>{{isset($values->relDesignation->designation_name)?$values->relDesignation->designation_name:''}}</td>
+                                    <td>{{isset($values->relCompany->company_name) ? $values->relCompany->company_name : ''}}</td>
+                                    <td>{{isset($values->relDesignation->designation_name) ? $values->relDesignation->designation_name : ''}}</td>
                                     <td>{{$values->roll_no}}</td>
                                     <td>{{$values->username}}</td>
                                     <td>{{$values->dob}}</td>
@@ -90,7 +116,7 @@
                         </tbody>
                     </table>
                 </div>
-                <span class="pull-right">{!! str_replace('/?', '?',  $model->appends(Input::except('page'))->render() ) !!} </span>
+                {{-- <span class="pull-right">{!! str_replace('/?', '?',  $model->appends(Input::except('page'))->render() ) !!} </span> --}}
             </div>
         </div>
     </div>
@@ -124,7 +150,15 @@
 
 </div>
 
+<style>
+    
+form.report-form .col-sm-12.ddd_margin{
+    margin-bottom: 15px !important;
+    margin-left: -15px !important;
+    padding: 0;
+}
 
+</style>
 
 <!-- modal -->
 

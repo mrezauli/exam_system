@@ -53,7 +53,7 @@ class UserController extends Controller
         $user_id = Auth::user()->id;
 
 
-        $ddd = User::select('id')->get();
+        //$ddd = User::select('id')->get();
 
         //dd($ddd);
 

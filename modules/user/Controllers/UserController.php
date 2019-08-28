@@ -53,6 +53,19 @@ class UserController extends Controller
         $user_id = Auth::user()->id;
 
 
+        $ddd = User::select('id')->get();
+
+        //dd($ddd);
+
+        for ($i=7000; $i < 51010 ; $i++) {
+
+            //$email ='ddd@ddd.com';
+            
+            //DB::select("INSERT INTO `user` (`id`, `sl`, `roll_no`, `username`, `middle_name`, `last_name`, `nid`, `email`, `password`, `dob`, `district`, `role_id`, `company_id`, `designation_id`, `typing_exam_code_id`, `aptitude_exam_code_id`, `exam_type`, `exam_date`, `shift`, `status`, `typing_status`, `aptitude_status`, `mcq_status`, `attended_typing_test`, `attended_aptitude_test`, `started_exam`, `aptitude_exam_start_time`, `examined_status`, `answer_sheet_given`, `examined_by`, `department_id`, `last_visit`, `expire_date`, `remember_token`, `auth_key`, `access_token`, `csrf_token`, `ip_address`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES ($i, NULL, NULL, 'ddddddddd', '', '', NULL, '', 'Ke2YFfo2erPPnpju4eR9KXES', NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 1, '2017-10-07 03:33:06', '2020-06-04 10:47:37', 'hhLEwGPvhEpra6YY1pfeNRM3BSy7QXzBzt0xqJvitYUxkxeaRolBCEHZZ8eG', NULL, NULL, 'XRI87AC6YAcKqHdf7RcgT2jtDKWO1Y', 'bccrems.bcc.gov.bd', 1, 1, '0000-00-00 00:00:00', '2017-10-07 09:24:13')");
+
+        }
+
+
         if($user_role == 'super-admin')
         {
             $model = User::with('relCompany')->where('status','!=','cancel')->where('role_id','!=',4)->where('role_id','!=',5)->orderBy('id', 'DESC')->paginate(30);
@@ -76,6 +89,8 @@ class UserController extends Controller
         $add_days = +$i.' days';
         //$days= date('Y/m/d H:i:s', strtotime($add_days, strtotime(date('Y/m/d H:i:s'))));
         $days= date('Y/m/d', strtotime($add_days, strtotime(date('Y/m/d'))));
+
+        
 
         return view('user::user.index', ['model' => $model, 'pageTitle'=> $pageTitle,'branch_data'=>$company_data,'role'=>$role,'days'=>$days,'role_name'=>$user_role]);
     }

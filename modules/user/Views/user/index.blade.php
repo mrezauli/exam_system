@@ -23,9 +23,9 @@
 
                 <p> &nbsp;</p>
 
-                {{------------- Filter :Ends -------------------------------------------}}
+                {{------------- Filter :Ends ------------------------------------------}}
                 <div class="adv-table">
-                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered no_pagination" id="example">
                         <thead>
                         <tr>
                             {{--<th> id </th>--}}

@@ -35,7 +35,7 @@
 
                 {{------------- Filter :Ends --------------------------------------------}}
                 <div class="adv-table">
-                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered no_pagination" id="example">
                         <thead>
                         <tr>
                             <th> SL No </th>
@@ -90,7 +90,7 @@
                         </tbody>
                     </table>
                 </div>
-                {{--<span class="pull-right">{!! str_replace('/?', '?',  $model->appends(Input::except('page'))->render() ) !!} </span>--}}
+                <span class="pull-right">{!! str_replace('/?', '?',  $model->appends(Input::except('page'))->render() ) !!} </span>
             </div>
         </div>
     </div>

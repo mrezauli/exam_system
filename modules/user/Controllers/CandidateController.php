@@ -69,7 +69,9 @@ class CandidateController extends Controller
 
             $query->select('id','designation_name','status');
 
-        }])->where('username','!=','super-admin')->where('role_id',4)->orderBy('id', 'asc')->where('status','active')->orWhereNull('status')->get();
+        }])->where('username','!=','super-admin')->where('role_id',4)->orderBy('id', 'asc')->where('status','active')->orWhereNull('status')->paginate(30);
+
+
 
 
         return view('user::candidate.index', ['model' => $model, 'pageTitle'=> $pageTitle,'company_list'=>$company_list,'designation_list'=>$designation_list]);

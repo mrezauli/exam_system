@@ -15,16 +15,29 @@
 
     var checked_button = $(".radio:checked");
 
+    var pagination = true;
+
+    if ($('#example').hasClass('no_pagination')) {
+
+      pagination = false;
+
+    }else{
+
+      pagination = true;
+
+    }
+
     table = $('#example').DataTable({
         /* Disable initial sort */
         "aaSorting": [],
+
+        "bPaginate":pagination,
+
         "fnDrawCallback": function(oSettings) {
 
         $(".btn.radio").prop('checked', false);
 
         var checked_id = $('#checked_id').val();
-
-        
 
         $('.radio[data-id=' + checked_id + ']').prop('checked', true);
 
@@ -63,8 +76,6 @@
 
 
 function create_dropdown_column(columns){
-  
-
 
 index = $('#example thead th:contains("Status")').index() + 1;
 
@@ -80,7 +91,6 @@ columns.push(index);
 
 
 console.log(columns);
-
 
 $(columns).each(function(index, el) {
     

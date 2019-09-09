@@ -45,7 +45,7 @@
                 <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('designation_id', 'Post Name:', ['class' => 'control-label']) !!}
                         <small class="required jrequired">(Required)</small>
-                        {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control js-select','placeholder'=>'select industry type', 'title'=>'select industry type','requiredz'=>'requiredz']) !!}
+                        {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control designation_id js-select','placeholder'=>'select industry type', 'title'=>'select industry type','requiredz'=>'requiredz']) !!}
                     </div>
 
                 <div class="col-lg-1 col-md-3 col-sm-6 filter-btn">
@@ -216,6 +216,12 @@ $(".upload-button").one("click", function() {
 
         var column_index = ['2','3','8','9'];
         create_dropdown_column(column_index);
+
+        $(document).ready(function() {
+
+            $('.designation_id').removeAttr('required', '');
+
+        });
 
     </script>
 @stop

@@ -76,18 +76,12 @@ class CandidateController extends Controller
         }])->where('username','!=','super-admin')->where('role_id',4)->where('company_id',$request->company_id)->where('designation_id',$request->designation_id)->orderBy('username', 'asc')->where('status','active')->orWhere(function ($query) use($request) {
 
             $query->whereNull('status');
-
-            if ($request->company_id) {
                 
-                $query->where('company_id',$request->company_id);
+            $query->where('company_id',$request->company_id);
+             
+            $query->where('designation_id',$request->designation_id); 
+
             
-            }
-
-            if ($request->designation_id) {
-                
-                $query->where('designation_id',$request->designation_id); 
-
-            }
 
         })->get();
 

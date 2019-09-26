@@ -78,19 +78,23 @@ class CandidateController extends Controller
 
             $query->select('id','designation_name','status');
 
-        }])->where('username','!=','super-admin')->where('role_id',4)->where('company_id',$request->company_id)->orderBy('id', 'asc')->where('status','active');
+        }]);
+
+        //->where('username','!=','super-admin')->where('role_id',4)->where('company_id',$request->company_id)->orderBy('id', 'asc')->where('status','active');
 
 
         if ($request->designation_id) {
                 
-            $model = $model->where('designation_id',$request->designation_id); 
+            //$model = $model->where('designation_id',$request->designation_id); 
 
         }
 
 
-        $model = $model->orWhere(function ($query) use($request,$from_date,$to_date) {
+        $model = $model->where(function ($query) use($request,$from_date,$to_date) {
 
-            $query->whereNull('status');
+            //$query->whereNull('status');
+
+            $query->where('username','!=','super-admin')->where('role_id',4);
 
             $query->where('company_id',$request->company_id);
             
@@ -115,8 +119,10 @@ class CandidateController extends Controller
 
             if($from_date != '' && $to_date != ''){
 
+                //dd($from_date);
+
                 $query->whereBetween('exam_date', array($from_date, $to_date));
-            
+
             }
 
 
@@ -126,7 +132,7 @@ class CandidateController extends Controller
         $time = microtime(true) - $start;
 
 
-        //dd($request->all());
+        //dd($model);
 
         return view('user::candidate.index', ['model' => $model, 'pageTitle'=> $pageTitle,'company_list'=>$company_list,'designation_list'=>$designation_list]);
     }

@@ -249,7 +249,7 @@
         function ajax_get_remarks(){
 
             $.ajax({
-              url: "{{Route('ajax-get-get-remarks')}}",
+              url: "{{Route('ajax-get-remarks')}}",
               type: 'POST',
               data: $('form').serialize(),
               success: function(answered_text){

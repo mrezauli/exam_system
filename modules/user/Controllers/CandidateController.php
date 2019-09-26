@@ -130,6 +130,7 @@ class CandidateController extends Controller
         })->get();
 
 
+
         $time = microtime(true) - $start;
 
 

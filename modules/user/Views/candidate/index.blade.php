@@ -5,6 +5,8 @@
 
 @section('content')
 
+<?php $sl = '0'; ?>
+
         <style>
             .panel-heading #down
             {
@@ -96,7 +98,7 @@
                         @if(isset($model))
                             @foreach($model as $values)
                                 <tr class="gradeX">
-                                    <td>{{$values->sl}}</td>
+                                    <td>{{$sl++}}</td>
                                     <td>{{isset($values->relCompany->company_name) ? $values->relCompany->company_name : ''}}</td>
                                     <td>{{isset($values->relDesignation->designation_name) ? $values->relDesignation->designation_name : ''}}</td>
                                     <td>{{$values->roll_no}}</td>

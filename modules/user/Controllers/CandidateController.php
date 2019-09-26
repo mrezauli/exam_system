@@ -70,7 +70,7 @@ class CandidateController extends Controller
 
         $start = microtime(true);
 
-        $model = User::select('id','sl','role_id','roll_no','username','dob','nid','company_id','designation_id','status','typing_status','aptitude_status')->with(['relCompany' => function ($query) {
+        $model = User::select('id','sl','role_id','roll_no','username','exam_date','nid','company_id','designation_id','status','typing_status','aptitude_status')->with(['relCompany' => function ($query) {
 
             $query->select('id','company_name','status');
 

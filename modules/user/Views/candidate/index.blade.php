@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="col-lg-25 col-md-3 col-sm-6">
-                    {!! Form::label('from_date', 'From Date:', ['class' => 'control-label']) !!}
+                    {!! Form::label('from_date', 'Exam Date From:', ['class' => 'control-label']) !!}
                     {!! Form::text('from_date', @Input::get('from_date')? Input::get('from_date') : null,['id'=>'company_list','class' => 'form-control datepicker']) !!}
                     <span class="input-group-btn add-on">
                         <button class="btn btn-danger calender-button" type="button"><i class="icon-calendar"></i></button>
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="col-lg-25 col-md-3 col-sm-6">
-                    {!! Form::label('to_date', 'To Date:', ['class' => 'control-label']) !!}
+                    {!! Form::label('to_date', 'Exam Date To:', ['class' => 'control-label']) !!}
                     {!! Form::text('to_date', @Input::get('to_date')? Input::get('to_date') : null,['id'=>'company_list','class' => 'form-control datepicker']) !!}
                     <span class="input-group-btn add-on">
                         <button class="btn btn-danger calender-button" type="button"><i class="icon-calendar"></i></button>
@@ -87,7 +87,7 @@
                             <th> Name of the Post </th>
                             <th>Roll No</th>
                             <th> Name </th>
-                            <th> DOB </th>
+                            <th> Exam Date </th>
                             <th> NID </th>
                             <th> Typing Status </th>
                             <th> Apt. Status </th>
@@ -102,7 +102,7 @@
                             <th> Name of the Post </th>
                             <th>Roll No</th>
                             <th> Name </th>
-                            <th> DOB </th>
+                            <th> Exam Date </th>
                             <th> NID </th>
                             <th> Typing Status </th>
                             <th> Apt. Status </th>
@@ -119,7 +119,7 @@
                                     <td>{{isset($values->relDesignation->designation_name) ? $values->relDesignation->designation_name : ''}}</td>
                                     <td>{{$values->roll_no}}</td>
                                     <td>{{$values->username}}</td>
-                                    <td>{{$values->dob}}</td>
+                                    <td>{{$values->exam_date}}</td>
                                     <td>{{$values->nid}}</td>
                                     <td>{{ucfirst($values->typing_status)}}</td>
                                     <td>{{ucfirst($values->aptitude_status)}}</td>

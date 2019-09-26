@@ -119,11 +119,11 @@ class CandidateController extends Controller
 
             if($from_date != '' && $to_date != ''){
 
-                //dd($from_date);
-
                 $query->whereBetween('exam_date', array($from_date, $to_date));
 
             }
+
+            $query->orderBy('id','asc');
 
 
         })->get();

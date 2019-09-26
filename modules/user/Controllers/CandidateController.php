@@ -126,6 +126,7 @@ class CandidateController extends Controller
             $query->orderBy('id','asc');
 
 
+
         })->get();
 
 

@@ -119,7 +119,7 @@
                                     <td>{{isset($values->relDesignation->designation_name) ? $values->relDesignation->designation_name : ''}}</td>
                                     <td>{{$values->roll_no}}</td>
                                     <td>{{$values->username}}</td>
-                                    <td>{{$values->exam_date}}</td>
+                                    <td>{{$values->dob}}</td>
                                     <td>{{$values->nid}}</td>
                                     <td>{{ucfirst($values->typing_status)}}</td>
                                     <td>{{ucfirst($values->aptitude_status)}}</td>

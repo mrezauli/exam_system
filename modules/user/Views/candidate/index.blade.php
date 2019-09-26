@@ -64,7 +64,7 @@
                     <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered no_paginationz" id="example">
                         <thead>
                         <tr>
-                            <th> SL No </th>
+                            <th> SL No. </th>
                             <th> Organization </th>
                             <th> Name of the Post </th>
                             <th>Roll No</th>
@@ -79,7 +79,7 @@
 
                         <tfoot class="search-section">
                         <tr>
-                            <th> SL No </th>
+                            <th> SL No. </th>
                             <th> Organization </th>
                             <th> Name of the Post </th>
                             <th>Roll No</th>

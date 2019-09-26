@@ -5,7 +5,7 @@
 
 @section('content')
 
-<?php $sl = '0'; ?>
+<?php $sl = '1'; ?>
 
         <style>
             .panel-heading #down
@@ -39,21 +39,37 @@
                 <div class="col-sm-12 ddd_margin">
 
                 <div class="col-lg-25 col-md-3 col-sm-6">
-                        {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
-                        <small class="required jrequired">(Required)</small>
-                        {!! Form::Select('company_id',$company_list, @Input::get('company_id')? Input::get('company_id') : null,['id'=>'company_list','class' => 'form-control js-select','placeholder'=>'select company', 'title'=>'select company','required'=>'required']) !!}
-                    </div>
+                    {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
+                    <small class="required jrequired">(Required)</small>
+                    {!! Form::Select('company_id',$company_list, @Input::get('company_id')? Input::get('company_id') : null,['id'=>'company_list','class' => 'form-control js-select','placeholder'=>'select company', 'title'=>'select company','required'=>'required']) !!}
+                </div>
 
                 <div class="col-lg-25 col-md-3 col-sm-6">
-                        {!! Form::label('designation_id', 'Post Name:', ['class' => 'control-label']) !!}
-                        <small class="required jrequired">(Required)</small>
-                        {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control designation_id js-select','placeholder'=>'select industry type', 'title'=>'select industry type','requiredz'=>'requiredz']) !!}
-                    </div>
+                    {!! Form::label('designation_id', 'Post Name:', ['class' => 'control-label']) !!}
+                    <small class="required jrequired">(Required)</small>
+                    {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control designation_id js-select','placeholder'=>'select industry type', 'title'=>'select industry type','requiredz'=>'requiredz']) !!}
+                </div>
 
-                <div class="col-lg-1 col-md-3 col-sm-6 filter-btn">
+                <div class="col-lg-25 col-md-3 col-sm-6">
+                    {!! Form::label('from_date', 'From Date:', ['class' => 'control-label']) !!}
+                    {!! Form::text('from_date', @Input::get('from_date')? Input::get('from_date') : null,['id'=>'company_list','class' => 'form-control datepicker']) !!}
+                    <span class="input-group-btn add-on">
+                        <button class="btn btn-danger calender-button" type="button"><i class="icon-calendar"></i></button>
+                    </span>
+                </div>
 
-                      {!! Form::submit('Generate Result', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'submit-button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
-                    </div>
+                <div class="col-lg-25 col-md-3 col-sm-6">
+                    {!! Form::label('to_date', 'To Date:', ['class' => 'control-label']) !!}
+                    {!! Form::text('to_date', @Input::get('to_date')? Input::get('to_date') : null,['id'=>'company_list','class' => 'form-control datepicker']) !!}
+                    <span class="input-group-btn add-on">
+                        <button class="btn btn-danger calender-button" type="button"><i class="icon-calendar"></i></button>
+                    </span>
+                </div>
+
+                <div class="col-lg-25 col-md-3 col-sm-6 filter-btn">
+
+                    {!! Form::submit('Generate Result', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'submit-button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
+                </div>
                     
                 </div>
 
@@ -103,7 +119,7 @@
                                     <td>{{isset($values->relDesignation->designation_name) ? $values->relDesignation->designation_name : ''}}</td>
                                     <td>{{$values->roll_no}}</td>
                                     <td>{{$values->username}}</td>
-                                    <td>{{$values->dob}}</td>
+                                    <td>{{$values->exam_date}}</td>
                                     <td>{{$values->nid}}</td>
                                     <td>{{ucfirst($values->typing_status)}}</td>
                                     <td>{{ucfirst($values->aptitude_status)}}</td>
@@ -167,6 +183,20 @@ form.report-form .col-sm-12.ddd_margin{
 <script>
 
 $(document).ready(function() {
+
+ $('.datepicker').each(function(index, el) {
+        
+     $(el).datepicker({
+         format: 'yyyy-mm-dd',
+         autoclose:true
+     });
+
+});
+
+
+
+
+
 
 $("form").submit(function(e) {
 

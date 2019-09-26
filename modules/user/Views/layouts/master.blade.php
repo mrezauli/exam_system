@@ -102,6 +102,7 @@
 
         $('.datapicker2').datepicker({
             format: 'yyyy-mm-dd (D)',
+            autoclose:true
         });
         $('.input-group.date').datepicker({
         });

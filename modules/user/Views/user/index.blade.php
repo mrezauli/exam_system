@@ -106,7 +106,7 @@
 
 <script>
     function open_modal(){
-        document.getElementById('load').style.visibility="visible";
+        //document.getElementById('load').style.visibility="visible";
     }
 
     $('#jq-validation-form').submit(function() {

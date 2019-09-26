@@ -50,7 +50,7 @@
     <link href="{{ URL::asset('assets/jquery-multi-select/css/multi-select.css') }}" rel="stylesheet" type="text/css" >
 
 
-    <link href="{{ URL::asset('assets/css/datepicker.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ URL::asset('assets/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ URL::asset('assets/css/timepicker.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ URL::asset('assets/css/bootstrap-fullcalendar.css') }}" rel="stylesheet" type="text/css" >
 {{--     <link href="{{ URL::asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" > --}}
@@ -239,7 +239,7 @@
 
 {{-- Date Picker --}}
 {{-- <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script> --}}
-<script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap-datepicker.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap-timepicker.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/js/fullcalendar.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/js/custom.js') }}"></script>
@@ -389,9 +389,7 @@ function ajax_get_exam_code(){
         
         $('#exam_type option:last-child').val() == 'aptitude_test' ?  $('#exam_type').val(exam_type).trigger("change") : '';
 
-
       }
-
 
     });
 
@@ -400,7 +398,7 @@ function ajax_get_exam_code(){
 
 
     $('.datepicker').bind('input',function(e) {
-alert('sdf');
+
         $(this).css('font-size', '0');
         
         setTimeout(function() {

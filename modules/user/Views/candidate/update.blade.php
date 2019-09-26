@@ -99,7 +99,8 @@
 $('.datepicker').each(function(index, el) {
     
  $(el).datepicker({
-     format: 'yyyy-mm-dd'
+     format: 'yyyy-mm-dd',
+     autoclose:true
  });
 
 });

@@ -59,6 +59,11 @@ class CandidateController extends Controller
 
         $input = $request->all();
 
+        $from_date = $request->from_date;
+
+        $to_date = $request->to_date;
+
+
         $company_list =  [''=>'Select organization'] + Company::where('status','active')->orderBy('id','desc')->lists('company_name','id')->all();
 
         $designation_list =  [''=>'Select name of the post'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
@@ -83,7 +88,7 @@ class CandidateController extends Controller
         }
 
 
-        $model = $model->orWhere(function ($query) use($request) {
+        $model = $model->orWhere(function ($query) use($request,$from_date,$to_date) {
 
             $query->whereNull('status');
 
@@ -95,6 +100,25 @@ class CandidateController extends Controller
                 $query->where('designation_id',$request->designation_id); 
 
             }
+
+            if($from_date != '' && $to_date == ''){
+
+                $query->where('exam_date',$request->from_date); 
+
+            }
+
+            if($from_date == '' && $to_date != ''){
+
+                $query->where('exam_date',$request->to_date); 
+          
+            }
+
+            if($from_date != '' && $to_date != ''){
+
+                $query->whereBetween('exam_date', array($from_date, $to_date));
+            
+            }
+
 
         })->get();
 

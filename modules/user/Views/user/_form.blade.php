@@ -86,7 +86,7 @@
              <small class="required">*</small>
          
                 @if(isset($data->expire_date))
-                    {!! Form::text('expire_date', Input::old('expire_date'), ['class' => 'form-control bs-datepicker-component datepicker','required','title'=>'select expire date']) !!}
+                    {!! Form::text('expire_date', Input::old('expire_date'), ['class' => 'form-control datepicker','required','title'=>'select expire date']) !!}
                 @else
                     {!! Form::text('expire_date', $days, ['class' => 'form-control datepicker','required','title'=>'select expire date']) !!}
                 @endif
@@ -130,7 +130,8 @@
     $('.datepicker').each(function(index, el) {
         
      $(el).datepicker({
-         format: 'yyyy-mm-dd'
+         format: 'yyyy-mm-dd',
+         autoclose:true
      });
 
     });

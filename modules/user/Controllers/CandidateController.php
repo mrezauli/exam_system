@@ -4,7 +4,7 @@
  * User: UITS-Shajjad
  * Date: 3/28/2017
  * Time: 1:08 PM
- */
+*/
 
 namespace Modules\User\Controllers;
 
@@ -125,14 +125,11 @@ class CandidateController extends Controller
 
             $query->orderBy('id','asc');
 
-
-
         })->get();
 
 
 
         $time = microtime(true) - $start;
-
 
         //dd($model);
 

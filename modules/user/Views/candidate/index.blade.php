@@ -83,6 +83,7 @@
                         <thead>
                         <tr>
                             <th> SL No. </th>
+                            <th> Exam Sl No.</th>
                             <th> Organization </th>
                             <th> Name of the Post </th>
                             <th>Roll No</th>
@@ -98,6 +99,7 @@
                         <tfoot class="search-section">
                         <tr>
                             <th> SL No. </th>
+                            <th> Exam Sl. No.</th>
                             <th> Organization </th>
                             <th> Name of the Post </th>
                             <th>Roll No</th>
@@ -115,6 +117,7 @@
                             @foreach($model as $values)
                                 <tr class="gradeX">
                                     <td>{{$sl++}}</td>
+                                    <td>{{$values->sl}}</td>
                                     <td>{{isset($values->relCompany->company_name) ? $values->relCompany->company_name : ''}}</td>
                                     <td>{{isset($values->relDesignation->designation_name) ? $values->relDesignation->designation_name : ''}}</td>
                                     <td>{{$values->roll_no}}</td>

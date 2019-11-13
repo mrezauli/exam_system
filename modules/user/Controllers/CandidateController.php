@@ -128,7 +128,6 @@ class CandidateController extends Controller
         })->get();
 
 
-
         $time = microtime(true) - $start;
 
         //dd($model);
@@ -144,6 +143,7 @@ class CandidateController extends Controller
         $headers = array(
             'Content-Type: application/xlsx',
         );
+        
         return Response::download($filename, 'candidate_list_data.xlsx', $headers);
     }
 

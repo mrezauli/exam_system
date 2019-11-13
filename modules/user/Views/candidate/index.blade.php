@@ -83,7 +83,7 @@
                         <thead>
                         <tr>
                             <th> SL No. </th>
-                            <th> Exam Sl No.</th>
+                            <th> Exam wise Sl No.</th>
                             <th> Organization </th>
                             <th> Name of the Post </th>
                             <th>Roll No</th>
@@ -99,7 +99,7 @@
                         <tfoot class="search-section">
                         <tr>
                             <th> SL No. </th>
-                            <th> Exam Sl. No.</th>
+                            <th> Exam wise Sl. No.</th>
                             <th> Organization </th>
                             <th> Name of the Post </th>
                             <th>Roll No</th>
@@ -249,7 +249,7 @@ $(".upload-button").one("click", function() {
 @section('custom-script')
     <script>
 
-        var column_index = ['2','3','8','9'];
+        var column_index = ['3','4','9','10'];
         create_dropdown_column(column_index);
 
         $(document).ready(function() {

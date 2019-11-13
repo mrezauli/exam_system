@@ -91,7 +91,7 @@
                             <th> Exam Date </th>
                             <th> NID </th>
                             <th> Typing Status </th>
-                            <th> Apt. Status </th>
+                            <th> Aptitude Status </th>
                             <th> Action &nbsp;&nbsp;<span style="color: #A54A7B" class="user-guideline" data-placement="top" data-content=""></span></th>
                         </tr>
                         </thead>
@@ -107,7 +107,7 @@
                             <th> Exam Date </th>
                             <th> NID </th>
                             <th> Typing Status </th>
-                            <th> Apt. Status </th>
+                            <th> Aptitude Status </th>
                             <th> Action &nbsp;&nbsp;<span style="color: #A54A7B" class="user-guideline" data-placement="top" data-content=""></span></th>
                         </tr>
                         </tfoot>

@@ -86,7 +86,7 @@
                             <th> Exam wise Sl No.</th>
                             <th> Organization </th>
                             <th> Name of the Post </th>
-                            <th>Roll No</th>
+                            <th> Roll No.</th>
                             <th> Name </th>
                             <th> Exam Date </th>
                             <th> NID </th>
@@ -102,7 +102,7 @@
                             <th> Exam wise Sl. No.</th>
                             <th> Organization </th>
                             <th> Name of the Post </th>
-                            <th>Roll No</th>
+                            <th> Roll No.</th>
                             <th> Name </th>
                             <th> Exam Date </th>
                             <th> NID </th>

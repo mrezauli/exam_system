@@ -89,7 +89,7 @@
                             <th> Roll No.</th>
                             <th> Name </th>
                             <th> Exam Date </th>
-                            <th> NID </th>
+                            <th> NID No.</th>
                             <th> Typing Status </th>
                             <th> Aptitude Status </th>
                             <th> Action &nbsp;&nbsp;<span style="color: #A54A7B" class="user-guideline" data-placement="top" data-content=""></span></th>
@@ -105,7 +105,7 @@
                             <th> Roll No.</th>
                             <th> Name </th>
                             <th> Exam Date </th>
-                            <th> NID </th>
+                            <th> NID No.</th>
                             <th> Typing Status </th>
                             <th> Aptitude Status </th>
                             <th> Action &nbsp;&nbsp;<span style="color: #A54A7B" class="user-guideline" data-placement="top" data-content=""></span></th>

@@ -363,4 +363,15 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
     ]);
 
 
+
+    Route::any('examination-summary-report', [
+        'as' => 'examination-summary-report',
+        'uses' => 'ExaminationSummaryReportController@examination_summary_report'
+    ]);
+
+    Route::any('generate-examination-summary-report', [
+        'as' => 'generate-examination-summary-report',
+        'uses' => 'ExaminationSummaryReportController@generate_examination_summary_report'
+    ]);
+
 });

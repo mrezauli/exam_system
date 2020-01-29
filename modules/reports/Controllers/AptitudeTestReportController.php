@@ -24,7 +24,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class AptitudeTestReportController extends Controller
 {
 
-
     public function aptitude_test_report($roll_wise = ''){
 
         if ($roll_wise) {

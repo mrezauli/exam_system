@@ -325,8 +325,9 @@ form .col-sm-12:last-child{
         <th>Total Organizations</th>
         <th>No. of Candidates</th>
       </tr>
+      
       <tr>
-        <td>{{$total_organization}}</td>
+        <td>{{$total_organizations}}</td>
         <td>{{$total_no_of_candidates}}</td>
       </tr>
     </table>

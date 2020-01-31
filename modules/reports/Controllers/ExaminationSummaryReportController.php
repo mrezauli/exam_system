@@ -38,7 +38,12 @@ class ExaminationSummaryReportController extends Controller
 
         $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
 
-        return view('reports::examination_summary_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','absent_count','total_count','total_pass','total_fail','bangla_speed','roll_wise'));
+        $total_organizations = '';
+
+        $total_no_of_candidates = '';
+
+
+        return view('reports::examination_summary_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','absent_count','total_count','total_pass','total_fail','bangla_speed','roll_wise','total_organizations','total_no_of_candidates'));
 
 
 
@@ -182,7 +187,7 @@ class ExaminationSummaryReportController extends Controller
   
 
 
-        $total_organization = count($all_model->groupBy('company_name')->map(function ($people) {
+        $total_organizations = count($all_model->groupBy('company_name')->map(function ($people) {
             return $people->count();
         })->all());
 
@@ -205,7 +210,7 @@ class ExaminationSummaryReportController extends Controller
        // $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::examination_summary_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','all_model','header','all_group','from_date','to_date','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','absent_count','total_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks','header_all','roll_wise','makeComparer','total_organization','total_no_of_candidates'));
+        return view('reports::examination_summary_report.index', compact('page_title','status','company_id','designation_id','exam_date','company_list','designation_list','model','group','word_question_no','excel_question_no','ppt_question_no','all_model','header','all_group','from_date','to_date','exam_dates_string','question_marks','passed_count','failed_count','expelled_count','cancelled_count','absent_count','total_count','bangla_speed','word_pass_marks','excel_pass_marks','ppt_pass_marks','header_all','roll_wise','makeComparer','total_organizations','total_no_of_candidates'));
 
 
     }

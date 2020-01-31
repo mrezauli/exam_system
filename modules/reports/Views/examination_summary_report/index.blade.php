@@ -390,7 +390,7 @@ var table = $('#examples_report').DataTable( {
   "language": {
     "search": "Search Roll No:"
   },
-  "aaSorting": [['1','asc'],['2','desc'],['3','asc']],
+  //"aaSorting": [['1','asc'],['2','desc'],['3','asc']],
   "pageLength": 50,
 });
 

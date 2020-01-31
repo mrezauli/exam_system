@@ -119,7 +119,19 @@ form .col-sm-12:last-child{
                             @endforeach
                         @endif
                         </tbody>
-                    </table>         
+                    </table>
+
+                    <table style="margin:30px auto;width:30%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+                      <tr>
+                        <th>Total Organizations</th>
+                        <th>No. of Candidates</th>
+                    </tr>
+
+                    <tr>
+                        <td>{{$total_organizations}}</td>
+                        <td>{{$total_no_of_candidates}}</td>
+                    </tr>
+                    </table>
         
                 </div>
                 @if($status==2)

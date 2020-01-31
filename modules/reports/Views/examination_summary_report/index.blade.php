@@ -47,12 +47,6 @@ form .col-sm-12:last-child{
                         {!! Form::Select('company_id',$company_list, @Input::get('company_id')? Input::get('company_id') : null,['id'=>'company_list','class' => 'form-control js-select','placeholder'=>'select company', 'title'=>'select company']) !!}
                     </div>
 
-                    <div class="col-lg-25 col-md-3 col-sm-6 hidden">
-                        {!! Form::label('designation_id', 'Post Name:', ['class' => 'control-label']) !!}
-                        <small class="required jrequired">(Required)</small>
-                        {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control js-select','placeholder'=>'select industry type', 'title'=>'select industry type']) !!}
-                    </div>
-
                     <div class="col-lg-25 col-md-3 col-sm-6">
                       {!! Form::label('from_date', 'From Date:', ['class' => 'control-label']) !!}
                       <small class="required jrequired">(Required)</small>

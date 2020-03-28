@@ -10,11 +10,13 @@ class ModuleServiceProvider extends ServiceProvider
      * Bootstrap the application services.
      *
      * @return void
-     */
+    */
     public function boot()
     {
         $modules = config("module.modules");
-        while (list(,$module) = each($modules)) {
+        
+        foreach ($modules as $key => $module) {
+
             if(file_exists(__DIR__.'/'.$module.'/routes.php')) {
                 include __DIR__.'/'.$module.'/routes.php';
             }

@@ -1108,21 +1108,4 @@ class TypingTestReportController extends Controller
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

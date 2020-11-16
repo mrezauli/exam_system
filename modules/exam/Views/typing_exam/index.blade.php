@@ -340,7 +340,7 @@ a.btn.btn-primary.btn-sm.start-button {
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৫.    বাংলা অথবা ইংরেজী যে কোন ০১(একটি) বাটনে “ক্লিক” করে টাইপিং শুরু করুন। </b></td></tr>--}}
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    নির্ধারিত বক্স নির্বাচন করে ইংরেজী টাইপিং শুরু করুন। ইংরেজী টাইপিং সমাপ্ত হলে “Submit” 
   বাটনে ক্লিক করুন। </b></td></tr>
-                <tr style="font-size: 22px!important;"><td><b>&nbsp; ৫.    এরপর বাংলা টাইপিং এর জন্য “Ctrl+Alt+U” দিয়ে কিবোর্ড নির্বাচন করুন। নির্ধারিত বক্স বাংলা 
+                <tr style="font-size: 22px!important;"><td><b>&nbsp; ৫.    এরপর বাংলা টাইপিং এর জন্য “Ctrl+Alt+V” দিয়ে কিবোর্ড নির্বাচন করুন। নির্ধারিত বক্স বাংলা
   টাইপিং শুরু করুন। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৬.    বাংলা টাইপিং সমাপ্ত হলে “Submit” বাটনে ক্লিক করে পরীক্ষা সমাপ্ত করুন। </b></td></tr>
             </table>

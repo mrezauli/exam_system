@@ -44,7 +44,8 @@ class CandidateReExamController extends Controller
 
         $exam_process_code_list =  ExamProcess::lists('exam_code_id')->all();
 
-        $exam_process_code_list =  ExamProcess::orderBy('id','desc')->take('5')->get()->lists('exam_code_id')->all();
+        //$exam_process_code_list =  ExamProcess::orderBy('id','desc')->take('5')->get()->lists('exam_code_id')->all();
+        $exam_process_code_list =  ExamProcess::orderBy('id','desc')->get()->lists('exam_code_id')->all();
 
         $exam_code_list = [''=>'Select exam code'] + collect($exam_code_list)->flip()->intersect($exam_process_code_list)->flip()->all();
 

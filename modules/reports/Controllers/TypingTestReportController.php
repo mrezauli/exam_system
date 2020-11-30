@@ -352,6 +352,10 @@ class TypingTestReportController extends Controller
 
                 return false;
 
+            }else if ($value->remarks == "Pass" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
+
+                return false;
+
             }else{
 
                 return $value->remarks == "Pass";
@@ -365,6 +369,10 @@ class TypingTestReportController extends Controller
         $failed_count = $model->filter(function ($value) {
 
             if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
+
+                return false;
+
+            }else if ($value->remarks == "Pass" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
 
                 return false;
 
@@ -382,6 +390,8 @@ class TypingTestReportController extends Controller
         $cancelled_count = $cancelled->count();
 
         $total_count = $passed_count + $failed_count + $expelled_count + $cancelled_count;
+
+        //$total_count = $passed_count + $failed_count  + $cancelled_count;
 
  
 

@@ -259,7 +259,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
 <div class="question-answer-block">
 
-  {!! Form::open(['route' => ['submit-typing-exam',$exam_type],'id' => 'jq-validation-form','class' => 'exam-form']) !!}
+  {!! Form::open(['route' => ['submit-typing-exam-en-preview',$exam_type],'id' => 'jq-validation-form','class' => 'exam-form']) !!}
   
   <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
@@ -307,9 +307,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
 <div class="row">
   <div class="text-right">
-    {{-- add method to prevent submit --}}
-      {{-- {!! Form::submit('Submit', ['class' => 'btn btn-primary submit-button typing-exam-submit-button btn-sm','data-placement'=>'top', 'onclick'=>'submitForm(event)']) !!} --}}
-      {!! Form::submit('Submit', ['class' => 'btn btn-primary submit-button typing-exam-submit-button btn-sm','data-placement'=>'top']) !!}
+      {!! Form::submit('Finalize', ['class' => 'btn btn-primary submit-button typing-exam-submit-button btn-sm','data-placement'=>'top']) !!}
   </div>
 </div>
 
@@ -461,11 +459,11 @@ $('#original_text').bind('cut copy paste drop', function (e) {
 });
 
 
-$('#answered_text').bind('cut copy paste drop', function (e) {
+// $('#answered_text').bind('cut copy paste drop', function (e) {
 
- return false;
+//  return false;
 
-});
+// });
 
 var answered_text_length = 0;
 
@@ -555,7 +553,7 @@ if (typing_exam_time <= 0) {
 
     $('#answered_text').text(answered_text);
 
-    console.log(typing_exam_default_time);
+    //console.log(typing_exam_default_time);
 
     $('.time').text('00:00');
 

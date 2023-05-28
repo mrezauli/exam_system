@@ -742,18 +742,18 @@ class TypingTestReportController extends Controller
 
             $page_title= 'Typing Test Information';
 
-            $bangla_text = Examination::findOrNew($bangla_exam_id);
-            $english_text = Examination::findOrNew($english_exam_id);
+            $bangla = Examination::findOrNew($bangla_exam_id);
+            $english = Examination::findOrNew($english_exam_id);
 
-            // dd($bangla_text);
+            // dd($bangla);
 
-            $user_id = empty($bangla_text->user_id) ? $english_text->user_id : $bangla_text->user_id; 
+            $user_id = empty($bangla->user_id) ? $english->user_id : $bangla->user_id; 
 
 
             $user = User::with('relCompany','relDesignation')->find($user_id);
 
 
-            return view('reports::typing_test_report.typing_test_details', compact('page_title','bangla_text','english_text','user'));
+            return view('reports::typing_test_report.typing_test_details', compact('page_title','bangla','english','user'));
 
         }
 

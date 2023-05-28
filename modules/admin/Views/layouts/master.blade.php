@@ -53,8 +53,8 @@
     <link href="{{ URL::asset('assets/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ URL::asset('assets/css/timepicker.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ URL::asset('assets/css/bootstrap-fullcalendar.css') }}" rel="stylesheet" type="text/css" >
-{{--     <link href="{{ URL::asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" > --}}
-    <link href="{{ URL::asset('assets/css/jquery.dataTables.bootstrap.min.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ URL::asset('assets/css/dataTables.bootstrap.min.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ URL::asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" >
 
 
 

@@ -27,18 +27,24 @@ Route::any('ajax-get-remarks', [
     'uses' => 'CandidateReExamController@ajax_get_remarks'
 ]);
 
-
-
-
 Route::get('typing-exams', [
     'as' => 'typing-exams',
     'uses' => 'TypingTestController@index'
 ]);
 
-
 Route::get('welcome-typing-exam', [
     'as' => 'welcome-typing-exam',
     'uses' => 'TypingTestController@welcome'
+]);
+
+Route::get('en-typing-exam', [
+    'as' => 'en-typing-exam',
+    'uses' => 'TypingTestController@enTypingExam'
+]);
+
+Route::get('bn-typing-exam', [
+    'as' => 'bn-typing-exam',
+    'uses' => 'TypingTestController@bnTypingExam'
 ]);
 
 Route::get('create-exam/{id}', [
@@ -80,6 +86,26 @@ Route::any("start-typing-exam/{exam_type}", [
 Route::any("submit-typing-exam/{exam_type}", [
     "as"   => "submit-typing-exam",
     "uses" => "TypingTestController@submit"
+]);
+
+Route::any("submit-typing-exam-en-preview/{exam_type}", [
+    "as"   => "submit-typing-exam-en-preview",
+    "uses" => "TypingTestController@enPreview"
+]);
+
+Route::any("submit-typing-exam-bn-preview/{exam_type}", [
+    "as"   => "submit-typing-exam-bn-preview",
+    "uses" => "TypingTestController@bnPreview"
+]);
+
+Route::any("submit-typing-exam-en-with-calculation/{exam_type}", [
+    "as"   => "submit-typing-exam-en-with-calculation",
+    "uses" => "TypingTestController@calculateEnglish"
+]);
+
+Route::any("submit-typing-exam-bn-with-calculation/{exam_type}", [
+    "as"   => "submit-typing-exam-bn-with-calculation",
+    "uses" => "TypingTestController@calculateBangla"
 ]);
 
 Route::any("show-result", [
@@ -125,4 +151,3 @@ Route::any("show-result", [
 
 
     /*--------------Answer Sheet Review-----------------*/
-

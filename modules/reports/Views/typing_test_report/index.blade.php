@@ -198,9 +198,9 @@ form .col-sm-12:last-child{
                     $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
 
 
-                    $bangla_times[] = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
+                    $bangla_times[] = isset($bangla->exam_time) ? $bangla->exam_time : 1;
 
-                    $english_times[] = isset($english->exam_time) ? $english->exam_time - 1: 1;
+                    $english_times[] = isset($english->exam_time) ? $english->exam_time : 1;
 
                 }
 
@@ -224,8 +224,9 @@ form .col-sm-12:last-child{
                             <th class="no-border"> <span>Exam Code</span> </th>
                             <th class="no-border"> <span>Name</span> </th>
                             <th class="no-border" style="border-right: 1.7px solid #8189fd !important"> <span>Answer Scripts View</span> </th>
-                            <th colspan="4" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$bangla_time}} minutes</th>
-                            <th colspan="4">English in {{$english_time}} minutes</th>
+                            <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$bangla_time}} minutes</th>
+                            <th colspan="7">English in {{$english_time}} minutes</th>
+                            <th class="no-border"> <span>Average Mark</span> </th>
                             <th class="no-border"> <span>Remarks</span> </th>
                             <th class="no-border"> <span>Update</span> </th>
                         </tr>
@@ -238,15 +239,21 @@ form .col-sm-12:last-child{
                             <th></th>
                             <th></th>
                             <th style="border-right: 1.7px solid #8189fd !important"></th>
-                            <th>Typed Words</th>
+                            <th>Characters (with space)</th>
+                            <th>Total Words</th>
                             <th>Wrong Words</th>
-                            <th>Corrected Words</th>
-                            <th style="border-right: 1.7px solid #8189fd !important">Words/ Minute</th>
+                            <th>Correct Words</th>
+                            <th style="border-right: 1.7px solid #8189fd !important">Speed Per Mintues</th>
+                            <th>Tolerance (5%)</th>
+                            <th>Marks</th>
 
-                            <th>Typed Words</th>
+                            <th>Characters (with space)</th>
+                            <th>Total Words</th>
                             <th>Wrong Words</th>
-                            <th>Corrected Words</th>
-                            <th>Words/ Minute</th>
+                            <th>Correct Words</th>
+                            <th style="border-right: 1.7px solid #8189fd !important">Speed Per Mintues</th>
+                            <th>Tolerance (5%)</th>
+                            <th>Marks</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -301,25 +308,28 @@ form .col-sm-12:last-child{
 
                             $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
 
-
-
-                            //$bangla_exam_time = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
                             $bangla_exam_time = $bangla_speed;
-
-                            //$english_exam_time = isset($english->exam_time) ? $english->exam_time - 1: 1;
                             $english_exam_time = $english_speed;
 
-                            $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
+                            $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+                            $bangla_typed_words = round($bangla_typed_characters/5);
+                            $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words/5) : 0;
+                            $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
+                            $bangla_wpm = round($bangla_corrected_words/$bangla_time);
+                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_round_marks = round((20/25)* $bangla_wpm);
+                            $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
-                            $bangla_wpm = round($bangla_corrected_words/$bangla_exam_time3,1);
+                            $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                            $english_typed_words = round($english_typed_characters/5);
+                            $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words/5) : 0;
+                            $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
+                            $english_wpm = round($english_corrected_words/$english_time);
+                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_round_marks = round((20/25)* $english_wpm);
+                            $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
-                            $bangla_wpm = round_to_integer($bangla_wpm);
-
-                            $english_corrected_words = $english->typed_words - $english->inserted_words;
-
-                            $english_wpm = round($english_corrected_words/$english_exam_time3,1);
-
-                            $english_wpm = round_to_integer($english_wpm);
+                            $average = round(($bangla_marks + $english_marks) / 2);
 
                             ?>
                                 <tr class="gradeX">
@@ -362,15 +372,23 @@ form .col-sm-12:last-child{
                                     </td>
 
 
-                                    <td>{{isset($bangla->typed_words) ? $bangla->typed_words : '0'}}</td>
-                                    <td>{{isset($bangla->inserted_words) ? $bangla->inserted_words : '0'}}</td>
-                                    <td>{{$bangla_corrected_words}}</td>
+                                    <td>{{ $bangla_typed_characters }}</td>
+                                    <td>{{ $bangla_typed_words }}</td>
+                                    <td>{{ $bangla_deleted_words }}</td>
+                                    <td>{{ $bangla_corrected_words }}</td>
                                     <td style="border-right: 1.7px solid #8189fd !important">{{$bangla_wpm}}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_tolerance }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_marks }}</td>
 
-                                    <td>{{isset($english->typed_words) ? $english->typed_words : '0'}}</td>
-                                    <td>{{isset($english->inserted_words) ? $english->inserted_words : '0'}}</td>
-                                    <td>{{$english_corrected_words}}</td>
-                                    <td>{{$english_wpm}}</td>
+                                    <td>{{ $english_typed_characters }}</td>
+                                    <td>{{ $english_typed_words }}</td>
+                                    <td>{{ $english_deleted_words }}</td>
+                                    <td>{{ $english_corrected_words }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{$english_wpm}}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_tolerance }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_marks }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $average }}</td>
+
                                     <td>
                                    
                                         @if(! $values->lists('attended_typing_test')->contains('true'))
@@ -379,7 +397,7 @@ form .col-sm-12:last-child{
                             
                                         @else
 
-                                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
 
                                         <?php $remarks = 'Pass'; ?>
 
@@ -593,32 +611,52 @@ form .col-sm-12:last-child{
 <div class="table-primary report-table-wrapper">
     <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
         <thead>
-        <tr>
-            <th class="no-border" rowspan="2"> SL. </th>
-            <th class="no-border" rowspan="2"> Roll No. </th>
-            <th class="no-border" rowspan="2"> Exam Code </th>
-            <th class="no-border" rowspan="2"> Name </th>
-            <th colspan="4">Bangla in {{$bangla_time}} minutes</th>
-            <th colspan="4">English in {{$english_time}} minutes</th>
-            <th class="no-border" rowspan="2"> Remarks </th>
-        </tr>
+            <tr>
+                <th class="no-border"> <span>SL.</span> </th>
+                <th class="no-border"> <span>Candidate SL.</span> </th>
+                <th class="no-border"> <span>Roll No.</span> </th>
+                <th class="no-border"> <span>Name</span> </th>
+                <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$bangla_time}} minutes</th>
+                <th colspan="7">English in {{$english_time}} minutes</th>
+                <th class="no-border"> <span>Average Mark</span> </th>
+                <th class="no-border"> <span>Remarks</span> </th>
+            </tr>
+           
+    
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>CWS</th>
+                <th>TW</th>
+                <th>WW</th>
+                <th>CW</th>
+                <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
+                <th>T</th>
+                <th>M</th>
+    
+                <th>CWS</th>
+                <th>TW</th>
+                <th>WW</th>
+                <th>CW</th>
+                <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
+                <th>T</th>
+                <th>M</th>
+                <th></th>
+            </tr>
       
-        <tr>
-            <th>Typed Words</th>
-            <th>Wrong Words</th>
-            <th>Corrected Words</th>
-            <th>Words/ Minute</th>
-
-            <th>Typed Words</th>
-            <th>Wrong Words</th>
-            <th>Corrected Words</th>
-            <th>Words/ Minute</th>
-        </tr>
         </thead>
         <tbody>
-        
+
+        <?php $passed = 0; ?>
+        <?php $failed = 0; ?>
+        <?php $expelled = 0; ?>
+        <?php $cancelled = 0; ?>
+        <?php $total = 0; ?>
         @if($status==2)
         <?php $i = isset($_GET['page']) ? ($_GET['page']-1)*1 + 0: 0; ?>
+        
 
             @foreach($model_all as $values)
 
@@ -639,78 +677,95 @@ form .col-sm-12:last-child{
             $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
 
 
-            $english_exam_time = $english_speed;
+            $bangla_exam_time = $bangla_speed;
+                            $english_exam_time = $english_speed;
 
-            $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
+                            $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+                            $bangla_typed_words = round($bangla_typed_characters/5);
+                            $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words/5) : 0;
+                            $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
+                            $bangla_wpm = round($bangla_corrected_words/$bangla_time);
+                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_round_marks = round((20/25)* $bangla_wpm);
+                            $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
-            $bangla_wpm = round($bangla_corrected_words/$bangla_exam_time3,1);
+                            $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                            $english_typed_words = round($english_typed_characters/5);
+                            $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words/5) : 0;
+                            $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
+                            $english_wpm = round($english_corrected_words/$english_time);
+                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_round_marks = round((20/25)* $english_wpm);
+                            $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
-            $bangla_wpm = round_to_integer($bangla_wpm);
-
-
-            $english_corrected_words = $english->typed_words - $english->inserted_words;
-
-            $english_wpm = round($english_corrected_words/$english_exam_time3,1);
-
-            $english_wpm = round_to_integer($english_wpm);
+                            $average = round(($bangla_marks + $english_marks) / 2);
 
         
             ?>
                 <tr class="gradeX">
-                                           
+                    <?php $total++; ?>      
                     <td>{{$i}}</td>
                     <td>{{$values[0]->roll_no}}</td>
-                    <td>{{$values[0]->exam_code_name}}</td>
                     <td class="table-name">
 
                         {{trim($values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name)}}
 
                     </td>
 
-                    <td>{{isset($bangla->typed_words) ? $bangla->typed_words : '0'}}</td>
-                    <td>{{isset($bangla->inserted_words) ? $bangla->inserted_words : '0'}}</td>
-                    <td>{{$bangla_corrected_words}}</td>
-                    <td>{{$bangla_wpm}}</td>
+                    <td>{{$values[0]->exam_code_name}}</td>
 
-                    <td>{{isset($english->typed_words) ? $english->typed_words : '0'}}</td>
-                    <td>{{isset($english->inserted_words) ? $english->inserted_words : '0'}}</td>
-                    <td>{{$english_corrected_words}}</td>
-                    <td>{{$english_wpm}}</td>
-                    <td>
-                   
-                        @if(! $values->lists('attended_typing_test')->contains('true'))
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_characters }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_words }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_deleted_words }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_corrected_words }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_wpm }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_tolerance }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_marks }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_typed_characters }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_typed_words }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_deleted_words }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_corrected_words }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_wpm }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_tolerance }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_marks }}</td>
+                    <td style="border-right: 1.7px solid #8189fd !important">{{ $average }}</td>
 
-                        <?php $remarks = 'Absent'; ?>
+                                    <td>
+                                   
+                                        @if(! $values->lists('attended_typing_test')->contains('true'))
+                                        
+                                        <?php $remarks = 'Absent'; ?>
+                            
+                                        @else
 
-                        @else
+                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
 
-                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+                                        <?php $remarks = 'Pass'; $passed++; ?>
 
-                        <?php $remarks = 'Pass'; ?>
+                                        @else
 
-                        @else
+                                        <?php $remarks = 'Fail'; $failed++; ?>
 
-                        <?php $remarks = 'Fail'; ?>
+                                        
+                                        @endif
 
-                        @endif
+                                        @if($values->lists('typing_status')->contains('cancelled'))
+                                        
+                                        <?php $remarks = 'Cancelled'; $cancelled++; ?>
+                            
+                                        @endif
 
-                        @if($values->lists('typing_status')->contains('cancelled'))
+                                        @if($values->lists('typing_status')->contains('expelled'))
+                                        
+                                        <?php $remarks = 'Expelled'; $expelled++; ?>
+                            
+                                        @endif
 
-                        <?php $remarks = 'Cancelled'; ?>
+                                        @endif
 
-                        @endif
+                                        {{$remarks}}
 
-                        @if($values->lists('typing_status')->contains('expelled'))
-
-                        <?php $remarks = 'Expelled'; ?>
-
-                        @endif
-
-                        @endif
-
-                        {{$remarks}}
-
-                   </td>
+                                   </td>
                    
                 </tr>
             @endforeach
@@ -727,11 +782,11 @@ form .col-sm-12:last-child{
         <th>Total</th>
       </tr>
       <tr>
-        <td>{{$passed_count}}</td>
-        <td>{{$failed_count}}</td>
-        <td>{{$expelled_count}}</td>
-        <td>{{$cancelled_count}}</td>
-        <td>{{$total_count}}</td>
+        <td>{{ $passed }}</td>
+        <td>{{$failed}}</td>
+        <td>{{$expelled}}</td>
+        <td>{{$cancelled}}</td>
+        <td>{{$total}}</td>
       </tr>
     </table>
 
@@ -900,32 +955,47 @@ form .col-sm-12:last-child{
         <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
         <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
         <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+        <p class="header">CWS = Characters (with space), TW = Total Words, WW = Wrong Words, CW = Correct Words, SPM = Speed Per Mintues, T = Tolerance (5%), M = Marks</p>
     </div>
 
 <div class="table-primary report-table-wrapper">
     <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
         <thead>
         <tr>
-            <th class="no-border" rowspan="2"> SL. </th>
-            <th class="no-border" rowspan="2"> Roll No. </th>
-            <th class="no-border" rowspan="2"> Exam Code </th>
-            <th class="no-border" rowspan="2"> Name </th>
-            <th colspan="4">Bangla in {{$bangla_time}} minutes</th>
-            <th colspan="4">English in {{$english_time}} minutes</th>
-            <th class="no-border" rowspan="2"> Remarks </th>
+            <th class="no-border"> <span>SL.</span> </th>
+            <th class="no-border"> <span>Candidate SL.</span> </th>
+            <th class="no-border"> <span>Roll No.</span> </th>
+            <th class="no-border"> <span>Name</span> </th>
+            <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$bangla_time}} minutes</th>
+            <th colspan="7">English in {{$english_time}} minutes</th>
+            <th class="no-border"> <span>Average Mark</span> </th>
+            <th class="no-border"> <span>Remarks</span> </th>
         </tr>
-      
-        <tr>
-            <th>Typed Words</th>
-            <th>Wrong Words</th>
-            <th>Corrected Words</th>
-            <th>Words/ Minute</th>
+       
 
-            <th>Typed Words</th>
-            <th>Wrong Words</th>
-            <th>Corrected Words</th>
-            <th>Words/ Minute</th>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>CWS</th>
+            <th>TW</th>
+            <th>WW</th>
+            <th>CW</th>
+            <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
+            <th>T</th>
+            <th>M</th>
+
+            <th>CWS</th>
+            <th>TW</th>
+            <th>WW</th>
+            <th>CW</th>
+            <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
+            <th>T</th>
+            <th>M</th>
+            <th></th>
         </tr>
+       
         </thead>
         <tbody>
         
@@ -935,7 +1005,6 @@ form .col-sm-12:last-child{
             @foreach($model_all as $values)
 
             <?php $i++; 
-
 
             $values = collect($values);
         
@@ -950,43 +1019,93 @@ form .col-sm-12:last-child{
 
             $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
 
+            $bangla_exam_time = $bangla_speed;
+                            $english_exam_time = $english_speed;
 
-            $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
+            $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+                            $bangla_typed_words = round($bangla_typed_characters/5);
+                            $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words/5) : 0;
+                            $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
+                            $bangla_wpm = round($bangla_corrected_words/$bangla_time);
+                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_round_marks = round((20/25)* $bangla_wpm);
+                            $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
-            $bangla_wpm = round($bangla_corrected_words/$bangla_exam_time3,1);
+                            $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                            $english_typed_words = round($english_typed_characters/5);
+                            $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words/5) : 0;
+                            $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
+                            $english_wpm = round($english_corrected_words/$english_time);
+                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_round_marks = round((20/25)* $english_wpm);
+                            $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
-            $bangla_wpm = round_to_integer($bangla_wpm);
-
-
-            $english_corrected_words = $english->typed_words - $english->inserted_words;
-
-            $english_wpm = round($english_corrected_words/$english_exam_time3,1);
-
-            $english_wpm = round_to_integer($english_wpm);
+                            $average = round(($bangla_marks + $english_marks) / 2);
 
         
             ?>
                 <tr class="gradeX">
                                            
                     <td>{{$i}}</td>
+                    <td>{{$values[0]->sl}}</td>
                     <td>{{$values[0]->roll_no}}</td>
-                    <td>{{$values[0]->exam_code_name}}</td>
                     <td class="table-name">
 
                         {{trim($values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name)}}
 
                     </td>
 
-                    <td>{{isset($bangla->typed_words) ? $bangla->typed_words : '0'}}</td>
-                    <td>{{isset($bangla->inserted_words) ? $bangla->inserted_words : '0'}}</td>
-                    <td>{{$bangla_corrected_words}}</td>
-                    <td>{{$bangla_wpm}}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_characters }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_words }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_deleted_words }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_corrected_words }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_wpm }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_tolerance }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_marks }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_typed_characters }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_typed_words }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_deleted_words }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_corrected_words }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_wpm }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_tolerance }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_marks }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $average }}</td>
+                                    <td>
+                                   
+                                        @if(! $values->lists('attended_typing_test')->contains('true'))
+                                        
+                                        <?php $remarks = 'Absent'; ?>
+                            
+                                        @else
 
-                    <td>{{isset($english->typed_words) ? $english->typed_words : '0'}}</td>
-                    <td>{{isset($english->inserted_words) ? $english->inserted_words : '0'}}</td>
-                    <td>{{$english_corrected_words}}</td>
-                    <td>{{$english_wpm}}</td>
-                    <td></td>
+                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
+
+                                        <?php $remarks = 'Pass'; ?>
+
+                                        @else
+
+                                        <?php $remarks = 'Fail'; ?>
+                                        
+                                        @endif
+
+                                        @if($values->lists('typing_status')->contains('cancelled'))
+                                        
+                                        <?php $remarks = 'Cancelled'; ?>
+                            
+                                        @endif
+
+                                        @if($values->lists('typing_status')->contains('expelled'))
+                                        
+                                        <?php $remarks = 'Expelled'; ?>
+                            
+                                        @endif
+
+                                        @endif
+
+                                        {{$remarks}}
+
+                                   </td>
+
                    
                 </tr>
             @endforeach
@@ -1002,37 +1121,6 @@ form .col-sm-12:last-child{
 
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- page end-->
 
 <!--script for this page only-->
@@ -1040,10 +1128,6 @@ form .col-sm-12:last-child{
 <script type="text/javascript" src="{{ URL::asset('assets/js/date-and-timepicker-custom.js') }}"></script>
 
     <script>
-
-
-
-
 
 $('.search_roll_no').keyup(function(event) {
     
@@ -1138,18 +1222,18 @@ function report_exam_code(){
 
 
         $('.print-button').click(function(event) {
+            w=window.open('', '_top');
+            w.document.write(document.getElementsByClassName('print-report-table-wrapper')[0].outerHTML);
+            w.print();
+            w.close();
 
-        w=window.open();
-        w.document.write(document.getElementsByClassName('print-report-table-wrapper')[0].outerHTML);
-        w.print();
-        w.close();
 
         });
 
 
         $('.print-button-wr').click(function(event) {
 
-        w=window.open();
+            w=window.open('', '_top');
         w.document.write(document.getElementsByClassName('print-report-table-wr-wrapper')[0].outerHTML);
         w.print();
         w.close();

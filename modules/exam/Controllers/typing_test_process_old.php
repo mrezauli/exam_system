@@ -1,4 +1,8 @@
-<style>.mr3{margin-right: 3px;}</style>
+<style>
+.mr3 {
+    margin-right: 3px;
+}
+</style>
 
 
 

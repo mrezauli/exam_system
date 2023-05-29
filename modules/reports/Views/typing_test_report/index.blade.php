@@ -606,6 +606,7 @@ form .col-sm-12:last-child{
         <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
         <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
         <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+        <p class="header">CWS = Characters (with space), TW = Total Words, WW = Wrong Words, CW = Correct Words, SPM = Speed Per Mintues, T = Tolerance (5%), M = Marks</p>
     </div>
 
 <div class="table-primary report-table-wrapper">
@@ -969,7 +970,6 @@ form .col-sm-12:last-child{
             <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$bangla_time}} minutes</th>
             <th colspan="7">English in {{$english_time}} minutes</th>
             <th class="no-border"> <span>Average Mark</span> </th>
-            <th class="no-border"> <span>Remarks</span> </th>
         </tr>
        
 
@@ -1070,41 +1070,6 @@ form .col-sm-12:last-child{
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $english_tolerance }}</td>
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $english_marks }}</td>
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $average }}</td>
-                                    <td>
-                                   
-                                        @if(! $values->lists('attended_typing_test')->contains('true'))
-                                        
-                                        <?php $remarks = 'Absent'; ?>
-                            
-                                        @else
-
-                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
-
-                                        <?php $remarks = 'Pass'; ?>
-
-                                        @else
-
-                                        <?php $remarks = 'Fail'; ?>
-                                        
-                                        @endif
-
-                                        @if($values->lists('typing_status')->contains('cancelled'))
-                                        
-                                        <?php $remarks = 'Cancelled'; ?>
-                            
-                                        @endif
-
-                                        @if($values->lists('typing_status')->contains('expelled'))
-                                        
-                                        <?php $remarks = 'Expelled'; ?>
-                            
-                                        @endif
-
-                                        @endif
-
-                                        {{$remarks}}
-
-                                   </td>
 
                    
                 </tr>

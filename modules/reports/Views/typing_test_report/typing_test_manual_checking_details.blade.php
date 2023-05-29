@@ -225,6 +225,12 @@
                 margin-right: 10px;
             }*/
 
+            .bangla-font,
+                    .bangla-font * {
+                        font-family: SolaimanLipi !important;
+                        font-size: 14px !important;
+                    }
+
 
 
             .header-section > div:nth-child(2) {
@@ -272,61 +278,80 @@
         </style>
 
 
-        <header style="text-align:center;font-size:14px;border:1px solid #577;" class="header-section text-center">
+<?php
+$bangla_total_characters = isset($bangla->total_words) ? $bangla->total_words : 0;
+$bangla_total_words = round($bangla_total_characters / 5);
+$bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+$bangla_typed_words = round($bangla_typed_characters / 5);
+$bangla_deleted_characters = isset($bangla->deleted_words) ? $bangla->deleted_words : 0;
+$bangla_deleted_words = round($bangla_deleted_characters / 5);
+$bangla_corrected_characters = isset($bangla->inserted_words) ? $bangla->inserted_words : 0;
+$bangla_corrected_words = round($bangla_corrected_characters / 5);
 
-            <div class="color-block">
+$english_total_characters = isset($english->total_words) ? $english->total_words : 0;
+$english_total_words = round($english_total_characters / 5);
+$english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+$english_typed_words = round($english_typed_characters / 5);
+$english_deleted_characters = isset($english->deleted_words) ? $english->deleted_words : 0;
+$english_deleted_words = round($english_deleted_characters / 5);
+$english_corrected_characters = isset($english->inserted_words) ? $english->inserted_words : 0;
+$english_corrected_words = round($english_corrected_characters / 5);
+?>
 
-                <span class="color-description yellowgreen-description"><span></span> - Untyped Words</span><br>
 
-                <span class="color-description orangered-description"><span></span> - Wrong Words</span>
-
-            </div>
-
-
-            <div>
-
+<table class="table table-bordered">
+    <tr>
+        <td colspan="2" class="text-center">
                 <p>{{ $user->typing_exam_code->company->company_name }}</p>
 
-                <p><b>পদের নাম:</b> {{ $user->typing_exam_code->designation->designation_name }}<br><b>পরীক্ষার তারিখ:</b> {{ Helper::revese_date_format($user->typing_exam_code->exam_date) }}<br><b>রোল নং:</b> {{$user->roll_no}}</p>
+                <p><b>পদের নাম:</b> {{ $user->typing_exam_code->designation->designation_name }}<br><b>পরীক্ষার
+                        তারিখ:</b> {{ Helper::revese_date_format($user->typing_exam_code->exam_date) }}<br><b>রোল
+                        নং:</b> {{ $user->roll_no }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="bangla-block">
+
+                <span class=""><b>Bangla::</b></span><br>
+
+                <span class=""><b>Given Words: </b>{{ $bangla_total_words }}</span><br>
+                <span class=""><b>Given Characters: </b>{{ $bangla_total_characters }}</span><br>
+
+                <span class=""><b>Typed Words: </b>{{ $bangla_typed_words }}</span><br>
+                <span class=""><b>Typed Characters: </b>{{ $bangla_typed_characters }}</span><br>
+
+                <span class=""><b>Corrected Words:
+                    </b>{{ $bangla_corrected_words }}</span><br>
+                    <span class=""><b>Corrected Characters: </b>{{ $bangla_corrected_characters }}</span><br>
+
+                <span class=""><b>Wrong Words: </b>{{ $bangla_deleted_words }}</span><br>
+                <span class=""><b>Wrong Characters: </b>{{ $bangla_deleted_characters }}</span><br>
 
             </div>
+        </td>
+        <td>
+            <div class="english-block">
 
-            <div class="bangla-english-block" style="float:right;text-align:left;width:335px;">
+                <span class=""><b>English::</b></span><br>
 
-                <div class="bangla-block">
+                <span class=""><b>Given Words: </b>{{ $english_total_words }}</span><br>
+                <span class=""><b>Given Characters: </b>{{ $english_total_characters }}</span><br>
 
-                    <span class=""><b>Bangla::</b></span><br>
+                <span class=""><b>Typed Words: </b>{{ $english_typed_words }}</span><br>
+                <span class=""><b>Typed Characters: </b>{{ $english_typed_characters }}</span><br>
 
-                    <span class=""><b>Total Given Words: </b>{{$bangla_text->total_words}}</span><br>
+                <span class=""><b>Corrected Words:
+                    </b>{{ $english_corrected_words }}</span><br>
+                    <span class=""><b>Corrected Characters: </b>{{ $english_corrected_characters }}</span><br>
 
-                    <span class=""><b>Typed Words: </b>{{$bangla_text->typed_words}}</span><br>
+                <span class=""><b>Wrong Words: </b>{{ $english_deleted_words }}</span><br>
+                <span class=""><b>Wrong Characters: </b>{{ $english_deleted_characters }}</span><br>
 
-                    <span class=""><b>Corrected Words: </b>{{$bangla_text->typed_words - $bangla_text->inserted_words}}</span><br>
-
-                    <span class=""><b>Wrong Words: </b>{{$bangla_text->inserted_words}}</span><br>
-
-                </div>
-
-
-                <div class="english-block">
-
-                    <span class=""><b>English::</b></span><br>
-
-                    <span class=""><b>Total Given Words: </b>{{$english_text->total_words}}</span><br>
-
-                    <span class=""><b>Typed Words: </b>{{$english_text->typed_words}}</span><br>
-
-                    <span class=""><b>Corrected Words: </b>{{$english_text->typed_words - $english_text->inserted_words}}</span><br>
-
-                    <span class=""><b>Wrong Words: </b>{{$english_text->inserted_words}}</span><br>
-
-                </div>
-                
             </div>
-
-            <div class="clearfix"></div>
-            
-        </header>
+        </td>
+    </tr>
+</table>
         
 
 
@@ -334,23 +359,25 @@
 
                 <h3 style="font-size:18px;color:#0000dc">Bangla Original Text</h3>
 
-                {!! '<p class="bangla-font">' . $bangla_text->original_text  . '</p>'!!}
+                {!! '<p class="bangla-font">' . $bangla->original_text  . '</p>'!!}
 
                 <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
 
-                {!! ! empty($bangla_text->answered_text) ? '<p class="bangla-font">' . $bangla_text->answered_text . '</p>': '<b>No answer is given.</b>' !!}
+                {!! ! empty($bangla->answered_text) ? '<p class="bangla-font">' . $bangla->answered_text . '</p>': '<b>No answer is given.</b>' !!}
                 
 
                 <p><br></p>
 
-                <h3 style="font-size:18px;color:#0000dc">English Original Text</h3>
+                <h3 style="font-size:18px;color:#0000dc" class="bangla-font">English Original Text</h3>
+                <p class="bangla-font">
+                    {!! $english->original_text !!}
+                </p>
+                
 
-                {!! $english_text->original_text !!}
 
+                <h3 style="font-size:18px;color:#0000dc" class="bangla-font">English Answered Text</h3>
 
-                <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
-
-                {!! ! empty($english_text->answered_text) ? '<p>' . $english_text->answered_text . '</p>': '<b>No answer is given.</b>' !!}
+                {!! ! empty($english->answered_text) ? '<p class="bangla-font">' . $english->answered_text . '</p>': '<b>No answer is given.</b>' !!}
 
             </section>
 
@@ -492,7 +519,7 @@ header + section{
     header{
         padding: 5px;
         text-align: left !important;
-        height: 185px !important;
+        height: 285px !important;
     }
 
     .color-block{
@@ -662,28 +689,37 @@ header + section{
 
             <span class=""><b>Bangla::</b></span><br>
 
-            <span class=""><b>Total Given Words: </b>{{$bangla_text->total_words}}</span><br>
+            <span class=""><b>Given Words: </b>{{ $bangla_total_words }}</span><br>
+            <span class=""><b>Given Characters: </b>{{ $bangla_total_characters }}</span><br>
 
-            <span class=""><b>Typed Words: </b>{{$bangla_text->typed_words}}</span><br>
+            <span class=""><b>Typed Words: </b>{{ $bangla_typed_words }}</span><br>
+            <span class=""><b>Typed Characters: </b>{{ $bangla_typed_characters }}</span><br>
 
-            <span class=""><b>Corrected Words: </b>{{$bangla_text->typed_words - $bangla_text->inserted_words}}</span><br>
+            <span class=""><b>Corrected Words:
+                </b>{{ $bangla_corrected_words }}</span><br>
+                <span class=""><b>Corrected Characters: </b>{{ $bangla_corrected_characters }}</span><br>
 
-            <span class=""><b>Wrong Words: </b>{{$bangla_text->inserted_words}}</span><br>
+            <span class=""><b>Wrong Words: </b>{{ $bangla_deleted_words }}</span><br>
+            <span class=""><b>Wrong Characters: </b>{{ $bangla_deleted_characters }}</span><br>
 
-     </div>
-
+        </div>
 
         <div class="english-block" style="padding-right:20px;">
 
             <span class=""><b>English::</b></span><br>
 
-            <span class=""><b>Total Given Words: </b>{{$english_text->total_words}}</span><br>
+            <span class=""><b>Given Words: </b>{{ $english_total_words }}</span><br>
+            <span class=""><b>Given Characters: </b>{{ $english_total_characters }}</span><br>
 
-            <span class=""><b>Typed Words: </b>{{$english_text->typed_words}}</span><br>
+            <span class=""><b>Typed Words: </b>{{ $english_typed_words }}</span><br>
+            <span class=""><b>Typed Characters: </b>{{ $english_typed_characters }}</span><br>
 
-            <span class=""><b>Corrected Words: </b>{{$english_text->typed_words - $english_text->inserted_words}}</span><br>
+            <span class=""><b>Corrected Words:
+                </b>{{ $english_corrected_words }}</span><br>
+                <span class=""><b>Corrected Characters: </b>{{ $english_corrected_characters }}</span><br>
 
-            <span class=""><b>Wrong Words: </b>{{$english_text->inserted_words}}</span><br>
+            <span class=""><b>Wrong Words: </b>{{ $english_deleted_words }}</span><br>
+            <span class=""><b>Wrong Characters: </b>{{ $english_deleted_characters }}</span><br>
 
         </div>
         
@@ -698,23 +734,23 @@ header + section{
 
         <h3 style="font-size:18px;color:#0000dc;">Bangla Original Text</h3>
 
-        {!! '<p class="bangla-font">' . $bangla_text->original_text  . '</p>'!!}
+        {!! '<p class="bangla-font">' . $bangla->original_text  . '</p>'!!}
 
         <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
 
-        {!! ! empty($bangla_text->answered_text) ? '<p class="bangla-font">' . $bangla_text->answered_text . '</p>': '<b>No answer is given.</b>' !!}
+        {!! ! empty($bangla->answered_text) ? '<p class="bangla-font">' . $bangla->answered_text . '</p>': '<b>No answer is given.</b>' !!}
         
 
         <p><br></p>
 
         <h3 style="font-size:18px;color:#0000dc">English Original Text</h3>
-
-        {!! $english_text->original_text !!}
-
-
+        <p class="bangla-font">
+            {!! $english->original_text !!}
+        </p>
+        
         <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
 
-        {!! ! empty($english_text->answered_text) ? '<p>' . $english_text->answered_text . '</p>': '<b>No answer is given.</b>' !!}
+        {!! ! empty($english->answered_text) ? '<p class="bangla-font">' . $english->answered_text . '</p>': '<b>No answer is given.</b>' !!}
 
     </section>
 
@@ -732,7 +768,7 @@ header + section{
     
 $('.print').click(function(event) {
 
-w=window.open();
+w=window.open('', '_top');
 w.document.write(document.getElementsByClassName('print-container')[0].innerHTML);
 w.print();
 w.close();

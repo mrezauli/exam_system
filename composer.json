@@ -14,7 +14,8 @@
         "php-curl-class/php-curl-class": "^7.2",
         "robbiep/cloudconvert-laravel": "^2.3",
         "dompdf/dompdf": "^0.8.0",
-        "phpoffice/phpword": "^0.15.0"
+        "phpoffice/phpword": "^0.15.0",
+        "fruitcake/laravel-cors": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -54,6 +55,9 @@
         ]
     },
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
     }
 }

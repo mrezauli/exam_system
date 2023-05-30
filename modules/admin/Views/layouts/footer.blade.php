@@ -1,5 +1,5 @@
 <div class="text-center">
-    2017 &copy; Recruitment Exam Management System by United IT Solution Ltd.
+    {{ date("Y")}} &copy; Recruitment Exam Management System (REMS) by <b>Bangladesh Computer Council (BCC)</b>
     <a href="#" class="go-top">
         <i class="icon-angle-up"></i>
     </a>

@@ -305,12 +305,11 @@
                 <tr>
                     <td>
                         <div class="color-block">
-                            <span class="color-description goldenrod-description"><span></span> :: Added Characters (wrong)</span>
+                            <span class="color-description goldenrod-description"><span></span> :: Typed Characters (wrong in count)</span>
                             <br>
-                            <span class="color-description tomato-description"><span></span> :: Removed Characters (wrong)</span>
+                            <span class="color-description snow-description"><span></span> :: Typed Characters (correct in count)</span>
                             <br>
-                            <span class="color-description snow-description"><span></span> :: Corrected Characters (correct)</span>
-        
+                            <span class="color-description tomato-description"><span></span> :: Untyped Characters (no count)</span>
                         </div>
                     </td>
                     <td>
@@ -713,13 +712,11 @@
                 </div>
 
                 <div class="color-block">
-
-                    <span class="color-description goldenrod-description"><span></span> :: Added Characters (wrong)</span>
+                    <span class="color-description goldenrod-description"><span></span> :: Typed Characters (wrong in count)</span>
                     <br>
-                    <span class="color-description tomato-description"><span></span> :: Removed Characters (wrong)</span>
+                    <span class="color-description snow-description"><span></span> :: Typed Characters (correct in count)</span>
                     <br>
-                    <span class="color-description snow-description"><span></span> :: Corrected Characters (correct)</span>
-
+                    <span class="color-description tomato-description"><span></span> :: Untyped Characters (no count)</span>
                 </div>
 
 

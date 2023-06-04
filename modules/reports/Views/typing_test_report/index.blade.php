@@ -115,13 +115,13 @@ form .col-sm-12:last-child{
                     </div>
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
-                        {!! Form::label('bangla_speed', 'Bangla Speed:', ['class' => 'control-label']) !!}
+                        {!! Form::label('bangla_speed', 'Minimum Speed in Bangla:', ['class' => 'control-label']) !!}
                         <small class="required">(Req.)</small>
                         {!! Form::text('bangla_speed', Input::get('bangla_speed')? Input::get('bangla_speed') : null,['id'=>'bangla_speed','class' => 'form-control','placeholder'=>'bangla speed', 'title'=>'bangla speed','required'=>'required']) !!}
                     </div>
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
-                        {!! Form::label('english_speed', 'English Speed:', ['class' => 'control-label']) !!}
+                        {!! Form::label('english_speed', 'Minimum Speed in English:', ['class' => 'control-label']) !!}
                         <small class="required">(Req.)</small>
                         {!! Form::text('english_speed', Input::get('english_speed')? Input::get('english_speed') : null,['english_speed'=>'english_speed','class' => 'form-control','placeholder'=>'english speed', 'title'=>'english speed','required'=>'required']) !!}
                     </div>
@@ -317,7 +317,7 @@ form .col-sm-12:last-child{
                             $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$bangla_time);
                             $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
-                            $bangla_round_marks = round((20/25)* $bangla_wpm);
+                            $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
@@ -326,7 +326,7 @@ form .col-sm-12:last-child{
                             $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$english_time);
                             $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
-                            $english_round_marks = round((20/25)* $english_wpm);
+                            $english_round_marks = round((20/$english_speed)* $english_wpm);
                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
                             $average = round(($bangla_marks + $english_marks) / 2);

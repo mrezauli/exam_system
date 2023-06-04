@@ -12,7 +12,6 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \Fruitcake\Cors\HandleCors::class,
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \App\Http\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,

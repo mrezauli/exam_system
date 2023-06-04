@@ -61,7 +61,6 @@ class TypingTestReportController extends Controller
 
     public function generate_typing_test_report(Request $request){
 
-
         $page_title = 'Typing Test Report';
 
         $status = 2;

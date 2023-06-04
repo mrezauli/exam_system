@@ -464,8 +464,10 @@ a.btn.btn-primary.btn-sm.start-button {
               .then(response => response.json())
               .then(data => {
                   // Work with the returned JSON data
+                  //let redirectUrl = window.location.protocol + window.location.hostname + '/exam/typing-exams';
+                  let redirectUrl = '/exam/typing-exams';
                   if (data.success) {
-                    window.location.href = 'http://exam_system.test/exam/typing-exams';
+                    window.location.assign(redirectUrl);
                   }
               })
               .catch(function(error) {

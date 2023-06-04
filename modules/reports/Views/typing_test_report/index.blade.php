@@ -606,7 +606,30 @@ form .col-sm-12:last-child{
         <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
         <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
         <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
-        <p class="header">CWS = Characters (with space), TW = Total Words, WW = Wrong Words, CW = Correct Words, SPM = Speed Per Mintues, T = Tolerance (5%), M = Marks</p>
+        <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
+            <thead>
+                <tr>
+                    <th class="no-border">CWS</th>
+                    <th class="no-border">TW</th>
+                    <th class="no-border">WW</th>
+                    <th class="no-border">CW</th>
+                    <th class="no-border">SPM</th>
+                    <th class="no-border">T</th>
+                    <th class="no-border">M</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr class="gradeX">  
+                        <td class="table-name">Characters (with space)</td>
+                        <td class="table-name">Total Words</td>
+                        <td class="table-name">Wrong Words</td>
+                        <td class="table-name">Correct Words</td>
+                        <td class="table-name">Speed Per Mintues</td>
+                        <td class="table-name">Tolerance (5%)</td>
+                        <td class="table-name">Marks</td>
+                    </tr>
+            </tbody>
+        </table>
     </div>
 
 <div class="table-primary report-table-wrapper">
@@ -956,7 +979,30 @@ form .col-sm-12:last-child{
         <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
         <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
         <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
-        <p class="header">CWS = Characters (with space), TW = Total Words, WW = Wrong Words, CW = Correct Words, SPM = Speed Per Mintues, T = Tolerance (5%), M = Marks</p>
+        <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
+            <thead>
+                <tr>
+                    <th class="no-border">CWS</th>
+                    <th class="no-border">TW</th>
+                    <th class="no-border">WW</th>
+                    <th class="no-border">CW</th>
+                    <th class="no-border">SPM</th>
+                    <th class="no-border">T</th>
+                    <th class="no-border">M</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr class="gradeX">  
+                        <td class="table-name">Characters (with space)</td>
+                        <td class="table-name">Total Words</td>
+                        <td class="table-name">Wrong Words</td>
+                        <td class="table-name">Correct Words</td>
+                        <td class="table-name">Speed Per Mintues</td>
+                        <td class="table-name">Tolerance (5%)</td>
+                        <td class="table-name">Marks</td>
+                    </tr>
+            </tbody>
+        </table>
     </div>
 
 <div class="table-primary report-table-wrapper">

@@ -366,6 +366,7 @@
                 <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
 
                 <p id="displayBn" class="fs-1 bangla-font"></p>
+                <p id="displayBnRemoved" class="fs-1 bangla-font"></p>
                 <p id="bangla_web_answer" class="bangla-font" hidden>
                     {!! !empty($bangla->answered_text) ? $bangla->answered_text : '<b>No answer is given.</b>' !!}
                 </p>
@@ -380,6 +381,7 @@
 
                 <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
                 <p id="displayEn" class="fs-1 bangla-font"></p>
+                <p id="displayEnRemoved" class="fs-1 bangla-font"></p>
                 <p id="english_web_answer" class="bangla-font" hidden>
                     {!! !empty($english->answered_text) ? $english->answered_text : '<b>No answer is given.</b>' !!}
                 </p>
@@ -792,10 +794,12 @@
         const questionEn = document.getElementById('english_web_question').textContent
         answerEn = document.getElementById('english_web_answer').textContent;
 
-        const diffEn = Diff.diffChars(questionEn, answerEn),
+        const diffEn = Diff.diffWords(questionEn, answerEn),
             displayEn = document.getElementById('displayEn'),
+            displayEnRemoved = document.getElementById('displayEnRemoved'),
             displayEnPrint = document.getElementById('displayEnPrint'),
-            fragmentEn = document.createDocumentFragment();
+            fragmentEn = document.createDocumentFragment(),
+            fragmentEnRemoved = document.createDocumentFragment();
 
         diffEn.forEach((part) => {
             // green for additions, red for deletions
@@ -804,23 +808,34 @@
             const backgroundColor = part.added ? "goldenrod" : part.removed ? "tomato" : "snow";
 
             span = document.createElement('span');
+            spanRemoved = document.createElement('span');
             span.style.color = color;
+            spanRemoved.style.color = color;
             span.style.backgroundColor = backgroundColor;
-            span.appendChild(document
-                .createTextNode(part.value));
-            fragmentEn.appendChild(span);
+            spanRemoved.style.backgroundColor = backgroundColor;
+            if (part.removed) {
+                spanRemoved.appendChild(document.createTextNode(part.value));
+                fragmentEnRemoved.appendChild(spanRemoved);
+            }
+            else{
+                span.appendChild(document.createTextNode(part.value));
+                fragmentEn.appendChild(span);
+            }
         });
 
         displayEn.appendChild(fragmentEn);
+        //displayEnRemoved.appendChild(fragmentEnRemoved);
         displayEnPrint.appendChild(fragmentEn);
 
         const questionBn = document.getElementById('bangla_web_question').textContent
         answerBn = document.getElementById('bangla_web_answer').textContent;
 
-        const diffBn = Diff.diffChars(questionBn, answerBn),
+        const diffBn = Diff.diffWords(questionBn, answerBn),
             displayBn = document.getElementById('displayBn'),
+            displayBnRemoved = document.getElementById('displayBnRemoved'),
             displayBnPrint = document.getElementById('displayBnPrint'),
-            fragmentBn = document.createDocumentFragment();
+            fragmentBn = document.createDocumentFragment(),
+            fragmentBnRemoved = document.createDocumentFragment();
 
         diffBn.forEach((part) => {
             // green for additions, red for deletions
@@ -829,14 +844,23 @@
             const backgroundColor = part.added ? "goldenrod" : part.removed ? "tomato" : "snow";
 
             span = document.createElement('span');
+            spanRemoved = document.createElement('span');
             span.style.color = color;
+            spanRemoved.style.color = color;
             span.style.backgroundColor = backgroundColor;
-            span.appendChild(document
-                .createTextNode(part.value));
-            fragmentBn.appendChild(span);
+            spanRemoved.style.backgroundColor = backgroundColor;
+            if (part.removed) {
+                spanRemoved.appendChild(document.createTextNode(part.value));
+                fragmentBnRemoved.appendChild(spanRemoved);
+            }
+            else{
+                span.appendChild(document.createTextNode(part.value));
+                fragmentBn.appendChild(span);
+            }
         });
 
         displayBn.appendChild(fragmentBn);
+        //displayBnRemoved.appendChild(fragmentBnRemoved);
         displayBnPrint.appendChild(fragmentBn);
 
         $('.print').click(function(event) {

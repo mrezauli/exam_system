@@ -413,7 +413,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
     
     <script>
-      function calculate(event) {
+      function calculateBn(event) {
               event.preventDefault()
               // Get the form element
               const form = document.getElementById("jq-validation-form");
@@ -426,7 +426,10 @@ a.btn.btn-primary.btn-sm.start-button {
 
               let totalGivenCharacters = question.length,
               typedCharacters = answer.length,
+              typedWords = typedCharacters / 5,
               correctedCharacters = null,
+              correctedWords = null,
+              wrongWords = null,
               wrongCharacters = null;
 
             const chracterizedQuestionWithSpace = [...question].join(" "),
@@ -441,12 +444,91 @@ a.btn.btn-primary.btn-sm.start-button {
 
               const diffCharacters = Diff.diffChars(chracterizedQuestionWithoutSpace, chracterizedAnswerWithoutSpace);
 
+              const diffWordsWithSpace = Diff.diffWordsWithSpace(question, answer);
+
               diffCharacters.forEach((part) => {
                   if ((part.added === undefined) && (part.removed === undefined)) {
                       correctedCharacters += part.count;
                   }
               });
 
+              diffWordsWithSpace.forEach((part) => {
+                console.log(part);
+                  if ((part.added === undefined) && (part.removed === undefined) && part.value != ' ') {
+                    correctedWords++;
+                  }
+              });
+
+              wrongCharacters = typedCharacters - correctedCharacters;
+              wrongWords = typedWords - correctedWords;
+              console.log(typedWords);
+              console.log(correctedWords);
+              console.log(wrongWords);
+
+              // Push our data into our FormData object
+              FD.append('correctedCharacters', correctedWords * 5);
+              FD.append('wrongCharacters', wrongWords * 5);
+              FD.append('totalGivenCharacters', totalGivenCharacters);
+              FD.append('typedCharacters', typedCharacters);
+              FD.append('original_text', question);
+              FD.append('answered_text', answer);
+
+              for (const [key, value] of FD) {
+                  //console.log(`${key}: ${value}`);
+              }
+
+              // Alternatively, redirect the user to a server-side script to process the form data
+              // Send the form data using Fetch API
+              fetch(form.action, {
+                  method: 'POST',
+                  body: FD,
+              })
+              .then(response => response.json())
+              .then(data => {
+                  // Work with the returned JSON data
+                  //let redirectUrl = window.location.protocol + window.location.hostname + '/exam/typing-exams';
+                  let redirectUrl = '/exam/typing-exams';
+                  if (data.success) {
+                    //window.location.assign(redirectUrl);
+                  }
+              })
+              .catch(function(error) {
+                  // Handle the error
+                  console.error(error);
+              });
+      }
+
+      function calculate(event) {
+        event.preventDefault()
+                      // Get the form element
+                      const form = document.getElementById("jq-validation-form");
+              // Bind the FormData object and the form element
+              const FD = new FormData(form);
+
+              // Run your JavaScript method here
+              const question = document.getElementById('original_text_field').textContent,
+              answer = document.getElementById('answered_text_field').textContent;
+
+              let totalGivenCharacters = question.length,
+              totalGivenWords = question.split(' ').length + (question.split(' ').length - 1),
+              typedCharacters = answer.length,
+              typedWords = answer.split(' ').length + (answer.split(' ').length - 1),
+              correctedCharacters = null,
+              correctedWords = null,
+              wrongWords = null,
+              wrongCharacters = null;
+
+              const diffCharacters = Diff.diffChars(question, answer);
+
+              const diffWords = Diff.diffWords(question, answer);           
+
+              diffWords.forEach((part) => {
+                  if ((part.added === undefined) && (part.removed === undefined)) {
+                    correctedWords += part.count;
+                    correctedCharacters += part.value.length;
+                    //console.log(part);
+                  }
+              });         
               wrongCharacters = typedCharacters - correctedCharacters;
 
               // Push our data into our FormData object
@@ -456,11 +538,13 @@ a.btn.btn-primary.btn-sm.start-button {
               FD.append('typedCharacters', typedCharacters);
               FD.append('original_text', question);
               FD.append('answered_text', answer);
-
+              //document.getElementById('status').length;
               for (const [key, value] of FD) {
-                  console.log(`${key}: ${value}`);
+                  //console.log(`${key}: ${value}`);
               }
 
+      
+              // Alternatively, redirect the user to a server-side script to process the form data
               // Alternatively, redirect the user to a server-side script to process the form data
               // Send the form data using Fetch API
               fetch(form.action, {
@@ -478,7 +562,7 @@ a.btn.btn-primary.btn-sm.start-button {
               })
               .catch(function(error) {
                   // Handle the error
-                  console.error(error);
+                  //console.error(error);
               });
       }
     </script>

@@ -459,11 +459,11 @@ $('#original_text').bind('cut copy paste drop', function (e) {
 });
 
 
-// $('#answered_text').bind('cut copy paste drop', function (e) {
+$('#answered_text').bind('cut copy paste drop', function (e) {
 
-//  return false;
+ return false;
 
-// });
+});
 
 var answered_text_length = 0;
 

@@ -425,20 +425,25 @@ a.btn.btn-primary.btn-sm.start-button {
               answer = document.getElementById('answered_text_field').textContent;
 
               let totalGivenCharacters = question.length,
+              totalGivenWords = question.split(' ').length + (question.split(' ').length - 1),
               typedCharacters = answer.length,
+              typedWords = answer.split(' ').length + (answer.split(' ').length - 1),
               correctedCharacters = null,
+              correctedWords = null,
+              wrongWords = null,
               wrongCharacters = null;
 
               const diffCharacters = Diff.diffChars(question, answer);
 
-              const diffWordsWithSpace = Diff.diffWordsWithSpace(question, answer);
+              const diffWords = Diff.diffWords(question, answer);           
 
-              diffCharacters.forEach((part) => {
+              diffWords.forEach((part) => {
                   if ((part.added === undefined) && (part.removed === undefined)) {
-                      correctedCharacters += part.count;
+                    correctedWords += part.count;
+                    correctedCharacters += part.value.length;
+                    console.log(part);
                   }
-              });
-
+              });         
               wrongCharacters = typedCharacters - correctedCharacters;
 
               // Push our data into our FormData object

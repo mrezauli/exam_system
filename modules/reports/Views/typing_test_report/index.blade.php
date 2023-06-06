@@ -392,32 +392,21 @@ form .col-sm-12:last-child{
                                     <td>
                                    
                                         @if(! $values->lists('attended_typing_test')->contains('true'))
-                                        
                                         <?php $remarks = 'Absent'; ?>
-                            
-                                        @else
 
-                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
-
-                                        <?php $remarks = 'Pass'; ?>
-
-                                        @else
-
-                                        <?php $remarks = 'Fail'; ?>
-                                        
-                                        @endif
-
-                                        @if($values->lists('typing_status')->contains('cancelled'))
-                                        
+                                        @elseif($values->lists('typing_status')->contains('cancelled'))
                                         <?php $remarks = 'Cancelled'; ?>
-                            
-                                        @endif
 
-                                        @if($values->lists('typing_status')->contains('expelled'))
-                                        
+                                        @elseif($values->lists('typing_status')->contains('expelled'))
                                         <?php $remarks = 'Expelled'; ?>
                             
-                                        @endif
+                                        @else
+
+                                            @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
+                                            <?php $remarks = 'Pass'; ?>
+                                            @else
+                                            <?php $remarks = 'Fail'; ?>
+                                            @endif
 
                                         @endif
 
@@ -757,33 +746,25 @@ form .col-sm-12:last-child{
                                     <td>
                                    
                                         @if(! $values->lists('attended_typing_test')->contains('true'))
-                                        
                                         <?php $remarks = 'Absent'; ?>
-                            
-                                        @else
 
-                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
-
-                                        <?php $remarks = 'Pass'; $passed++; ?>
-
-                                        @else
-
-                                        <?php $remarks = 'Fail'; $failed++; ?>
-
-                                        
-                                        @endif
-
-                                        @if($values->lists('typing_status')->contains('cancelled'))
-                                        
+                                        @elseif($values->lists('typing_status')->contains('cancelled'))
                                         <?php $remarks = 'Cancelled'; $cancelled++; ?>
-                            
-                                        @endif
 
-                                        @if($values->lists('typing_status')->contains('expelled'))
-                                        
+                                        @elseif($values->lists('typing_status')->contains('expelled'))   
                                         <?php $remarks = 'Expelled'; $expelled++; ?>
-                            
-                                        @endif
+
+                                        @else
+
+                                            @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
+
+                                            <?php $remarks = 'Pass'; $passed++; ?>
+
+                                            @else
+
+                                            <?php $remarks = 'Fail'; $failed++; ?>
+
+                                            @endif
 
                                         @endif
 
@@ -1267,7 +1248,7 @@ function report_exam_code(){
 
 var table = $('#examples_report').DataTable( {
   "language": {
-    "search": "Search Roll No:"
+    "search": "Search:"
   },
   "aaSorting": [],
   "pageLength": 50,

@@ -1623,7 +1623,7 @@ function report_pass_marks(){
     
 var table = $('#examples_report').DataTable( {
   "language": {
-    "search": "Search Roll No:"
+    "search": "Search:"
   },
   "aaSorting": [],
   "pageLength": 50,

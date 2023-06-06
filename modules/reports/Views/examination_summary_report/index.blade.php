@@ -393,7 +393,7 @@ form .col-sm-12:last-child{
 
 var table = $('#examples_report').DataTable( {
   "language": {
-    "search": "Search Roll No:"
+    "search": "Search:"
   },
   //"aaSorting": [['1','asc'],['2','desc'],['3','asc']],
   "pageLength": 50,

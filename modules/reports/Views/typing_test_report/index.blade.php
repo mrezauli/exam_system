@@ -126,6 +126,12 @@ form .col-sm-12:last-child{
                         {!! Form::text('english_speed', Input::get('english_speed')? Input::get('english_speed') : null,['english_speed'=>'english_speed','class' => 'form-control','placeholder'=>'english speed', 'title'=>'english speed','required'=>'required']) !!}
                     </div>
 
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('spmDigit', 'Calculation Digit (SPM):', ['class' => 'control-label']) !!}
+                        <small class="required">(Req.)</small>
+                        {!! Form::text('spmDigit', Input::get('spmDigit')? Input::get('spmDigit') : null,['spmDigit'=>'spmDigit','class' => 'form-control','placeholder'=>'spm digit', 'title'=>'spm digit','required'=>'required']) !!}
+                    </div>
+
                     <div class="col-lg-1 col-md-3 col-sm-6 filter-btn">
 
                       {!! Form::submit('Generate Result', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'submit-button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
@@ -224,8 +230,8 @@ form .col-sm-12:last-child{
                             <th class="no-border"> <span>Exam Code</span> </th>
                             <th class="no-border"> <span>Name</span> </th>
                             <th class="no-border" style="border-right: 1.7px solid #8189fd !important"> <span>Answer Scripts View</span> </th>
-                            <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$bangla_time}} minutes</th>
-                            <th colspan="7">English in {{$english_time}} minutes</th>
+                            <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$spmDigit}} minutes</th>
+                            <th colspan="7">English in {{$spmDigit}} minutes</th>
                             <th class="no-border"> <span>Average Mark</span> </th>
                             <th class="no-border"> <span>Remarks</span> </th>
                             <th class="no-border"> <span>Update</span> </th>
@@ -315,7 +321,7 @@ form .col-sm-12:last-child{
                             $bangla_typed_words = round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
-                            $bangla_wpm = round($bangla_corrected_words/$bangla_time);
+                            $bangla_wpm = round($bangla_corrected_words/$spmDigit);
                             $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
                             $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
@@ -324,7 +330,7 @@ form .col-sm-12:last-child{
                             $english_typed_words = round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
-                            $english_wpm = round($english_corrected_words/$english_time);
+                            $english_wpm = round($english_corrected_words/$spmDigit);
                             $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
                             $english_round_marks = round((20/$english_speed)* $english_wpm);
                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
@@ -629,8 +635,8 @@ form .col-sm-12:last-child{
                 <th class="no-border"> <span>Candidate SL.</span> </th>
                 <th class="no-border"> <span>Roll No.</span> </th>
                 <th class="no-border"> <span>Name</span> </th>
-                <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$bangla_time}} minutes</th>
-                <th colspan="7">English in {{$english_time}} minutes</th>
+                <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$spmDigit}} minutes</th>
+                <th colspan="7">English in {{$spmDigit}} minutes</th>
                 <th class="no-border"> <span>Average Mark</span> </th>
                 <th class="no-border"> <span>Remarks</span> </th>
             </tr>
@@ -697,7 +703,7 @@ form .col-sm-12:last-child{
                             $bangla_typed_words = round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
-                            $bangla_wpm = round($bangla_corrected_words/$bangla_time);
+                            $bangla_wpm = round($bangla_corrected_words/100);
                             $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
                             $bangla_round_marks = round((20/25)* $bangla_wpm);
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
@@ -706,7 +712,7 @@ form .col-sm-12:last-child{
                             $english_typed_words = round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
-                            $english_wpm = round($english_corrected_words/$english_time);
+                            $english_wpm = round($english_corrected_words/100);
                             $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
                             $english_round_marks = round((20/25)* $english_wpm);
                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
@@ -994,8 +1000,8 @@ form .col-sm-12:last-child{
             <th class="no-border"> <span>Candidate SL.</span> </th>
             <th class="no-border"> <span>Roll No.</span> </th>
             <th class="no-border"> <span>Name</span> </th>
-            <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$bangla_time}} minutes</th>
-            <th colspan="7">English in {{$english_time}} minutes</th>
+            <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$spmDigit}} minutes</th>
+            <th colspan="7">English in {{$spmDigit}} minutes</th>
             <th class="no-border"> <span>Average Mark</span> </th>
         </tr>
        
@@ -1053,7 +1059,7 @@ form .col-sm-12:last-child{
                             $bangla_typed_words = round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
-                            $bangla_wpm = round($bangla_corrected_words/$bangla_time);
+                            $bangla_wpm = round($bangla_corrected_words/$spmDigit);
                             $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
                             $bangla_round_marks = round((20/25)* $bangla_wpm);
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
@@ -1062,7 +1068,7 @@ form .col-sm-12:last-child{
                             $english_typed_words = round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
-                            $english_wpm = round($english_corrected_words/$english_time);
+                            $english_wpm = round($english_corrected_words/$spmDigit);
                             $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
                             $english_round_marks = round((20/25)* $english_wpm);
                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;

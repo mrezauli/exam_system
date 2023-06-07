@@ -73,8 +73,7 @@ class TypingTestReportController extends Controller
         $exam_date_to = Input::get('exam_date_to');
         $bangla_speed = Input::get('bangla_speed');
         $english_speed = Input::get('english_speed');
-
-
+        $spmDigit = Input::get('spmDigit');
 
         $validator = Validator::make($request->all(), [
             'bangla_speed' => 'required|integer',
@@ -236,9 +235,9 @@ class TypingTestReportController extends Controller
             $english = $grouped_by_exam_type->get('english',[$null_object])[0];
             
 
-            $bangla_time = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
+            $bangla_time = isset($bangla->exam_time) && $bangla->exam_time > 10 ? $bangla->exam_time - 1: 1;
 
-            $english_time = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
+            $english_time = isset($english->exam_time) && $bangla->exam_time > 10 ? $english->exam_time - 1: 1;
 
 
             $bangla_exam_time = $bangla_speed;
@@ -392,11 +391,6 @@ class TypingTestReportController extends Controller
 
         //$total_count = $passed_count + $failed_count  + $cancelled_count;
 
- 
-
-    
-
-
         $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
 
         $comparer = $makeComparer($criteria);
@@ -426,7 +420,7 @@ class TypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::typing_test_report.index', compact('page_title','status','company_id','designation_id','exam_code','exam_date','exam_time','company_list','designation_list','exam_code_list','model','model_all','bangla_speed','english_speed','exam_date_from','exam_date_to','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','total_count'));
+        return view('reports::typing_test_report.index', compact('spmDigit', 'page_title','status','company_id','designation_id','exam_code','exam_date','exam_time','company_list','designation_list','exam_code_list','model','model_all','bangla_speed','english_speed','exam_date_from','exam_date_to','header','exam_dates_string','passed_count','failed_count','expelled_count','cancelled_count','total_count'));
 
     }
 

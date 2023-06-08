@@ -97,6 +97,11 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
         'uses' => 'TypingTestReportController@generate_typing_test_report'
     ]);
 
+    Route::any('dom-pdf', [
+        'as' => 'dom-pdf',
+        'uses' => 'TypingTestReportController@domPdf'
+    ]);
+
     Route::any('typing-test-details/{bangla_exam_id}/{english_exam_id}', [
         'as' => 'typing-test-details',
         'uses' => 'TypingTestReportController@typing_test_details'
@@ -122,7 +127,7 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
         'uses' => 'TypingTestReportController@all_graph_report'
     ]);
 
-    Route::any('typing-test-report-pdf/{company_id}/{designation_id}/{exam_date_from}/{exam_date_to}/{bangla_speed}/{english_speed}', [
+    Route::any('typing-test-report-pdf/{company_id}/{designation_id}/{exam_date_from}/{exam_date_to}/{bangla_speed}/{english_speed}/{spmDigit}', [
         //'middleware' => 'acl_access:reports/meeting-detail/{company_id}/{meeting_id}',
         'as' => 'typing-test-report-pdf',
         'uses' => 'TypingTestReportController@typing_test_report_pdf'

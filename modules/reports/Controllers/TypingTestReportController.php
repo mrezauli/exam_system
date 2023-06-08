@@ -74,6 +74,18 @@ class TypingTestReportController extends Controller
         $bangla_speed = Input::get('bangla_speed');
         $english_speed = Input::get('english_speed');
         $spmDigit = Input::get('spmDigit');
+        if (empty($company_id)) {
+            $companyIdArray = DB::table('exam_code')->select('company_id', 'designation_id', 'exam_date')->where('exam_code_name', Input::get('exam_code'))->get();
+            foreach ($companyIdArray as $key => $value) {
+                $company_id = $value->company_id;
+                $designation_id = $value->designation_id;
+                $exam_date_from = $value->exam_date;
+                $exam_date_to = $value->exam_date;
+            }
+            //dd($exam_date_to);
+        }
+        
+        
 
         $validator = Validator::make($request->all(), [
             'bangla_speed' => 'required|integer',
@@ -424,10 +436,7 @@ class TypingTestReportController extends Controller
 
     }
 
-
-
-
-        public function typing_test_report_pdf($company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed){
+        public function typing_test_report_pdf($company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed, $spmDigit){
 
 
             $header = DB::table( 'qselection_typing_test AS q' )
@@ -439,7 +448,7 @@ class TypingTestReportController extends Controller
                         
 
             $model = DB::table( 'user AS u' )
-                     ->select('u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','t.user_id','u.company_id','u.designation_id','u.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
+                     ->select('u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.typing_status', 't.id AS exam_id','t.user_id','u.company_id','u.designation_id','u.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
                     ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
                     ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
                     ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
@@ -611,82 +620,125 @@ class TypingTestReportController extends Controller
 
                 <div class="header-section">
                     <p class="header">' . $header->company_name . '</p>
-                    <p class="header">' . $header->address . '</p>
+                    <p class="header">' . $header->address_one . '</p>
+                    <p class="header">' . $header->address_two . '</p>
+                    <p class="header">' . $header->address_three . '</p>
+                    <p class="header">' . $header->address_four . '</p>
                     <p class="header">Designation: ' . $header->designation_name . '</p>
                     <p class="header">Exam Date: ' . $header->exam_date . '</p>
+                    <p class="header">Exam Taker: Bangladesh Computer Council (BCC)</p>
                 </div>
+                <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
+                <thead>
+                    <tr>
+                        <th class="no-border">CWS</th>
+                        <th class="no-border">TW</th>
+                        <th class="no-border">WW</th>
+                        <th class="no-border">CW</th>
+                        <th class="no-border">SPM</th>
+                        <th class="no-border">T</th>
+                        <th class="no-border">M</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr class="gradeX">  
+                            <td class="table-name">Characters (with space)</td>
+                            <td class="table-name">Total Words</td>
+                            <td class="table-name">Wrong Words</td>
+                            <td class="table-name">Correct Words</td>
+                            <td class="table-name">Speed Per Mintues</td>
+                            <td class="table-name">Tolerance (5%)</td>
+                            <td class="table-name">Marks</td>
+                        </tr>
+                </tbody>
+            </table>
+            <br/>
+            <br/>
                 <table cellpadding="0" cellspacing="0" class="table table-striped table-bordered table-responsive no-spacing tbl1">
 
                     <thead>
                     <tr>
-                        <th class="no-border"> <div>SL.</div> </th>
-                        <th class="no-border"> <div>Roll No.</div> </th>
-                        <th class="no-border table-name-header"> <div>Name</div> </th>
-                        <th colspan="4">Bangla in 10 minutes</th>
-                        <th colspan="4">English in 10 minutes</th>
-                        <th class="no-border"> <div>Remarks</div> </th>
-                        
-                    </tr>
+                    <th class="no-border"> <span>SL.</span> </th>
+                    <th class="no-border"> <span>Roll No.</span> </th>
+                    <th class="no-border"> <span>Name</span> </th>
+                    <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in '.$spmDigit.' minutes</th>
+                    <th colspan="7">English in '.$spmDigit.' minutes</th>
+                    <th rowspan="2" class="no-border"> <span>Average Mark</span> </th>
+                    <th rowspan="2" class="no-border"> <span>Remarks</span> </th>
+                </tr>
+               
+        
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>CWS</th>
+                    <th>TW</th>
+                    <th>WW</th>
+                    <th>CW</th>
+                    <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
+                    <th>T</th>
+                    <th>M</th>
+        
+                    <th>CWS</th>
+                    <th>TW</th>
+                    <th>WW</th>
+                    <th>CW</th>
+                    <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
+                    <th>T</th>
+                    <th>M</th>
+                </tr>
                     </thead>
 
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>Typed Word</th>
-                        <th>Wrong Word</th>
-                        <th>Corrected Word</th>
-                        <th>Word/ Minute</th>
-
-                        <th>Typed Word</th>
-                        <th>Wrong Word</th>
-                        <th>Corrected Word</th>
-                        <th>Word/ Minute</th>
-                        <th></th>
-                    </tr>
-                    </thead><tbody>';
+                    <tbody>';
                     $i = 0;
+                    $passed = 0;
+                    $failed = 0;
+                    $expelled = 0;
+                    $cancelled = 0;
+                    $total = 0;
                     foreach($model as $values)
                     {
-
                         $i++; 
-
 
                         $values = collect($values);
                         
-
                         $grouped_by_exam_type = $values->groupBy('exam_type');
-                        
-
+                
                         $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
-
                         $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
-                        
-                        $bangla_exam_time = isset($bangla->exam_time) ? $bangla->exam_time: 1;
 
-                        $english_exam_time = isset($english->exam_time) ? $english->exam_time: 1;
+                        $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+                        $bangla_typed_words = round($bangla_typed_characters/5);
+                        $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words/5) : 0;
+                        $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
+                        $bangla_wpm = round($bangla_corrected_words/$spmDigit);
+                        $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                        $bangla_round_marks = round((20/25)* $bangla_wpm);
+                        $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
-                        $bangla_wpm = $bangla->typed_words/$bangla_exam_time;
-
-                        $english_wpm = $english->typed_words/$english_exam_time;
-                        
-                        
-
+                        $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                        $english_typed_words = round($english_typed_characters/5);
+                        $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words/5) : 0;
+                        $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
+                        $english_wpm = round($english_corrected_words/$spmDigit);
+                        $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                        $english_round_marks = round((20/25)* $english_wpm);
+                        $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
+    
+                        $average = round(($bangla_marks + $english_marks) / 2);                      
+                        $total++;
                         if(! $values->lists('attended_typing_test')->contains('true')){
-
                             $remark = 'Absent';
-
-                        }elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed){
-
-                            $remark = 'Pass';
-
+                        }elseif($values->lists('typing_status')->contains('cancelled')) {
+                            $remark = 'Cancelled'; $cancelled++;
+                        }elseif($values->lists('typing_status')->contains('expelled')) {
+                            $remark = 'Expelled'; $expelled++;
+                        }elseif($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25){
+                            $remark = 'Pass'; $passed++;
                         }else{
-
-                            $remark = 'Fail';
-
-                        }
-                        
+                            $remark = 'Fail'; $failed++;
+                        }                        
 
                         $html = $html . "
                         <tr class='gradeX'>
@@ -694,36 +746,59 @@ class TypingTestReportController extends Controller
                             <td>" . $i . "</td>
                             <td>" . $values[0]->roll_no . "</td>
                             <td class='table-name'>" . $values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name . "</td>
-                            <td>" . (isset($bangla->typed_words) ? $bangla->typed_words : '0') . "</td>
-                            <td>" . (isset($bangla->inserted_words) ? $bangla->inserted_words : '0') . "</td>
-                            <td>" . ($bangla->total_words - $bangla->deleted_words) . "</td>
-                            <td>" . $bangla->typed_words/$bangla_exam_time . "</td>
+                            <td>" . $bangla_typed_characters . "</td>
+                            <td>" . $bangla_typed_words . "</td>
+                            <td>" . $bangla_deleted_words . "</td>
+                            <td>" . $bangla_corrected_words . "</td>
+                            <td>" . $bangla_wpm . "</td>
+                            <td>" . $bangla_tolerance . "</td>
+                            <td>" . $bangla_marks . "</td>
 
-                            <td>" . (isset($english->typed_words) ? $english->typed_words : '0') . "</td>
-                            <td>" . (isset($english->inserted_words) ? $english->inserted_words : '0') . "</td>
-                            <td>" . ($english->total_words - $english->deleted_words) . "</td>
-                            <td>" . $english->typed_words/$english_exam_time . "</td>
-                            <td>" . $remark . "</td>
-
-                           
+                            <td>" . $english_typed_characters . "</td>
+                            <td>" . $english_typed_words . "</td>
+                            <td>" . $english_deleted_words . "</td>
+                            <td>" . $english_corrected_words . "</td>
+                            <td>" . $english_wpm . "</td>
+                            <td>" . $english_tolerance . "</td>
+                            <td>" . $english_marks . "</td>
+                            <td>" . $average . "</td>
+                            <td>" . $remark . "</td>                           
                         </tr>";
                    }
 
 
-                $html = $html.'</tbody></table>';
+                $html = $html.'</tbody></table>
+                <table style="margin:20px;width:30%;margin-left:71%;" id="examples"  cellpadding="0" cellspacing="0" class="table table-striped table-bordered table-responsive no-spacing tbl1">
+                    <tr>
+                        <th>Pass</th>
+                        <th>Fail</th>
+                        <th>Expel</th>
+                        <th>Cancel</th>
+                        <th>Total</th>
+                    </tr>
+                    <tr>
+                        <td>'.$passed.'</td>
+                        <td>'.$failed.'</td>
+                        <td>'.$expelled.'</td>
+                        <td>'.$cancelled.'</td>
+                        <td>'.$total.'</td>
+                    </tr>
+                </table>
+                    <footer style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
+                ';
             
 
                 $dompdf = new Dompdf();
                 $dompdf->loadHtml($html);
 
                 // (Optional) Setup the paper size and orientation
-                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->setPaper('A4', 'landscape');
 
                 // Render the HTML as PDF
                 $dompdf->render();
 
                 // Output the generated PDF to Browser
-                $dompdf->stream('exam_system.pdf',array('Attachment'=>0));
+                $dompdf->stream($header->company_name . $header->designation_name . $header->exam_date .'.pdf',array('Attachment'=>0));
 
 
         }
@@ -1105,6 +1180,21 @@ class TypingTestReportController extends Controller
 
         
             // $model = $passed->merge($failed);
+            'C:\laragon\www\exam_system\modules\exam\Views\typing_exam\bnTypingExam.blade.php';
+            'C:\laragon\www\exam_system\modules\exam\Views\typing_exam\bnTypingExamPreview.blade.php';
+            'C:\laragon\www\exam_system\modules\exam\Views\typing_exam\enTypingExam.blade.php';
+            'C:\laragon\www\exam_system\modules\exam\Views\typing_exam\enTypingExamPreview.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Views\typing_test_report\typing_test_details.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Views\aptitude_test_report\index.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Views\attendance_sheet_report\index.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Views\examination_summary_report\index.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Views\roll_wise_attendance_sheet_report\index.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Views\roll_wise_short_typing_test_report\index.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Views\roll_wise_typing_test_report\index.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Views\short_aptitude_test_report\index.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Views\short_typing_test_report\index.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Views\typing_test_report\index.blade.php';
+            'C:\laragon\www\exam_system\modules\reports\Controllers\TypingTestReportController.php';
             
 
             return view('reports::typing_test_report.all_graph_report', compact('page_title','model','user'));

@@ -866,7 +866,7 @@
         $('.print').click(function(event) {
 
             w = window.open('', '_top');
-            w.document.write(document.getElementsByClassName('app-container')[0].innerHTML);
+            w.document.write(document.getElementsByClassName('print-container')[0].innerHTML);
             w.print();
             w.close();
 

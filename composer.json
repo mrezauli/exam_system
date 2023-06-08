@@ -13,7 +13,7 @@
         "guzzlehttp/guzzle": "~6.0",
         "php-curl-class/php-curl-class": "^7.2",
         "robbiep/cloudconvert-laravel": "^2.3",
-        "dompdf/dompdf": "^0.8.0",
+        "dompdf/dompdf": "^0.8.3",
         "phpoffice/phpword": "^0.15.0"
     },
     "require-dev": {

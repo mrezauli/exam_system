@@ -143,16 +143,15 @@ form .col-sm-12:last-child{
                 @if(isset($model) && ! $model->isEmpty())
                 <div class="col-lg-12 col-md-3 col-sm-6 all-graph-pdf-report-block">
 
-                {{-- <a href="{{ route('typing-test-report-pdf', [$company_id,$designation_id,$exam_date_from,$exam_date_to,$bangla_speed,$english_speed]) }}" class="pdf_report_button pull-right" target="_blank"><img src="{{ URL::asset('assets/img/pdf-icon.png') }}" alt=""></a> --}}
+                <a href="{{ route('typing-test-report-pdf', [$company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed, $spmDigit]) }}" class="btn btn-danger print-button pull-right pdf_report_button" target="_blank">Print Result with Remarks</a>
 
                 <?php  $ddd = URL('/') . '/reports/all-graph-report' . '?exam_code=' . $exam_code . '&company_id=' . $company_id . '&designation_id=' . $designation_id . '&exam_date_from='. $exam_date_from . '&exam_date_to=' . $exam_date_to. '&bangla_speed=' . $bangla_speed . '&english_speed=' . $english_speed; ?>
 
-                <div class="btn btn-primary btn-sm pull-right"><a target="_blank" style="color:white" href="{{ $ddd }}">View All Answer Scripts</a></div>
+                {{-- <div class="btn btn-primary btn-sm pull-right">
+                    <a target="_blank" style="color:white" href="{{ $ddd }}">View All Answer Scripts</a>
+                </div> --}}
 
-                <a href="#" class="btn btn-danger print-button pull-right">Print Result with Remarks</a>
-
-                <a href="#" class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>
-
+                <a class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>
                
                {{--  <div class="col-lg-3 col-sm-6 input-group">
 
@@ -214,6 +213,8 @@ form .col-sm-12:last-child{
                 $bangla_time = collect($bangla_times)->max();
 
                 $english_time = collect($english_times)->max();
+
+                $spmDigit = isset($spmDigit) ? $spmDigit : '';
 
 
                 ?>
@@ -461,367 +462,341 @@ form .col-sm-12:last-child{
 </div>
 
 
-
 <div class="table-primary print-report-table-wrapper">
-
-
-<style>
-
-    .print-show{
-        display: none;
-
-    }
-
-    table thead tr th:last-child{
-        border-right: 1px solid #333 !important;
-    }
-
-    .table-name{
-        text-align: left !important;
-    }
-
-
-
-    @media print{      
-
-        *{
-            text-align: center !important;
-            font-size: 14px !important;
-        }
-
-        .table-name{
-            text-align: left !important;
-        }
-
-        .report-table th{
-            vertical-align: top !important;
-        }
-
-        #examples * {
-            border: none;
-        }
-
-        table#examples{
-            border-collapse: collapse !important;
-        }
-
-        thead tr th, tbody tr td {
-            border: 1px solid #333 !important;
-        }
-
-        thead tr th:empty{
-            border-right:none !important;
-            border-top:none !important;
-        }   
-
-        thead:first-child tr, thead tr th.no-border{
-            border-bottom:0 !important;
-        }
-
-
-        .no-border span{
-            position: relative;
-            top: 18px;
-        }
-
-        .print-hide{
-            display: none !important;
-        }
-
+    <style>
         .print-show{
-            display: block !important;
+            display: none;
+    
         }
-
-        .header{
-            font-family: SolaimanLipi !important;
-            font-size: 15px !important;
-            text-align: center;
-            max-width: 400px;
-            margin: 5px auto;
-        }
-
-        .header-section{
-            margin-bottom: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #333 !important;
-        }
-
-        .table-primary thead tr th:empty {
-            /*border-right: none !important;*/
-            border-top: none !important;
-        }
-
         table thead tr th:last-child{
             border-right: 1px solid #333 !important;
         }
-
-        .no-border span {
-            position: relative;
-            top: 18px;
+        .table-name{
+            text-align: left !important;
         }
-
-        table.report-table thead th {
-            padding: 10px;
-            font-weight: 600;
-            color: #333;
-            text-align: center;
-        }
-
-
-        table thead th, table tfoot th {
-            font-weight: 600 !important;
-            color: #333 !important;
-            padding-left: 0 !important;
-        }
-
-        .graph-button{
-            color: inherit;
-            text-decoration: none;
-        }
-
-        footer{
-            font-size: 16px !important;
-        }
-
-    } 
-
-</style>
-             
-
-
-<div class="print-section print-show">
-    <div class="header-section">
-        <p class="header">{{ isset($header->company_name) ? $header->company_name : ''}}</p>
-        <p class="header">{{ isset($header->address_one) ? $header->address_one : ''}}</p>
-        <p class="header">{{ isset($header->address_two) ? $header->address_two : ''}}</p>
-        <p class="header">{{ isset($header->address_three) ? $header->address_three : ''}}</p>
-        <p class="header">{{ isset($header->address_four) ? $header->address_four : ''}}</p>
-        <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
-        <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
-        <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+        @media print{      
+    
+            *{
+                text-align: center !important;
+                font-size: 14px !important;
+            }
+            .table-name{
+                text-align: left !important;
+            }
+            .report-table th{
+                vertical-align: top !important;
+            }
+    
+            #examples * {
+                border: none;
+            }
+    
+            table#examples{
+                border-collapse: collapse !important;
+            }
+    
+            thead tr th, tbody tr td {
+                border: 1px solid #333 !important;
+            }
+    
+            thead tr th:empty{
+                border-right:none !important;
+                border-top:none !important;
+            }   
+    
+            thead:first-child tr, thead tr th.no-border{
+                border-bottom:0 !important;
+            }
+    
+    
+            .no-border span{
+                position: relative;
+                top: 18px;
+            }
+    
+            .print-hide{
+                display: none !important;
+            }
+    
+            .print-show{
+                display: block !important;
+            }
+    
+            .header{
+                font-family: SolaimanLipi !important;
+                font-size: 15px !important;
+                text-align: center;
+                max-width: 400px;
+                margin: 5px auto;
+            }
+    
+            .header-section{
+                margin-bottom: 20px;
+            }
+    
+            table, th, td {
+                border: 1px solid #333 !important;
+            }
+    
+            .table-primary thead tr th:empty {
+                /*border-right: none !important;*/
+                border-top: none !important;
+            }
+    
+            table thead tr th:last-child{
+                border-right: 1px solid #333 !important;
+            }
+    
+            .no-border span {
+                position: relative;
+                top: 18px;
+            }
+    
+            table.report-table thead th {
+                padding: 10px;
+                font-weight: 600;
+                color: #333;
+                text-align: center;
+            }
+    
+    
+            table thead th, table tfoot th {
+                font-weight: 600 !important;
+                color: #333 !important;
+                padding-left: 0 !important;
+            }
+    
+            .graph-button{
+                color: inherit;
+                text-decoration: none;
+            }
+    
+            footer{
+                font-size: 16px !important;
+            }
+    
+        } 
+    
+    </style>
+                 
+    
+    
+    <div class="print-section print-show">
+        <div class="header-section">
+            <p class="header">{{ isset($header->company_name) ? $header->company_name : ''}}</p>
+            <p class="header">{{ isset($header->address_one) ? $header->address_one : ''}}</p>
+            <p class="header">{{ isset($header->address_two) ? $header->address_two : ''}}</p>
+            <p class="header">{{ isset($header->address_three) ? $header->address_three : ''}}</p>
+            <p class="header">{{ isset($header->address_four) ? $header->address_four : ''}}</p>
+            <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
+            <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
+            <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+            <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
+                <thead>
+                    <tr>
+                        <th class="no-border">CWS</th>
+                        <th class="no-border">TW</th>
+                        <th class="no-border">WW</th>
+                        <th class="no-border">CW</th>
+                        <th class="no-border">SPM</th>
+                        <th class="no-border">T</th>
+                        <th class="no-border">M</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr class="gradeX">  
+                            <td class="table-name">Characters (with space)</td>
+                            <td class="table-name">Total Words</td>
+                            <td class="table-name">Wrong Words</td>
+                            <td class="table-name">Correct Words</td>
+                            <td class="table-name">Speed Per Mintues</td>
+                            <td class="table-name">Tolerance (5%)</td>
+                            <td class="table-name">Marks</td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    
+    <div class="table-primary report-table-wrapper">
         <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
             <thead>
                 <tr>
-                    <th class="no-border">CWS</th>
-                    <th class="no-border">TW</th>
-                    <th class="no-border">WW</th>
-                    <th class="no-border">CW</th>
-                    <th class="no-border">SPM</th>
-                    <th class="no-border">T</th>
-                    <th class="no-border">M</th>
+                    <th class="no-border"> <span>SL.</span> </th>
+                    <th class="no-border"> <span>Candidate SL.</span> </th>
+                    <th class="no-border"> <span>Roll No.</span> </th>
+                    <th class="no-border"> <span>Name</span> </th>
+                    <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$spmDigit}} minutes</th>
+                    <th colspan="7">English in {{$spmDigit}} minutes</th>
+                    <th class="no-border"> <span>Average Mark</span> </th>
+                    <th class="no-border"> <span>Remarks</span> </th>
                 </tr>
+               
+        
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>CWS</th>
+                    <th>TW</th>
+                    <th>WW</th>
+                    <th>CW</th>
+                    <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
+                    <th>T</th>
+                    <th>M</th>
+        
+                    <th>CWS</th>
+                    <th>TW</th>
+                    <th>WW</th>
+                    <th>CW</th>
+                    <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
+                    <th>T</th>
+                    <th>M</th>
+                    <th></th>
+                </tr>
+          
             </thead>
             <tbody>
-                    <tr class="gradeX">  
-                        <td class="table-name">Characters (with space)</td>
-                        <td class="table-name">Total Words</td>
-                        <td class="table-name">Wrong Words</td>
-                        <td class="table-name">Correct Words</td>
-                        <td class="table-name">Speed Per Mintues</td>
-                        <td class="table-name">Tolerance (5%)</td>
-                        <td class="table-name">Marks</td>
+    
+            <?php $passed = 0; ?>
+            <?php $failed = 0; ?>
+            <?php $expelled = 0; ?>
+            <?php $cancelled = 0; ?>
+            <?php $total = 0; ?>
+            @if($status==2)
+            <?php $i = isset($_GET['page']) ? ($_GET['page']-1)*1 + 0: 0; ?>
+            
+    
+                @foreach($model_all as $values)
+    
+                <?php $i++; 
+    
+    
+                $values = collect($values);
+            
+                $grouped_by_exam_type = $values->groupBy('exam_type');
+       
+                $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
+    
+                $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
+    
+               
+                $bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
+    
+                $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
+    
+    
+                $bangla_exam_time = $bangla_speed;
+                                $english_exam_time = $english_speed;
+    
+                                $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+                                $bangla_typed_words = round($bangla_typed_characters/5);
+                                $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words/5) : 0;
+                                $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
+                                $bangla_wpm = round($bangla_corrected_words/$spmDigit);
+                                $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                                $bangla_round_marks = round((20/25)* $bangla_wpm);
+                                $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
+    
+                                $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                                $english_typed_words = round($english_typed_characters/5);
+                                $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words/5) : 0;
+                                $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
+                                $english_wpm = round($english_corrected_words/$spmDigit);
+                                $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                                $english_round_marks = round((20/25)* $english_wpm);
+                                $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
+    
+                                $average = round(($bangla_marks + $english_marks) / 2);
+    
+            
+                ?>
+                    <tr class="gradeX">
+                        <?php $total++; ?>      
+                        <td>{{$i}}</td>
+                        <td>{{$values[0]->roll_no}}</td>
+                        <td class="table-name">
+    
+                            {{trim($values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name)}}
+    
+                        </td>
+    
+                        <td>{{$values[0]->exam_code_name}}</td>
+    
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_characters }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_words }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_deleted_words }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_corrected_words }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_wpm }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_tolerance }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_marks }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $english_typed_characters }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $english_typed_words }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $english_deleted_words }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $english_corrected_words }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $english_wpm }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $english_tolerance }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $english_marks }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">{{ $average }}</td>
+    
+                                        <td>
+                                       
+                                            @if(! $values->lists('attended_typing_test')->contains('true'))
+                                            <?php $remarks = 'Absent'; ?>
+    
+                                            @elseif($values->lists('typing_status')->contains('cancelled'))
+                                            <?php $remarks = 'Cancelled'; $cancelled++; ?>
+    
+                                            @elseif($values->lists('typing_status')->contains('expelled'))   
+                                            <?php $remarks = 'Expelled'; $expelled++; ?>
+    
+                                            @else
+    
+                                                @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
+    
+                                                <?php $remarks = 'Pass'; $passed++; ?>
+    
+                                                @else
+    
+                                                <?php $remarks = 'Fail'; $failed++; ?>
+    
+                                                @endif
+    
+                                            @endif
+    
+                                            {{$remarks}}
+    
+                                       </td>
+                       
                     </tr>
+                @endforeach
+            @endif
             </tbody>
         </table>
+    
+        <table style="margin:20px;width:30%;margin-left:71%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
+          <tr>
+            <th>Pass</th>
+            <th>Fail</th>
+            <th>Expel</th>
+            <th>Cancel</th>
+            <th>Total</th>
+          </tr>
+          <tr>
+            <td>{{ $passed }}</td>
+            <td>{{$failed}}</td>
+            <td>{{$expelled}}</td>
+            <td>{{$cancelled}}</td>
+            <td>{{$total}}</td>
+          </tr>
+        </table>
     </div>
-
-<div class="table-primary report-table-wrapper">
-    <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
-        <thead>
-            <tr>
-                <th class="no-border"> <span>SL.</span> </th>
-                <th class="no-border"> <span>Candidate SL.</span> </th>
-                <th class="no-border"> <span>Roll No.</span> </th>
-                <th class="no-border"> <span>Name</span> </th>
-                <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$spmDigit}} minutes</th>
-                <th colspan="7">English in {{$spmDigit}} minutes</th>
-                <th class="no-border"> <span>Average Mark</span> </th>
-                <th class="no-border"> <span>Remarks</span> </th>
-            </tr>
-           
     
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>CWS</th>
-                <th>TW</th>
-                <th>WW</th>
-                <th>CW</th>
-                <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
-                <th>T</th>
-                <th>M</th>
+    <footer style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
     
-                <th>CWS</th>
-                <th>TW</th>
-                <th>WW</th>
-                <th>CW</th>
-                <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
-                <th>T</th>
-                <th>M</th>
-                <th></th>
-            </tr>
-      
-        </thead>
-        <tbody>
-
-        <?php $passed = 0; ?>
-        <?php $failed = 0; ?>
-        <?php $expelled = 0; ?>
-        <?php $cancelled = 0; ?>
-        <?php $total = 0; ?>
-        @if($status==2)
-        <?php $i = isset($_GET['page']) ? ($_GET['page']-1)*1 + 0: 0; ?>
-        
-
-            @foreach($model_all as $values)
-
-            <?php $i++; 
-
-
-            $values = collect($values);
-        
-            $grouped_by_exam_type = $values->groupBy('exam_type');
-   
-            $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
-
-            $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
-
-           
-            $bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
-
-            $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
-
-
-            $bangla_exam_time = $bangla_speed;
-                            $english_exam_time = $english_speed;
-
-                            $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5);
-                            $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words/5) : 0;
-                            $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
-                            $bangla_wpm = round($bangla_corrected_words/100);
-                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
-                            $bangla_round_marks = round((20/25)* $bangla_wpm);
-                            $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
-
-                            $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5);
-                            $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words/5) : 0;
-                            $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
-                            $english_wpm = round($english_corrected_words/100);
-                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
-                            $english_round_marks = round((20/25)* $english_wpm);
-                            $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
-
-                            $average = round(($bangla_marks + $english_marks) / 2);
-
-        
-            ?>
-                <tr class="gradeX">
-                    <?php $total++; ?>      
-                    <td>{{$i}}</td>
-                    <td>{{$values[0]->roll_no}}</td>
-                    <td class="table-name">
-
-                        {{trim($values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name)}}
-
-                    </td>
-
-                    <td>{{$values[0]->exam_code_name}}</td>
-
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_characters }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_words }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_deleted_words }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_corrected_words }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_wpm }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_tolerance }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_marks }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_typed_characters }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_typed_words }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_deleted_words }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_corrected_words }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_wpm }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_tolerance }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $english_marks }}</td>
-                    <td style="border-right: 1.7px solid #8189fd !important">{{ $average }}</td>
-
-                                    <td>
-                                   
-                                        @if(! $values->lists('attended_typing_test')->contains('true'))
-                                        <?php $remarks = 'Absent'; ?>
-
-                                        @elseif($values->lists('typing_status')->contains('cancelled'))
-                                        <?php $remarks = 'Cancelled'; $cancelled++; ?>
-
-                                        @elseif($values->lists('typing_status')->contains('expelled'))   
-                                        <?php $remarks = 'Expelled'; $expelled++; ?>
-
-                                        @else
-
-                                            @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
-
-                                            <?php $remarks = 'Pass'; $passed++; ?>
-
-                                            @else
-
-                                            <?php $remarks = 'Fail'; $failed++; ?>
-
-                                            @endif
-
-                                        @endif
-
-                                        {{$remarks}}
-
-                                   </td>
-                   
-                </tr>
-            @endforeach
-        @endif
-        </tbody>
-    </table>
-
-    <table style="margin:20px;width:30%;margin-left:71%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
-      <tr>
-        <th>Pass</th>
-        <th>Fail</th>
-        <th>Expel</th>
-        <th>Cancel</th>
-        <th>Total</th>
-      </tr>
-      <tr>
-        <td>{{ $passed }}</td>
-        <td>{{$failed}}</td>
-        <td>{{$expelled}}</td>
-        <td>{{$cancelled}}</td>
-        <td>{{$total}}</td>
-      </tr>
-    </table>
-
-</div>
-
-<footer style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
-
-</div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    </div>
+    
+    </div>
 
 
 
@@ -1218,12 +1193,33 @@ function report_exam_code(){
 
         
 
-
+        
         $('.print-button').click(function(event) {
-            w=window.open('', '_top');
-            w.document.write(document.getElementsByClassName('print-report-table-wrapper')[0].outerHTML);
-            w.print();
-            w.close();
+            // w=window.open('', '_top');
+            // w.document.write(document.getElementsByClassName('print-report-table-wrapper')[0].outerHTML);
+            // w.print();
+            // w.close();
+            // event.preventDefault();
+            // document.getElementById('prwrHtml').value = document.getElementsByClassName('print-report-table-wrapper')[0].outerHTML;
+            
+            // const form = document.getElementById("prwr");
+            // form.submit();
+            // const FD = new FormData(form);
+            // fetch(form.action, {
+            //       method: 'POST',
+            //       body: FD,
+            //   })
+            //   .then(
+            //     //response => response.json()
+            //     )
+            //   .then(data => {
+            //       // Work with the returned JSON data
+            //       //let redirectUrl = window.location.protocol + window.location.hostname + '/exam/typing-exams';
+            //   })
+            //   .catch(function(error) {
+            //       // Handle the error
+            //       //console.error(error);
+            //   });
 
 
         });
@@ -1268,5 +1264,6 @@ $('#examples_report_filter input').on('keyup', function(){
    .search(this.value)
    .draw();
  });
+
 </script>
 @stop

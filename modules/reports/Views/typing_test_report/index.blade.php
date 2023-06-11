@@ -151,7 +151,8 @@ form .col-sm-12:last-child{
                     <a target="_blank" style="color:white" href="{{ $ddd }}">View All Answer Scripts</a>
                 </div> --}}
 
-                <a class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>
+                {{-- <a class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a> --}}
+                <a href="{{ route('typing-test-report-pdf-without-remarks', [$company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed, $spmDigit]) }}" class="btn btn-danger print-button pull-right pdf_report_button" target="_blank">Print Result without Remarks</a>
                
                {{--  <div class="col-lg-3 col-sm-6 input-group">
 

@@ -803,6 +803,344 @@ class TypingTestReportController extends Controller
 
         }
 
+        public function typing_test_report_pdf_without_remarks($company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed, $spmDigit){
+
+
+            $header = DB::table( 'qselection_typing_test AS q' )
+                        ->select('q.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
+                        ->leftJoin( 'company as c', 'q.company_id', '=', 'c.id')
+                        ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id')
+                        ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id');
+
+                        
+
+            $model = DB::table( 'user AS u' )
+                     ->select('u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.typing_status', 't.id AS exam_id','t.user_id','u.company_id','u.designation_id','u.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
+                    ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
+                    ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
+                    ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
+                    ->orderBy('u.id'); 
+
+
+
+
+            if(isset($company_id) && !empty($company_id)){
+                $model = $model->where('e.company_id','=',$company_id);
+                $header = $header->where('e.company_id','=',$company_id);
+            }
+
+
+            if(isset($designation_id) && !empty($designation_id)){
+                $model = $model->where('e.designation_id','=',$designation_id);
+                $header = $header->where('e.designation_id','=',$designation_id);
+            }
+
+
+            if($exam_date_from == '' && $exam_date_to != ''){
+
+                $model = $model->where('e.exam_date','=',$exam_date_to);
+                $header = $header->where('e.exam_date','=',$exam_date_to);
+
+            }
+
+            if($exam_date_from != '' && $exam_date_to == ''){
+
+                $model = $model->where('e.exam_date','=',$exam_date_from);
+                $header = $header->where('e.exam_date','=',$exam_date_from);
+
+            }
+
+            if($exam_date_from != '' && $exam_date_to != ''){
+
+                $model = $model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
+                $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
+
+            }
+
+
+            $model = collect($model->get())->groupBy('user_id');
+
+            
+            if (isset($model[''])) {
+
+                foreach ($model[''] as $value) {
+
+                    $array = [$value];
+
+                    $model->push($array);
+                }
+
+            }
+
+            unset($model['']);
+
+            $header = $header->first();
+
+
+            $html = '
+
+    <style>
+
+    th span{
+        word-wrap:break-word !important;    
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    tr th span{
+
+    display:inline-block !important;
+    margin-top:1px !important;
+    margin-left:3px !important;
+
+    }
+
+    .tbl1 {
+       margin-left: -20px !important;
+       margin-right: -20px !important;
+
+       border: 1px solid #333;
+       width: 100%;
+    }
+
+    .tbl1 tr th,.tbl1 tr td {
+        border: 1px solid #333;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .tbl1 thead tr th:empty{
+        border-right:none !important;
+        border-top:none !important;
+    }   
+
+    .tbl1 thead:first-child tr,.tbl1 thead tr th.no-border{
+        border-bottom:0 !important;
+    }
+
+    .no-border span{
+        display:block;
+        position:absolute;
+        top:18px;
+        left:auto;
+        right:auto;
+   
+    }
+
+    .report_img{
+        height: 100px!important;
+        text-align: center!important;
+        padding: 15px 10px 18px 10px!important;
+    }
+
+    .report_img2{
+        height: 10px!important;
+        text-align: left!important;
+        padding: 5px 2px 8px 2px!important;
+    }
+
+    .panel, .panel-body{
+        width: 100%;
+    }
+
+    .tbl1 thead th{
+        padding: 7px 5px;
+        font-weight: 500;
+        color: #000;
+        text-align: center !important;     
+    }
+
+    .tbl1 tbody td{
+        padding: 5px 3px;
+        font-weight: 500;
+        color: #000;
+        text-align: center !important;    
+    }
+
+    .table-name{
+        white-space: nowrap;
+    }
+
+    td.details table tr td, .dataTable tr:last-child {
+        border-bottom: 1px solid #ccc !important;
+        background: #e9f7ff;
+    }
+
+    .table-striped>tbody>tr:nth-of-type(odd) {
+        background-color: #fff;
+    }
+
+    .header{
+        font-size: 16px;
+        text-align: center;
+        max-width: 250px;
+        margin: 5px auto;
+    }
+
+    .header-section{
+        margin-bottom: 20px;
+    }
+ 
+
+    </style>';
+
+                $html = $html.'
+
+                <div class="header-section">
+                    <p class="header">' . $header->company_name . '</p>
+                    <p class="header">' . $header->address_one . '</p>
+                    <p class="header">' . $header->address_two . '</p>
+                    <p class="header">' . $header->address_three . '</p>
+                    <p class="header">' . $header->address_four . '</p>
+                    <p class="header">Designation: ' . $header->designation_name . '</p>
+                    <p class="header">Exam Date: ' . $header->exam_date . '</p>
+                    <p class="header">Exam Taker: Bangladesh Computer Council (BCC)</p>
+                </div>
+                <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
+                <thead>
+                    <tr>
+                        <th class="no-border">CWS</th>
+                        <th class="no-border">TW</th>
+                        <th class="no-border">WW</th>
+                        <th class="no-border">CW</th>
+                        <th class="no-border">SPM</th>
+                        <th class="no-border">T</th>
+                        <th class="no-border">M</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr class="gradeX">  
+                            <td class="table-name">Characters (with space)</td>
+                            <td class="table-name">Total Words</td>
+                            <td class="table-name">Wrong Words</td>
+                            <td class="table-name">Correct Words</td>
+                            <td class="table-name">Speed Per Mintues</td>
+                            <td class="table-name">Tolerance (5%)</td>
+                            <td class="table-name">Marks</td>
+                        </tr>
+                </tbody>
+            </table>
+            <br/>
+            <br/>
+                <table cellpadding="0" cellspacing="0" class="table table-striped table-bordered table-responsive no-spacing tbl1">
+
+                    <thead>
+                    <tr>
+                    <th class="no-border"> <span>SL.</span> </th>
+                    <th class="no-border"> <span>Roll No.</span> </th>
+                    <th class="no-border"> <span>Name</span> </th>
+                    <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in '.$spmDigit.' minutes</th>
+                    <th colspan="7">English in '.$spmDigit.' minutes</th>
+                    <th rowspan="2" class="no-border"> <span>Average Mark</span> </th>
+                </tr>
+               
+        
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>CWS</th>
+                    <th>TW</th>
+                    <th>WW</th>
+                    <th>CW</th>
+                    <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
+                    <th>T</th>
+                    <th>M</th>
+        
+                    <th>CWS</th>
+                    <th>TW</th>
+                    <th>WW</th>
+                    <th>CW</th>
+                    <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
+                    <th>T</th>
+                    <th>M</th>
+                </tr>
+                    </thead>
+
+                    <tbody>';
+                    $i = 0;
+                    $passed = 0;
+                    $failed = 0;
+                    $expelled = 0;
+                    $cancelled = 0;
+                    $total = 0;
+                    foreach($model as $values)
+                    {
+                        $i++; 
+
+                        $values = collect($values);
+                        
+                        $grouped_by_exam_type = $values->groupBy('exam_type');
+                
+                        $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
+                        $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
+
+                        $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+                        $bangla_typed_words = round($bangla_typed_characters/5);
+                        $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words/5) : 0;
+                        $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words/5) : 0;
+                        $bangla_wpm = round($bangla_corrected_words/$spmDigit);
+                        $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                        $bangla_round_marks = round((20/25)* $bangla_wpm);
+                        $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
+
+                        $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                        $english_typed_words = round($english_typed_characters/5);
+                        $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words/5) : 0;
+                        $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words/5) : 0;
+                        $english_wpm = round($english_corrected_words/$spmDigit);
+                        $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                        $english_round_marks = round((20/25)* $english_wpm);
+                        $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
+    
+                        $average = round(($bangla_marks + $english_marks) / 2);                      
+                        $total++;                        
+
+                        $html = $html . "
+                        <tr class='gradeX'>
+                                                   
+                            <td>" . $i . "</td>
+                            <td>" . $values[0]->roll_no . "</td>
+                            <td class='table-name'>" . $values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name . "</td>
+                            <td>" . $bangla_typed_characters . "</td>
+                            <td>" . $bangla_typed_words . "</td>
+                            <td>" . $bangla_deleted_words . "</td>
+                            <td>" . $bangla_corrected_words . "</td>
+                            <td>" . $bangla_wpm . "</td>
+                            <td>" . $bangla_tolerance . "</td>
+                            <td>" . $bangla_marks . "</td>
+
+                            <td>" . $english_typed_characters . "</td>
+                            <td>" . $english_typed_words . "</td>
+                            <td>" . $english_deleted_words . "</td>
+                            <td>" . $english_corrected_words . "</td>
+                            <td>" . $english_wpm . "</td>
+                            <td>" . $english_tolerance . "</td>
+                            <td>" . $english_marks . "</td>
+                            <td>" . $average . "</td>                        
+                        </tr>";
+                   }
+
+
+                $html = $html.'</tbody></table>
+                    <footer style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
+                ';
+            
+
+                $dompdf = new Dompdf();
+                $dompdf->loadHtml($html);
+
+                // (Optional) Setup the paper size and orientation
+                $dompdf->setPaper('A4', 'landscape');
+
+                // Render the HTML as PDF
+                $dompdf->render();
+
+                // Output the generated PDF to Browser
+                $dompdf->stream($header->company_name . $header->designation_name . $header->exam_date .'.pdf',array('Attachment'=>0));
+
+
+        }
+
 
 
 

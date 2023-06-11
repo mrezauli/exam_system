@@ -133,8 +133,11 @@ Route::group(array('prefix' => 'reports','modules'=>'Reports', 'namespace' => 'M
         'uses' => 'TypingTestReportController@typing_test_report_pdf'
     ]);
 
-
-
+    Route::any('typing-test-report-pdf-without-remarks/{company_id}/{designation_id}/{exam_date_from}/{exam_date_to}/{bangla_speed}/{english_speed}/{spmDigit}', [
+        //'middleware' => 'acl_access:reports/meeting-detail/{company_id}/{meeting_id}',
+        'as' => 'typing-test-report-pdf-without-remarks',
+        'uses' => 'TypingTestReportController@typing_test_report_pdf_without_remarks'
+    ]);
 
     Route::any('roll-wise-typing-test-report', [
         'as' => 'roll-wise-typing-test-report',

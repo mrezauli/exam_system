@@ -277,15 +277,15 @@ class TypingTestReportController extends Controller
 
             if(! $values->lists('attended_typing_test')->contains('true')){
 
-                $values->remarks = 'Absent';
+                $values->R = 'Absent';
 
             }elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed){
 
-                $values->remarks = 'Pass';
+                $values->R = 'Pass';
 
             }else{
 
-                $values->remarks = 'Fail';
+                $values->R = 'Fail';
                 
             }
 
@@ -332,17 +332,17 @@ class TypingTestReportController extends Controller
 
         $passed = $model->filter(function ($value) {
             
-            return $value->remarks == "Pass";
+            return $value->R == "Pass";
         });
 
 
         $failed = $model->filter(function ($value) {
-            return $value->remarks == "Fail";
+            return $value->R == "Fail";
         });
 
 
         $absent = $model->filter(function ($value) {
-            return $value->remarks == "Absent";
+            return $value->R == "Absent";
         });
 
 
@@ -358,17 +358,17 @@ class TypingTestReportController extends Controller
     
         $passed_count = $model->filter(function ($value) {
 
-            if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
+            if ($value->R == "Fail" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
 
                 return false;
 
-            }else if ($value->remarks == "Pass" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
+            }else if ($value->R == "Pass" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
 
                 return false;
 
             }else{
 
-                return $value->remarks == "Pass";
+                return $value->R == "Pass";
             }
         
 
@@ -378,17 +378,17 @@ class TypingTestReportController extends Controller
 
         $failed_count = $model->filter(function ($value) {
 
-            if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
+            if ($value->R == "Fail" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
 
                 return false;
 
-            }else if ($value->remarks == "Pass" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
+            }else if ($value->R == "Pass" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
 
                 return false;
 
             }else{
 
-                return $value->remarks == "Fail";
+                return $value->R == "Fail";
             }
         
 
@@ -511,12 +511,21 @@ class TypingTestReportController extends Controller
 
 
             $html = '
+            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://sonnetdp.github.io/nikosh/css/nikosh.css" rel="stylesheet" type="text/css">
+    <title>Result with Remarks</title>
 
     <style>
 
-    th span{
-        word-wrap:break-word !important;    
+    th span{    
         font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        line-height: 100vh;
     }
 
     tr th span{
@@ -603,7 +612,7 @@ class TypingTestReportController extends Controller
     }
 
     .header{
-        font-size: 16px;
+        font-size: 13px;
         text-align: center;
         max-width: 250px;
         margin: 5px auto;
@@ -612,9 +621,16 @@ class TypingTestReportController extends Controller
     .header-section{
         margin-bottom: 20px;
     }
+
+    .center-table {
+        margin-left: auto;
+        margin-right: auto;
+      }
  
 
-    </style>';
+    </style>
+    </head>
+    <body>';
 
                 $html = $html.'
 
@@ -628,42 +644,50 @@ class TypingTestReportController extends Controller
                     <p class="header">Exam Date: ' . $header->exam_date . '</p>
                     <p class="header">Exam Taker: Bangladesh Computer Council (BCC)</p>
                 </div>
-                <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
-                <thead>
-                    <tr>
-                        <th class="no-border">CWS</th>
-                        <th class="no-border">TW</th>
-                        <th class="no-border">WW</th>
-                        <th class="no-border">CW</th>
-                        <th class="no-border">SPM</th>
-                        <th class="no-border">T</th>
-                        <th class="no-border">M</th>
-                    </tr>
-                </thead>
-                <tbody>
-                        <tr class="gradeX">  
-                            <td class="table-name">Characters (with space)</td>
-                            <td class="table-name">Total Words</td>
-                            <td class="table-name">Wrong Words</td>
-                            <td class="table-name">Correct Words</td>
-                            <td class="table-name">Speed Per Mintues</td>
-                            <td class="table-name">Tolerance (5%)</td>
-                            <td class="table-name">Marks</td>
-                        </tr>
-                </tbody>
-            </table>
+                <div style="text-align: center;">
+                    <table cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table tbl1 center-table" id="examples">
+                        <thead>
+                            <tr>
+                                <th colspan="8">Abbreviations</th>
+                            </tr>
+                            <tr>
+                                <th>CWS</th>
+                                <th>TW</th>
+                                <th>WW</th>
+                                <th>CW</th>
+                                <th>SPM</th>
+                                <th>T</th>
+                                <th>M</th>
+                                <th>AM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr class="gradeX">  
+                                    <td class="table-name">Characters (with space)</td>
+                                    <td class="table-name">Total Words</td>
+                                    <td class="table-name">Wrong Words</td>
+                                    <td class="table-name">Correct Words</td>
+                                    <td class="table-name">Speed Per Mintues</td>
+                                    <td class="table-name">Tolerance (5%)</td>
+                                    <td class="table-name">Marks</td>
+                                    <td class="table-name">Average Marks</td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
             <br/>
             <br/>
+            <div style="text-align: center;">
                 <table cellpadding="0" cellspacing="0" class="table table-striped table-bordered table-responsive no-spacing tbl1">
 
                     <thead>
                     <tr>
-                    <th class="no-border"> <span>SL.</span> </th>
-                    <th class="no-border"> <span>Roll No.</span> </th>
+                    <th class="no-border"> <span>SL</span> </th>
+                    <th class="no-border"> <span>Roll No</span> </th>
                     <th class="no-border"> <span>Name</span> </th>
                     <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in '.$spmDigit.' minutes</th>
                     <th colspan="7">English in '.$spmDigit.' minutes</th>
-                    <th rowspan="2" class="no-border"> <span>Average Mark</span> </th>
+                    <th rowspan="2" class="no-border"> <span>AM</span> </th>
                     <th rowspan="2" class="no-border"> <span>Remarks</span> </th>
                 </tr>
                
@@ -768,7 +792,9 @@ class TypingTestReportController extends Controller
 
 
                 $html = $html.'</tbody></table>
-                <table style="margin:20px;width:30%;margin-left:71%;" id="examples"  cellpadding="0" cellspacing="0" class="table table-striped table-bordered table-responsive no-spacing tbl1">
+                </div>
+                <div style="text-align: center;">
+                <table style="margin-top:20px;width:30%;" id="examples"  cellpadding="0" cellspacing="0" class="table table-striped table-bordered table-responsive no-spacing tbl1">
                     <tr>
                         <th>Pass</th>
                         <th>Fail</th>
@@ -784,7 +810,10 @@ class TypingTestReportController extends Controller
                         <td>'.$total.'</td>
                     </tr>
                 </table>
+                </div>
                     <footer style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
+                    </body>
+                    </html>
                 ';
             
 
@@ -792,7 +821,7 @@ class TypingTestReportController extends Controller
                 $dompdf->loadHtml($html);
 
                 // (Optional) Setup the paper size and orientation
-                $dompdf->setPaper('A4', 'landscape');
+                $dompdf->setPaper('A4', 'potrait');
 
                 // Render the HTML as PDF
                 $dompdf->render();
@@ -878,12 +907,20 @@ class TypingTestReportController extends Controller
 
 
             $html = '
-
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link href="http://sonnetdp.github.io/nikosh/css/nikosh.css" rel="stylesheet" type="text/css">
+                <title>Result with Without Remarks</title>
     <style>
 
     th span{
-        word-wrap:break-word !important;    
         font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        line-height: 100vh;
     }
 
     tr th span{
@@ -970,7 +1007,7 @@ class TypingTestReportController extends Controller
     }
 
     .header{
-        font-size: 16px;
+        font-size: 13px;
         text-align: center;
         max-width: 250px;
         margin: 5px auto;
@@ -995,8 +1032,11 @@ class TypingTestReportController extends Controller
                     <p class="header">Exam Date: ' . $header->exam_date . '</p>
                     <p class="header">Exam Taker: Bangladesh Computer Council (BCC)</p>
                 </div>
-                <table dxcf="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
+                <table cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table tbl1" id="examples">
                 <thead>
+                    <tr>
+                        <th colspan="8">Abbreviations</th>
+                    </tr>
                     <tr>
                         <th class="no-border">CWS</th>
                         <th class="no-border">TW</th>
@@ -1005,6 +1045,7 @@ class TypingTestReportController extends Controller
                         <th class="no-border">SPM</th>
                         <th class="no-border">T</th>
                         <th class="no-border">M</th>
+                        <th class="no-border">AM</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1016,6 +1057,7 @@ class TypingTestReportController extends Controller
                             <td class="table-name">Speed Per Mintues</td>
                             <td class="table-name">Tolerance (5%)</td>
                             <td class="table-name">Marks</td>
+                            <td class="table-name">Average Marks</td>
                         </tr>
                 </tbody>
             </table>
@@ -1025,12 +1067,13 @@ class TypingTestReportController extends Controller
 
                     <thead>
                     <tr>
-                    <th class="no-border"> <span>SL.</span> </th>
-                    <th class="no-border"> <span>Roll No.</span> </th>
+                    <th class="no-border"> <span>SL</span> </th>
+                    <th class="no-border"> <span>Roll No</span> </th>
                     <th class="no-border"> <span>Name</span> </th>
                     <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in '.$spmDigit.' minutes</th>
                     <th colspan="7">English in '.$spmDigit.' minutes</th>
-                    <th rowspan="2" class="no-border"> <span>Average Mark</span> </th>
+                    <th rowspan="2" class="no-border"> <span>AM</span> </th>
+                    <th rowspan="2" class="no-border"> <span>Remarks</span> </th>
                 </tr>
                
         
@@ -1117,6 +1160,7 @@ class TypingTestReportController extends Controller
                             <td>" . $english_tolerance . "</td>
                             <td>" . $english_marks . "</td>
                             <td>" . $average . "</td>                        
+                            <td> </td>                        
                         </tr>";
                    }
 
@@ -1130,7 +1174,7 @@ class TypingTestReportController extends Controller
                 $dompdf->loadHtml($html);
 
                 // (Optional) Setup the paper size and orientation
-                $dompdf->setPaper('A4', 'landscape');
+                $dompdf->setPaper('A4', 'potrait');
 
                 // Render the HTML as PDF
                 $dompdf->render();
@@ -1437,15 +1481,15 @@ class TypingTestReportController extends Controller
 
                 if(! $values->lists('attended_typing_test')->contains('true')){
 
-                    $values->remarks = 'Absent';
+                    $values->R = 'Absent';
 
                 }elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed){
 
-                    $values->remarks = 'Pass';
+                    $values->R = 'Pass';
 
                 }else{
 
-                    $values->remarks = 'Fail';
+                    $values->R = 'Fail';
                     
                 }
 
@@ -1455,17 +1499,17 @@ class TypingTestReportController extends Controller
 
 
             $passed = $model->filter(function ($value) {
-                return $value->remarks == "Pass";
+                return $value->R == "Pass";
             });
 
 
             $failed = $model->filter(function ($value) {
-                return $value->remarks == "Fail";
+                return $value->R == "Fail";
             });
 
 
             $absent = $model->filter(function ($value) {
-                return $value->remarks == "Absent";
+                return $value->R == "Absent";
             });
 
 

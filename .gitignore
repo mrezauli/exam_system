@@ -7,3 +7,4 @@ Homestead.json
 composer.lock
 .phpintel/
 .phpintel/index
+modules/reports/Views/typing_test_report/a.html

@@ -786,7 +786,7 @@ class TypingTestReportController extends Controller
                             <td>" . $english_tolerance . "</td>
                             <td>" . $english_marks . "</td>
                             <td>" . $average . "</td>
-                            <td>" . $remark . "</td>                           
+                            <td style='text-align: left !important;'>" . $remark . "</td>                           
                         </tr>";
                    }
 

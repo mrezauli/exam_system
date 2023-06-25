@@ -2,26 +2,27 @@
 
 namespace Modules\Reports\Controllers;
 
-use Modules\Exam\Helpers\StdClass;
-use Illuminate\Http\Request;
-use App\Helpers\LogFileHelper;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Input;
-use App\User;
 use Session;
+use App\User;
+use Validator;
+use Dompdf\Dompdf;
+use App\Http\Requests;
 use Modules\Admin\Company;
-use Modules\Admin\Designation;
 use Modules\Admin\ExamCode;
 use Modules\Admin\ExamTime;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Modules\Exam\Examination;
-use Dompdf\Dompdf;
+use App\Helpers\LogFileHelper;
+use Modules\Admin\Designation;
+use Illuminate\Support\Facades\DB;
+use Modules\Exam\Helpers\StdClass;
+use App\Jobs\NewLineCountRemoveJob;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Validator;
 
 
 
@@ -60,6 +61,9 @@ class TypingTestReportController extends Controller
 
 
     public function generate_typing_test_report(Request $request){
+
+        $job = new NewLineCountRemoveJob();
+        dispatch($job);
 
         $page_title = 'Typing Test Report';
 

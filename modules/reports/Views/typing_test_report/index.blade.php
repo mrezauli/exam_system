@@ -200,6 +200,7 @@ form .col-sm-12:last-child{
                     $grouped_by_exam_type = $value->groupBy('exam_type');
 
                     $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
+                    //dd($bangla);
 
                     $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
 

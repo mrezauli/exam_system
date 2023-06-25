@@ -509,6 +509,13 @@ a.btn.btn-primary.btn-sm.start-button {
               const question = document.getElementById('original_text_field').textContent,
               answer = document.getElementById('answered_text_field').textContent;
 
+              // console.log(document.getElementById('original_text_field'));
+              // console.log(question);
+              // console.log(question.length);
+              // console.log(document.getElementById('answered_text_field'));
+              // console.log(answer);
+              // console.log(answer.length);
+
               let totalGivenCharacters = question.length,
               totalGivenWords = question.split(' ').length + (question.split(' ').length - 1),
               typedCharacters = answer.length,

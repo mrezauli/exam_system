@@ -1,4 +1,6 @@
 <?php
+
+use App\Jobs\NewLineCountRemoveJob;
 /**
  * Created by PhpStorm.
  * User: UITS-Shajjad
@@ -174,8 +176,6 @@ Route::group(array('prefix'=>'exam','modules'=>'exam', 'namespace' => 'Modules\e
 
 
     /*--------------Answer Sheet Checking-----------------*/
-
-
 
 
 

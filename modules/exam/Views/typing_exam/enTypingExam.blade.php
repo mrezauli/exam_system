@@ -454,14 +454,14 @@ function noBack() { window.history.forward(); }
 
 $('#original_text').bind('cut copy paste drop', function (e) {
 
- return false;
+ //return false;
 
 });
 
 
 $('#answered_text').bind('cut copy paste drop', function (e) {
 
- return false;
+ //return false;
 
 });
 

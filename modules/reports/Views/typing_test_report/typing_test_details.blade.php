@@ -22,7 +22,6 @@
 
         <div class="app-container col-sm-12">
 
-
             <style>
                 p {
                     font-size: 14px;
@@ -862,6 +861,12 @@
         displayBn.appendChild(fragmentBn);
         //displayBnRemoved.appendChild(fragmentBnRemoved);
         displayBnPrint.appendChild(fragmentBn);
+        console.log(document.getElementById('bangla_web_question'));
+        console.log(document.getElementById('bangla_web_answer'));
+        console.log(document.getElementById('bangla_web_question').textContent);
+        console.log(document.getElementById('bangla_web_answer').textContent);
+        console.log(document.getElementById('bangla_web_question').textContent.length);
+        console.log(document.getElementById('bangla_web_answer').textContent.length);
 
         $('.print').click(function(event) {
 

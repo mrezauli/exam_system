@@ -19,7 +19,8 @@ class NewLineCountRemoveJob extends Job implements SelfHandling
     }
 
     function countStringWithoutNewlineTab($string) {
-        $stringWithoutNewlineTab = str_replace(["\n", "\t", "\r", "\a", "\e", "\f", "\R"], '', $string);
+        //$stringWithoutNewlineTab = str_replace(["\n", "\t", "\r", "\a", "\e", "\f", "\R"], '', $string);
+        $stringWithoutNewlineTab = mb_ereg_replace("[\n\t\r]", "", $string);
         return mb_strlen($stringWithoutNewlineTab, 'UTF-8');
     }
 
@@ -30,10 +31,10 @@ class NewLineCountRemoveJob extends Job implements SelfHandling
      */
     public function handle()
     {
-        $examinations = Examination::where('id', 311)->get();
+        $examinations = Examination::all();
         // Perform the bulk update
         $examinations->each(function ($examination) {
-            //$examination->total_words = $this->countStringWithoutNewlineTab($examination->original_text);
+            $examination->total_words = $this->countStringWithoutNewlineTab($examination->original_text);
             $examination->typed_words = $this->countStringWithoutNewlineTab($examination->answered_text);
             // Set other attributes as needed
             $examination->save();

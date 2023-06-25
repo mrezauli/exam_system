@@ -50,7 +50,6 @@ class QBankTypingTestController extends Controller
     {
         $input = $request->all();
 
-
         /* Transaction Start Here */
         DB::beginTransaction();
         try {

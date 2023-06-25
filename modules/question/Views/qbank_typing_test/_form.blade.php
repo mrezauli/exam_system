@@ -16,8 +16,8 @@
     <div class="row">
 
         <div class="col-sm-12">
-            {!! Form::label('words_count', 'Words Count:', ['class' => 'control-label']) !!}
-            {!! Form::text('words_count', Input::old('words_count'),['class' => 'form-control words-count','disabled' => 'disabled']) !!}
+            {!! Form::label('words_count', 'Words Count (minimum 1000 words):', ['class' => 'control-label']) !!}
+            {!! Form::text('words_count[]', Input::old('words_count'),['class' => 'form-control words-count', 'readonly']) !!}
         </div>
 
     </div>

@@ -30,6 +30,7 @@ class QBankTypingTestRequest extends Request
     {
         return [
            // 'name' => 'required|max:64'
+           //'words_count.*' => 'required|min:250',
         ];
     }
 }

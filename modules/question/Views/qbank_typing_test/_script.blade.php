@@ -25,6 +25,8 @@ $(document).ready(function() {
 
 	});
 
+
+
 	$('.typing_question').trigger('keyup');
 
 });

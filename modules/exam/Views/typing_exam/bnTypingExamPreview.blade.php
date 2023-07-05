@@ -182,9 +182,9 @@ a.btn.btn-primary.btn-sm.start-button {
 }*/
 
 </style>
-  
+
   {{-- {{$first_exam_type}} --}}
-  
+
 <div class="form-block">
 
 @if($errors->any())
@@ -199,10 +199,10 @@ a.btn.btn-primary.btn-sm.start-button {
         <p>{{ Session::get('danger') }}</p>
     </div>
 @endif
-  
+
   <div class="form-group image no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
-    
+
     <?php
 
     if($exam_type == 'bangla'){
@@ -216,8 +216,8 @@ a.btn.btn-primary.btn-sm.start-button {
     }
 
     ?>
-    
-      
+
+
 
       @if( ($first_exam_started && ! $first_exam_completed ) || ($last_exam_started && ! $last_exam_completed) )
 
@@ -229,7 +229,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
       </div>
 
-      
+
       @else
 
       <div class="radios" style="display:block;">
@@ -240,10 +240,10 @@ a.btn.btn-primary.btn-sm.start-button {
 
       @endif
 
-      
 
-    
-      
+
+
+
 
     </div>
   </div>
@@ -255,7 +255,7 @@ a.btn.btn-primary.btn-sm.start-button {
 <div class="question-answer-block">
 
   {!! Form::open(['route' => ['submit-typing-exam-bn-with-calculation',$exam_type],'id' => 'jq-validation-form','class' => 'exam-form']) !!}
-  
+
   <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
 
@@ -268,7 +268,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
     </div>
   </div>
-  
+
 
   <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
@@ -290,10 +290,10 @@ a.btn.btn-primary.btn-sm.start-button {
 
     </div>
   </div>
-  
-  
+
+
 <input type="hidden" name="status" id="status" class="form-control">
-  
+
 
 <input type="hidden" name="qselection_typing_id" id="qselection_typing_id" class="form-control" value="">
 <input type="hidden" name="accuracy" id="accuracy" class="form-control" value="">
@@ -334,7 +334,7 @@ a.btn.btn-primary.btn-sm.start-button {
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৩.    টাইপিং টেষ্ট শুরু হলে আপনার মনিটরের ডানপার্শ্বে “Time Count-Down” দেখতে পারবেন। </b></td></tr>
                 {{--<tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    ইংরেজী টাইপিং এর জন্য পূনরায় “Ctrl+Alt+U” দিয়ে ইংরেজী কিবোর্ড নির্বাচন করুন। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৫.    বাংলা অথবা ইংরেজী যে কোন ০১(একটি) বাটনে “ক্লিক” করে টাইপিং শুরু করুন। </b></td></tr>--}}
-                <tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    নির্ধারিত বক্স নির্বাচন করে ইংরেজী টাইপিং শুরু করুন। ইংরেজী টাইপিং সমাপ্ত হলে “Submit” 
+                <tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    নির্ধারিত বক্স নির্বাচন করে ইংরেজী টাইপিং শুরু করুন। ইংরেজী টাইপিং সমাপ্ত হলে “Submit”
   বাটনে ক্লিক করুন। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৫.    এরপর বাংলা টাইপিং এর জন্য “Ctrl+Alt+V” দিয়ে কিবোর্ড নির্বাচন করুন। নির্ধারিত বক্স বাংলা
   টাইপিং শুরু করুন। </b></td></tr>
@@ -352,7 +352,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
 <div class='text-center start-buttons'>
   {{-- <a href="{{route('start-typing-exam','bangla')}}" type="submit" class="btn btn-primary btn-sm start-button">Start Bangla</a> --}}
-  
+
   <a href="{{route('start-typing-exam','english')}}" type="submit" class="btn btn-primary btn-sm start-button">Start English</a>
 
   <div class="clearfix"></div>
@@ -379,7 +379,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
 @endif
 </div>
-	
+
 <div id="test_check_box"></div>
 
 
@@ -397,7 +397,7 @@ a.btn.btn-primary.btn-sm.start-button {
                 <div class="form-margin-btn text-right">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
-                                        
+
             </div> <!-- / .modal-body -->
         </div> <!-- / .modal-content -->
     </div> <!-- / .modal-dialog -->
@@ -411,92 +411,9 @@ a.btn.btn-primary.btn-sm.start-button {
 <script src="{{ URL::asset('assets/dist/diff.js') }}"></script>
 
 
-    
+
     <script>
-      function calculateBn(event) {
-              event.preventDefault()
-              // Get the form element
-              const form = document.getElementById("jq-validation-form");
-              // Bind the FormData object and the form element
-              const FD = new FormData(form);
 
-              // Run your JavaScript method here
-              const question = document.getElementById('original_text_field').textContent,
-              answer = document.getElementById('answered_text_field').textContent;
-
-              let totalGivenCharacters = question.length,
-              typedCharacters = answer.length,
-              typedWords = typedCharacters / 5,
-              correctedCharacters = null,
-              correctedWords = null,
-              wrongWords = null,
-              wrongCharacters = null;
-
-            const chracterizedQuestionWithSpace = [...question].join(" "),
-            chracterizedAnswerWithSpace = [...answer].join(" ");
-
-            const chracterizedQuestionWithoutSpace = [...question].join(""),
-            chracterizedAnswerWithoutSpace = [...answer].join("");
-
-            const chracterizedQuestionWithComma = [...question].join(","),
-            chracterizedAnswerWithComma = [...answer].join(",");
-            
-
-              const diffCharacters = Diff.diffChars(chracterizedQuestionWithoutSpace, chracterizedAnswerWithoutSpace);
-
-              const diffWordsWithSpace = Diff.diffWordsWithSpace(question, answer);
-
-              diffCharacters.forEach((part) => {
-                  if ((part.added === undefined) && (part.removed === undefined)) {
-                      correctedCharacters += part.count;
-                  }
-              });
-
-              diffWordsWithSpace.forEach((part) => {
-                console.log(part);
-                  if ((part.added === undefined) && (part.removed === undefined) && part.value != ' ') {
-                    correctedWords++;
-                  }
-              });
-
-              wrongCharacters = typedCharacters - correctedCharacters;
-              wrongWords = typedWords - correctedWords;
-              console.log(typedWords);
-              console.log(correctedWords);
-              console.log(wrongWords);
-
-              // Push our data into our FormData object
-              FD.append('correctedCharacters', correctedWords * 5);
-              FD.append('wrongCharacters', wrongWords * 5);
-              FD.append('totalGivenCharacters', totalGivenCharacters);
-              FD.append('typedCharacters', typedCharacters);
-              FD.append('original_text', question);
-              FD.append('answered_text', answer);
-
-              for (const [key, value] of FD) {
-                  //console.log(`${key}: ${value}`);
-              }
-
-              // Alternatively, redirect the user to a server-side script to process the form data
-              // Send the form data using Fetch API
-              fetch(form.action, {
-                  method: 'POST',
-                  body: FD,
-              })
-              .then(response => response.json())
-              .then(data => {
-                  // Work with the returned JSON data
-                  //let redirectUrl = window.location.protocol + window.location.hostname + '/exam/typing-exams';
-                  let redirectUrl = '/exam/typing-exams';
-                  if (data.success) {
-                    //window.location.assign(redirectUrl);
-                  }
-              })
-              .catch(function(error) {
-                  // Handle the error
-                  console.error(error);
-              });
-      }
 
       function calculate(event) {
         event.preventDefault()
@@ -509,33 +426,17 @@ a.btn.btn-primary.btn-sm.start-button {
               const question = document.getElementById('original_text_field').textContent,
               answer = document.getElementById('answered_text_field').textContent;
 
-              // console.log(document.getElementById('original_text_field'));
-              // console.log(question);
-              // console.log(question.length);
-              // console.log(document.getElementById('answered_text_field'));
-              // console.log(answer);
-              // console.log(answer.length);
-
               let totalGivenCharacters = question.length,
-              totalGivenWords = question.split(' ').length + (question.split(' ').length - 1),
               typedCharacters = answer.length,
-              typedWords = answer.split(' ').length + (answer.split(' ').length - 1),
               correctedCharacters = null,
-              correctedWords = null,
-              wrongWords = null,
               wrongCharacters = null;
 
               const diffCharacters = Diff.diffChars(question, answer);
-
-              const diffWords = Diff.diffWords(question, answer);           
-
-              diffWords.forEach((part) => {
+              diffCharacters.forEach((part) => {
                   if ((part.added === undefined) && (part.removed === undefined)) {
-                    correctedWords += part.count;
-                    correctedCharacters += part.value.length;
-                    //console.log(part);
+                      correctedCharacters += part.count;
                   }
-              });         
+              });
               wrongCharacters = typedCharacters - correctedCharacters;
 
               // Push our data into our FormData object
@@ -550,7 +451,7 @@ a.btn.btn-primary.btn-sm.start-button {
                   //console.log(`${key}: ${value}`);
               }
 
-      
+
               // Alternatively, redirect the user to a server-side script to process the form data
               // Alternatively, redirect the user to a server-side script to process the form data
               // Send the form data using Fetch API

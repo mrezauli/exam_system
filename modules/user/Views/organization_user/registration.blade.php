@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
 
 <style>
-    
+
 .select2-hidden-accessible {
     top: 0;
     left: 180px;
@@ -36,7 +36,7 @@
             <p>{{ Session::get('danger') }}</p>
         </div>
         @endif
-        
+
         @if(Session::has('message'))
         <div class="alert alert-success">
             <p>{{ Session::get('message') }}</p>
@@ -50,9 +50,9 @@
 
     <div class="text-center m-b-sm">
         <div id="logo-login" class="light-version">
-            <img src="{{URl('/assets/img/logo.png')}}" alt="SOP" class="bgm_logo_img">    
-            
-            <h3>Recruitment Exam Management System</h3>
+            <img src="{{URl('/assets/img/logo.png')}}" alt="SOP" class="bgm_logo_img">
+
+            <h3>Recruitment Exam Management System V2</h3>
 
             <h3>Bangladesh Computer Council</h3>
 
@@ -188,8 +188,8 @@ $(document).ready(function() {
             $("select").attr('required','required');
 
      }, 1000);
-           
-        
+
+
     });
 
 

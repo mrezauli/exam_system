@@ -6,9 +6,9 @@
         <div class="col-md-12">
             <div class="text-center m-b-sm">
                 <div id="logo-login" class="light-version">
-                    <img src="{{URl('/assets/img/logo.png')}}" alt="SOP" class="bgm_logo_img">    
-                    
-                    <h3>Recruitment Exam Management System</h3>
+                    <img src="{{URl('/assets/img/logo.png')}}" alt="SOP" class="bgm_logo_img">
+
+                    <h3>Recruitment Exam Management System V2</h3>
 
                     <h3>Bangladesh Computer Council</h3>
 
@@ -17,16 +17,18 @@
             </div>
             <div class="hpanel">
                 <div class="panel-body">
-                          
+
                     {!! Form::open(['route' => 'post-user-login','id'=>'form_2','class'=>'default-form admin-login-form']) !!}
                         <div class="form-group">
                             <label class="control-label" for="username">Email Address<span class="red">*</span></label>
-                            {!! Form::text('email', Input::old('email'), ['class' => 'form-control','required','placeholder'=>'Username or email','autofocus','title'=>'Enter Email Address']) !!}
+                            {!! Form::text('email', Input::old('email'), ['id' => 'username', 'class' => 'form-control','required','placeholder'=>'Username or email', 'autofocus', 'title'=>'Enter Email Address']) !!}
                             {{-- <span class="help-block small">Your unique username/email to app</span> --}}
                         </div>
+                        <br/>
+                        <br/>
                         <div class="form-group">
                             <label class="control-label" for="password">Password<span class="red">*</span></label>
-                            {!! Form::password('password', ['class'=>'form-control', 'placeholder'=>'Password', 'required'=>'required','title'=>'Enter Password']) !!}
+                            {!! Form::password('password', ['id' => 'password', 'class'=>'form-control', 'placeholder'=>'Password', 'required'=>'required','title'=>'Enter Password']) !!}
                             {{-- <span class="help-block small">Your strong password</span> --}}
                         </div>
 
@@ -35,7 +37,7 @@
                         </div>
 
                         <div class="clearfix"></div>
-                
+
 
                         <div class="checkbox">
                             {{-- <input type="checkbox" class="i-checks" checked>
@@ -50,7 +52,7 @@
 
                         <div class="text-right">
 
-                            <button class="btn btn-success mt-23">Login</button>                            
+                            <button class="btn btn-success mt-23">Login</button>
 
                         </div>
 

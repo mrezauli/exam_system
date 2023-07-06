@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="{{ URL::asset('assets/img/favicon.ico') }}">
 
 
-    <title>Recruitment Exam Management System</title>
+    <title>Recruitment Exam Management System V2</title>
     {{--<title>{{ isset($pageTitle) ? $pageTitle : "CCMS" }} </title>--}}
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
@@ -171,7 +171,7 @@
                             @endif --}}
 
                     <!-- modal -->
-                    
+
             </section>
 
             <!--footer start-->
@@ -183,7 +183,7 @@
             </footer>
             <!--footer end-->
 
-            
+
         </section>
         <!--main content end-->
 
@@ -245,7 +245,7 @@
 <script type="text/javascript" src="{{ URL::asset('assets/js/custom.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/ckeditor_basic/ckeditor.js') }}"></script>
 
- 
+
 <!--Advanced Form plugins-->
 {{-- <script type="text/javascript" src="{{ URL::asset('assets/js/advanced-form-components.js') }}"></script> --}}
 
@@ -273,7 +273,7 @@ $(document).ready(function() {
             $("select").attr('required','required');
 
      }, 1000);
-           
+
     });
 
     /* end */
@@ -295,7 +295,7 @@ $(document).ready(function() {
     }
 
     return ($(this).attr('disabled')) ? false : true;
-    }); 
+    });
 
 
     $('body').on('hidden.bs.modal', '.modal', function () {
@@ -362,7 +362,7 @@ function ajax_get_exam_code(){
       type: 'POST',
       data: $('form').serialize(),
       success: function(data){
-        
+
 
         var exam_code = jQuery.parseJSON(data);
 
@@ -376,7 +376,7 @@ function ajax_get_exam_code(){
         var shift = exam_code  != null ? exam_code.shift : '';
 
         var exam_type = exam_code  != null ? exam_code.exam_type : '';
-       
+
 
 
         $('#company_list').val(company_id).trigger("change");
@@ -386,7 +386,7 @@ function ajax_get_exam_code(){
         $('#exam_date').val(exam_date).trigger("change");
 
         $('#shift').val(shift).trigger("change");
-        
+
         $('#exam_type option:last-child').val() == 'aptitude_test' ?  $('#exam_type').val(exam_type).trigger("change") : '';
 
       }
@@ -400,7 +400,7 @@ function ajax_get_exam_code(){
     $('.datepicker').bind('input',function(e) {
 
         $(this).css('font-size', '0');
-        
+
         setTimeout(function() {
 
             $(this).val('').datepicker('update');

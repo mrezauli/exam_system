@@ -3,7 +3,7 @@
 @section('content')
 
 <style>
-    
+
 .add-on {
     top: -8px;
 }
@@ -31,7 +31,7 @@
             <span style="color: #AA0055">
 
                 <a href="https://chrome.google.com/webstore/detail/downloads-overwrite-exist/fkomnceojfhfkgjgcijfahmgeljomcfk?hl=en" target="_blank" class="btn btn-primary btn-xs" id="chrom" ata-placement="top" style="margin-right: 50px"><strong>Plugins</strong></a>
-                
+
             </span>
         </div>
 
@@ -39,8 +39,8 @@
             <div class="text-center m-b-sm">
                 <div id="logo-login" class="light-version">
                     <img src="{{URl('/assets/img/logo.png')}}" alt="SOP" class="bgm_logo_img">
-                    
-                    <h3>Recruitment Exam Management System</h3>
+
+                    <h3>Recruitment Exam Management System V2</h3>
 
                     <h3>Bangladesh Computer Council</h3>
 
@@ -92,7 +92,7 @@
 
 @section('custom-script')
     <script>
-    
+
 $('form').submit(function(){
 
 if ($(this).valid()){

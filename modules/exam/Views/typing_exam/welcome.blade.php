@@ -111,24 +111,24 @@ label {
 }
 
 </style>
-  
+
   {{-- {{$first_exam_type}} --}}
-  
+
 <div class="form-block">
 
 
-  
+
   <div class="form-group image no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
 
 
-    
+
       <div class="col-sm-offset-2 col-sm-8 radios">
 
       <a class="btn btn-alert pull-right mt20" href="{{route('candidate-logout')}}">LogOut</a>
 
-        <h3 class="page-title text-center">RECRUITMENT EXAM MANAGEMENT SYSTEM</h3>
-      
+        <h3 class="page-title text-center">RECRUITMENT EXAM MANAGEMENT SYSTEM V2</h3>
+
           <a href="{{route('typing-exams')}}" type="submit" class="btn start-button">Start Typing Exam</a>
 
       </div>
@@ -138,9 +138,9 @@ label {
 
 
 
-  
+
   {!! Form::open(['route' => ['submit-typing-exam',$exam_type],'id' => 'jq-validation-form','class' => 'exam-form']) !!}
-  
+
   <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
 
@@ -154,10 +154,10 @@ label {
 
     </div>
   </div>
-  
-  
 
-  
+
+
+
   <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
 
@@ -169,10 +169,10 @@ label {
 
     </div>
   </div>
-  
-  
+
+
 <input type="hidden" name="status" id="status" class="form-control" value="active">
-  
+
 
 <input type="hidden" name="qselection_typing_id" id="qselection_typing_id" class="form-control" value="">
 <input type="hidden" name="accuracy" id="accuracy" class="form-control" value="">
@@ -189,7 +189,7 @@ label {
 
   {!! Form::close() !!}</div>
 
-	
+
 <div id="test_check_box"></div>
 
 
@@ -231,10 +231,10 @@ var answered_text_length = 0;
 var answered_text = '';
 
 // $('#answered_text').on('keypress', function(event) {
-  
-  
+
+
 //   var diff = $('#answered_text').val().split('').length - answered_text_length;
- 
+
 //   console.log(diff);
 
 //   var fff = '';
@@ -285,7 +285,7 @@ if ( (! first_exam_started && ! last_exam_started) || (first_exam_completed && !
 
 if( (first_exam_started && ! first_exam_completed ) || (last_exam_started && ! last_exam_completed) ){
 
-  
+
 $('.typing-exam-submit-button').show();
 
   var typing_exam_time = Cookies.get('typing_exam_time');
@@ -310,9 +310,9 @@ $('.typing-exam-submit-button').show();
     set_clock(typing_exam_default_time*60*1000);
 
   }
-  
-     
-  
+
+
+
 }else{
 
   $('.time').text( typing_exam_default_time + ':' + '00');
@@ -346,7 +346,7 @@ $("#exam_type_bangla").attr('disabled', 'disabled');
 
 
 // $('.exam-form').submit(function(e) {
- 
+
 // e.preventDefault();
 
 
@@ -377,7 +377,7 @@ $("#exam_type_bangla").attr('disabled', 'disabled');
   //   console.log(answer);
 
   //   $(answer).each(function(index, el) {
-      
+
   //     diffString(question[index].join(' '), el.join(' '));
 
   //   });
@@ -391,7 +391,7 @@ $("#exam_type_bangla").attr('disabled', 'disabled');
 
 
   // del = del.length;
- 
+
 
   // if(ins[0] == 0){
   //   ins = 0;
@@ -429,7 +429,7 @@ $("#exam_type_bangla").attr('disabled', 'disabled');
   // }else{
   //   $('#wpm').val(0);
   // }
-  
+
   clearInterval(intervalId);
 
   $('.exam-form')[0].submit();
@@ -445,7 +445,7 @@ function convert_to_minute_second(remainingTime){
 
   var minutes = Math.floor(remainingTime/60);
   var seconds = remainingTime % 60;
-  
+
   if (minutes < 10) {
        minutes = "0" + minutes;
   }
@@ -468,10 +468,10 @@ function set_clock(typing_exam_time){
     var beforeTime = +new  Date();
 
     intervalId = window.setInterval(function() {
-    
+
     var diff = (+new Date() - beforeTime);
-    
-    
+
+
     var remainingTime = x - diff;
 
 
@@ -479,7 +479,7 @@ function set_clock(typing_exam_time){
 
 
 
-    
+
 
     if(diff >= 500) {
 
@@ -501,13 +501,13 @@ function set_clock(typing_exam_time){
       stopinterval(); // stop the interval
 
     }
-       
+
 
   }, 20);
 
 
 
-}                     
+}
 
 
 

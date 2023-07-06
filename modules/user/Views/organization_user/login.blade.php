@@ -7,7 +7,7 @@
 <link rel="icon" type="image/x-icon" href="{{ URL::asset('assets/img/favicon.ico') }}">
 
 <style>
-    
+
 .select2-hidden-accessible {
     top: 0;
     left: 180px;
@@ -35,7 +35,7 @@
             <p>{{ Session::get('danger') }}</p>
         </div>
         @endif
-        
+
         @if(Session::has('message'))
         <div class="alert alert-success">
             <p>{{ Session::get('message') }}</p>
@@ -51,9 +51,9 @@
 
 <div class="text-center m-b-sm">
     <div id="logo-login" class="light-version">
-        <img src="{{URl('/assets/img/logo.png')}}" alt="SOP" class="bgm_logo_img">    
-        
-        <h3>Recruitment Exam Management System</h3>
+        <img src="{{URl('/assets/img/logo.png')}}" alt="SOP" class="bgm_logo_img">
+
+        <h3>Recruitment Exam Management System V2</h3>
 
         <h3>Bangladesh Computer Council</h3>
 
@@ -68,7 +68,7 @@
 
     {!! Form::open(['route' => 'post-organization-user-login','id' => 'jq-validation-form','class' => 'organization-user-form default-form','enctype'=>"multipart/form-data"]) !!}
 
-                 
+
 
         <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
             <div class="row">
@@ -79,7 +79,7 @@
                     @else
                     {!! Form::text('company_id', 'No Product ID available',['id'=>'company_list','class' => 'form-control','required','disabled']) !!}
                     @endif
-                </div>               
+                </div>
             </div>
         </div>
 
@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        
+
 
         <input type="hidden" name="status" id="status" class="form-control" value="active">
 
@@ -159,7 +159,7 @@ $(document).ready(function() {
             $("select").attr('required','required');
 
      }, 1000);
-           
+
     });
 
     setTimeout(function() {
@@ -176,6 +176,6 @@ $(document).ready(function() {
 
 
 });
-    
+
 
 </script>

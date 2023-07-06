@@ -72,11 +72,11 @@
     .start-buttons .start-button {
         padding: 6px 10px;
         font-size: 16px;
-        border-radius: 2px; 
+        border-radius: 2px;
     }
 
     .start-buttons .start-button strong{
-        font-weight: 500; 
+        font-weight: 500;
     }
 
 
@@ -129,10 +129,10 @@
 
 </style>
 
-<?php 
+<?php
 
 $user = Auth::user();
-        
+
 $roll_no = $user->roll_no;
 $username = $user->username;
 
@@ -142,7 +142,7 @@ $username = $user->username;
     <div class="form-group image no-margin-hr panel-padding-h no-padding-t no-border-t">
         <div class="row">
             <div class="col-sm-offset-2 col-sm-8 radios">
-                <h3 class="page-title text-center">RECRUITMENT EXAM MANAGEMENT SYSTEM</h3>
+                <h3 class="page-title text-center">RECRUITMENT EXAM MANAGEMENT SYSTEM V2</h3>
 
             </div>
         </div>
@@ -180,7 +180,7 @@ $username = $user->username;
                 <tr><td><font size="+3"><b>নিম্নলিখিত নির্দেশনাবলী পরীক্ষা শুরু করার পূর্বে পড়ুনঃ</b></font><br></td></tr>
                 <tr style="height: 20px;">&nbsp;</tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ১.    পরীক্ষা শুরুর পূর্বে মোবাইল ফোন বন্ধ রাখুন। </b></td></tr>
-                <!-- <tr style="font-size: 22px!important;"><td><b>&nbsp; ২.    আ্যাপটিচিইট টেষ্টের জন্য সর্বমোট ৩০ (ত্রিশ) মিনিট সময় পাবেন। </b></td></tr>-->                
+                <!-- <tr style="font-size: 22px!important;"><td><b>&nbsp; ২.    আ্যাপটিচিইট টেষ্টের জন্য সর্বমোট ৩০ (ত্রিশ) মিনিট সময় পাবেন। </b></td></tr>-->
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ২.    পরীক্ষা শুরু হলে আপনি মনিটরের উপরে “Time Count-Down” দেখতে পারবেন। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৩.    প্রতিটি প্রশ্নপত্রে আলাদা ক্লিক করে ডাউনলোড করুন এবং প্রশ্নপত্র আপনার নামে “Download” ফোল্ডারে “Automatically Save” হবে। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    এরপর আপনি “Download” ফোল্ডার অথবা “নিচের স্কীনে ক্লিক করে” আপনার নির্ধারিত ফাইলগুলো “Open” করে উক্ত ফাইলে উত্তর লিখতে শুরু করুন। </b></td></tr>

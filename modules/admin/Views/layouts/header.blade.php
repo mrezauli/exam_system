@@ -3,8 +3,8 @@
 </div>
 <!--logo start-->
 
-<a href="{{ URL::route('dashboard') }}" class="logo">Recruitment Exam Management System</a>
- 
+<a href="{{ URL::route('dashboard') }}" class="logo">Recruitment Exam Management System V2</a>
+
 <!--logo end-->
 <div class="nav notify-row" id="top_menu">
     <!--  notification start -->

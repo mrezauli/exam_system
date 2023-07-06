@@ -223,7 +223,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
       <div class="radios">
 
-          <span>Roll No: {{$roll_no}}</span><h3 class="page-title text-center">RECRUITMENT EXAM MANAGEMENT SYSTEM</h3>
+          <span>Roll No: {{$roll_no}}</span><h3 class="page-title text-center">RECRUITMENT EXAM MANAGEMENT SYSTEM V2</h3>
           <span>Name: {{$username}}</span>
           <div class="time text-center time-block pull-right"></div>
 
@@ -234,7 +234,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
       <div class="radios" style="display:block;">
 
-          <h3 class="page-title text-center" style="margin-left:0;">RECRUITMENT EXAM MANAGEMENT SYSTEM</h3>
+          <h3 class="page-title text-center" style="margin-left:0;">RECRUITMENT EXAM MANAGEMENT SYSTEM V2</h3>
 
       </div>
 

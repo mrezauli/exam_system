@@ -187,9 +187,9 @@ a.btn.btn-primary.btn-sm.start-button {
 }*/
 
 </style>
-  
+
   {{-- {{$first_exam_type}} --}}
-  
+
 <div class="form-block">
 
 @if($errors->any())
@@ -204,10 +204,10 @@ a.btn.btn-primary.btn-sm.start-button {
         <p>{{ Session::get('danger') }}</p>
     </div>
 @endif
-  
+
   <div class="form-group image no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
-    
+
     <?php
 
     if($exam_type == 'bangla'){
@@ -221,34 +221,34 @@ a.btn.btn-primary.btn-sm.start-button {
     }
 
     ?>
-    
-      
+
+
 
       @if( ($first_exam_started && ! $first_exam_completed ) || ($last_exam_started && ! $last_exam_completed) )
 
       <div class="radios">
 
-          <span>Roll No: {{$roll_no}}</span><h3 class="page-title text-center">RECRUITMENT EXAM MANAGEMENT SYSTEM</h3>
+          <span>Roll No: {{$roll_no}}</span><h3 class="page-title text-center">RECRUITMENT EXAM MANAGEMENT SYSTEM V2</h3>
           <span>Name: {{$username}}</span>
           <div class="time text-center time-block pull-right"></div>
 
       </div>
 
-      
+
       @else
 
       <div class="radios" style="display:block;">
 
-          <h3 class="page-title text-center" style="margin-left:0;">RECRUITMENT EXAM MANAGEMENT SYSTEM</h3>
+          <h3 class="page-title text-center" style="margin-left:0;">RECRUITMENT EXAM MANAGEMENT SYSTEM V2</h3>
 
       </div>
 
       @endif
 
-      
 
-    
-      
+
+
+
 
     </div>
   </div>
@@ -260,7 +260,7 @@ a.btn.btn-primary.btn-sm.start-button {
 <div class="question-answer-block">
 
   {!! Form::open(['route' => ['submit-typing-exam',$exam_type],'id' => 'jq-validation-form','class' => 'exam-form']) !!}
-  
+
   <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
 
@@ -273,7 +273,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
     </div>
   </div>
-  
+
 
   <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
@@ -295,10 +295,10 @@ a.btn.btn-primary.btn-sm.start-button {
 
     </div>
   </div>
-  
-  
+
+
 <input type="hidden" name="status" id="status" class="form-control" value="active">
-  
+
 
 <input type="hidden" name="qselection_typing_id" id="qselection_typing_id" class="form-control" value="">
 <input type="hidden" name="accuracy" id="accuracy" class="form-control" value="">
@@ -340,7 +340,7 @@ a.btn.btn-primary.btn-sm.start-button {
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৩.    টাইপিং টেষ্ট শুরু হলে আপনার মনিটরের ডানপার্শ্বে “Time Count-Down” দেখতে পারবেন। </b></td></tr>
                 {{--<tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    ইংরেজী টাইপিং এর জন্য পূনরায় “Ctrl+Alt+U” দিয়ে ইংরেজী কিবোর্ড নির্বাচন করুন। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৫.    বাংলা অথবা ইংরেজী যে কোন ০১(একটি) বাটনে “ক্লিক” করে টাইপিং শুরু করুন। </b></td></tr>--}}
-                <tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    নির্ধারিত বক্স নির্বাচন করে ইংরেজী টাইপিং শুরু করুন। ইংরেজী টাইপিং সমাপ্ত হলে “Submit” 
+                <tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    নির্ধারিত বক্স নির্বাচন করে ইংরেজী টাইপিং শুরু করুন। ইংরেজী টাইপিং সমাপ্ত হলে “Submit”
   বাটনে ক্লিক করুন। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৫.    এরপর বাংলা টাইপিং এর জন্য “Ctrl+Alt+V” দিয়ে কিবোর্ড নির্বাচন করুন। নির্ধারিত বক্স বাংলা
   টাইপিং শুরু করুন। </b></td></tr>
@@ -358,7 +358,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
 <div class='text-center start-buttons'>
   {{-- <a href="{{route('start-typing-exam','bangla')}}" type="submit" class="btn btn-primary btn-sm start-button">Start Bangla</a> --}}
-  
+
   <a href="{{route('start-typing-exam','english')}}" type="submit" class="btn btn-primary btn-sm start-button">Start English</a>
 
   <div class="clearfix"></div>
@@ -385,7 +385,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
 @endif
 </div>
-	
+
 <div id="test_check_box"></div>
 
 
@@ -403,7 +403,7 @@ a.btn.btn-primary.btn-sm.start-button {
                 <div class="form-margin-btn text-right">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
-                                        
+
             </div> <!-- / .modal-body -->
         </div> <!-- / .modal-content -->
     </div> <!-- / .modal-dialog -->
@@ -432,7 +432,7 @@ $(document).ready(function() {
 $("form").submit(function(e) {
 
     $(this).submit(function() {
-      
+
         return false;
     });
 
@@ -472,10 +472,10 @@ var answered_text_length = 0;
 var answered_text = '';
 
 // $('#answered_text').on('keypress', function(event) {
-  
-  
+
+
 //   var diff = $('#answered_text').val().split('').length - answered_text_length;
- 
+
 //   console.log(diff);
 
 //   var fff = '';
@@ -523,7 +523,7 @@ if ( (! first_exam_started && ! last_exam_started) || (first_exam_completed && !
 
 if( (first_exam_started && ! first_exam_completed ) || (last_exam_started && ! last_exam_completed) ){
 
-  
+
 $('.typing-exam-submit-button').show();
 
   var typing_exam_time = Cookies.get('typing_exam_time');
@@ -566,10 +566,10 @@ if (typing_exam_time <= 0) {
     });
 
     $('#answered_text').attr('readonly', 'readonly');
-    
+
 }
 
-  
+
 }else{
 
   $('.time').text( typing_exam_default_time + ':' + '00');
@@ -603,7 +603,7 @@ $("#exam_type_bangla").attr('disabled', 'disabled');
 
 
 // $('.exam-form').submit(function(e) {
- 
+
 // e.preventDefault();
 
 
@@ -634,7 +634,7 @@ $("#exam_type_bangla").attr('disabled', 'disabled');
   //   console.log(answer);
 
   //   $(answer).each(function(index, el) {
-      
+
   //     diffString(question[index].join(' '), el.join(' '));
 
   //   });
@@ -648,7 +648,7 @@ $("#exam_type_bangla").attr('disabled', 'disabled');
 
 
   // del = del.length;
- 
+
 
   // if(ins[0] == 0){
   //   ins = 0;
@@ -686,7 +686,7 @@ $("#exam_type_bangla").attr('disabled', 'disabled');
   // }else{
   //   $('#wpm').val(0);
   // }
-  
+
   clearInterval(intervalId);
 
   // $('.exam-form')[0].submit();
@@ -742,7 +742,7 @@ function convert_to_minute_second(remainingTime){
 
   var minutes = Math.floor(remainingTime/60);
   var seconds = remainingTime % 60;
-  
+
   if (minutes < 10) {
        minutes = "0" + minutes;
   }
@@ -765,9 +765,9 @@ function set_clock(typing_exam_time){
     var beforeTime = +new  Date();
 
     intervalId = window.setInterval(function() {
-    
+
     var diff = (+new Date() - beforeTime);
-    
+
     var remainingTime = x - diff;
 
     remainingTime = Math.ceil(remainingTime / 1000);

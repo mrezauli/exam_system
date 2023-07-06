@@ -37,7 +37,7 @@ class TypingTestReportController extends Controller
         $bangla_speed = $english_speed = $passed_count = $failed_count = $expelled_count = $cancelled_count = $total_count = '';
 
 
-        
+
         $status = 1;
 
         $header = $passed_count = $failed_count = '';
@@ -57,13 +57,13 @@ class TypingTestReportController extends Controller
 
     }
 
- 
+
 
 
     public function generate_typing_test_report(Request $request){
 
         $job = new NewLineCountRemoveJob();
-        dispatch($job);
+        //dispatch($job);
 
         $page_title = 'Typing Test Report';
 
@@ -88,8 +88,8 @@ class TypingTestReportController extends Controller
             }
             //dd($exam_date_to);
         }
-        
-        
+
+
 
         $validator = Validator::make($request->all(), [
             'bangla_speed' => 'required|integer',
@@ -125,7 +125,7 @@ class TypingTestReportController extends Controller
 
         $model = DB::table( 'user AS u' )
          ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','u.id as user_id','u.typing_status','e.company_id','e.designation_id','e.exam_code_name','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
-         ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')         
+         ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')
         ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
         ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
         ->orderBy('u.id');
@@ -135,7 +135,7 @@ class TypingTestReportController extends Controller
 
             $model = $model->where('e.exam_code_name','=',$exam_code);
             $header = $header->where('e.exam_code_name','=',$exam_code);
-            
+
         }else{
 
             if(isset($company_id) && !empty($company_id)){
@@ -174,7 +174,7 @@ class TypingTestReportController extends Controller
 
         }
 
-        
+
         $model_collection = collect($model->get());
 
         $exam_dates = $model_collection->groupBy('exam_date')->keys()->map(function ($values, $key) {
@@ -188,7 +188,7 @@ class TypingTestReportController extends Controller
 
 
         $header = $header->first();
-                         
+
         $model = collect($model->get())->groupBy('user_id');
 
 
@@ -203,7 +203,7 @@ class TypingTestReportController extends Controller
            }
 
        }
-        
+
 
         unset($model['']);
 
@@ -211,15 +211,15 @@ class TypingTestReportController extends Controller
 
 
         function round_to_integer($number){
-           
+
            if (is_integer($number)) {
 
                return $number;
 
            }
-            
+
            $parts = explode(".",$number);
-        
+
            if (isset($parts[1]) && (int)$parts[1] >= 5) {
 
                return $parts[0] + 1;
@@ -233,23 +233,23 @@ class TypingTestReportController extends Controller
         }
 
 
-        
+
         $ddd = [];
-        
+
         $model->each(function ($values, $key)use($bangla_speed,$english_speed,&$ddd) {
-           
-        
+
+
             $values = collect($values);
             $null_object = StdClass::fromArray();
-            
-           
+
+
 
             $grouped_by_exam_type = $values->groupBy('exam_type');
-            
+
             $bangla = $grouped_by_exam_type->get('bangla',[$null_object])[0];
 
             $english = $grouped_by_exam_type->get('english',[$null_object])[0];
-            
+
 
             $bangla_time = isset($bangla->exam_time) && $bangla->exam_time > 10 ? $bangla->exam_time - 1: 1;
 
@@ -265,13 +265,13 @@ class TypingTestReportController extends Controller
 
             $bangla_wpm = round($bangla_corrected_words/$bangla_time,1);
 
-            $bangla_wpm = round_to_integer($bangla_wpm);            
+            $bangla_wpm = round_to_integer($bangla_wpm);
 
             $english_corrected_words = $english->typed_words - $english->inserted_words;
 
             $english_wpm = round($english_corrected_words/$english_time,1);
 
-            $english_wpm = round_to_integer($english_wpm);            
+            $english_wpm = round_to_integer($english_wpm);
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
 
@@ -290,13 +290,13 @@ class TypingTestReportController extends Controller
             }else{
 
                 $values->R = 'Fail';
-                
+
             }
 
             $ddd[$key] = $values;
 
-            
-        });   
+
+        });
 
 
         $model = collect($ddd);
@@ -308,7 +308,7 @@ class TypingTestReportController extends Controller
           $comparer = function ($first, $second) use ($criteria) {
 
             foreach ($criteria as $key => $orderType) {
-                
+
         // normalize sort direction
 
               $orderType = strtolower($orderType);
@@ -335,7 +335,7 @@ class TypingTestReportController extends Controller
 
 
         $passed = $model->filter(function ($value) {
-            
+
             return $value->R == "Pass";
         });
 
@@ -359,7 +359,7 @@ class TypingTestReportController extends Controller
             return $value['0']->typing_status == "cancelled";
         });
 
-    
+
         $passed_count = $model->filter(function ($value) {
 
             if ($value->R == "Fail" && in_array($value['0']->typing_status, ['expelled','cancelled'])) {
@@ -374,7 +374,7 @@ class TypingTestReportController extends Controller
 
                 return $value->R == "Pass";
             }
-        
+
 
         })->count();
 
@@ -394,7 +394,7 @@ class TypingTestReportController extends Controller
 
                 return $value->R == "Fail";
             }
-        
+
 
         })->count();
 
@@ -423,13 +423,13 @@ class TypingTestReportController extends Controller
 
         $model_all = $model;
 
-        
+
         // dd($model);
-        
+
         $page = Input::get('page', 1);
 
 
-        $perPage = 1000; 
+        $perPage = 1000;
         $offset = ($page * $perPage) - $perPage;
 
 
@@ -449,14 +449,14 @@ class TypingTestReportController extends Controller
                         ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id')
                         ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id');
 
-                        
+
 
             $model = DB::table( 'user AS u' )
                      ->select('u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.typing_status', 't.id AS exam_id','t.user_id','u.company_id','u.designation_id','u.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
                     ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
                     ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
                     ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
-                    ->orderBy('u.id'); 
+                    ->orderBy('u.id');
 
 
 
@@ -497,7 +497,7 @@ class TypingTestReportController extends Controller
 
             $model = collect($model->get())->groupBy('user_id');
 
-            
+
             if (isset($model[''])) {
 
                 foreach ($model[''] as $value) {
@@ -526,7 +526,7 @@ class TypingTestReportController extends Controller
 
     <style>
 
-    th span{    
+    th span{
         font-family: Arial, Helvetica, sans-serif;
         text-align: center;
         line-height: 100vh;
@@ -557,7 +557,7 @@ class TypingTestReportController extends Controller
     .tbl1 thead tr th:empty{
         border-right:none !important;
         border-top:none !important;
-    }   
+    }
 
     .tbl1 thead:first-child tr,.tbl1 thead tr th.no-border{
         border-bottom:0 !important;
@@ -569,7 +569,7 @@ class TypingTestReportController extends Controller
         top:18px;
         left:auto;
         right:auto;
-   
+
     }
 
     .report_img{
@@ -592,14 +592,14 @@ class TypingTestReportController extends Controller
         padding: 7px 5px;
         font-weight: 500;
         color: #000;
-        text-align: center !important;     
+        text-align: center !important;
     }
 
     .tbl1 tbody td{
         padding: 5px 3px;
         font-weight: 500;
         color: #000;
-        text-align: center !important;    
+        text-align: center !important;
     }
 
     .table-name{
@@ -630,7 +630,7 @@ class TypingTestReportController extends Controller
         margin-left: auto;
         margin-right: auto;
       }
- 
+
 
     </style>
     </head>
@@ -666,7 +666,7 @@ class TypingTestReportController extends Controller
                             </tr>
                         </thead>
                         <tbody>
-                                <tr class="gradeX">  
+                                <tr class="gradeX">
                                     <td class="table-name">Characters (with space)</td>
                                     <td class="table-name">Total Words</td>
                                     <td class="table-name">Wrong Words</td>
@@ -694,8 +694,8 @@ class TypingTestReportController extends Controller
                     <th rowspan="2" class="no-border"> <span>AM</span> </th>
                     <th rowspan="2" class="no-border"> <span>Remarks</span> </th>
                 </tr>
-               
-        
+
+
                 <tr>
                     <th></th>
                     <th></th>
@@ -707,7 +707,7 @@ class TypingTestReportController extends Controller
                     <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
                     <th>T</th>
                     <th>M</th>
-        
+
                     <th>CWS</th>
                     <th>TW</th>
                     <th>WW</th>
@@ -727,12 +727,12 @@ class TypingTestReportController extends Controller
                     $total = 0;
                     foreach($model as $values)
                     {
-                        $i++; 
+                        $i++;
 
                         $values = collect($values);
-                        
+
                         $grouped_by_exam_type = $values->groupBy('exam_type');
-                
+
                         $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
                         $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
 
@@ -753,8 +753,8 @@ class TypingTestReportController extends Controller
                         $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
                         $english_round_marks = round((20/25)* $english_wpm);
                         $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
-    
-                        $average = round(($bangla_marks + $english_marks) / 2);                      
+
+                        $average = round(($bangla_marks + $english_marks) / 2);
                         $total++;
                         if(! $values->lists('attended_typing_test')->contains('true')){
                             $remark = 'Absent';
@@ -766,11 +766,11 @@ class TypingTestReportController extends Controller
                             $remark = 'Pass'; $passed++;
                         }else{
                             $remark = 'Fail'; $failed++;
-                        }                        
+                        }
 
                         $html = $html . "
                         <tr class='gradeX'>
-                                                   
+
                             <td>" . $i . "</td>
                             <td>" . $values[0]->roll_no . "</td>
                             <td class='table-name'>" . $values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name . "</td>
@@ -790,7 +790,7 @@ class TypingTestReportController extends Controller
                             <td>" . $english_tolerance . "</td>
                             <td>" . $english_marks . "</td>
                             <td>" . $average . "</td>
-                            <td style='text-align: left !important;'>" . $remark . "</td>                           
+                            <td style='text-align: left !important;'>" . $remark . "</td>
                         </tr>";
                    }
 
@@ -819,7 +819,7 @@ class TypingTestReportController extends Controller
                     </body>
                     </html>
                 ';
-            
+
 
                 $dompdf = new Dompdf();
                 $dompdf->loadHtml($html);
@@ -845,14 +845,14 @@ class TypingTestReportController extends Controller
                         ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id')
                         ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id');
 
-                        
+
 
             $model = DB::table( 'user AS u' )
                      ->select('u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.typing_status', 't.id AS exam_id','t.user_id','u.company_id','u.designation_id','u.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
                     ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
                     ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
                     ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
-                    ->orderBy('u.id'); 
+                    ->orderBy('u.id');
 
 
 
@@ -893,7 +893,7 @@ class TypingTestReportController extends Controller
 
             $model = collect($model->get())->groupBy('user_id');
 
-            
+
             if (isset($model[''])) {
 
                 foreach ($model[''] as $value) {
@@ -952,7 +952,7 @@ class TypingTestReportController extends Controller
     .tbl1 thead tr th:empty{
         border-right:none !important;
         border-top:none !important;
-    }   
+    }
 
     .tbl1 thead:first-child tr,.tbl1 thead tr th.no-border{
         border-bottom:0 !important;
@@ -964,7 +964,7 @@ class TypingTestReportController extends Controller
         top:18px;
         left:auto;
         right:auto;
-   
+
     }
 
     .report_img{
@@ -987,14 +987,14 @@ class TypingTestReportController extends Controller
         padding: 7px 5px;
         font-weight: 500;
         color: #000;
-        text-align: center !important;     
+        text-align: center !important;
     }
 
     .tbl1 tbody td{
         padding: 5px 3px;
         font-weight: 500;
         color: #000;
-        text-align: center !important;    
+        text-align: center !important;
     }
 
     .table-name{
@@ -1020,7 +1020,7 @@ class TypingTestReportController extends Controller
     .header-section{
         margin-bottom: 20px;
     }
- 
+
 
     </style>';
 
@@ -1053,7 +1053,7 @@ class TypingTestReportController extends Controller
                     </tr>
                 </thead>
                 <tbody>
-                        <tr class="gradeX">  
+                        <tr class="gradeX">
                             <td class="table-name">Characters (with space)</td>
                             <td class="table-name">Total Words</td>
                             <td class="table-name">Wrong Words</td>
@@ -1079,8 +1079,8 @@ class TypingTestReportController extends Controller
                     <th rowspan="2" class="no-border"> <span>AM</span> </th>
                     <th rowspan="2" class="no-border"> <span>Remarks</span> </th>
                 </tr>
-               
-        
+
+
                 <tr>
                     <th></th>
                     <th></th>
@@ -1092,7 +1092,7 @@ class TypingTestReportController extends Controller
                     <th style="border-right: 1.7px solid #8189fd !important">SPM</th>
                     <th>T</th>
                     <th>M</th>
-        
+
                     <th>CWS</th>
                     <th>TW</th>
                     <th>WW</th>
@@ -1112,12 +1112,12 @@ class TypingTestReportController extends Controller
                     $total = 0;
                     foreach($model as $values)
                     {
-                        $i++; 
+                        $i++;
 
                         $values = collect($values);
-                        
+
                         $grouped_by_exam_type = $values->groupBy('exam_type');
-                
+
                         $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
                         $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
 
@@ -1138,13 +1138,13 @@ class TypingTestReportController extends Controller
                         $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
                         $english_round_marks = round((20/25)* $english_wpm);
                         $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
-    
-                        $average = round(($bangla_marks + $english_marks) / 2);                      
-                        $total++;                        
+
+                        $average = round(($bangla_marks + $english_marks) / 2);
+                        $total++;
 
                         $html = $html . "
                         <tr class='gradeX'>
-                                                   
+
                             <td>" . $i . "</td>
                             <td>" . $values[0]->roll_no . "</td>
                             <td class='table-name'>" . $values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name . "</td>
@@ -1163,8 +1163,8 @@ class TypingTestReportController extends Controller
                             <td>" . $english_wpm . "</td>
                             <td>" . $english_tolerance . "</td>
                             <td>" . $english_marks . "</td>
-                            <td>" . $average . "</td>                        
-                            <td> </td>                        
+                            <td>" . $average . "</td>
+                            <td> </td>
                         </tr>";
                    }
 
@@ -1172,7 +1172,7 @@ class TypingTestReportController extends Controller
                 $html = $html.'</tbody></table>
                     <footer style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
                 ';
-            
+
 
                 $dompdf = new Dompdf();
                 $dompdf->loadHtml($html);
@@ -1201,7 +1201,7 @@ class TypingTestReportController extends Controller
 
             // dd($bangla);
 
-            $user_id = empty($bangla->user_id) ? $english->user_id : $bangla->user_id; 
+            $user_id = empty($bangla->user_id) ? $english->user_id : $bangla->user_id;
 
 
             $user = User::with('relCompany','relDesignation')->find($user_id);
@@ -1215,7 +1215,7 @@ class TypingTestReportController extends Controller
 
 
             // $values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name
-            $data = User::with('typing_test_result','typing_exam_code')->where('id',$id)->first(); 
+            $data = User::with('typing_test_result','typing_exam_code')->where('id',$id)->first();
 
 
 
@@ -1252,7 +1252,7 @@ class TypingTestReportController extends Controller
 
 
 
-            // $user_id = empty($bangla_text->user_id) ? $english_text->user_id : $bangla_text->user_id; 
+            // $user_id = empty($bangla_text->user_id) ? $english_text->user_id : $bangla_text->user_id;
 
 
             // $user = User::with('relCompany','relDesignation')->find($user_id);
@@ -1273,46 +1273,46 @@ class TypingTestReportController extends Controller
 
 
             $bangla_input = $bangla->keys()->map(function ($item, $key) {
-            
+
                return str_replace("bangla_","",$item);
-               
+
            })->all();
 
-            
 
-            $bangla_input = array_combine($bangla_input,$bangla->all());    
+
+            $bangla_input = array_combine($bangla_input,$bangla->all());
 
             $bangla_data['typed_words'] = $bangla_input['typed_words'];
 
             $bangla_data['inserted_words'] = $bangla_input['typed_words'] - $bangla_input['corrected_words'];
 
-            
+
 
 
 
 
             $english_input = $english->keys()->map(function ($item, $key) {
-            
+
                return str_replace("english_","",$item);
-               
+
            })->all();
 
 
 
-            
-            $english_input = array_combine($english_input,$english->all());    
+
+            $english_input = array_combine($english_input,$english->all());
 
             $english_data['typed_words'] = $english_input['typed_words'];
 
             $english_data['inserted_words'] = $english_input['typed_words'] - $english_input['corrected_words'];
-            
+
 
 
             $bangla_exam_id = $request->only('bangla_exam_id');
 
             $english_exam_id = $request->only('english_exam_id');
 
-           
+
 
             $bangla_model = Examination::where('id',$bangla_exam_id)->first();
 
@@ -1359,8 +1359,8 @@ class TypingTestReportController extends Controller
             $bangla = Examination::findOrNew($bangla_exam_id);
             $english = Examination::findOrNew($english_exam_id);
 
-            $user_id = empty($bangla->user_id) ? $english->user_id : $bangla->user_id; 
-            
+            $user_id = empty($bangla->user_id) ? $english->user_id : $bangla->user_id;
+
 
             $user = User::with('relCompany','relDesignation')->find($user_id);
 
@@ -1375,7 +1375,7 @@ class TypingTestReportController extends Controller
 
             $page_title= 'All Graph Report';
 
-            
+
             $exam_code = Input::get('exam_code');
             $company_id = Input::get('company_id');
             $designation_id = Input::get('designation_id');
@@ -1391,7 +1391,7 @@ class TypingTestReportController extends Controller
                         ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
                         ->leftJoin( 'company as c', 'q.company_id', '=', 'c.id')
                         ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id');
-                        
+
 
 
             $model = DB::table( 'user AS u' )
@@ -1399,7 +1399,7 @@ class TypingTestReportController extends Controller
                     ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
                     ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
                     ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
-                    ->orderBy('u.roll_no'); 
+                    ->orderBy('u.roll_no');
 
 
         if ($exam_code != ''){
@@ -1450,16 +1450,16 @@ class TypingTestReportController extends Controller
 
                 // $values = collect($values);
                 $null_object = StdClass::fromArray();
-                
+
 
                 $grouped_by_exam_type = $values->groupBy('exam_type');
-                
+
                 $bangla = $grouped_by_exam_type->get('bangla',[$null_object])[0];
 
                 $english = $grouped_by_exam_type->get('english',[$null_object])[0];
-                
 
-                
+
+
                 $exam_time = isset($bangla->exam_time) ? $bangla->exam_time: 1;
                 $bangla_exam_time = $bangla_speed;
 
@@ -1494,12 +1494,12 @@ class TypingTestReportController extends Controller
                 }else{
 
                     $values->R = 'Fail';
-                    
+
                 }
 
                 // dd($values);
 
-            });   
+            });
 
 
             $passed = $model->filter(function ($value) {
@@ -1525,7 +1525,7 @@ class TypingTestReportController extends Controller
         $comparer = function ($first, $second) use ($criteria) {
 
             foreach ($criteria as $key => $orderType) {
-                
+
         // normalize sort direction
 
               $orderType = strtolower($orderType);
@@ -1564,7 +1564,7 @@ class TypingTestReportController extends Controller
             $absent = $absent->sort($comparer);
 
 
-        
+
             // $model = $passed->merge($failed);
             'C:\laragon\www\exam_system\modules\exam\Views\typing_exam\bnTypingExam.blade.php';
             'C:\laragon\www\exam_system\modules\exam\Views\typing_exam\bnTypingExamPreview.blade.php';
@@ -1581,7 +1581,7 @@ class TypingTestReportController extends Controller
             'C:\laragon\www\exam_system\modules\reports\Views\short_typing_test_report\index.blade.php';
             'C:\laragon\www\exam_system\modules\reports\Views\typing_test_report\index.blade.php';
             'C:\laragon\www\exam_system\modules\reports\Controllers\TypingTestReportController.php';
-            
+
 
             return view('reports::typing_test_report.all_graph_report', compact('page_title','model','user'));
 

@@ -34,8 +34,8 @@ class NewLineCountRemoveJob extends Job implements SelfHandling
         $examinations = Examination::where('id', 351)->get();
         // Perform the bulk update
         $examinations->each(function ($examination) {
-            dd(mb_strlen($examination->answered_text, 'UTF-8'));
-            dd($this->countStringWithoutNewlineTab($examination->answered_text));
+            //dd(mb_strlen($examination->answered_text, 'UTF-8'));
+            //dd($this->countStringWithoutNewlineTab($examination->answered_text));
             $examination->total_words = $this->countStringWithoutNewlineTab($examination->original_text);
             $examination->typed_words = $this->countStringWithoutNewlineTab($examination->answered_text);
             // Set other attributes as needed

@@ -431,10 +431,13 @@ a.btn.btn-primary.btn-sm.start-button {
               correctedCharacters = null,
               wrongCharacters = null;
 
-              const diffCharacters = Diff.diffChars(question, answer);
-              diffCharacters.forEach((part) => {
+              const diffWords = Diff.diffWords(question, answer);
+              diffWords.forEach((part) => {
+                //console.log(part);
                   if ((part.added === undefined) && (part.removed === undefined)) {
-                      correctedCharacters += part.count;
+                    //console.log(part);
+                    //console.log(part.value.length);
+                    correctedCharacters += part.value.length;
                   }
               });
               wrongCharacters = typedCharacters - correctedCharacters;

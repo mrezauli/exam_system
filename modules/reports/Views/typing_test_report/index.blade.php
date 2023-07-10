@@ -228,6 +228,7 @@ form .col-sm-12:last-child{
                     <table width="100%" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered report-table" id="examples_report">
                         <thead>
                         <tr>
+
                             <th class="no-border"> <span>SL.</span> </th>
                             <th class="no-border"> <span>Candidate SL.</span> </th>
                             <th class="no-border"> <span>Roll No.</span> </th>
@@ -1239,7 +1240,7 @@ var table = $('#examples_report').DataTable( {
   "language": {
     "search": "Search:"
   },
-  "aaSorting": [],
+  "aaSorting": [[1, 'asc']],
   "pageLength": 50,
 });
 

@@ -1208,7 +1208,7 @@ function report_exam_code(){
 
 
         $('.print-button').click(function(event) {
-            w=window.open('', '_top');
+            w=window.open('', '_blank');
             w.document.write(document.getElementsByClassName('print-report-table-wrapper')[0].outerHTML);
             w.print();
             w.close();
@@ -1216,7 +1216,7 @@ function report_exam_code(){
 
 
         $('.print-button-wr').click(function(event) {
-            w=window.open('', '_top');
+            w=window.open('', '_blank');
             w.document.write(document.getElementsByClassName('print-report-table-wr-wrapper')[0].outerHTML);
             w.print();
             w.close();

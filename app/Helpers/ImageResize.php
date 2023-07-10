@@ -17,7 +17,7 @@ class ImageResize
      */
 
     public static function shift($sft){
-        $shift_array = array('s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5');
+        $shift_array = array('s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5','s6'=>'Shift 6','s7'=>'Shift 7','s8'=>'Shift 8');
         foreach($shift_array as $str => $val){
             if($str == $sft)return $val;
         }

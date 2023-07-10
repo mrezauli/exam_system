@@ -36,7 +36,7 @@
 
             <div class="panel-body">
                 <div class="adv-table">
-                   
+
                     <p> &nbsp;</p>
                     <p> &nbsp;</p>
                     {{-------------- Filter :Ends ----------------------------------------- --}}
@@ -54,7 +54,7 @@
                         @else
                         {!! Form::text('exam_code_id', 'No Product ID available',['id'=>'company_list','class' => 'form-control','required','disabled']) !!}
                         @endif
-                    </div>  
+                    </div>
 
                     <div class="col-sm-2">
                     {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
@@ -89,14 +89,14 @@
                     <div class="col-sm-2">
                         {!! Form::label('shift', 'Shift:', ['class' => 'control-label']) !!}
                          <small class="required">*</small>
-                        {!! Form::select('shift', array(''=>'Select a shift','s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5'),Input::get('shift')? Input::get('shift') : null,['class' => 'form-control','title'=>'select a shift','required']) !!}
+                        {!! Form::select('shift', array(''=>'Select a shift','s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5','s6'=>'Shift 6','s7'=>'Shift 7','s8'=>'Shift 8'),Input::get('shift')? Input::get('shift') : null,['class' => 'form-control','title'=>'select a shift','required']) !!}
                     </div>
 
                     <div class="col-sm-2">
                       {!! Form::submit('Save', ['class' => 'btn btn-primary selection-button','data-placement'=>'top','data-content'=>'click save changes button for save Typing Text']) !!}
                     </div>
 
-                    
+
 
                 </div>
             </div>
@@ -105,22 +105,22 @@
 
                     <table class="display table table-bordered table-striped typing-select-table" id="example">
                         <thead>
-                        <tr> 
+                        <tr>
                             <th> Select Question </th>
                             <th> Question Set Title </th>
                             <th> Action </th>
                         </tr>
                         </thead>
- 
-    
+
+
                         <tfoot class="search-section">
-                        <tr> 
+                        <tr>
                             <th> Select Question </th>
                             <th> Question Set Title </th>
                             <th> Action </th>
                         </tr>
                         </tfoot>
-                        <tbody> 
+                        <tbody>
 
                         @if(isset($data))
                             @foreach($data as $values)
@@ -170,10 +170,10 @@
 
 
 <script>
-    
+
 
 $('select, #exam_date').not('#exam_code_list, #exam_type').prop('disabled', true);
-                    
+
 $('form').on('submit', function() {
     $('select, #exam_date').prop('disabled', false);
 });
@@ -181,7 +181,7 @@ $('form').on('submit', function() {
 
 
 $('.datepicker').each(function(index, el) {
-    
+
  $(el).datepicker({
      format: 'yyyy-mm-dd'
  });
@@ -194,7 +194,7 @@ create_dropdown_column(column_index);
 
 
 $('body').on('change','.radio',function(event) {
-    
+
     var question_id = $(this).val();
 
     $('#checked_id').val(question_id);

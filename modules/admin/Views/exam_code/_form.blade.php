@@ -10,7 +10,7 @@
 <style>
 
     form{
-        max-width: 800px;  
+        max-width: 800px;
         margin: 0 auto;
     }
 
@@ -99,7 +99,7 @@
                             <div class="col-sm-6">
                                 {!! Form::label('shift', 'Shift:', ['class' => 'control-label']) !!}
                                 <small class="required">*</small>
-                                {!! Form::select('shift', array(''=>'Select a shift','s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5'),Input::get('shift')? Input::get('shift') : null,['class' => 'form-control','title'=>'select a shift','required']) !!}
+                                {!! Form::select('shift', array(''=>'Select a shift','s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5','s6'=>'Shift 6','s7'=>'Shift 7','s8'=>'Shift 8'),Input::get('shift')? Input::get('shift') : null,['class' => 'form-control','title'=>'select a shift','required']) !!}
                             </div>
 
                         </div>

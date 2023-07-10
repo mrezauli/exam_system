@@ -89,7 +89,7 @@
                                 <div class="col-sm-2">
                                     {!! Form::label('shift', 'Shift:', ['class' => 'control-label']) !!}
                                      <small class="required">*</small>
-                                    {!! Form::select('shift', array(''=>'Select a shift','s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5'),Input::get('shift')? Input::get('shift') : null,['class' => 'form-control','title'=>'select a shift','required']) !!}
+                                    {!! Form::select('shift', array(''=>'Select a shift','s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5','s6'=>'Shift 6','s7'=>'Shift 7','s8'=>'Shift 8'),Input::get('shift')? Input::get('shift') : null,['class' => 'form-control','title'=>'select a shift','required']) !!}
                                 </div>
 
                                 <div class="col-sm-2">
@@ -132,7 +132,7 @@
     <script>
 
         $('select, #exam_date').not('#exam_code_list').prop('disabled', true);
-        
+
         $('form').on('submit', function() {
             $('select, #exam_date').prop('disabled', false);
         });
@@ -148,5 +148,5 @@
         var column_index = ['2'];
         create_dropdown_column(column_index);
     </script>
-    
+
 @stop

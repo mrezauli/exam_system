@@ -36,25 +36,25 @@
 
             <div class="panel-body">
                 <div class="adv-table">
-                   
+
                     <p> &nbsp;</p>
                     <p> &nbsp;</p>
                     {{-------------- Filter :Ends ----------------------------------------- --}}
 
                     {!! Form::model($data, ['method' => 'PATCH', 'route'=> ['update-qselection-typing-test', $data->id], 'class'=>'qselection-typing-test-form', 'novalidate']) !!}
-                    
-    
-                    <?php 
 
-                    $company_id = empty(Input::get('company_id')) ? Input::old('company_id') : Input::get('company_id'); 
 
-                    $designation_id = empty(Input::get('designation_id')) ? Input::old('designation_id') : Input::get('designation_id'); 
+                    <?php
 
-                    $exam_code_id = empty(Input::get('exam_code_id')) ? Input::old('exam_code_id') : Input::get('exam_code_id'); 
+                    $company_id = empty(Input::get('company_id')) ? Input::old('company_id') : Input::get('company_id');
 
-                    $exam_date = empty(Input::get('exam_date')) ? Input::old('exam_date') : Input::get('exam_date'); 
+                    $designation_id = empty(Input::get('designation_id')) ? Input::old('designation_id') : Input::get('designation_id');
 
-                    $exam_type = empty(Input::get('exam_type')) ? Input::old('exam_type') : Input::get('exam_type'); 
+                    $exam_code_id = empty(Input::get('exam_code_id')) ? Input::old('exam_code_id') : Input::get('exam_code_id');
+
+                    $exam_date = empty(Input::get('exam_date')) ? Input::old('exam_date') : Input::get('exam_date');
+
+                    $exam_type = empty(Input::get('exam_type')) ? Input::old('exam_type') : Input::get('exam_type');
 
                     $shift = empty(Input::get('shift')) ? Input::old('shift') : Input::get('shift');
 
@@ -113,7 +113,7 @@
                     <div class="col-sm-2">
                         {!! Form::label('shift', 'Shift:', ['class' => 'control-label']) !!}
                          <small class="required">*</small>
-                        {!! Form::select('shift', array(''=>'Select a shift','s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5'), $shift,['class' => 'form-control','title'=>'select a shift','required']) !!}
+                        {!! Form::select('shift', array(''=>'Select a shift','s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5','s6'=>'Shift 6','s7'=>'Shift 7','s8'=>'Shift 8'), $shift,['class' => 'form-control','title'=>'select a shift','required']) !!}
                     </div>
 
 
@@ -121,7 +121,7 @@
                       {!! Form::submit('Save', ['class' => 'btn btn-primary selection-button','data-placement'=>'top','data-content'=>'click save changes button for save Typing Text']) !!}
                     </div>
 
-                    
+
 
                 </div>
             </div>
@@ -130,30 +130,30 @@
 
                     <table  class="display table table-bordered table-striped typing-select-table" id="example">
                         <thead>
-                        <tr> 
+                        <tr>
                             <th> Select Question </th>
                             <th> Exam Type </th>
                             <th> Question </th>
                             <th> Action </th>
                         </tr>
                         </thead>
- 
+
 
                         <tfoot class="search-section">
-                        <tr> 
+                        <tr>
                             <th> Select Question </th>
                             <th> Exam Type </th>
                             <th> Question </th>
                             <th> Action </th>
                         </tr>
                         </tfoot>
-                        <tbody> 
+                        <tbody>
 
                         @if(isset($questions))
 
                             @foreach($questions as $values)
 
-      
+
                                 <tr class="gradeX">
                                     <td><input type="radio" name="question_id" class="btn radio" {{($values->id == $selected_questions_id)?'checked':''}} data-id="{{$values->id}}" value="{{$values->id}}"></td>
                                     <td>{{ucfirst($values->exam_type)}}</td>
@@ -198,14 +198,14 @@
 
 
 $('select, #exam_date').not('#exam_code_list, #exam_type').prop('disabled', true);
-                    
+
 $('form').on('submit', function() {
     $('select, #exam_date').prop('disabled', false);
 });
 
 
 $('.datepicker').each(function(index, el) {
-    
+
  $(el).datepicker({
      format: 'yyyy-mm-dd'
  });
@@ -249,14 +249,14 @@ $("select#exam_type").change(function() {
 
     }
 
-    
+
 
     var url = '{!! Request::url() !!}';
 
     window.location = url + '?exam_type=' + exam_type + '&company_id=' + organization + '&designation_id=' + position + '&exam_date=' + exam_date + '&shift=' + shift + '&url_question_id=' + url_question_id;
 
     // window.location = $(this).val();
-    
+
 });
 
 
@@ -273,7 +273,7 @@ $("select#exam_type").change(function() {
 // });
 
 $('body').on('change','.radio',function(event) {
-    
+
     var question_id = $(this).val();
 
     $('#checked_id').val(question_id);

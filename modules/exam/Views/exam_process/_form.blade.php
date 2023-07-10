@@ -98,7 +98,7 @@
                                 <div class="col-sm-25">
                                     {!! Form::label('shift', 'Shift:', ['class' => 'control-label']) !!}
                                     <small class="required">*</small>
-                                    {!! Form::select('shift', array(''=>'Select a shift','s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5'),Input::get('shift')? Input::get('shift') : null,['class' => 'form-control','title'=>'select a shift','required']) !!}
+                                    {!! Form::select('shift', array(''=>'Select a shift','s1'=>'Shift 1','s2'=>'Shift 2','s3'=>'Shift 3','s4'=>'Shift 4','s5'=>'Shift 5','s6'=>'Shift 6','s7'=>'Shift 7','s8'=>'Shift 8'),Input::get('shift')? Input::get('shift') : null,['class' => 'form-control','title'=>'select a shift','required']) !!}
                                 </div>
 
                                 <div class="col-sm-25">
@@ -152,7 +152,7 @@
                     <button type="button" class="btn btn-default no-button" data-dismiss="modal">No</button>
                     <button type="button" class="btn btn-primary yes-button" data-dismiss="modal">Yes</button>
                 </div>
-                                        
+
             </div> <!-- / .modal-body -->
         </div> <!-- / .modal-content -->
     </div> <!-- / .modal-dialog -->
@@ -214,8 +214,8 @@ function ajax_get_total_candidate_number(){
       type: 'POST',
       data: $('form').serialize(),
       success: function(data){
-        
-    
+
+
         var data = jQuery.parseJSON(data);
 
         var total_candidate_number = data[0]  != null ? data[0] : '';
@@ -232,7 +232,7 @@ function ajax_get_total_candidate_number(){
         // var sl_from = exam_code[1][0]  != null ? exam_code[1][0].sl : '';
 
         // var sl_to = $(exam_code[1]).get(-1)  != null ? $(exam_code[1]).get(-1).sl : '';
-       
+
 
 
         $('.total_candidate_number').html(total_candidate_number);
@@ -242,7 +242,7 @@ function ajax_get_total_candidate_number(){
         // $('#exam_date').val(exam_date).trigger("change");
 
         // $('#shift').val(shift).trigger("change");
-        
+
         // $('#exam_type option:last-child').val() == 'aptitude_test' ?  $('#exam_type').val(exam_type).trigger("change") : '';
 
         // $('#sl_from').val(sl_from);
@@ -251,7 +251,7 @@ function ajax_get_total_candidate_number(){
 
         // $("#addData .add").html(sl_to);c x
 
-        
+
       }
 
 
@@ -268,11 +268,11 @@ function ajax_get_exam_process_code(){
       type: 'POST',
       data: $('form').serialize(),
       success: function(data){
-        
+
 
         var exam_code = jQuery.parseJSON(data);
 
-        console.log(exam_code[1]); 
+        console.log(exam_code[1]);
 
         var company_id = exam_code[0]  != null ? exam_code[0].company_id : '';
 
@@ -287,7 +287,7 @@ function ajax_get_exam_process_code(){
         var sl_from = exam_code[1][0]  != null ? exam_code[1][0].sl : '';
 
         var sl_to = $(exam_code[1]).get(-1)  != null ? $(exam_code[1]).get(-1).sl : '';
-       
+
 
 
         $('#company_list').val(company_id).trigger("change");
@@ -297,7 +297,7 @@ function ajax_get_exam_process_code(){
         $('#exam_date').val(exam_date).trigger("change");
 
         $('#shift').val(shift).trigger("change");
-        
+
         $('#exam_type option:last-child').val() == 'aptitude_test' ?  $('#exam_type').val(exam_type).trigger("change") : '';
 
         $('#sl_from').val(sl_from);
@@ -306,7 +306,7 @@ function ajax_get_exam_process_code(){
 
         $("#addData .add").html(sl_to);
 
-        
+
       }
 
 
@@ -319,7 +319,7 @@ function ajax_get_exam_process_code(){
 
 
 $('select, #exam_date, #sl_from').not('#exam_process_code_list').prop('disabled', true);
-                    
+
 $('form').on('submit', function() {
     $('select, #exam_date, #sl_from').prop('disabled', false);
 });
@@ -335,7 +335,7 @@ $('.datepicker').each(function(index, el) {
 
 var column_index = ['2'];
 create_dropdown_column(column_index);
-    
+
 </script>
 
 

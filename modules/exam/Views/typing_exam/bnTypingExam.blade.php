@@ -457,16 +457,18 @@ $('#original_text').bind('cut copy paste drop', function (e) {
 
 });
 
-const original_textID = document.getElementById("original_text");
-original_textID.addEventListener("contextmenu", (e) => {e.preventDefault()});
+window.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
 
 
 $('#answered_text').bind('cut copy paste drop', function (e) {
   return false;
 });
 
-const answered_textID = document.getElementById("answered_text");
-answered_textID.addEventListener("contextmenu", (e) => {e.preventDefault()});
+window.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
 
 var answered_text_length = 0;
 

@@ -413,10 +413,15 @@ a.btn.btn-primary.btn-sm.start-button {
 
 
     <script>
-      window.history.forward();
-        function noBack() {
-            window.history.forward();
-        }
+      // window.history.forward();
+      //   function noBack() {
+      //       window.history.forward();
+      //   }
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', function () {
+        history.pushState(null, null, document.URL);
+      });
+
 
 
       function calculate(event) {

@@ -458,12 +458,20 @@ $('#original_text').bind('cut copy paste drop', function (e) {
 
 });
 
+window.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
 
 $('#answered_text').bind('cut copy paste drop', function (e) {
 
  return false;
 
 });
+
+window.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
 
 var answered_text_length = 0;
 

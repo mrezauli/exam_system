@@ -266,7 +266,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
       <div class="">
 
-        {!! Form::textarea('original_text', $question, ['id'=>'original_text', 'class' => $font_size, 'size' => '10x10', 'readonly']) !!}
+        {!! Form::textarea('original_text', $question, ['id'=>'original_text', 'class' => $font_size,  'spellcheck' => false, 'size' => '10x10', 'readonly']) !!}
 
       </div>
 
@@ -289,7 +289,7 @@ a.btn.btn-primary.btn-sm.start-button {
         </div>
 
 
-        {!! Form::textarea('answered_text', Input::old('answered_text'), ['id'=>'answered_text', 'class' => $font_size, 'size' => '10x10','read-only']) !!}
+        {!! Form::textarea('answered_text', Input::old('answered_text'), ['id'=>'answered_text', 'class' => $font_size,  'spellcheck' => false, 'size' => '10x10','read-only']) !!}
 
       </div>
 

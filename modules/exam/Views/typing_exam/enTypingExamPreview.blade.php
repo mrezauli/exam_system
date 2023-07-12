@@ -413,6 +413,10 @@ a.btn.btn-primary.btn-sm.start-button {
 
 
     <script>
+      window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
 
 
       function calculate(event) {

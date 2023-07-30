@@ -252,6 +252,18 @@ a.btn.btn-primary.btn-sm.start-button {
 @if( ($first_exam_started && ! $first_exam_completed ) || ($last_exam_started && ! $last_exam_completed) )
 
 
+<div class="page-header">
+  <h1>Your Typed Answer: </h1>
+</div>
+
+<div class="page-header">
+  <p class="text-success">
+    {{ $answer }}
+  </p>
+</div>
+
+
+
 <div class="question-answer-block">
 
   {!! Form::open(['route' => ['submit-typing-exam-en-with-calculation',$exam_type],'id' => 'jq-validation-form','class' => 'exam-form']) !!}
@@ -261,7 +273,7 @@ a.btn.btn-primary.btn-sm.start-button {
 
       <div class="">
 
-        {!! Form::textarea('original_text', $question, ['id'=>'original_text_field', 'class' => $font_size, 'size' => '10x10', 'readonly']) !!}
+        {!! Form::hidden('original_text', $question, ['id'=>'original_text_field', 'class' => $font_size, 'size' => '10x10', 'readonly']) !!}
 
       </div>
 
@@ -277,14 +289,12 @@ a.btn.btn-primary.btn-sm.start-button {
 
         <div style="text-align:center;">
 
-          {!! Form::label('answered_text', 'Type here:', ['class' => 'control-label','style' => 'float:left']) !!}
-
           <div style="color:red;font-size:20px;display:none;;position:relative;left:-45px;" class="alert-flash-message">You have 2 minutes remaining.</div>
 
         </div>
 
 
-        {!! Form::textarea('answered_text',  $request['answered_text'], ['id'=>'answered_text_field', 'class' => $font_size, 'size' => '10x10', 'readonly']) !!}
+        {!! Form::hidden('answered_text',  $request['answered_text'], ['id'=>'answered_text_field', 'class' => $font_size, 'size' => '10x10', 'readonly']) !!}
 
       </div>
 
@@ -303,7 +313,7 @@ a.btn.btn-primary.btn-sm.start-button {
 <div class="row">
   <div class="text-right">
     {{-- add method to prevent submit --}}
-      {!! Form::submit('Submit', ['class' => 'btn btn-primary submit-button typing-exam-submit-button btn-sm','data-placement'=>'top', 'onclick' => 'calculate(event)']) !!}
+      {!! Form::submit('Go for Bangla', ['class' => 'btn btn-primary submit-button typing-exam-submit-button btn-sm','data-placement'=>'top', 'onclick' => 'calculate(event)']) !!}
   </div>
 </div>
 
@@ -331,14 +341,14 @@ a.btn.btn-primary.btn-sm.start-button {
                 <tr style="height: 20px;">&nbsp;</tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ১.    পরীক্ষা শুরুর পূর্বে মোবাইল ফোন বন্ধ রাখুন। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ২.    বাংলা ও ইংরেজী উভয় টাইপিং এর জন্য ১০ (দশ) মিনিট করে সময় পাবেন। </b></td></tr>
-                <tr style="font-size: 22px!important;"><td><b>&nbsp; ৩.    টাইপিং টেষ্ট শুরু হলে আপনার মনিটরের ডানপার্শ্বে “Time Count-Down” দেখতে পারবেন। </b></td></tr>
+                <tr style="font-size: 22px!important;"><td><b>&nbsp; ৩.    টাইপিং টেস্ট শুরু হলে আপনার মনিটরের ডানপাশে উপরের দিকে “Countdown Timer” দেখতে পারবেন। </b></td></tr>
                 {{--<tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    ইংরেজী টাইপিং এর জন্য পূনরায় “Ctrl+Alt+U” দিয়ে ইংরেজী কিবোর্ড নির্বাচন করুন। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৫.    বাংলা অথবা ইংরেজী যে কোন ০১(একটি) বাটনে “ক্লিক” করে টাইপিং শুরু করুন। </b></td></tr>--}}
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    নির্ধারিত বক্স নির্বাচন করে ইংরেজী টাইপিং শুরু করুন। ইংরেজী টাইপিং সমাপ্ত হলে “Submit”
   বাটনে ক্লিক করুন। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৫.    এরপর বাংলা টাইপিং এর জন্য “Ctrl+Alt+V” দিয়ে কিবোর্ড নির্বাচন করুন। নির্ধারিত বক্স বাংলা
   টাইপিং শুরু করুন। </b></td></tr>
-                <tr style="font-size: 22px!important;"><td><b>&nbsp; ৬.    বাংলা টাইপিং সমাপ্ত হলে “Submit” বাটনে ক্লিক করে পরীক্ষা সমাপ্ত করুন। </b></td></tr>
+                <tr style="font-size: 22px!important;"><td><b>&nbsp; ৬.    বাংলা টাইপ শেষ হলে “Submit” বাটনে ক্লিক করে পরীক্ষা শেষ করুন। </b></td></tr>
             </table>
         </div>
         <div class="col-sm-3"></div>
@@ -460,7 +470,7 @@ a.btn.btn-primary.btn-sm.start-button {
               FD.append('answered_text', answer);
               //document.getElementById('status').length;
               for (const [key, value] of FD) {
-                  //console.log(`${key}: ${value}`);
+                  console.log(`${key}: ${value}`);
               }
 
 

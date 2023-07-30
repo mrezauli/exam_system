@@ -302,7 +302,7 @@ class TypingTestController extends Controller
                 Session::flash('danger', "Couldn't Save Successfully. Please Try Again.");
             }
         }
-        
+
         /**
          * must be delete
          */
@@ -396,7 +396,7 @@ class TypingTestController extends Controller
 
         return redirect()->route('typing-exams');
     }
-    
+
     public function enPreview(Requests\ExamRequest $request, $exam_type)
     {
         $page_title = "Typing Test";
@@ -412,6 +412,8 @@ class TypingTestController extends Controller
         $exam_type  = '';
 
         $question = '';
+
+        $answer = $request['answered_text'];
 
         $typing_exam_time = ExamTime::where('exam_type','typing_exam')->first()->exam_time;
 
@@ -448,7 +450,7 @@ class TypingTestController extends Controller
 
         }
 
-        return view('exam::typing_exam.enTypingExamPreview', compact('request', 'exam_type', 'question','started','exam_type','first_exam_type','last_exam_type','first_exam_completed','last_exam_completed','first_exam_started','last_exam_started','typing_exam_time','username','roll_no'));
+        return view('exam::typing_exam.enTypingExamPreview', compact('request', 'exam_type', 'question','started','exam_type','first_exam_type','last_exam_type','first_exam_completed','last_exam_completed','first_exam_started','last_exam_started','typing_exam_time','username','roll_no', 'answer'));
     }
 
     public function bnPreview(Requests\ExamRequest $request, $exam_type)
@@ -519,22 +521,23 @@ class TypingTestController extends Controller
 
         $question = $input['original_text'];
         $answer = $input['answered_text'];
-        
-        $total_words = $input['totalGivenCharacters'];
+
+        $total_words = $input['totalGivenCharacters'] ? $input['totalGivenCharacters'] : 0;
 
         $typed_words = $input['typedCharacters'];
 
-        $inserted_words = $input['correctedCharacters'];
+        $inserted_words = $input['correctedCharacters'] ? $input['correctedCharacters'] : 0;
 
         $deleted_words = $typed_words - $inserted_words;
 
         //accuracy = (number of correctly typed words / total number of words) * 100
         $accuracy = ($inserted_words / $total_words) * 100;
-        
+        $accuracy = $accuracy ? $accuracy : 0;
+
         //WPM = (total number of accurate characters typed / 5) / (time taken in minute)
         $wpm = $inserted_words / $typing_exam_time_in_minute;
-        
-        
+
+
         $data = [
             'original_text' => $question,
             'answered_text' => $answer,
@@ -563,7 +566,7 @@ class TypingTestController extends Controller
         } catch (\Exception $e) {
             //If there are any exceptions, rollback the transaction`
             DB::rollback();
-            
+
             return response()->json(['danger' => 'Couldn\'t Update Successfully. Please Try Again.']);
         }
         //return redirect()->route('typing-exams');
@@ -571,7 +574,7 @@ class TypingTestController extends Controller
 
     public function calculateBangla(Requests\ExamRequest $request, $exam_type)
     {
-    
+
         $user = Auth::user();
 
         $user_id = $user->id;
@@ -584,7 +587,7 @@ class TypingTestController extends Controller
 
         $question = $input['original_text'];
         $answer = $input['answered_text'];
-        
+
         $total_words = $input['totalGivenCharacters'];
 
         $typed_words = $input['typedCharacters'];
@@ -595,10 +598,10 @@ class TypingTestController extends Controller
 
         //accuracy = (number of correctly typed words / total number of words) * 100
         $accuracy = ($inserted_words / $total_words) * 100;
-        
+
         //WPM = (total number of accurate characters typed / 5) / (time taken in minute)
         $wpm = $inserted_words / $typing_exam_time_in_minute;
-        
+
         $data = [
             'original_text' => $question,
             'answered_text' => $answer,
@@ -627,7 +630,7 @@ class TypingTestController extends Controller
         } catch (\Exception $e) {
             //If there are any exceptions, rollback the transaction`
             DB::rollback();
-            
+
             return response()->json(['danger' => 'Couldn\'t Update Successfully. Please Try Again.']);
         }
 

@@ -66,10 +66,9 @@ class ExamProcessController extends Controller
         $ddd = [];
         $i = 0;
 
-
         foreach ($exam_code_list as $key => $value) {
 
-            $ddd[$key] = $value; 
+            $ddd[$key] = $value;
 
             $i++;
 
@@ -80,7 +79,7 @@ class ExamProcessController extends Controller
             }
 
         }
-            
+
 
         $exam_code_list = $ddd;
 
@@ -99,21 +98,22 @@ class ExamProcessController extends Controller
 
     public function start_process(Requests\ExamProcessRequest $request)
     {
+        //dd($request);
         //$input = $request->all();
 
         $input = $request->except('_token');
         $input['status']= 'active';
 
-       
+
         $exam_date_error = strtotime(Date('Y-m-d')) > strtotime($input['exam_date']);
 
 
         if ($exam_date_error) {
 
             Session::flash('danger', "Exam date must be equal or greater than current date.");
-            
+
             return redirect()->route('create-process')->withInput();
-         
+
         }
 
         // if ( ! empty(ExamProcess::where('status','active')->first() )) {
@@ -147,9 +147,9 @@ class ExamProcessController extends Controller
         if (! $question_found) {
 
            Session::flash('danger', "No question has been set for this exam.");
-           
+
            return redirect()->route('create-process')->withInput();
-    
+
         }
 
 
@@ -159,7 +159,7 @@ class ExamProcessController extends Controller
 
             $model = User::where('company_id',$input['company_id'])
                             ->where('designation_id',$input['designation_id'])
-                            ->whereBetween('sl', [$input['sl_from'], $input['sl_to']])   
+                            ->whereBetween('sl', [$input['sl_from'], $input['sl_to']])
                             ->where('aptitude_exam_code_id',null)
                             ->where('typing_status','inactive')
                             ->where('attended_typing_test',null)->get();
@@ -192,7 +192,7 @@ class ExamProcessController extends Controller
             DB::beginTransaction();
             try
             {
-                
+
                 ExamProcess::create($input);
 
                 foreach ($model as $model_data)
@@ -245,7 +245,7 @@ class ExamProcessController extends Controller
             DB::beginTransaction();
             try
             {
-                
+
                 $active_process->save();
 
                 foreach ($model as $model_data)
@@ -285,12 +285,12 @@ class ExamProcessController extends Controller
 
         $active_process->status = 'active';
 
-    
+
 
         $model = User::where('exam_code_id',$active_process->exam_code_id)->whereBetween('sl', [$active_process->sl_from, $active_process->sl_to])->get();
 
         $input_candidate['status']= 'active';
-     
+
         //print_r(count($model_process));exit("ok");
 
         if(count($model)>0){
@@ -298,7 +298,7 @@ class ExamProcessController extends Controller
             DB::beginTransaction();
             try
             {
-                
+
                 $active_process->save();
 
                 foreach ($model as $model_data)

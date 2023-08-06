@@ -1,6 +1,5 @@
 <?php
 
-use App\Jobs\NewLineCountRemoveJob;
 /**
  * Created by PhpStorm.
  * User: UITS-Shajjad

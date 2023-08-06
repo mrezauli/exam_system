@@ -173,27 +173,27 @@
 
 <script>
 
-$('.process-button').click(function(e) {
+// $('.process-button').click(function(e) {
 
-e.preventDefault();
+// e.preventDefault();
 
-$("#addData").modal('show');
+// $("#addData").modal('show');
 
-var sl_to = $('#sl_to').val();
+// var sl_to = $('#sl_to').val();
 
-$("#addData .add").html(sl_to);
+// $("#addData.add").html(sl_to);
 
 
 
-$('#addData').on('click', '.yes-button', function(e) {
+// $('#addData').on('click', '.yes-button', function(e) {
 
-    $('select, #exam_date, #sl_from').prop('disabled', false);
+//     $('select, #exam_date, #sl_from').prop('disabled', false);
 
-    $('form').submit();
+//     $('form').submit();
 
-});
+// });
 
-});
+// });
 
 
 
@@ -272,7 +272,7 @@ function ajax_get_exam_process_code(){
 
         var exam_code = jQuery.parseJSON(data);
 
-        console.log(exam_code[1]);
+        //console.log(exam_code[1]);
 
         var company_id = exam_code[0]  != null ? exam_code[0].company_id : '';
 

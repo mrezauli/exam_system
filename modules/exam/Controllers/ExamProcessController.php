@@ -168,7 +168,8 @@ class ExamProcessController extends Controller
             $input_candidate['typing_exam_code_id']= $input['exam_code_id'];
             $input_candidate['typing_status']= 'active';
 
-        }elseif($input['exam_type'] == 'aptitude_test')
+        }
+        elseif($input['exam_type'] == 'aptitude_test')
         {
 
 

@@ -17,7 +17,6 @@ use App\Helpers\LogFileHelper;
 use Modules\Admin\Designation;
 use Illuminate\Support\Facades\DB;
 use Modules\Exam\Helpers\StdClass;
-use App\Jobs\NewLineCountRemoveJob;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -61,9 +60,6 @@ class TypingTestReportController extends Controller
 
 
     public function generate_typing_test_report(Request $request){
-
-        $job = new NewLineCountRemoveJob();
-        //dispatch($job);
 
         $page_title = 'Typing Test Report';
 

@@ -5,12 +5,12 @@
 @stop
 
 
-@section('content') 
+@section('content')
 
     <div class="inner-wrapper report-details-page task-detail-page">
         <div class="panel-heading" id="rep_btn">
             <span class="panel-title">{{ $page_title }}</span>
-        
+
             <a href="#" class="btn btn-primary btn-sm print pull-right">Print</a>
 
 
@@ -19,12 +19,12 @@
         </div>
 
         {{-- <h3 style="text-align:center;" class="page-title text-center green">Typing Test Information</h3> --}}
-        
+
         <div class="app-container col-sm-12">
 
 
         <style>
-            
+
         p{
             font-size: 14px;
         }
@@ -44,7 +44,7 @@
             background:yellowgreen;
             color:yellowgreen;
         }
-            
+
         .header-section > div:nth-child(2) {
             display: inline-block;
             margin-left: 40px;
@@ -352,7 +352,7 @@ $english_corrected_words = round($english_corrected_characters / 5);
         </td>
     </tr>
 </table>
-        
+
 
 
             <section style="border:1px solid #577;padding:20px;border-top:none;border-bottom:none;">
@@ -364,7 +364,7 @@ $english_corrected_words = round($english_corrected_characters / 5);
                 <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
 
                 {!! ! empty($bangla->answered_text) ? '<p class="bangla-font">' . $bangla->answered_text . '</p>': '<b>No answer is given.</b>' !!}
-                
+
 
                 <p><br></p>
 
@@ -372,7 +372,7 @@ $english_corrected_words = round($english_corrected_characters / 5);
                 <p class="bangla-font">
                     {!! $english->original_text !!}
                 </p>
-                
+
 
 
                 <h3 style="font-size:18px;color:#0000dc" class="bangla-font">English Answered Text</h3>
@@ -382,13 +382,13 @@ $english_corrected_words = round($english_corrected_characters / 5);
             </section>
 
             <footer style="border:1px solid #577;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
-            
+
         </div>
     </div>
 
 
 <style>
-    
+
 
 *{
     color: #000;
@@ -427,7 +427,7 @@ p{
 .print-show{
     display: none;
 }
-    
+
 .orangered-description span{
     background:orangered !important;
     color:orangered !important;
@@ -682,7 +682,7 @@ header + section{
     </div>
 
     <div class="clearfix"></div>
-    
+
     <div class="bangla-english-block" style="text-align:left;padding:0 10px;">
 
         <div class="bangla-block">
@@ -722,7 +722,7 @@ header + section{
             <span class=""><b>Wrong Characters: </b>{{ $english_deleted_characters }}</span><br>
 
         </div>
-        
+
     </div>
 
     <div class="clearfix"></div>
@@ -732,22 +732,13 @@ header + section{
 
     <section style="border:1px solid #577;padding:20px;border-top:none;border-bottom:none;">
 
-        <h3 style="font-size:18px;color:#0000dc;">Bangla Original Text</h3>
-
-        {!! '<p class="bangla-font">' . $bangla->original_text  . '</p>'!!}
-
         <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
 
         {!! ! empty($bangla->answered_text) ? '<p class="bangla-font">' . $bangla->answered_text . '</p>': '<b>No answer is given.</b>' !!}
-        
+
 
         <p><br></p>
 
-        <h3 style="font-size:18px;color:#0000dc">English Original Text</h3>
-        <p class="bangla-font">
-            {!! $english->original_text !!}
-        </p>
-        
         <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
 
         {!! ! empty($english->answered_text) ? '<p class="bangla-font">' . $english->answered_text . '</p>': '<b>No answer is given.</b>' !!}
@@ -755,7 +746,7 @@ header + section{
     </section>
 
     <footer style="border:1px solid #577;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
-    
+
 </div>
 
 
@@ -765,10 +756,10 @@ header + section{
 @section('custom-script')
 
 <script>
-    
+
 $('.print').click(function(event) {
 
-w=window.open('', '_top');
+w=window.open('', '_blank');
 w.document.write(document.getElementsByClassName('print-container')[0].innerHTML);
 w.print();
 w.close();

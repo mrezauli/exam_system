@@ -1391,7 +1391,7 @@ class TypingTestReportController extends Controller
 
 
             $model = DB::table( 'user AS u' )
-                     ->select('u.roll_no','u.roll_no','u.started_exam','u.attended_typing_test','t.id AS exam_id','t.user_id','e.company_id','e.designation_id','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.original_text','t.answered_text')
+                     ->select('u.roll_no','u.roll_no','u.started_exam','u.attended_typing_test','t.id AS exam_id','t.user_id','e.company_id','e.designation_id','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.original_text','t.answered_text', 't.process_text')
                     ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
                     ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
                     ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')

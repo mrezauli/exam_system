@@ -27,27 +27,6 @@
                     font-size: 14px;
                 }
 
-                .tomato-description span {
-                    background: tomato !important;
-                    color: tomato !important;
-                }
-
-                .snow-description span {
-                    background: tomato !important;
-                    color: tomato !important;
-                }
-
-                .goldenrod-description {
-                    /*    position: relative;
-                    left: 113px;*/
-                    margin-right: 12px;
-                }
-
-                .goldenrod-description span {
-                    background: goldenrod;
-                    color: goldenrod;
-                }
-
                 .header-section>div:nth-child(2) {
                     display: inline-block;
                     margin-left: 80px;
@@ -81,16 +60,6 @@
                     color: blue;
                 }
 
-                .color-description span {
-                    background: goldenrod;
-                    color: goldenrod;
-                    width: 40px;
-                    height: 17px;
-                    display: inline-block;
-                    position: relative;
-                    top: 3px;
-                }
-
                 header {
                     padding: 5px;
                 }
@@ -99,11 +68,6 @@
                     float: left;
                     text-align: left;
                     margin-top: 0;
-                }
-
-                .color-description {
-                    display: inline-block;
-                    margin-bottom: 7px;
                 }
 
                 header+section {
@@ -132,10 +96,7 @@
                         margin-top: 7px !important;
                     }
 
-                    .color-description {
-                        display: inline-block;
-                        margin-bottom: 7px;
-                    }
+
 
                     .bangla-font,
                     .bangla-font * {
@@ -160,14 +121,14 @@
                         margin-bottom: 20px !important;
                     }
 
-                    .snow-description {
-                        margin-bottom: 20px !important;
-                    }
-
                     .tomato-description span {
                         background: tomato !important;
                         color: tomato !important;
                         -webkit-print-color-adjust: exact;
+                    }
+
+                    .snow-description {
+                        margin-bottom: 20px !important;
                     }
 
                     .snow-description span {
@@ -182,27 +143,21 @@
                         -webkit-print-color-adjust: exact;
                     }
 
-                    .header-section>div:first-child {
-                        margin-top: 20px;
-                    }
-
-                    .goldenrod {
-                        background: goldenrod !important;
-                        -webkit-print-color-adjust: exact;
-                    }
-
-                    .tomato {
-                        background: tomato !important;
-                        -webkit-print-color-adjust: exact;
+                    .goldenrod-description {
+                        /*    position: relative;
+                                    left: 113px;*/
+                        margin-right: 12px;
+                        background: goldenrod;
+                        color: goldenrod;
                     }
 
                     .color-description {
                         margin-left: 10px;
+                        display: inline-block;
+                        margin-bottom: 7px;
                     }
 
                     .color-description span {
-                        background: goldenrod;
-                        color: goldenrod;
                         width: 40px;
                         height: 17px;
                         display: inline-block;
@@ -210,31 +165,35 @@
                         top: 3px;
                     }
 
+                    .header-section>div:first-child {
+                        margin-top: 20px;
+                    }
+
                     /*.header-section > div:nth-child(2) {
-                        display: inline-block;
-                        margin-top: -10px;
-                        margin-left: 80px;
-                    }
+                                        display: inline-block;
+                                        margin-top: -10px;
+                                        margin-left: 80px;
+                                    }
 
-                    .bangla-english-block{
-                        margin-top: 10px;
-                        width: auto !important;
-                        margin-right: 10px;
-                    }
+                                    .bangla-english-block{
+                                        margin-top: 10px;
+                                        width: auto !important;
+                                        margin-right: 10px;
+                                    }
 
-                    .color-block + div{
-                        margin-left: 27px !important;
-                    }
+                                    .color-block + div{
+                                        margin-left: 27px !important;
+                                    }
 
-                    .bangla-block {
-                        float: none;
-                        margin-right: 10px;
-                        margin-bottom: 5px;
-                    }
+                                    .bangla-block {
+                                        float: none;
+                                        margin-right: 10px;
+                                        margin-bottom: 5px;
+                                    }
 
-                    .english-block {
-                        margin-right: 10px;
-                    }*/
+                                    .english-block {
+                                        margin-right: 10px;
+                                    }*/
 
 
 
@@ -294,11 +253,11 @@
             <table class="table table-bordered">
                 <tr>
                     <td colspan="3" class="text-center">
-                            <p>{{ $user->typing_exam_code->company->company_name }}</p>
+                        <p>{{ $user->typing_exam_code->company->company_name }}</p>
 
-                            <p><b>পদের নাম:</b> {{ $user->typing_exam_code->designation->designation_name }}<br><b>পরীক্ষার
-                                    তারিখ:</b> {{ Helper::revese_date_format($user->typing_exam_code->exam_date) }}<br><b>রোল
-                                    নং:</b> {{ $user->roll_no }}</p>
+                        <p><b>পদের নাম:</b> {{ $user->typing_exam_code->designation->designation_name }}<br><b>পরীক্ষার
+                                তারিখ:</b> {{ Helper::revese_date_format($user->typing_exam_code->exam_date) }}<br><b>রোল
+                                নং:</b> {{ $user->roll_no }}</p>
                     </td>
                 </tr>
                 <tr>
@@ -324,7 +283,7 @@
 
                             <span class=""><b>Corrected Words:
                                 </b>{{ $bangla_corrected_words }}</span><br>
-                                <span class=""><b>Corrected Characters: </b>{{ $bangla_corrected_characters }}</span><br>
+                            <span class=""><b>Corrected Characters: </b>{{ $bangla_corrected_characters }}</span><br>
 
                             <span class=""><b>Wrong Words: </b>{{ $bangla_deleted_words }}</span><br>
                             <span class=""><b>Wrong Characters: </b>{{ $bangla_deleted_characters }}</span><br>
@@ -344,14 +303,15 @@
 
                             <span class=""><b>Corrected Words:
                                 </b>{{ $english_corrected_words }}</span><br>
-                                <span class=""><b>Corrected Characters: </b>{{ $english_corrected_characters }}</span><br>
+                            <span class=""><b>Corrected Characters:
+                                </b>{{ $english_corrected_characters }}</span><br>
 
                             <span class=""><b>Wrong Words: </b>{{ $english_deleted_words }}</span><br>
                             <span class=""><b>Wrong Characters: </b>{{ $english_deleted_characters }}</span><br>
 
                         </div>
                     </td>
-                  </tr>
+                </tr>
             </table>
 
             <section style="border:1px solid #577;padding:20px;border-top:none;border-bottom:none;">
@@ -363,12 +323,7 @@
                 </p>
 
                 <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
-
-                <p id="displayBn" class="fs-1 bangla-font"></p>
-                <p id="displayBnRemoved" class="fs-1 bangla-font"></p>
-                <p id="bangla_web_answer" class="bangla-font" hidden>
-                    {!! !empty($bangla->answered_text) ? $bangla->answered_text : '<b>No answer is given.</b>' !!}
-                </p>
+                <p class="fs-1 bangla-font">{!! !empty($bangla->process_text) ? $bangla->process_text : '<b class="fs-1 bangla-font">No answer is given.</b>' !!}</p>
 
 
                 <p><br></p>
@@ -379,11 +334,7 @@
                 </p>
 
                 <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
-                <p id="displayEn" class="fs-1 bangla-font"></p>
-                <p id="displayEnRemoved" class="fs-1 bangla-font"></p>
-                <p id="english_web_answer" class="bangla-font" hidden>
-                    {!! !empty($english->answered_text) ? $english->answered_text : '<b>No answer is given.</b>' !!}
-                </p>
+                <p class="fs-1 bangla-font">{!! !empty($english->process_text) ? $english->process_text : '<b class="fs-1 bangla-font">No answer is given.</b>' !!}</p>
 
             </section>
 
@@ -442,7 +393,7 @@
 
             .goldenrod-description {
                 /*    position: relative;
-            left: 113px;*/
+                            left: 113px;*/
                 margin-right: 12px;
             }
 
@@ -605,30 +556,30 @@
                 }
 
                 /*.header-section > div:nth-child(2) {
-                display: inline-block;
-                margin-top: -10px;
-                margin-left: 80px;
-            }
+                                display: inline-block;
+                                margin-top: -10px;
+                                margin-left: 80px;
+                            }
 
-            .bangla-english-block{
-                margin-top: 10px;
-                width: auto !important;
-                margin-right: 10px;
-            }
+                            .bangla-english-block{
+                                margin-top: 10px;
+                                width: auto !important;
+                                margin-right: 10px;
+                            }
 
-            .color-block + div{
-                margin-left: 27px !important;
-            }
+                            .color-block + div{
+                                margin-left: 27px !important;
+                            }
 
-            .bangla-block {
-                float: none;
-                margin-right: 10px;
-                margin-bottom: 5px;
-            }
+                            .bangla-block {
+                                float: none;
+                                margin-right: 10px;
+                                margin-bottom: 5px;
+                            }
 
-            .english-block {
-                margin-right: 10px;
-            }*/
+                            .english-block {
+                                margin-right: 10px;
+                            }*/
 
 
 
@@ -677,7 +628,7 @@
 
 
 
-<header style="text-align:center;font-size:14px;border:1px solid #577;margin-top:-5px;"
+        <header style="text-align:center;font-size:14px;border:1px solid #577;margin-top:-5px;"
             class="header-section text-center">
 
 
@@ -746,36 +697,32 @@
 
         <section style="border:1px solid #577;padding:20px;border-top:none;border-bottom:none;">
 
-            <h3 style="font-size:18px;color:#0000dc;">Bangla Original Text</h3>
+            <h3 style="font-size:18px;color:#0000dc;" hidden>Bangla Original Text</h3>
 
-            <p id="bangla_print_question" class="bangla-font">
+            <p id="bangla_print_question" class="bangla-font" hidden>
                 {!! $bangla->original_text !!}
             </p>
 
             <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
 
             <p id="displayBnPrint" class="fs-1 bangla-font"></p>
-            <p id="bangla_print_answer" class="bangla-font" >
-                {!! !empty($bangla->answered_text) ? $bangla->answered_text : '<b>No answer is given.</b>' !!}
-            </p>
+            <p class="fs-1 bangla-font">{!! !empty($bangla->process_text) ? $bangla->process_text : '<b class="fs-1 bangla-font">No answer is given.</b>' !!}</p>
 
 
             <p><br></p>
 
-            <h3 style="font-size:18px;color:#0000dc">English Original Text</h3>
-            <p class="bangla-font" id="english_print_question">
+            <h3 style="font-size:18px;color:#0000dc" hidden>English Original Text</h3>
+            <p class="bangla-font" id="english_print_question" hidden>
                 {!! $english->original_text !!}
             </p>
 
             <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
-            <p id="displayEnPrint" class="fs-1 bangla-font"></p>
-            <p id="english_print_answer" class="bangla-font" hidden>
-                {!! !empty($english->answered_text) ? $english->answered_text : '<b>No answer is given.</b>' !!}
-            </p>
+            <p class="fs-1 bangla-font">{!! !empty($english->process_text) ? $english->process_text : '<b class="fs-1 bangla-font">No answer is given.</b>' !!}</p>
 
         </section>
 
-        <footer style="border:1px solid #577;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
+        <footer style="border:1px solid #577;padding:10px;text-align:center;">N.B. This Report is System Generated.
+        </footer>
 
     </div>
 
@@ -787,90 +734,10 @@
 
 @section('custom-script')
 
-    <script src="{{ URL::asset('assets/dist/diff.js') }}"></script>
-
     <script>
-        const questionEn = document.getElementById('english_web_question').textContent
-        answerEn = document.getElementById('english_web_answer').textContent;
-
-        const diffEn = Diff.diffWords(questionEn, answerEn),
-            displayEn = document.getElementById('displayEn'),
-            displayEnRemoved = document.getElementById('displayEnRemoved'),
-            displayEnPrint = document.getElementById('displayEnPrint'),
-            fragmentEn = document.createDocumentFragment(),
-            fragmentEnRemoved = document.createDocumentFragment();
-
-        diffEn.forEach((part) => {
-            // green for additions, red for deletions
-            // grey for common parts
-            const color = part.added ? "white" : part.removed ? "white" : "silver";
-            const backgroundColor = part.added ? "goldenrod" : part.removed ? "tomato" : "snow";
-
-            span = document.createElement('span');
-            spanRemoved = document.createElement('span');
-            span.style.color = color;
-            spanRemoved.style.color = color;
-            span.style.backgroundColor = backgroundColor;
-            spanRemoved.style.backgroundColor = backgroundColor;
-            if (part.removed) {
-                spanRemoved.appendChild(document.createTextNode(part.value));
-                fragmentEnRemoved.appendChild(spanRemoved);
-            }
-            else{
-                span.appendChild(document.createTextNode(part.value));
-                fragmentEn.appendChild(span);
-            }
-        });
-
-        displayEn.appendChild(fragmentEn);
-        //displayEnRemoved.appendChild(fragmentEnRemoved);
-        displayEnPrint.appendChild(fragmentEn);
-
-        const questionBn = document.getElementById('bangla_web_question').textContent
-        answerBn = document.getElementById('bangla_web_answer').textContent;
-
-        const diffBn = Diff.diffWords(questionBn, answerBn),
-            displayBn = document.getElementById('displayBn'),
-            displayBnRemoved = document.getElementById('displayBnRemoved'),
-            displayBnPrint = document.getElementById('displayBnPrint'),
-            fragmentBn = document.createDocumentFragment(),
-            fragmentBnRemoved = document.createDocumentFragment();
-
-        diffBn.forEach((part) => {
-            // green for additions, red for deletions
-            // grey for common parts
-            const color = part.added ? "white" : part.removed ? "white" : "silver";
-            const backgroundColor = part.added ? "goldenrod" : part.removed ? "tomato" : "snow";
-
-            span = document.createElement('span');
-            spanRemoved = document.createElement('span');
-            span.style.color = color;
-            spanRemoved.style.color = color;
-            span.style.backgroundColor = backgroundColor;
-            spanRemoved.style.backgroundColor = backgroundColor;
-            if (part.removed) {
-                spanRemoved.appendChild(document.createTextNode(part.value));
-                fragmentBnRemoved.appendChild(spanRemoved);
-            }
-            else{
-                span.appendChild(document.createTextNode(part.value));
-                fragmentBn.appendChild(span);
-            }
-        });
-
-        displayBn.appendChild(fragmentBn);
-        //displayBnRemoved.appendChild(fragmentBnRemoved);
-        displayBnPrint.appendChild(fragmentBn);
-        console.log(document.getElementById('bangla_web_question'));
-        console.log(document.getElementById('bangla_web_answer'));
-        console.log(document.getElementById('bangla_web_question').textContent);
-        console.log(document.getElementById('bangla_web_answer').textContent);
-        console.log(document.getElementById('bangla_web_question').textContent.length);
-        console.log(document.getElementById('bangla_web_answer').textContent.length);
-
         $('.print').click(function(event) {
 
-            w = window.open('', '_top');
+            w = window.open('', '_blank');
             w.document.write(document.getElementsByClassName('print-container')[0].innerHTML);
             w.print();
             w.close();

@@ -413,8 +413,6 @@ class TypingTestController extends Controller
 
         $question = '';
 
-        $answer = $request['answered_text'];
-
         $typing_exam_time = ExamTime::where('exam_type','typing_exam')->first()->exam_time;
 
         $exam_status = $this->exam_status();
@@ -450,7 +448,7 @@ class TypingTestController extends Controller
 
         }
 
-        return view('exam::typing_exam.enTypingExamPreview', compact('request', 'exam_type', 'question','started','exam_type','first_exam_type','last_exam_type','first_exam_completed','last_exam_completed','first_exam_started','last_exam_started','typing_exam_time','username','roll_no', 'answer'));
+        return view('exam::typing_exam.enTypingExamPreview', compact('request', 'exam_type', 'question','started','exam_type','first_exam_type','last_exam_type','first_exam_completed','last_exam_completed','first_exam_started','last_exam_started','typing_exam_time','username','roll_no'));
     }
 
     public function bnPreview(Requests\ExamRequest $request, $exam_type)
@@ -521,6 +519,7 @@ class TypingTestController extends Controller
 
         $question = $input['original_text'];
         $answer = $input['answered_text'];
+        $markedAnswer = $input['process_text'];
 
         $total_words = $input['totalGivenCharacters'] ? $input['totalGivenCharacters'] : 0;
 
@@ -541,7 +540,7 @@ class TypingTestController extends Controller
         $data = [
             'original_text' => $question,
             'answered_text' => $answer,
-            'process_text' => '',
+            'process_text' => $markedAnswer,
             'total_words' => $total_words,
             'typed_words' => $typed_words,
             'inserted_words' => $inserted_words,
@@ -587,6 +586,7 @@ class TypingTestController extends Controller
 
         $question = $input['original_text'];
         $answer = $input['answered_text'];
+        $markedAnswer = $input['process_text'];
 
         $total_words = $input['totalGivenCharacters'];
 
@@ -605,7 +605,7 @@ class TypingTestController extends Controller
         $data = [
             'original_text' => $question,
             'answered_text' => $answer,
-            'process_text' => '',
+            'process_text' => $markedAnswer,
             'total_words' => $total_words,
             'typed_words' => $typed_words,
             'inserted_words' => $inserted_words,

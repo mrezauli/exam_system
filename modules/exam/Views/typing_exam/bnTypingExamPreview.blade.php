@@ -251,6 +251,9 @@ a.btn.btn-primary.btn-sm.start-button {
 
 @if( ($first_exam_started && ! $first_exam_completed ) || ($last_exam_started && ! $last_exam_completed) )
 
+<div class="page-header text-center">
+  <h1>Your Typed Answer</h1>
+</div>
 
 <div class="question-answer-block">
 
@@ -303,7 +306,7 @@ a.btn.btn-primary.btn-sm.start-button {
 <div class="row">
   <div class="text-right">
     {{-- add method to prevent submit --}}
-      {!! Form::submit('Submit', ['class' => 'btn btn-primary submit-button typing-exam-submit-button btn-sm','data-placement'=>'top', 'onclick' => 'calculate(event)']) !!}
+      {!! Form::submit('Go for Finish', ['class' => 'btn btn-primary submit-button typing-exam-submit-button btn-sm','data-placement'=>'top', 'onclick' => 'calculate(event)']) !!}
   </div>
 </div>
 
@@ -413,10 +416,10 @@ a.btn.btn-primary.btn-sm.start-button {
 
 
     <script>
-      // window.history.forward();
-      //   function noBack() {
-      //       window.history.forward();
-      //   }
+      window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
       history.pushState(null, null, document.URL);
       window.addEventListener('popstate', function () {
         history.pushState(null, null, document.URL);
@@ -426,8 +429,8 @@ a.btn.btn-primary.btn-sm.start-button {
 
       function calculate(event) {
         event.preventDefault()
-                      // Get the form element
-                      const form = document.getElementById("jq-validation-form");
+              // Get the form element
+              const form = document.getElementById("jq-validation-form");
               // Bind the FormData object and the form element
               const FD = new FormData(form);
 
@@ -440,13 +443,29 @@ a.btn.btn-primary.btn-sm.start-button {
               correctedCharacters = null,
               wrongCharacters = null;
 
+              let createElementP = document.createElement('p');
+
               const diffWords = Diff.diffWords(question, answer);
               diffWords.forEach((part) => {
-                //console.log(part);
                   if ((part.added === undefined) && (part.removed === undefined)) {
-                    //console.log(part);
-                    //console.log(part.value.length);
                     correctedCharacters += part.value.length;
+                  }
+
+                  // white + goldenrod for additions, white + tomato for deletions & silver + snow for common parts
+                  const color = part.added ? "white" : part.removed ? "white" : "silver";
+                  const backgroundColor = part.added ? "goldenrod" : part.removed ? "tomato" : "snow";
+
+                  span = document.createElement('span');
+                  spanRemoved = document.createElement('span');
+                  span.style.color = color;
+                  spanRemoved.style.color = color;
+                  span.style.backgroundColor = backgroundColor;
+                  spanRemoved.style.backgroundColor = backgroundColor;
+                  if (part.removed) {
+                      spanRemoved.appendChild(document.createTextNode(part.value));
+                  } else {
+                      span.appendChild(document.createTextNode(part.value));
+                      createElementP.appendChild(span);
                   }
               });
               wrongCharacters = typedCharacters - correctedCharacters;
@@ -456,15 +475,12 @@ a.btn.btn-primary.btn-sm.start-button {
               FD.append('wrongCharacters', wrongCharacters);
               FD.append('totalGivenCharacters', totalGivenCharacters);
               FD.append('typedCharacters', typedCharacters);
-              FD.append('original_text', question);
-              FD.append('answered_text', answer);
-              //document.getElementById('status').length;
+              FD.append('process_text', createElementP.innerHTML);
+
               for (const [key, value] of FD) {
                   //console.log(`${key}: ${value}`);
               }
 
-
-              // Alternatively, redirect the user to a server-side script to process the form data
               // Alternatively, redirect the user to a server-side script to process the form data
               // Send the form data using Fetch API
               fetch(form.action, {
@@ -474,7 +490,6 @@ a.btn.btn-primary.btn-sm.start-button {
               .then(response => response.json())
               .then(data => {
                   // Work with the returned JSON data
-                  //let redirectUrl = window.location.protocol + window.location.hostname + '/exam/typing-exams';
                   let redirectUrl = '/exam/typing-exams';
                   if (data.success) {
                     window.location.assign(redirectUrl);

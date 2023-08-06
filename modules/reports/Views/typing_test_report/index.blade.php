@@ -143,19 +143,16 @@ form .col-sm-12:last-child{
                 @if(isset($model) && ! $model->isEmpty())
                 <div class="col-lg-12 col-md-3 col-sm-6 all-graph-pdf-report-block">
 
-                {{-- <a href="{{ route('typing-test-report-pdf', [$company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed, $spmDigit]) }}" class="btn btn-danger print-button pull-right pdf_report_button" target="_blank">Print Result with Remarks</a> --}}
-
                 <?php  $ddd = URL('/') . '/reports/all-graph-report' . '?exam_code=' . $exam_code . '&company_id=' . $company_id . '&designation_id=' . $designation_id . '&exam_date_from='. $exam_date_from . '&exam_date_to=' . $exam_date_to. '&bangla_speed=' . $bangla_speed . '&english_speed=' . $english_speed; ?>
 
-                {{-- <div class="btn btn-primary btn-sm pull-right">
+                <div class="btn btn-primary btn-sm pull-right">
                     <a target="_blank" style="color:white" href="{{ $ddd }}">View All Answer Scripts</a>
-                </div> --}}
+                </div>
 
                 <a class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>
                 <a class="btn btn-danger print-button pull-right">Print Result with Remarks</a>
-                {{-- <a href="{{ route('typing-test-report-pdf-without-remarks', [$company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed, $spmDigit]) }}" class="btn btn-danger print-button pull-right pdf_report_button" target="_blank">Print Result without Remarks</a> --}}
 
-               {{--  <div class="col-lg-3 col-sm-6 input-group">
+                {{-- <div class="col-lg-3 col-sm-6 input-group">
 
                     <input type="text" class="form-control search_roll_no" value="Search Roll No." id="search_roll_no" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search Roll No.';}">
 

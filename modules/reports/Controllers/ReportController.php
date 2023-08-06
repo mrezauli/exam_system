@@ -219,7 +219,7 @@ class ReportController extends Controller
                 ->leftJoin( 'lead as l', 'l.id', '=', 't.lead_id' )
                 ->leftJoin( 'company as c', 'c.id', '=', 'l.company_id' )
                 ->leftJoin( 'user as u', 't.created_by', '=', 'u.id' );
-          
+
 
             if(isset($company_name) && !empty($company_name)){
 
@@ -281,7 +281,7 @@ class ReportController extends Controller
         //$meeting_owner = Meeting::with('user')->where('id',$meeting_id)->first();
 
         #print_r($meeting_details);exit("ok");
-            
+
         $task_client_existing_products = Task::with('relClientExistingProducts')->find($task_id);
 
         return view('reports::task_report.task_detail', ['pageTitle'=> $pageTitle,'data'=>$model,'meeting_details'=>$meeting_details,'task_client_existing_products'=>$task_client_existing_products]);
@@ -376,7 +376,7 @@ class ReportController extends Controller
            // $meeting_date_to = isset($meeting_date_to) && !empty($meeting_date_to) ? $meeting_date_to:date('Y-m-d');
 
             //$model = $model->whereBetween('m.meeting_date', array($meeting_date_from, $meeting_date_to));
-               
+
             $model = $model->paginate(30);
 
             /*if(isset($user_id) && !empty($user_id)){
@@ -428,7 +428,7 @@ class ReportController extends Controller
             ->get();
 
         $meeting_owner = Meeting::with('user')->where('id',$meeting_id)->first();
-        
+
         $task = Task::find($task_id);
         $company = Company::with('clientExistingProducts')->find($task->company_id);
 
@@ -464,7 +464,7 @@ class ReportController extends Controller
 <style>
 
 th span{
-    word-wrap:break-word !important;    
+    word-wrap:break-word !important;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -526,8 +526,8 @@ margin-left:3px !important;
         width: 100%;
     }
 th{
-    word-wrap:break-word !important;    
-    
+    word-wrap:break-word !important;
+
 }
 
 </style>
@@ -556,14 +556,14 @@ th{
                     <tr style="vertical-align: top;">
                         <th width="50%"><b>Designation : </b>'.ucfirst($data[0]->designation).'</th>
                         <th width="50%"><b>Factory Address :</b>'.ucfirst($data[0]->factory_address).'</th>
-                        
+
                     </tr>
                     <tr style="vertical-align: top;">
                         <th width="50%"><b>H/O Address : </b>'.ucfirst($data[0]->ho_address).'</th>
                         <th width="50%"><b>Industry Category : </b>'.ucfirst($data[0]->industry_category_name).'</th>
-                        
+
                     </tr>
-                    <tr style="vertical-align: top;"> 
+                    <tr style="vertical-align: top;">
                     <th colspan="2"><b>Business Type : </b>'.ucfirst($data[0]->business_type_name).'</th>
                     </tr>
                 </table>
@@ -788,9 +788,9 @@ th{
                         <tr style="vertical-align: top;">
                             <th width="50%"><b>Target Product: </b>'.ucfirst($product_name).'</th>
                             <th width="50%" colspan="2"><b>Comment: </b>'.ucfirst($data[0]->comments).'</th>
-                            
+
                         </tr>
-                                                                
+
                     </table>
                 </div>
             </div>
@@ -841,7 +841,7 @@ th{
                 <th width="50%"><b>Marketing Product :</b>'.ucfirst($data[0]->product_name).'</th>
                 <th width="50%"><b>Present Requirement Status : </b>'.ucfirst($data[0]->product_requirement_status).'</th>
                 <th width="50%"><b>Next Meeting Date : </b>'.$data[0]->next_meeting_date.'</th>
-            </tr>       
+            </tr>
             <tr style="vertical-align: top;">
                 <th width="50%" colspan="3"><b>Meeting Summary :</b>'.ucfirst($data[0]->meeting_summary).'</th>
             </tr>
@@ -1038,14 +1038,14 @@ th{
 
     $html = $html.'<br>
     <h3 style="text-align: center;">Meeting Informations</h3>';
-    $i = 0; 
+    $i = 0;
 
     if(isset($meeting_details)){
         foreach($meeting_details as $values){
-          $i++; 
+          $i++;
 
 
-          $html = $html.'      
+          $html = $html.'
 
           <br>
           <table cellpadding="0" cellspacing="0" class="table table-bordered table-responsive no-spacing tbl2">
@@ -1071,7 +1071,7 @@ th{
             <th width="50%"><b>Owner:<span style="color: #07709e">'. ucfirst($values->uname).'</b></th>
             <th width="50%" colspan="2"><b>Meeting Summary:</b>'.ucfirst($values->meeting_summary).'</th>
 
-        </tr>       
+        </tr>
 
     </table>';
 }}
@@ -1128,8 +1128,8 @@ $dompdf->stream('my.pdf',array('Attachment'=>0));
 
                         $status = 2;
 
-                        
-                        
+
+
 
 
                         if($this->isGetRequest()){
@@ -1147,21 +1147,21 @@ $dompdf->stream('my.pdf',array('Attachment'=>0));
                                 ->leftJoin( 'industry as i', 'i.id', '=', 'c.industry_id' );
 
                             if(isset($company_name) && !empty($company_name)){
-                                $model = $model->where('c.id','=',$company_name);                  
+                                $model = $model->where('c.id','=',$company_name);
                             }
 
                             if(isset($task_name) && !empty($task_name)){
                                 $model = $model->where('t.subject','LIKE','%'.$task_name.'%');
                             }
 
-                           if(isset($industry_name) && !empty($industry_name)){       
+                           if(isset($industry_name) && !empty($industry_name)){
                                $model = $model->where('industry_id', '=', $industry_name);
                            }
-                        
+
 
                             $model = $model->paginate(30);
 
-                            
+
                         }else{
 
 
@@ -1199,7 +1199,7 @@ $dompdf->stream('my.pdf',array('Attachment'=>0));
                             ->leftJoin( 'job_area as j', 'j.id', '=', 'm.job_area_id' )
                             ->where('m.task_id','=',$task_id)
                             ->get();
-                            
+
                         $task = Task::find($task_id);
                         $company = Company::with('clientExistingProducts')->find($task->company_id);
 
@@ -1298,7 +1298,7 @@ $dompdf->stream('my.pdf',array('Attachment'=>0));
 
 
                             </style>
- 
+
                             <div class="panel">
                                 <h3 style="text-align: center"><b>Company Wise Visiting Report</b></h3>
                                 <div style="text-align: right"><b>Sales Person ::'.ucfirst($data[0]->uname).'</b></div>
@@ -1319,14 +1319,14 @@ $dompdf->stream('my.pdf',array('Attachment'=>0));
                                         <tr style="vertical-align: top;">
                                             <th width="50%"><b>Designation : </b>'.ucfirst($data[0]->designation).'</th>
                                             <th width="50%"><b>Factory Address :</b>'.ucfirst($data[0]->factory_address).'</th>
-                                            
+
                                         </tr>
                                         <tr style="vertical-align: top;">
                                             <th width="50%"><b>H/O Address : </b>'.ucfirst($data[0]->ho_address).'</th>
                                             <th width="50%"><b>Industry Category : </b>'.ucfirst($data[0]->industry_category_name).'</th>
-                                        
+
                                         </tr>
-                                        <tr style="vertical-align: top;"> 
+                                        <tr style="vertical-align: top;">
                                         <th colspan="2"><b>Business Type : </b>'.ucfirst($data[0]->business_type_name).'</th>
                                         </tr>
                                         <tr style="vertical-align: top;">
@@ -1382,15 +1382,15 @@ $dompdf->stream('my.pdf',array('Attachment'=>0));
 
                         $html = $html.'<br>
                         <h3 style="text-align: center;">Meeting Informations</h3>';
-                        $i = 0; 
+                        $i = 0;
 
                         if(isset($meeting_details)){
                             foreach($meeting_details as $values){
                             if($values->status == 'active'){
 
-                              $i++; 
-                                                           
-                              $html = $html.'      
+                              $i++;
+
+                              $html = $html.'
 
                               <br>
                               <table cellpadding="0" cellspacing="0" class="table table-bordered table-responsive no-spacing tbl2">
@@ -1415,9 +1415,9 @@ $dompdf->stream('my.pdf',array('Attachment'=>0));
                             <tr style="vertical-align: top;">
                                 <th width="50%"><b>Owner:<span style="color: #07709e">'. ucfirst($values->uname).'</b></th>
                                 <th width="50%" colspan="2"><b>Meeting Summary:</b>'.ucfirst($values->meeting_summary).'</th>
-                                
-                            </tr>       
-                            
+
+                            </tr>
+
                         </table>';
                     }}}
 

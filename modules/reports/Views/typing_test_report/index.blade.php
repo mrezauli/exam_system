@@ -787,7 +787,7 @@ form .col-sm-12:last-child{
             <th>Total</th>
           </tr>
           <tr>
-            <td>{{ $passed }}</td>
+            <td>{{$passed}}</td>
             <td>{{$failed}}</td>
             <td>{{$expelled}}</td>
             <td>{{$cancelled}}</td>

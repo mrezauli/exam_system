@@ -229,41 +229,6 @@
                     header p:nth-child(2) {
                         font-size: 14px !important;
                     }
-
-                    .tomato-description {
-                        margin-bottom: 20px !important;
-                    }
-
-                    .tomato-description span {
-                        background: tomato !important;
-                        color: tomato !important;
-                        -webkit-print-color-adjust: exact;
-                    }
-
-                    .snow-description {
-                        margin-bottom: 20px !important;
-                    }
-
-                    .snow-description span {
-                        background: snow !important;
-                        color: snow !important;
-                        -webkit-print-color-adjust: exact;
-                    }
-
-                    .goldenrod-description span {
-                        background: goldenrod !important;
-                        color: goldenrod !important;
-                        -webkit-print-color-adjust: exact;
-                    }
-
-                    .goldenrod-description {
-                        /*    position: relative;
-                                    left: 113px;*/
-                        margin-right: 12px;
-                        background: goldenrod;
-                        color: goldenrod;
-                    }
-
                     .color-description {
                         margin-left: 10px;
                         display: inline-block;
@@ -317,7 +282,7 @@
 
                 // if ($values[0]->user_id == 15) {
                 //     var_dump('ddd');
-                //    dd(empty($english->answered_text));
+                //    dd(empty($english->process_text));
                 // }
 
                 ?>
@@ -404,7 +369,7 @@
 
 
                         <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
-                        {!! !empty($bangla->answered_text)
+                        {!! !empty($bangla->process_text)
                             ? '<p class="bangla-font" style="font-size:14px;">' . $bangla->process_text . '</p>'
                             : '<p class="bangla-font">No answer is given.</p>' !!}
 
@@ -415,7 +380,7 @@
 
 
                         <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
-                        {!! !empty($english->answered_text) ? '<p class="bangla-font">' . $english->process_text . '</p>' : '<p class="bangla-font">No answer is given.</p>' !!}
+                        {!! !empty($english->process_text) ? '<p class="bangla-font">' . $english->process_text . '</p>' : '<p class="bangla-font">No answer is given.</p>' !!}
                     </section>
 
                     {{-- <footer style="border:1px solid #577;padding:10px;text-align:center;">This script evaluated by system (Bangladesh Computer Council)</footer> --}}
@@ -494,20 +459,25 @@
                 display: none;
             }
 
-            .orangered-description span {
-                background: orangered !important;
-                color: orangered !important;
+            .tomato-description span {
+                background: tomato !important;
+                color: tomato !important;
             }
 
-            .yellowgreen-description {
+            .snow-description span {
+                background: snow !important;
+                color: snow !important;
+            }
+
+            .goldenrod-description {
                 /*    position: relative;
-                    left: 113px;*/
+                            left: 113px;*/
                 margin-right: 12px;
             }
 
-            .yellowgreen-description span {
-                background: yellowgreen;
-                color: yellowgreen;
+            .goldenrod-description span {
+                background: goldenrod;
+                color: goldenrod;
             }
 
             .header-section>div:nth-child(2) {
@@ -592,11 +562,6 @@
                     text-align: left;
                 }
 
-                .color-description {
-                    display: inline-block;
-                    margin-bottom: 7px;
-                }
-
                 header div p:first-child {
                     margin-bottom: -15px !important;
                 }
@@ -614,38 +579,41 @@
                     display: block !important;
                 }
 
-                .orangered-description {
+                .tomato-description {
                     margin-bottom: 20px !important;
                 }
 
-                .orangered-description span {
-                    background: orangered !important;
-                    color: orangered !important;
+                .tomato-description span {
+                    background: tomato !important;
+                    color: tomato !important;
                     -webkit-print-color-adjust: exact;
                 }
 
-                .yellowgreen-description span {
-                    background: yellowgreen !important;
-                    color: yellowgreen !important;
+                .snow-description {
+                    margin-bottom: 20px !important;
+                }
+
+                .snow-description span {
+                    background: snow !important;
+                    color: snow !important;
                     -webkit-print-color-adjust: exact;
                 }
 
-                .yellowgreen {
-                    background: yellowgreen !important;
+
+                .goldenrod-description span {
+                    background: goldenrod !important;
+                    color: goldenrod !important;
                     -webkit-print-color-adjust: exact;
                 }
 
-                .orangered {
-                    background: orangered !important;
+                .goldenrod {
+                    background: goldenrod !important;
                     -webkit-print-color-adjust: exact;
                 }
 
-                .color-description span {
-                    width: 40px;
-                    height: 17px;
-                    display: inline-block;
-                    position: relative;
-                    top: 3px;
+                .tomato {
+                    background: tomato !important;
+                    -webkit-print-color-adjust: exact;
                 }
 
                 /*.header-section > div:nth-child(2) {
@@ -757,7 +725,7 @@
 
             // if ($values[0]->user_id == 15) {
             //     var_dump('ddd');
-            //    dd(empty($english->answered_text));
+            //    dd(empty($english->process_text));
             // }
 
             ?>
@@ -766,7 +734,6 @@
 
                 <header style="text-align:center;font-size:14px;border:1px solid #577;margin-top:-5px;"
                     class="header-section text-center">
-
 
                     <div style="text-align:center;margin-top:-15px;padding: 0;">
 
@@ -802,6 +769,13 @@
 
                         </div>
 
+                        <div class="color-block">
+                            <span class="color-description goldenrod-description"><span></span> :: Typed Characters (wrong in count)</span>
+                            <br>
+                            <span class="color-description snow-description"><span></span> :: Typed Characters (correct in count)</span>
+                            <br>
+                            <span class="color-description tomato-description"><span></span> :: Untyped Characters (no count)</span>
+                        </div>
 
                         <div class="english-block">
 
@@ -833,13 +807,13 @@
                 <section style="border:1px solid #577;padding:20px;border-top:none;border-bottom:none;">
                     <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
 
-                    {!! !empty($bangla->answered_text)
-                        ? '<p class="bangla-font" style="font-size:14px;">' . $bangla->answered_text . '</p>'
+                    {!! !empty($bangla->process_text)
+                        ? '<p class="bangla-font" style="font-size:14px;">' . $bangla->process_text . '</p>'
                         : '<p class="bangla-font">No answer is given.</p>' !!}
 
                     <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
 
-                    {!! !empty($english->answered_text) ? '<p class="bangla-font">' . $english->answered_text . '</p>' : '<p class="bangla-font">No answer is given.</p>' !!}
+                    {!! !empty($english->process_text) ? '<p class="bangla-font">' . $english->process_text . '</p>' : '<p class="bangla-font">No answer is given.</p>' !!}
                 </section>
 
                 {{-- <footer style="border:1px solid #577;padding:10px;text-align:center;">This script evaluated by system (Bangladesh Computer Council)</footer> --}}

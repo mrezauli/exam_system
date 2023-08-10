@@ -1,4 +1,5 @@
 <link href="{{ URL::asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" >
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 
 
 <style>
@@ -294,12 +295,7 @@ a.btn.btn-primary.btn-sm.start-button {
   </div>
 
 
-<input disabled type="hidden" name="status" id="status" class="form-control">
-
-
-<input disabled type="hidden" name="qselection_typing_id" id="qselection_typing_id" class="form-control" value="">
-<input disabled type="hidden" name="accuracy" id="accuracy" class="form-control" value="">
-<input disabled type="hidden" name="wpm" id="wpm" class="form-control" value="">
+  <div id="progressbar"></div>
 
 
 <div class="row">
@@ -411,10 +407,16 @@ a.btn.btn-primary.btn-sm.start-button {
 <script type="text/javascript" src="{{ URL::asset('assets/ckeditor/ckeditor.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/ckeditor/samples/js/sample.js') }}"></script>
 <script src="{{ URL::asset('assets/dist/diff.js') }}"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
 
     <script>
+      $('.typing-exam-submit-button').on("click", function() {
+          $('#progressbar').progressbar({
+          value: false
+        });
+      });
       window.history.forward();
         function noBack() {
             window.history.forward();

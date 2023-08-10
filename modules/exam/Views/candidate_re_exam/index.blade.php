@@ -41,7 +41,7 @@
 
                     <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
                         <div class="row">
-                            
+
                             <div class="col-sm-12">
                                 {!! Form::label('exam_code_id', 'Exam Code:', ['class' => 'control-label']) !!}
                                 <small class="required">*</small>
@@ -58,7 +58,7 @@
 
                     <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
                         <div class="row">
-                            
+
                             <div class="col-sm-12">
                                 {!! Form::label('roll_no', 'Candidate Roll No:', ['class' => 'control-label']) !!}
                                  <small class="required">*</small>
@@ -71,7 +71,7 @@
 
                     {{-- <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
                         <div class="row">
-                            
+
                             <div class="col-sm-6">
                                   {!! Form::label('dob', 'Date of Birth:', ['class' => 'control-label']) !!}
                                   <small class="required">*</small>
@@ -87,7 +87,7 @@
 
                     <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
                         <div class="row">
-                            
+
                             <div class="col-sm-12">
                                 {!! Form::label('exam_type', 'Exam Type:', ['class' => 'control-label']) !!}
                                 <small class="required">*</small>
@@ -99,7 +99,7 @@
 
                     <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t">
                         <div class="row">
-                  
+
                             <div class="col-sm-12">
                                 {!! Form::label('status', 'Status:', ['class' => 'control-label']) !!}
                                 {!! Form::select('status', array('active'=>'Active','inactive'=>'Inactive','cancelled'=>'Cancelled','expelled'=>'Expelled'),Input::old('status'),['class' => 'form-control status','title'=>'select status of company']) !!}
@@ -110,10 +110,18 @@
 
                     <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t answered_text_block">
                         <div class="row">
-                            
+
                             <div class="col-sm-12">
                                 {!! Form::label('answered_text', 'Answer Text:', ['class' => 'control-label']) !!}
                                 {!! Form::textarea('answered_text', Input::old('answered_text'), ['id'=>'answered_text', 'class' =>'answered_text', 'size' => '10x10','readonly']) !!}
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
+                                {!! Form::text('name', Input::old('name'), ['id'=>'name', 'class' =>'name', 'readonly', 'disabled']) !!}
                             </div>
 
                         </div>
@@ -121,10 +129,10 @@
 
                     <div class="form-group no-margin-hr panel-padding-h no-padding-t no-border-t cancel_comments_block">
                         <div class="row">
-                            
                             <div class="col-sm-12">
                                 {!! Form::label('cancel_comments', 'Remarks:', ['class' => 'control-label']) !!}
-                                {!! Form::textarea('cancel_comments', Input::old('cancel_comments'), ['id'=>'cancel_comments', 'class' =>'form-control cancel_comments', 'size' => '10x5']) !!}
+                                {{-- {!! Form::textarea('cancel_comments', Input::old('cancel_comments'), ['id'=>'cancel_comments', 'class' =>'form-control cancel_comments', 'size' => '10x5']) !!} --}}
+                                {!! Form::select('cancel_comments', array(''=>'Select a Cancelletion Comments','Mistakenly submitted'=>'Mistakenly submitted','Network Problem'=>'Network Problem','Form error'=>'Form error','No calculation'=>'No calculation','Backward history'=>'Backward history','Forward history'=>'Forward history','Reconsider exam'=>'Reconsider exam','Evaluation again'=>'Evaluation again'),Input::get('cancel_comments') ? Input::get('cancel_comments') : null, ['id'=>'cancel_comments', 'class' =>'form-control cancel_comments'], Input::old('cancel_comments')) !!}
                             </div>
 
                         </div>
@@ -156,7 +164,7 @@
 <?php $exam_type = Session::has('exam_type') ? Session::get('exam_type') : ''; ?>
 
 <style>
-    
+
 .answered_text_block{
     display: none;
 }
@@ -237,7 +245,8 @@
               data: $('form').serialize(),
               success: function(answered_text){
 
-                $('#answered_text').val(answered_text);
+                $('#answered_text').val(answered_text['answered_text']);
+                $('#name').val(answered_text['username']);
 
               }
 
@@ -305,7 +314,7 @@
               type: 'POST',
               data: $('form').serialize(),
               success: function(exam_type){
-                
+
 
                 // var exam_code = jQuery.parseJSON(data);
 

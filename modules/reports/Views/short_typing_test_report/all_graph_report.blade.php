@@ -15,7 +15,7 @@
             <span class="panel-title">{{ $page_title }}</span>
 
             <a href="#" class="btn btn-primary btn-sm print pull-right">Print</a>
-            
+
         </div>
 
 
@@ -31,7 +31,7 @@
         .print-show{
             display: none;
         }
-            
+
         .orangered-description span{
             background:orangered !important;
             color:orangered !important;
@@ -109,7 +109,7 @@
             padding-top: 5px !important;
         }
 
-    
+
         @media print{
 
             p{
@@ -235,15 +235,15 @@
 
         </style>
 
-        
+
     @foreach($model as $values)
 
     <?php
 
     $values = collect($values);
-    
+
     $grouped_by_exam_type = $values->groupBy('exam_type');
-    
+
     $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
 
     $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
@@ -310,32 +310,32 @@
                 <span class=""><b>Wrong Words: </b>{{$english->inserted_words}}</span><br>
 
             </div>
-            
+
         </div>
 
         <div class="clearfix"></div>
     </header>
-    
-    
+
+
 
 
     <section style="border:1px solid #577;padding:20px;border-top:none;border-bottom:none;">
         <h3 style="font-size:18px;color:#0000dc">Bangla Original Text</h3>
-        
+
         {!! '<p class="bangla-font">' . $bangla->original_text . '</p>' !!}
-        
-        
+
+
         <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
-        
+
         {!! ! empty($bangla->answered_text) ? '<p class="bangla-font" style="font-size:13px;">' . $bangla->answered_text . '</p>': '<b>No answer is given.</b>' !!}
-        
+
         <h3 style="font-size:18px;color:#0000dc">English Original Text</h3>
-        
+
         {!! '<p>' . $english->original_text  . '</p>' !!}
-        
-        
+
+
         <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
-        
+
         {!! ! empty($english->answered_text) ? '<p>' . $english->answered_text . '</p>': '<b>No answer is given.</b>' !!}
     </section>
 
@@ -358,7 +358,7 @@
 
 
 <style>
-    
+
 
 *{
     color: #000;
@@ -419,7 +419,7 @@ footer{
         .print-show{
             display: none;
         }
-            
+
         .orangered-description span{
             background:orangered !important;
             color:orangered !important;
@@ -497,7 +497,7 @@ footer{
             padding-top: 5px !important;
         }
 
-    
+
         @media print{
 
             p{
@@ -649,15 +649,15 @@ footer{
 
         </style>
 
-        
+
     @foreach($model as $values)
 
     <?php
 
     $values = collect($values);
-    
+
     $grouped_by_exam_type = $values->groupBy('exam_type');
-    
+
     $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
 
     $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
@@ -676,7 +676,7 @@ footer{
 
     <header style="text-align:center;font-size:14px;border:1px solid #577;margin-top:-5px;" class="header-section text-center">
 
-  
+
         <div style="text-align:center;margin-top:-15px;padding: 0;">
 
             <p>{{ $user->typing_exam_code->company->company_name }}</p>
@@ -687,7 +687,7 @@ footer{
         </div>
 
         <div class="clearfix"></div>
-        
+
         <div class="bangla-english-block" style="text-align:left;padding:0 10px;">
 
             <div class="bangla-block">
@@ -727,32 +727,32 @@ footer{
                 <span class=""><b>Wrong Words: </b>{{$english->inserted_words}}</span><br>
 
             </div>
-            
+
         </div>
 
         <div class="clearfix"></div>
     </header>
-    
-    
+
+
 
 
     <section style="border:1px solid #577;padding:20px;border-top:none;border-bottom:none;">
         <h3 style="font-size:18px;color:#0000dc">Bangla Original Text</h3>
-        
+
         {!! '<p class="bangla-font">' . $bangla->original_text . '</p>' !!}
-        
-        
+
+
         <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
-        
+
         {!! ! empty($bangla->answered_text) ? '<p class="bangla-font" style="font-size:13px;">' . $bangla->answered_text . '</p>': '<b>No answer is given.</b>' !!}
-        
+
         <h3 style="font-size:18px;color:#0000dc">English Original Text</h3>
-        
+
         {!! '<p>' . $english->original_text  . '</p>' !!}
-        
-        
+
+
         <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
-        
+
         {!! ! empty($english->answered_text) ? '<p>' . $english->answered_text . '</p>': '<b>No answer is given.</b>' !!}
     </section>
 
@@ -779,7 +779,7 @@ footer{
 @section('custom-script')
 
 <script>
-    
+
 $('.print').click(function(event) {
 
 w=window.open();

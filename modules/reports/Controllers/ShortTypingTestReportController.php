@@ -55,9 +55,6 @@ class ShortTypingTestReportController extends Controller
         return view('reports::short_typing_test_report.index', compact('page_title', 'company_list', 'designation_list', 'exam_code_list', 'status', 'header', 'exam_dates_string', 'model_all', 'bangla_speed', 'english_speed', 'passed_count', 'failed_count', 'show_count', 'remarks'));
     }
 
-
-
-
     public function generate_typing_test_report(Request $request)
     {
         $page_title = 'Typing Test Report (Short)';
@@ -204,35 +201,38 @@ class ShortTypingTestReportController extends Controller
 
         // dd($model);
 
-        $model->each(function ($values, $key) use ($bangla_speed, $english_speed, $spmDigit) {
+        $model->each(function ($values, $key) use ($bangla_speed, $english_speed) {
 
             // $values = collect($values);
             $null_object = StdClass::fromArray();
 
-
             $grouped_by_exam_type = $values->groupBy('exam_type');
 
             $bangla = $grouped_by_exam_type->get('bangla', [$null_object])[0];
-
             $english = $grouped_by_exam_type->get('english', [$null_object])[0];
+
+            $bangla_time = isset($bangla->exam_time) && $bangla->exam_time > 10 ? $bangla->exam_time - 1 : 1;
+            $english_time = isset($english->exam_time) && $bangla->exam_time > 10 ? $english->exam_time - 1 : 1;
 
             //from mopa explanation
             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-            $bangla_typed_words = round($bangla_typed_characters/5);
-            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
-            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
-            $bangla_wpm = round($bangla_corrected_words/$spmDigit);
-            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
-            $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
+            $bangla_typed_words = round($bangla_typed_characters / 5);
+            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words / 5) : 0;
+            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words / 5) : 0;
+            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
+            $bangla_wpm = round($bangla_corrected_words / $bangla_time, 1);
+            $bangla_wpm = round_to_integer($bangla_wpm);
+            $bangla_round_marks = round((20 / $bangla_speed) * $bangla_wpm);
             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-            $english_typed_words = round($english_typed_characters/5);
-            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
-            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
-            $english_wpm = round($english_corrected_words/$spmDigit);
-            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
-            $english_round_marks = round((20/$english_speed)* $english_wpm);
+            $english_typed_words = round($english_typed_characters / 5);
+            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
+            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words / 5) : 0;
+            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
+            $english_wpm = round($english_corrected_words / $english_time, 1);
+            $english_wpm = round_to_integer($english_wpm);
+            $english_round_marks = round((20 / $english_speed) * $english_wpm);
             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
             $average = round(($bangla_marks + $english_marks) / 2);

@@ -10,7 +10,7 @@
 <!-- page start-->
 
 <style>
-    
+
 form{
     padding-top: 0;
 }
@@ -75,7 +75,7 @@ form .col-sm-12:last-child{
                     </div>
 
                 <div class="col-sm-12">
-    
+
                     <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('designation_id', 'Post Name:', ['class' => 'control-label']) !!}
                         <small class="required jrequired">(Required)</small>
@@ -94,6 +94,12 @@ form .col-sm-12:last-child{
                         {!! Form::text('english_speed', Input::get('english_speed')? Input::get('english_speed') : null,['english_speed'=>'english_speed','class' => 'form-control','placeholder'=>'english speed', 'title'=>'english speed','required'=>'required']) !!}
                     </div>
 
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('spmDigit', 'Calculation Digit (SPM):', ['class' => 'control-label']) !!}
+                        <small class="required">(Req.)</small>
+                        {!! Form::text('spmDigit', Input::get('spmDigit')? Input::get('spmDigit') : null,['spmDigit'=>'spmDigit','class' => 'form-control','placeholder'=>'spm digit', 'title'=>'spm digit','required'=>'required']) !!}
+                    </div>
+
                     <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('remarks', 'Remarks:', ['class' => 'control-label']) !!}
                         <small class="required jrequired">(Required)</small>
@@ -107,21 +113,21 @@ form .col-sm-12:last-child{
 
                 </div>
                 {!! Form::close() !!}
-  
+
                 @if(isset($model) && ! $model->isEmpty())
                 <div class="col-lg-12 col-md-3 col-sm-6 all-graph-pdf-report-block">
 
                 {{-- <a href="{{ route('typing-test-report-pdf', [$company_id,$designation_id,$exam_date_from,$exam_date_to,$bangla_speed,$english_speed]) }}" class="pdf_report_button pull-right" target="_blank"><img src="{{ URL::asset('assets/img/pdf-icon.png') }}" alt=""></a> --}}
 
-                <?php  
+                <?php
 
                 $ddd = URL('/') . '/reports/roll-wise-all-short-graph-report' . '?exam_code=' . $exam_code . '&company_id=' . $company_id . '&designation_id=' . $designation_id . '&exam_date_from='. $exam_date_from . '&exam_date_to=' . $exam_date_to . '&bangla_speed=' . $bangla_speed . '&english_speed=' . $english_speed . '&remarks=' . $remarks; ?>
 
-                <div class="btn btn-primary btn-sm pull-right"><a target="_blank" style="color:white" href="{{ $ddd }}">View All Answer Scripts</a></div>
+                {{-- <div class="btn btn-primary btn-sm pull-right"><a target="_blank" style="color:white" href="{{ $ddd }}">View All Answer Scripts</a></div> --}}
 
                 <a href="#" class="btn btn-danger print-button pull-right">Print Result with Remarks</a>
 
-                <a href="#" class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>  
+                <a href="#" class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>
 
 
                 </div>
@@ -131,17 +137,17 @@ form .col-sm-12:last-child{
                 <br><br><br>
 
                 <?php
-
+                $spmDigit = isset($spmDigit) ? $spmDigit : '';
                 function round_to_integer($number){
-                   
+
                    if (is_integer($number)) {
 
                        return $number;
 
                    }
-                    
+
                    $parts = explode(".",$number);
-                
+
                    if (isset($parts[1]) && (int)$parts[1] >= 5) {
 
                        return $parts[0] + 1;
@@ -171,21 +177,21 @@ form .col-sm-12:last-child{
                         </tr>
                         </thead>
                         <tbody>
-                        
+
                         @if($status==2)
                         <?php $i = isset($_GET['page']) ? ($_GET['page']-1)*1 + 0: 0; ?>
 
                             @foreach($model as $values)
 
-                            <?php $i++; 
-                            
-                    
+                            <?php $i++;
+
+
                             $values = collect($values);
                             $null_object = StdClass::fromArray();
-                        
+
 
                             $grouped_by_exam_type = $values->groupBy('exam_type');
-                   
+
                             $bangla = $grouped_by_exam_type->get('bangla',[$null_object])[0];
 
                             $english = $grouped_by_exam_type->get('english',[$null_object])[0];
@@ -195,31 +201,34 @@ form .col-sm-12:last-child{
                             $bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
 
                             $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
-  
 
-                          
-                            //$bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time: 1;
                             $bangla_exam_time = $bangla_speed;
-
-                            //$english_exam_time3 = isset($english->exam_time) ? $english->exam_time: 1;
                             $english_exam_time = $english_speed;
 
-                            $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
+                            $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+                            $bangla_typed_words = round($bangla_typed_characters/5);
+                            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
+                            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
+                            $bangla_wpm = round($bangla_corrected_words/$spmDigit);
+                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
+                            $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
-                            $bangla_wpm = round($bangla_corrected_words/$bangla_exam_time3,1);
+                            $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                            $english_typed_words = round($english_typed_characters/5);
+                            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
+                            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
+                            $english_wpm = round($english_corrected_words/$spmDigit);
+                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_round_marks = round((20/$english_speed)* $english_wpm);
+                            $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
-                            $bangla_wpm = round_to_integer($bangla_wpm);
-
-                            $english_corrected_words = $english->typed_words - $english->inserted_words;
-
-                            $english_wpm = round($english_corrected_words/$english_exam_time3,1);
-
-                            $english_wpm = round_to_integer($english_wpm);
+                            $average = round(($bangla_marks + $english_marks) / 2);
 
 
                             ?>
                                 <tr class="gradeX">
-                                                           
+
                                     <td>{{$i}}</td>
                                     <td>{{$values[0]->sl}}</td>
                                     <td>{{$values[0]->roll_no}}</td>
@@ -231,14 +240,14 @@ form .col-sm-12:last-child{
                                     </td>
 
                                     <td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">
-                                   
+
                                         @if(! $values->lists('attended_typing_test')->contains('true'))
 
                                         <?php $remarks = 'Absent'; ?>
 
                                         @else
 
-                                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
 
                                         <?php $remarks = 'Pass'; ?>
 
@@ -262,10 +271,10 @@ form .col-sm-12:last-child{
 
                                         @endif
 
-                                        {{$remarks}} 
+                                        {{$remarks}}
 
                                    </td>
-                                  
+
                                 </tr>
                             @endforeach
                         @endif
@@ -309,7 +318,7 @@ form .col-sm-12:last-child{
     }
 
 
-    @media print{      
+    @media print{
 
         *{
             text-align: center !important;
@@ -336,7 +345,7 @@ form .col-sm-12:last-child{
         thead tr th:empty{
             border-right:none !important;
             border-top:none !important;
-        }   
+        }
 
         thead:first-child tr, thead tr th.no-border{
             border-bottom:0 !important;
@@ -409,10 +418,10 @@ form .col-sm-12:last-child{
             font-size: 16px !important;
         }
 
-    } 
+    }
 
 </style>
-             
+
 
 
 <div class="print-section print-show">
@@ -436,25 +445,25 @@ form .col-sm-12:last-child{
             <th> <span>Exam Code</span> </th>
             <th> <span>Name</span> </th>
             <th> <span>Remarks</span> </th>
-            
+
         </tr>
         </thead>
 
         <tbody>
-        
+
         @if($status==2)
         <?php $i = isset($_GET['page']) ? ($_GET['page']-1)*1 + 0: 0; ?>
 
             @foreach($model_all as $values)
 
-            <?php $i++; 
+            <?php $i++;
 
 
 
             $values = collect($values);
-        
+
             $grouped_by_exam_type = $values->groupBy('exam_type');
-   
+
             $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
 
             $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
@@ -465,21 +474,32 @@ form .col-sm-12:last-child{
             $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
 
 
-            $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
+            $bangla_exam_time = $bangla_speed;
+                            $english_exam_time = $english_speed;
 
-            $bangla_wpm = round($bangla_corrected_words/$bangla_exam_time3,1);
+                            $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+                            $bangla_typed_words = round($bangla_typed_characters/5);
+                            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
+                            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
+                            $bangla_wpm = round($bangla_corrected_words/$spmDigit);
+                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
+                            $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
-            $bangla_wpm = round_to_integer($bangla_wpm);            
+                            $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                            $english_typed_words = round($english_typed_characters/5);
+                            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
+                            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
+                            $english_wpm = round($english_corrected_words/$spmDigit);
+                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_round_marks = round((20/$english_speed)* $english_wpm);
+                            $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
-            $english_corrected_words = $english->typed_words - $english->inserted_words;
+                            $average = round(($bangla_marks + $english_marks) / 2);
 
-            $english_wpm = round($english_corrected_words/$english_exam_time3,1);
-
-            $english_wpm = round_to_integer($english_wpm);
-        
             ?>
                 <tr class="gradeX">
-                                           
+
                     <td>{{$i}}</td>
                     <td>{{$values[0]->roll_no}}</td>
                     <td>{{$values[0]->exam_code_name}}</td>
@@ -489,33 +509,33 @@ form .col-sm-12:last-child{
 
                     </td>
                     <td>
-                   
+
                         @if(! $values->lists('attended_typing_test')->contains('true'))
-                        
+
                         <?php $remarks = 'Absent'; ?>
-                        
+
                         @else
 
-                        @if($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed)
+                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
 
                         <?php $remarks = 'Pass'; ?>
 
                         @else
 
                         <?php $remarks = 'Fail'; ?>
-                        
+
                         @endif
 
                         @if($values->lists('typing_status')->contains('cancelled'))
-                        
+
                         <?php $remarks = 'Cancelled'; ?>
-                        
+
                         @endif
 
                         @if($values->lists('typing_status')->contains('expelled'))
-                        
+
                         <?php $remarks = 'Expelled'; ?>
-                        
+
                         @endif
 
                         @endif
@@ -523,7 +543,7 @@ form .col-sm-12:last-child{
                         {{$remarks}}
 
                    </td>
-                   
+
                 </tr>
             @endforeach
         @endif
@@ -533,8 +553,8 @@ form .col-sm-12:last-child{
 
 
 
-{{-- @if ($remarks == 'all') 
-    
+{{-- @if ($remarks == 'all')
+
 <table style="margin:20px;width:30%;margin-left:70%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
   <tr>
     <th>Pass</th>
@@ -622,7 +642,7 @@ form .col-sm-12:last-child{
     }
 
 
-    @media print{      
+    @media print{
 
         *{
             text-align: center !important;
@@ -652,7 +672,7 @@ form .col-sm-12:last-child{
         thead tr th:empty{
             border-right:none !important;
             border-top:none !important;
-        }   
+        }
 
         thead:first-child tr, thead tr th.no-border{
             border-bottom:0 !important;
@@ -725,10 +745,10 @@ form .col-sm-12:last-child{
             font-size: 16px !important;
         }
 
-    } 
+    }
 
 </style>
-             
+
 
 
 <div class="print-section print-show">
@@ -752,25 +772,25 @@ form .col-sm-12:last-child{
             <th> <span>Exam Code</span> </th>
             <th> <span>Name</span> </th>
             <th> <span>Remarks</span> </th>
-            
+
         </tr>
         </thead>
 
         <tbody>
-        
+
         @if($status==2)
         <?php $i = isset($_GET['page']) ? ($_GET['page']-1)*1 + 0: 0; ?>
 
             @foreach($model_all as $values)
 
-            <?php $i++; 
+            <?php $i++;
 
 
 
             $values = collect($values);
-        
+
             $grouped_by_exam_type = $values->groupBy('exam_type');
-   
+
             $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
 
             $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
@@ -781,21 +801,32 @@ form .col-sm-12:last-child{
             $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
 
 
-            $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
+            $bangla_exam_time = $bangla_speed;
+                            $english_exam_time = $english_speed;
 
-            $bangla_wpm = round($bangla_corrected_words/$bangla_exam_time3,1);
+                            $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+                            $bangla_typed_words = round($bangla_typed_characters/5);
+                            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
+                            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
+                            $bangla_wpm = round($bangla_corrected_words/$spmDigit);
+                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
+                            $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
-            $bangla_wpm = round_to_integer($bangla_wpm);            
+                            $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                            $english_typed_words = round($english_typed_characters/5);
+                            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
+                            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
+                            $english_wpm = round($english_corrected_words/$spmDigit);
+                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_round_marks = round((20/$english_speed)* $english_wpm);
+                            $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
-            $english_corrected_words = $english->typed_words - $english->inserted_words;
+                            $average = round(($bangla_marks + $english_marks) / 2);
 
-            $english_wpm = round($english_corrected_words/$english_exam_time3,1);
-
-            $english_wpm = round_to_integer($english_wpm);
-        
             ?>
                 <tr class="gradeX">
-                                           
+
                     <td>{{$i}}</td>
                     <td>{{$values[0]->roll_no}}</td>
                     <td>{{$values[0]->exam_code_name}}</td>
@@ -805,7 +836,7 @@ form .col-sm-12:last-child{
 
                     </td>
                     <td></td>
-                   
+
                 </tr>
             @endforeach
         @endif
@@ -869,19 +900,19 @@ function report_exam_code(){
     report_exam_code();
 
     $('#exam_code').keyup(function(e) {
-    
+
         report_exam_code();
 
     });
 
     $('#exam_code').bind('input',function(e) {
-    
+
         report_exam_code();
 
     });
 
     // $('select, #exam_date').not('#exam_code_list, #exam_type').prop('disabled', true);
-                        
+
     $('form').on('submit', function(e) {
         $('select, #exam_date').prop('disabled', false);
     });
@@ -918,7 +949,7 @@ function report_exam_code(){
 
         // })
 
-        
+
 
 
         $('.print-button').click(function(event) {
@@ -948,7 +979,7 @@ function report_exam_code(){
 
 @section('custom-script')
 <script>
-    
+
 var table = $('#examples_report').DataTable( {
   "language": {
     "search": "Search:"

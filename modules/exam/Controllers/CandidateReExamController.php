@@ -39,21 +39,21 @@ class CandidateReExamController extends Controller
     {
         $page_title = "Candidate Re-Exam";
 
-        $exam_code_list =  [''=>'Select exam code'] + ExamCode::with('exam_code')->where('status','active')->orderBy('id','desc')->lists('exam_code_name','id')->all();
+        $exam_code_list =  ['' => 'Select exam code'] + ExamCode::with('exam_code')->where('status', 'active')->orderBy('id', 'desc')->lists('exam_code_name', 'id')->all();
 
 
         $exam_process_code_list =  ExamProcess::lists('exam_code_id')->all();
 
         //$exam_process_code_list =  ExamProcess::orderBy('id','desc')->take('5')->get()->lists('exam_code_id')->all();
-        $exam_process_code_list =  ExamProcess::orderBy('id','desc')->get()->lists('exam_code_id')->all();
+        $exam_process_code_list =  ExamProcess::orderBy('id', 'desc')->get()->lists('exam_code_id')->all();
 
-        $exam_code_list = [''=>'Select exam code'] + collect($exam_code_list)->flip()->intersect($exam_process_code_list)->flip()->all();
+        $exam_code_list = ['' => 'Select exam code'] + collect($exam_code_list)->flip()->intersect($exam_process_code_list)->flip()->all();
 
 
 
         // $data = CandidateReExam::with('exam_code.company','exam_code.designation')->where('status','active')->get();
 
-        return view('exam::candidate_re_exam.index', compact('data', 'page_title','exam_code_list'));
+        return view('exam::candidate_re_exam.index', compact('data', 'page_title', 'exam_code_list'));
     }
 
 
@@ -70,32 +70,30 @@ class CandidateReExamController extends Controller
 
         if ($main_exam_type == 'aptitude_test') {
 
-            $user_data = $request->only(['exam_code_id','roll_no']);
+            $user_data = $request->only(['exam_code_id', 'roll_no']);
 
             $user_data['aptitude_exam_code_id'] = $user_data['exam_code_id'];
 
             unset($user_data['exam_code_id']);
 
-            $user = User::where($user_data)->get(); 
+            $user = User::where($user_data)->get();
+        } else {
 
-        }else{
-
-            $user_data = $request->only(['exam_code_id','roll_no']);
+            $user_data = $request->only(['exam_code_id', 'roll_no']);
 
             $user_data['typing_exam_code_id'] = $user_data['exam_code_id'];
 
             unset($user_data['exam_code_id']);
 
             $user = User::where($user_data)->get();
-
         }
 
-        
+
 
 
         if ($user->isEmpty()) {
             Session::flash('error', "No user found. Please Try Again");
-           return redirect()->back()->withInput()->with('exam_type',$data['exam_type']);
+            return redirect()->back()->withInput()->with('exam_type', $data['exam_type']);
         }
 
 
@@ -110,12 +108,12 @@ class CandidateReExamController extends Controller
 
         // }
 
- 
+
 
         if ($main_exam_type == 'aptitude_test') {
 
             $user->first()->exam_type = 'aptitude_test';
-            
+
             $user->first()->aptitude_status = $data['status'];
 
             $user->first()->aptitude_exam_cancel_comments = $data['cancel_comments'];
@@ -128,33 +126,29 @@ class CandidateReExamController extends Controller
             DB::beginTransaction();
             try {
 
-                if (! in_array($request->get('status'), ['cancelled','expelled']) ) {
+                if (!in_array($request->get('status'), ['cancelled', 'expelled'])) {
 
-                AptitudeExamResult::where('user_id',$user->first()->id)->where('question_type', 'word')->delete();
-                AptitudeExamResult::where('user_id',$user->first()->id)->where('question_type', 'excel')->delete();
-                AptitudeExamResult::where('user_id',$user->first()->id)->where('question_type', 'ppt')->delete();
+                    AptitudeExamResult::where('user_id', $user->first()->id)->where('question_type', 'word')->delete();
+                    AptitudeExamResult::where('user_id', $user->first()->id)->where('question_type', 'excel')->delete();
+                    AptitudeExamResult::where('user_id', $user->first()->id)->where('question_type', 'ppt')->delete();
 
 
-                FileDownloadPermission::where('user_id',$user->first()->id)->where('question_type', 'word')->delete();
-                FileDownloadPermission::where('user_id',$user->first()->id)->where('question_type', 'excel')->delete();
-                FileDownloadPermission::where('user_id',$user->first()->id)->where('question_type', 'ppt')->delete();
-
+                    FileDownloadPermission::where('user_id', $user->first()->id)->where('question_type', 'word')->delete();
+                    FileDownloadPermission::where('user_id', $user->first()->id)->where('question_type', 'excel')->delete();
+                    FileDownloadPermission::where('user_id', $user->first()->id)->where('question_type', 'ppt')->delete();
                 }
 
 
                 $user->first()->save();
-                
+
                 DB::commit();
                 Session::flash('message', "Successfully Reseted Aptitude Test.");
-
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 DB::rollback();
                 Session::flash('error', "An error occured. Please Try Again");
             }
 
-            return redirect()->back()->withInput();
-
-
+            return redirect()->back();
         }
 
 
@@ -163,112 +157,99 @@ class CandidateReExamController extends Controller
 
         if ($main_exam_type == 'typing_test') {
 
-        $user->first()->exam_type = 'typing_test';
-        
-        $user->first()->typing_status = $data['status'];
+            $user->first()->exam_type = 'typing_test';
 
-        $user->first()->typing_exam_cancel_comments = $data['cancel_comments'];
+            $user->first()->typing_status = $data['status'];
+
+            $user->first()->typing_exam_cancel_comments = $data['cancel_comments'];
 
 
 
-        
-        DB::beginTransaction();
-        try {
 
-            if (! in_array($request->get('status'), ['cancelled','expelled']) ) {
+            DB::beginTransaction();
+            try {
 
-            if ($request->get('exam_type') != 'all') {
+                if (!in_array($request->get('status'), ['cancelled', 'expelled'])) {
 
-                Examination::where('user_id',$user->first()->id)->where('exam_type', $request->get('exam_type'))->delete();
+                    if ($request->get('exam_type') != 'all') {
 
-            }else{
+                        Examination::where('user_id', $user->first()->id)->where('exam_type', $request->get('exam_type'))->delete();
+                    } else {
 
-                Examination::where('user_id',$user->first()->id)->where('exam_type', 'bangla')->delete();
+                        Examination::where('user_id', $user->first()->id)->where('exam_type', 'bangla')->delete();
 
-                Examination::where('user_id',$user->first()->id)->where('exam_type', 'english')->delete();
+                        Examination::where('user_id', $user->first()->id)->where('exam_type', 'english')->delete();
+                    }
+                }
 
+                $user->first()->save();
+
+                DB::commit();
+                Session::flash('message', "Successfully Reset Typing Test.");
+            } catch (\Exception $e) {
+                DB::rollback();
+                Session::flash('error', "An error occurred. Please Try Again");
             }
 
-            }
-
-            $user->first()->save();
-            
-            DB::commit();
-            Session::flash('message', "Successfully Reseted Typing Test.");
-
-        } catch(\Exception $e) {
-            DB::rollback();
-            Session::flash('error', "An error occured. Please Try Again");
+            return redirect()->back();
         }
-
-        return redirect()->back()->withInput();
-
     }
-
-}
 
 
     function ajax_get_main_exam_type()
     {
 
-    $exam_code = DB::table('exam_code')->where('id',$_POST['exam_code_id'])->first();
+        $exam_code = DB::table('exam_code')->where('id', $_POST['exam_code_id'])->first();
 
-    if (! empty($exam_code)) {
+        if (!empty($exam_code)) {
 
-        return $exam_code->exam_type;
+            return $exam_code->exam_type;
+        } else {
 
-    }else{
-
-        return '';
-
-    }
-
+            return '';
+        }
     }
 
 
-    function ajax_get_answered_text(){
+    function ajax_get_answered_text()
+    {
 
-    $user = User::where('roll_no',$_POST['roll_no'])->where('typing_exam_code_id',$_POST['exam_code_id'])->first();
+        $user = User::where('roll_no', $_POST['roll_no'])->where('typing_exam_code_id', $_POST['exam_code_id'])->first();
 
-    if (isset($user)) {
+        if (isset($user)) {
+            $answered_text = !empty($user->typing_test_result()->where('exam_type', $_POST['exam_type'])->first()) ? $user->typing_test_result()->where('exam_type', $_POST['exam_type'])->first()->answered_text : '';
+            $username = $user->username;
+        } else {
 
-        $answered_text = ! empty($user->typing_test_result()->where('exam_type',$_POST['exam_type'])->first()) ? $user->typing_test_result()->where('exam_type',$_POST['exam_type'])->first()->answered_text : '';
+            $answered_text = '';
+            $username = '';
+        }
+        $data['answered_text'] = strip_tags($answered_text);
+        $data['username'] = $username;
 
-    }else{
-
-        $answered_text = '';
-
-    }
-
-
-    return strip_tags($answered_text);
-
+        return $data;
     }
 
 
 
-    function ajax_get_remarks(){
+    function ajax_get_remarks()
+    {
 
-    $exam_code_field = $_POST['exam_type'] . '_' . 'code_id';
+        $exam_code_field = $_POST['exam_type'] . '_' . 'code_id';
 
-    $remarks_field = $_POST['exam_type'] . '_' . 'cancel_comments';
+        $remarks_field = $_POST['exam_type'] . '_' . 'cancel_comments';
 
-    $user = User::where('roll_no',$_POST['roll_no'])->where($exam_code_field,$_POST['exam_code_id'])->first();
+        $user = User::where('roll_no', $_POST['roll_no'])->where($exam_code_field, $_POST['exam_code_id'])->first();
 
-    if (isset($user)) {
+        if (isset($user)) {
 
-        $remarks = $user->{$remarks_field};
+            $remarks = $user->{$remarks_field};
+        } else {
 
-    }else{
+            $remarks = '';
+        }
 
-        $remarks = '';
 
+        return strip_tags($remarks);
     }
-
-
-    return strip_tags($remarks);
-
-    }
-
-
 }

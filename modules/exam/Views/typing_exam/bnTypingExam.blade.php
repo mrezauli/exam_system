@@ -1,4 +1,5 @@
 <link href="{{ URL::asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" >
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 
 
 <style>
@@ -297,12 +298,7 @@ a.btn.btn-primary.btn-sm.start-button {
   </div>
 
 
-<input type="hidden" name="status" id="status" class="form-control" value="active">
-
-
-<input type="hidden" name="qselection_typing_id" id="qselection_typing_id" class="form-control" value="">
-<input type="hidden" name="accuracy" id="accuracy" class="form-control" value="">
-<input type="hidden" name="wpm" id="wpm" class="form-control" value="">
+  <div id="progressbar"></div>
 
 
 <div class="row">
@@ -412,6 +408,7 @@ a.btn.btn-primary.btn-sm.start-button {
 <script type="text/javascript" src="{{ URL::asset('assets/js/cookie.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/ckeditor/ckeditor.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('assets/ckeditor/samples/js/sample.js') }}"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 {{-- <script type="text/javascript" src="http://localhost/exam_system/modules/exam/views/exams/typingtest.js"></script> --}}
 
 
@@ -451,20 +448,20 @@ $(".start-button").one("click", function() {
 window.history.forward();
 function noBack() { window.history.forward(); }
 
-$('#original_text').bind('cut copy paste drop', function (e) {
+// $('#original_text').bind('cut copy paste drop', function (e) {
 
- return false;
+//  return false;
 
-});
+// });
 
 window.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     });
 
 
-$('#answered_text').bind('cut copy paste drop', function (e) {
-  return false;
-});
+// $('#answered_text').bind('cut copy paste drop', function (e) {
+//   return false;
+// });
 
 window.addEventListener('contextmenu', function(e) {
       e.preventDefault();
@@ -528,6 +525,12 @@ if( (first_exam_started && ! first_exam_completed ) || (last_exam_started && ! l
 
 
 $('.typing-exam-submit-button').show();
+$('.typing-exam-submit-button').on("click", function() {
+          $('#progressbar').progressbar({
+          value: false
+        });
+      });
+
 
   var typing_exam_time = Cookies.get('typing_exam_time');
 

@@ -29,14 +29,15 @@ class RollWiseShortTypingTestReportController extends Controller
 {
 
 
-    public function typing_test_report(){
+    public function typing_test_report()
+    {
 
 
         $page_title = 'Roll Wise Typing Test Report (Short)';
         $bangla_speed = $english_speed = $passed_count = $failed_count = $show_count = $remarks = '';
 
 
-        
+
         $status = 1;
 
         $header = '';
@@ -45,21 +46,20 @@ class RollWiseShortTypingTestReportController extends Controller
 
         $model_all = collect([]);
 
-        $company_list =  [''=>'Select organization'] + Company::where('status','active')->orderBy('id','desc')->lists('company_name','id')->all();
+        $company_list =  ['' => 'Select organization'] + Company::where('status', 'active')->orderBy('id', 'desc')->lists('company_name', 'id')->all();
 
-        $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
+        $designation_list =  ['' => 'Select designation'] + Designation::where('status', 'active')->orderBy('id', 'desc')->lists('designation_name', 'id')->all();
 
-        $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','typing_test')->where('status','active')->orderBy('id','desc')->lists('exam_code_name','id')->all();
+        $exam_code_list =  ['' => 'Select exam code'] + ExamCode::where('exam_type', 'typing_test')->where('status', 'active')->orderBy('id', 'desc')->lists('exam_code_name', 'id')->all();
 
-        return view('reports::roll_wise_short_typing_test_report.index', compact('page_title','company_list','designation_list','exam_code_list','status','header','exam_dates_string','model_all','bangla_speed','english_speed','passed_count','failed_count','show_count','remarks'));
-
-
+        return view('reports::roll_wise_short_typing_test_report.index', compact('page_title', 'company_list', 'designation_list', 'exam_code_list', 'status', 'header', 'exam_dates_string', 'model_all', 'bangla_speed', 'english_speed', 'passed_count', 'failed_count', 'show_count', 'remarks'));
     }
 
-  
 
 
-    public function generate_typing_test_report(Request $request){
+
+    public function generate_typing_test_report(Request $request)
+    {
 
 
         $page_title = 'Roll Wise Typing Test Report (Short)';
@@ -67,7 +67,7 @@ class RollWiseShortTypingTestReportController extends Controller
         $status = 2;
 
 
-        $exam_code = Input::get('exam_code','');
+        $exam_code = Input::get('exam_code', '');
         $company_id = Input::get('company_id');
         $designation_id = Input::get('designation_id');
         $exam_date_from = Input::get('exam_date_from');
@@ -76,6 +76,7 @@ class RollWiseShortTypingTestReportController extends Controller
 
         $bangla_speed = Input::get('bangla_speed');
         $english_speed = Input::get('english_speed');
+        $spmDigit = Input::get('spmDigit');
         $remarks = Input::get('remarks');
 
 
@@ -84,6 +85,7 @@ class RollWiseShortTypingTestReportController extends Controller
         $validator = Validator::make($request->all(), [
             'bangla_speed' => 'required|integer',
             'english_speed' => 'required|integer',
+            'spmDigit' => 'required|integer',
         ]);
 
 
@@ -91,95 +93,88 @@ class RollWiseShortTypingTestReportController extends Controller
 
             Session::flash('danger', "The bangla speed and english speed field must be an integer.");
             return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
 
 
 
 
-        $company_list =  [''=>'Select organization'] + Company::where('status','active')->orderBy('id','desc')->lists('company_name','id')->all();
+        $company_list =  ['' => 'Select organization'] + Company::where('status', 'active')->orderBy('id', 'desc')->lists('company_name', 'id')->all();
 
-        $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
+        $designation_list =  ['' => 'Select designation'] + Designation::where('status', 'active')->orderBy('id', 'desc')->lists('designation_name', 'id')->all();
 
-        $exam_code_list =  [''=>'Select exam code'] + ExamCode::where('exam_type','typing_test')->where('status','active')->orderBy('id','desc')->lists('exam_code_name','id')->all();
-
-
-
-        $header = DB::table( 'qselection_typing_test AS q' )
-                    ->select('e.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
-                    ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
-                    ->leftJoin( 'company as c', 'e.company_id', '=', 'c.id')
-                    ->leftJoin( 'designation as d', 'e.designation_id', '=', 'd.id');
+        $exam_code_list =  ['' => 'Select exam code'] + ExamCode::where('exam_type', 'typing_test')->where('status', 'active')->orderBy('id', 'desc')->lists('exam_code_name', 'id')->all();
 
 
 
-        $model = DB::table( 'user AS u' )
-         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','u.id as user_id','u.typing_status','e.company_id','e.designation_id','e.exam_code_name','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
-         ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')         
-        ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
-        ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
-        ->orderBy('u.id');
+        $header = DB::table('qselection_typing_test AS q')
+            ->select('e.exam_date', 'c.company_name', 'c.address_one', 'c.address_two', 'c.address_three', 'c.address_four', 'd.designation_name')
+            ->leftJoin('exam_code as e', 'e.id', '=', 'q.exam_code_id')
+            ->leftJoin('company as c', 'e.company_id', '=', 'c.id')
+            ->leftJoin('designation as d', 'e.designation_id', '=', 'd.id');
 
 
-        if ($exam_code != ''){
 
-            $model = $model->where('e.exam_code_name','=',$exam_code);
-            $header = $header->where('e.exam_code_name','=',$exam_code);
-            
-        }else{
+        $model = DB::table('user AS u')
+            ->select('u.id', 'u.sl', 'u.roll_no', 'u.username', 'u.middle_name', 'u.last_name', 'u.started_exam', 'u.attended_typing_test', 't.id AS exam_id', 'u.id as user_id', 'u.typing_status', 'e.company_id', 'e.designation_id', 'e.exam_code_name', 'e.exam_date', 't.exam_time', 't.exam_type', 't.total_words', 't.typed_words', 't.deleted_words', 't.inserted_words', 't.accuracy')
+            ->leftJoin('exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')
+            ->leftJoin('typing_exam_result as t', 't.user_id', '=', 'u.id')
+            ->leftJoin('qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
+            ->orderBy('u.id');
 
-            if(isset($company_id) && !empty($company_id)){
 
-                $model = $model->where('e.company_id','=',$company_id);
+        if ($exam_code != '') {
+
+            $model = $model->where('e.exam_code_name', '=', $exam_code);
+            $header = $header->where('e.exam_code_name', '=', $exam_code);
+        } else {
+
+            if (isset($company_id) && !empty($company_id)) {
+
+                $model = $model->where('e.company_id', '=', $company_id);
             }
 
-            if(isset($designation_id) && !empty($designation_id)){
+            if (isset($designation_id) && !empty($designation_id)) {
 
-                $model = $model->where('e.designation_id','=',$designation_id);
-
+                $model = $model->where('e.designation_id', '=', $designation_id);
             }
 
 
-            if($exam_date_from == '' && $exam_date_to != ''){
+            if ($exam_date_from == '' && $exam_date_to != '') {
 
-                $model = $model->where('e.exam_date','=',$exam_date_to);
-                $header = $header->where('e.exam_date','=',$exam_date_to);
-
+                $model = $model->where('e.exam_date', '=', $exam_date_to);
+                $header = $header->where('e.exam_date', '=', $exam_date_to);
             }
 
-            if($exam_date_from != '' && $exam_date_to == ''){
+            if ($exam_date_from != '' && $exam_date_to == '') {
 
-                $model = $model->where('e.exam_date','=',$exam_date_from);
-                $header = $header->where('e.exam_date','=',$exam_date_from);
-
+                $model = $model->where('e.exam_date', '=', $exam_date_from);
+                $header = $header->where('e.exam_date', '=', $exam_date_from);
             }
 
-            if($exam_date_from != '' && $exam_date_to != ''){
+            if ($exam_date_from != '' && $exam_date_to != '') {
 
                 $model = $model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
                 $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
-
             }
-
         }
 
-        
+
         $model_collection = collect($model->get());
 
         $exam_dates = $model_collection->groupBy('exam_date')->keys()->map(function ($values, $key) {
 
             return implode('-', array_reverse(explode('-', $values)));
-
         })->toArray();
 
 
-        $exam_dates_string = implode(',',$exam_dates);
+        $exam_dates_string = implode(',', $exam_dates);
 
 
 
         $header = $header->first();
-                         
+
         $model = collect($model->get())->groupBy('user_id');
 
 
@@ -188,13 +183,12 @@ class RollWiseShortTypingTestReportController extends Controller
 
             foreach ($model[''] as $value) {
 
-               $array = [$value];
+                $array = [$value];
 
-               $model->push($array);
-           }
+                $model->push($array);
+            }
+        }
 
-       }
-        
 
         unset($model['']);
 
@@ -202,126 +196,112 @@ class RollWiseShortTypingTestReportController extends Controller
 
 
 
-        function round_to_integer($number){
-           
-           if (is_integer($number)) {
+        function round_to_integer($number)
+        {
 
-               return $number;
+            if (is_integer($number)) {
 
-           }
-            
-           $parts = explode(".",$number);
-        
-           if (isset($parts[1]) && (int)$parts[1] >= 5) {
+                return $number;
+            }
 
-               return $parts[0] + 1;
+            $parts = explode(".", $number);
 
-           }else{
+            if (isset($parts[1]) && (int)$parts[1] >= 5) {
 
-               return $number;
+                return $parts[0] + 1;
+            } else {
 
-           }
-
+                return $number;
+            }
         }
 
 
         // dd($model);
 
-        $model->each(function ($values, $key)use($bangla_speed,$english_speed) {
+        $model->each(function ($values, $key) use ($bangla_speed, $english_speed) {
 
             // $values = collect($values);
             $null_object = StdClass::fromArray();
-            
 
             $grouped_by_exam_type = $values->groupBy('exam_type');
-            
-            $bangla = $grouped_by_exam_type->get('bangla',[$null_object])[0];
 
-            $english = $grouped_by_exam_type->get('english',[$null_object])[0];
-            
+            $bangla = $grouped_by_exam_type->get('bangla', [$null_object])[0];
+            $english = $grouped_by_exam_type->get('english', [$null_object])[0];
 
-            $bangla_time = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
+            $bangla_time = isset($bangla->exam_time) && $bangla->exam_time > 10 ? $bangla->exam_time - 1 : 1;
+            $english_time = isset($english->exam_time) && $bangla->exam_time > 10 ? $english->exam_time - 1 : 1;
 
-            $english_time = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
+            //from mopa explanation
+            $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+            $bangla_typed_words = round($bangla_typed_characters / 5);
+            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words / 5) : 0;
+            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words / 5) : 0;
+            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
+            $bangla_wpm = round($bangla_corrected_words / $bangla_time, 1);
+            $bangla_wpm = round_to_integer($bangla_wpm);
+            $bangla_round_marks = round((20 / $bangla_speed) * $bangla_wpm);
+            $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
+            $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+            $english_typed_words = round($english_typed_characters / 5);
+            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
+            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words / 5) : 0;
+            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
+            $english_wpm = round($english_corrected_words / $english_time, 1);
+            $english_wpm = round_to_integer($english_wpm);
+            $english_round_marks = round((20 / $english_speed) * $english_wpm);
+            $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
-            $bangla_exam_time = $bangla_speed;
-
-            //$english_exam_time = isset($english->exam_time) ? $english->exam_time: 1;
-            $english_exam_time = $english_speed;
-
-            $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
-
-            $bangla_wpm = round($bangla_corrected_words/$bangla_time,1);
-
-            $bangla_wpm = round_to_integer($bangla_wpm);            
-
-            $english_corrected_words = $english->typed_words - $english->inserted_words;
-
-            $english_wpm = round($english_corrected_words/$english_time,1);
-
-            $english_wpm = round_to_integer($english_wpm);            
+            $average = round(($bangla_marks + $english_marks) / 2);
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
-
-
-            if(! $values->lists('attended_typing_test')->contains('true')){
+            if (!$values->lists('attended_typing_test')->contains('true')) {
 
                 $values->remarks = 'Absent';
-
-            }elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed){
+            } elseif ($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25) {
 
                 $values->remarks = 'Pass';
-
-            }else{
+            } else {
 
                 $values->remarks = 'Fail';
-                
             }
 
-
-            if ($values->first()->typing_status =='expelled' || $values->first()->typing_status == 'cancelled') {
+            if ($values->first()->typing_status == 'expelled' || $values->first()->typing_status == 'cancelled') {
 
                 $values->remarks = $values->first()->typing_status;
-
             }
 
             // dd($values);
+        });
 
-        });   
 
+        $makeComparer = function ($criteria) {
 
-        $makeComparer = function($criteria) {
+            $comparer = function ($first, $second) use ($criteria) {
 
-          $comparer = function ($first, $second) use ($criteria) {
+                foreach ($criteria as $key => $orderType) {
 
-            foreach ($criteria as $key => $orderType) {
-                
-        // normalize sort direction
+                    // normalize sort direction
 
-              $orderType = strtolower($orderType);
+                    $orderType = strtolower($orderType);
 
-            if ( (int) $first->{$key} < (int) $second->{$key}) {
+                    if ((int) $first->{$key} < (int) $second->{$key}) {
 
-                return $orderType === "asc" ? -1 : 1;
+                        return $orderType === "asc" ? -1 : 1;
+                    } else if ((int) $first->{$key} > (int) $second->{$key}) {
 
-            } else if ( (int) $first->{$key} > (int) $second->{$key}) {
+                        return $orderType === "asc" ? 1 : -1;
+                    }
+                }
 
-                return $orderType === "asc" ? 1 : -1;
+                // all elements were equal
+                return 0;
+            };
 
-            }
-        }
-
-        // all elements were equal
-        return 0;
-
-        };
-
-        return $comparer;
-
+            return $comparer;
         };
 
 
@@ -352,7 +332,7 @@ class RollWiseShortTypingTestReportController extends Controller
 
 
         $criteria = ["roll_no" => "asc"];
-        
+
         $comparer = $makeComparer($criteria);
         $passed = $passed->sort($comparer);
 
@@ -389,7 +369,6 @@ class RollWiseShortTypingTestReportController extends Controller
         if ($remarks == 'failed') {
             $model = $failed;
             $show_count = 'Fail:' . ' ' . $failed_count;
-
         }
 
         if ($remarks == 'expelled') {
@@ -402,7 +381,7 @@ class RollWiseShortTypingTestReportController extends Controller
             $model = $cancelled;
         }
 
-     
+
 
         if ($remarks == 'all') {
             //$model = $passed->merge($failed);
@@ -415,7 +394,7 @@ class RollWiseShortTypingTestReportController extends Controller
         }
 
 
-        
+
         $model_all = $model;
 
 
@@ -432,93 +411,89 @@ class RollWiseShortTypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::roll_wise_short_typing_test_report.index', compact('page_title','status','company_id','designation_id','exam_code','exam_date','exam_time','company_list','designation_list','exam_code_list','model','model_all','bangla_speed','english_speed','remarks','exam_date_from','exam_date_to','header','exam_dates_string','passed_count','failed_count','show_count'));
-
+        return view('reports::roll_wise_short_typing_test_report.index', compact('spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'remarks', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'show_count'));
     }
 
 
 
 
-        public function typing_test_report_pdf($company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed){
+    public function typing_test_report_pdf($company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed)
+    {
 
 
-            $header = DB::table( 'qselection_typing_test AS q' )
-                        ->select('q.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
-                        ->leftJoin( 'company as c', 'q.company_id', '=', 'c.id')
-                        ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id')
-                        ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id');
-
-                        
-
-            $model = DB::table( 'user AS u' )
-                     ->select('u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','t.id AS exam_id','t.user_id','u.company_id','u.designation_id','u.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.accuracy')
-                    ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
-                    ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
-                    ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
-                    ->orderBy('u.id'); 
+        $header = DB::table('qselection_typing_test AS q')
+            ->select('q.exam_date', 'c.company_name', 'c.address_one', 'c.address_two', 'c.address_three', 'c.address_four', 'd.designation_name')
+            ->leftJoin('company as c', 'q.company_id', '=', 'c.id')
+            ->leftJoin('designation as d', 'q.designation_id', '=', 'd.id')
+            ->leftJoin('exam_code as e', 'e.id', '=', 'q.exam_code_id');
 
 
 
+        $model = DB::table('user AS u')
+            ->select('u.roll_no', 'u.username', 'u.middle_name', 'u.last_name', 'u.started_exam', 'u.attended_typing_test', 't.id AS exam_id', 't.user_id', 'u.company_id', 'u.designation_id', 'u.exam_date', 't.exam_time', 't.exam_type', 't.total_words', 't.typed_words', 't.deleted_words', 't.inserted_words', 't.accuracy')
+            ->leftJoin('typing_exam_result as t', 't.user_id', '=', 'u.id')
+            ->leftJoin('qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
+            ->leftJoin('exam_code as e', 'e.id', '=', 'q.exam_code_id')
+            ->orderBy('u.id');
 
-            if(isset($company_id) && !empty($company_id)){
-                $model = $model->where('e.company_id','=',$company_id);
-                $header = $header->where('e.company_id','=',$company_id);
+
+
+
+        if (isset($company_id) && !empty($company_id)) {
+            $model = $model->where('e.company_id', '=', $company_id);
+            $header = $header->where('e.company_id', '=', $company_id);
+        }
+
+
+        if (isset($designation_id) && !empty($designation_id)) {
+            $model = $model->where('e.designation_id', '=', $designation_id);
+            $header = $header->where('e.designation_id', '=', $designation_id);
+        }
+
+
+        if ($exam_date_from == '' && $exam_date_to != '') {
+
+            $model = $model->where('e.exam_date', '=', $exam_date_to);
+            $header = $header->where('e.exam_date', '=', $exam_date_to);
+        }
+
+        if ($exam_date_from != '' && $exam_date_to == '') {
+
+            $model = $model->where('e.exam_date', '=', $exam_date_from);
+            $header = $header->where('e.exam_date', '=', $exam_date_from);
+        }
+
+        if ($exam_date_from != '' && $exam_date_to != '') {
+
+            $model = $model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
+            $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
+        }
+
+
+        $model = collect($model->get())->groupBy('user_id');
+
+
+        if (isset($model[''])) {
+
+            foreach ($model[''] as $value) {
+
+                $array = [$value];
+
+                $model->push($array);
             }
+        }
+
+        unset($model['']);
+
+        $header = $header->first();
 
 
-            if(isset($designation_id) && !empty($designation_id)){
-                $model = $model->where('e.designation_id','=',$designation_id);
-                $header = $header->where('e.designation_id','=',$designation_id);
-            }
-
-
-            if($exam_date_from == '' && $exam_date_to != ''){
-
-                $model = $model->where('e.exam_date','=',$exam_date_to);
-                $header = $header->where('e.exam_date','=',$exam_date_to);
-
-            }
-
-            if($exam_date_from != '' && $exam_date_to == ''){
-
-                $model = $model->where('e.exam_date','=',$exam_date_from);
-                $header = $header->where('e.exam_date','=',$exam_date_from);
-
-            }
-
-            if($exam_date_from != '' && $exam_date_to != ''){
-
-                $model = $model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
-                $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
-
-            }
-
-
-            $model = collect($model->get())->groupBy('user_id');
-
-            
-            if (isset($model[''])) {
-
-                foreach ($model[''] as $value) {
-
-                    $array = [$value];
-
-                    $model->push($array);
-                }
-
-            }
-
-            unset($model['']);
-
-            $header = $header->first();
-
-
-            $html = '
+        $html = '
 
     <style>
 
     th span{
-        word-wrap:break-word !important;    
+        word-wrap:break-word !important;
         font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -547,7 +522,7 @@ class RollWiseShortTypingTestReportController extends Controller
     .tbl1 thead tr th:empty{
         border-right:none !important;
         border-top:none !important;
-    }   
+    }
 
     .tbl1 thead:first-child tr,.tbl1 thead tr th.no-border{
         border-bottom:0 !important;
@@ -559,7 +534,7 @@ class RollWiseShortTypingTestReportController extends Controller
         top:18px;
         left:auto;
         right:auto;
-   
+
     }
 
     .report_img{
@@ -582,14 +557,14 @@ class RollWiseShortTypingTestReportController extends Controller
         padding: 7px 5px;
         font-weight: 500;
         color: #000;
-        text-align: center !important;     
+        text-align: center !important;
     }
 
     .tbl1 tbody td{
         padding: 5px 3px;
         font-weight: 500;
         color: #000;
-        text-align: center !important;    
+        text-align: center !important;
     }
 
     .table-name{
@@ -615,11 +590,11 @@ class RollWiseShortTypingTestReportController extends Controller
     .header-section{
         margin-bottom: 20px;
     }
- 
+
 
     </style>';
 
-                $html = $html.'
+        $html = $html . '
 
                 <div class="header-section">
                     <p class="header">' . $header->company_name . '</p>
@@ -637,7 +612,7 @@ class RollWiseShortTypingTestReportController extends Controller
                         <th colspan="4">Bangla in 10 minutes</th>
                         <th colspan="4">English in 10 minutes</th>
                         <th class="no-border"> <div>Remarks</div> </th>
-                        
+
                     </tr>
                     </thead>
 
@@ -658,504 +633,463 @@ class RollWiseShortTypingTestReportController extends Controller
                         <th></th>
                     </tr>
                     </thead><tbody>';
-                    $i = 0;
-                    foreach($model as $values)
-                    {
+        $i = 0;
+        foreach ($model as $values) {
 
-                        $i++; 
+            $i++;
 
 
-                        $values = collect($values);
-                        
+            $values = collect($values);
 
-                        $grouped_by_exam_type = $values->groupBy('exam_type');
-                        
 
-                        $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
+            $grouped_by_exam_type = $values->groupBy('exam_type');
 
-                        $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
-                        
-                        $bangla_exam_time = isset($bangla->exam_time) ? $bangla->exam_time: 1;
 
-                        $english_exam_time = isset($english->exam_time) ? $english->exam_time: 1;
+            $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0] : StdClass::fromArray();
 
-                        $bangla_wpm = $bangla->typed_words/$bangla_exam_time;
+            $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0] : StdClass::fromArray();
 
-                        $english_wpm = $english->typed_words/$english_exam_time;
-                        
-                        
+            $bangla_exam_time = isset($bangla->exam_time) ? $bangla->exam_time : 1;
 
-                        if(! $values->lists('attended_typing_test')->contains('true')){
+            $english_exam_time = isset($english->exam_time) ? $english->exam_time : 1;
 
-                            $remark = 'Absent';
+            $bangla_wpm = $bangla->typed_words / $bangla_exam_time;
 
-                        }elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed){
+            $english_wpm = $english->typed_words / $english_exam_time;
 
-                            $remark = 'Pass';
 
-                        }else{
 
-                            $remark = 'Fail';
+            if (!$values->lists('attended_typing_test')->contains('true')) {
 
-                        }
-                        
+                $remark = 'Absent';
+            } elseif ($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed) {
 
-                        $html = $html . "
+                $remark = 'Pass';
+            } else {
+
+                $remark = 'Fail';
+            }
+
+
+            $html = $html . "
                         <tr class='gradeX'>
-                                                   
+
                             <td>" . $i . "</td>
                             <td>" . $values[0]->roll_no . "</td>
                             <td class='table-name'>" . $values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name . "</td>
                             <td>" . (isset($bangla->typed_words) ? $bangla->typed_words : '0') . "</td>
                             <td>" . (isset($bangla->inserted_words) ? $bangla->inserted_words : '0') . "</td>
                             <td>" . ($bangla->typed_words - $bangla->inserted_words) . "</td>
-                            <td>" . $bangla->typed_words/$bangla_exam_time . "</td>
+                            <td>" . $bangla->typed_words / $bangla_exam_time . "</td>
 
                             <td>" . (isset($english->typed_words) ? $english->typed_words : '0') . "</td>
                             <td>" . (isset($english->inserted_words) ? $english->inserted_words : '0') . "</td>
                             <td>" . ($english->typed_words - $english->inserted_words) . "</td>
-                            <td>" . $english->typed_words/$english_exam_time . "</td>
+                            <td>" . $english->typed_words / $english_exam_time . "</td>
                             <td>" . $remark . "</td>
 
-                           
+
                         </tr>";
-                   }
-
-
-                $html = $html.'</tbody></table>';
-            
-
-                $dompdf = new Dompdf();
-                $dompdf->loadHtml($html);
-
-                // (Optional) Setup the paper size and orientation
-                $dompdf->setPaper('A4', 'portrait');
-
-                // Render the HTML as PDF
-                $dompdf->render();
-
-                // Output the generated PDF to Browser
-                $dompdf->stream('exam_system.pdf',array('Attachment'=>0));
-
-
         }
 
 
+        $html = $html . '</tbody></table>';
 
 
-        public function typing_test_details($bangla_exam_id ,$english_exam_id){
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
 
-            $page_title= 'Typing Test Information';
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
 
-            $bangla_text = Examination::findOrNew($bangla_exam_id);
-            $english_text = Examination::findOrNew($english_exam_id);
+        // Render the HTML as PDF
+        $dompdf->render();
 
-            $user_id = empty($bangla_text->user_id) ? $english_text->user_id : $bangla_text->user_id; 
+        // Output the generated PDF to Browser
+        $dompdf->stream('exam_system.pdf', array('Attachment' => 0));
+    }
 
 
-            $user = User::with('relCompany','relDesignation')->find($user_id);
 
 
-            return view('reports::short_typing_test_report.typing_test_details', compact('page_title','bangla_text','english_text','user'));
+    public function typing_test_details($bangla_exam_id, $english_exam_id)
+    {
 
-        }
+        $page_title = 'Typing Test Information';
 
-        public function edit_typing_test_details($id){
+        $bangla_text = Examination::findOrNew($bangla_exam_id);
+        $english_text = Examination::findOrNew($english_exam_id);
 
-           
-            // $values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name
-                                $data = User::with('typing_test_result','typing_exam_code')->where('id',$id)->first(); 
-                                
+        $user_id = empty($bangla_text->user_id) ? $english_text->user_id : $bangla_text->user_id;
 
 
-                                $name = trim($data->username . ' ' . $data->middle_name . ' ' . $data->last_name);
+        $user = User::with('relCompany', 'relDesignation')->find($user_id);
 
-                                $exam_code = $data->typing_exam_code->exam_code_name;
 
-                                $roll_no = $data->roll_no;
+        return view('reports::short_typing_test_report.typing_test_details', compact('page_title', 'bangla_text', 'english_text', 'user'));
+    }
 
+    public function edit_typing_test_details($id)
+    {
 
 
-                                $bangla = $data->typing_test_result()->where('exam_type','bangla')->first();
-                                $english = $data->typing_test_result()->where('exam_type','english')->first();
-                                
-                                // dd($bangla);
+        // $values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name
+        $data = User::with('typing_test_result', 'typing_exam_code')->where('id', $id)->first();
 
-                                // $bangla_exam_id = $bangla->exam_id;
 
-                                // $bangla_typed_words = $bangla->typed_words;
 
-                                // $bangla_wrong_words = $bangla->inserted_words;
+        $name = trim($data->username . ' ' . $data->middle_name . ' ' . $data->last_name);
 
-                                // $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
+        $exam_code = $data->typing_exam_code->exam_code_name;
 
+        $roll_no = $data->roll_no;
 
-                                // $english_typed_words = $english->typed_words;
 
-                                // $english_wrong_words = $english->inserted_words;
 
-                                // $english_corrected_words = $english->typed_words - $english->inserted_words;
+        $bangla = $data->typing_test_result()->where('exam_type', 'bangla')->first();
+        $english = $data->typing_test_result()->where('exam_type', 'english')->first();
 
-                                // $data = collect(['bangla_typed_words'=>$bangla_typed_words,'id'=>'3','bangla_exam_id'=>$bangla_exam_id]);
+        // dd($bangla);
 
+        // $bangla_exam_id = $bangla->exam_id;
 
-                                  
+        // $bangla_typed_words = $bangla->typed_words;
 
-            // $user_id = empty($bangla_text->user_id) ? $english_text->user_id : $bangla_text->user_id; 
+        // $bangla_wrong_words = $bangla->inserted_words;
 
+        // $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
 
-            // $user = User::with('relCompany','relDesignation')->find($user_id);
 
-                                // dd($dataz);
-           return view('reports::short_typing_test_report.edit_typing_test_details', compact('data','bangla','english','name','exam_code','roll_no'));
+        // $english_typed_words = $english->typed_words;
 
-        }
+        // $english_wrong_words = $english->inserted_words;
 
-        public function update_typing_test_details(Requests\ExamRequest $request, $id){
+        // $english_corrected_words = $english->typed_words - $english->inserted_words;
 
-            // dd($request->all());
+        // $data = collect(['bangla_typed_words'=>$bangla_typed_words,'id'=>'3','bangla_exam_id'=>$bangla_exam_id]);
 
-            $bangla = collect($request->only('bangla_total_words','bangla_typed_words','bangla_corrected_words'));
 
-            $english = collect($request->only('english_total_words','english_typed_words','english_corrected_words'));
 
-            // dd($bangla);
 
+        // $user_id = empty($bangla_text->user_id) ? $english_text->user_id : $bangla_text->user_id;
 
-            $bangla_input = $bangla->keys()->map(function ($item, $key) {
-            
-               return str_replace("bangla_","",$item);
-               
-           })->all();
 
-            
+        // $user = User::with('relCompany','relDesignation')->find($user_id);
 
-            $bangla_input = array_combine($bangla_input,$bangla->all());
+        // dd($dataz);
+        return view('reports::short_typing_test_report.edit_typing_test_details', compact('data', 'bangla', 'english', 'name', 'exam_code', 'roll_no'));
+    }
 
-            $bangla_data['typed_words'] = $bangla_input['typed_words'];
+    public function update_typing_test_details(Requests\ExamRequest $request, $id)
+    {
 
-            $bangla_data['deleted_words'] = $bangla_input['total_words'] - $bangla_input['corrected_words'];
+        // dd($request->all());
 
-            $bangla_data['inserted_words'] = $bangla_input['typed_words'] - $bangla_input['corrected_words'];
+        $bangla = collect($request->only('bangla_total_words', 'bangla_typed_words', 'bangla_corrected_words'));
 
+        $english = collect($request->only('english_total_words', 'english_typed_words', 'english_corrected_words'));
 
+        // dd($bangla);
 
 
-            $english_input = $english->keys()->map(function ($item, $key) {
-            
-               return str_replace("english_","",$item);
-               
-           })->all();
+        $bangla_input = $bangla->keys()->map(function ($item, $key) {
 
+            return str_replace("bangla_", "", $item);
+        })->all();
 
 
-            $english_input = array_combine($english_input,$english->all());
 
-            $english_data['typed_words'] = $english_input['typed_words'];
+        $bangla_input = array_combine($bangla_input, $bangla->all());
 
-            $english_data['deleted_words'] = $english_input['total_words'] - $english_input['corrected_words'];
+        $bangla_data['typed_words'] = $bangla_input['typed_words'];
 
-            $english_data['inserted_words'] = $english_input['typed_words'] - $english_input['corrected_words'];
-            
-        
+        $bangla_data['deleted_words'] = $bangla_input['total_words'] - $bangla_input['corrected_words'];
 
-            // dd($input);
+        $bangla_data['inserted_words'] = $bangla_input['typed_words'] - $bangla_input['corrected_words'];
 
 
-            $bangla_exam_id = $request->only('bangla_exam_id');
 
-            $english_exam_id = $request->only('english_exam_id');
 
-           
+        $english_input = $english->keys()->map(function ($item, $key) {
 
-            $bangla_model = Examination::where('id',$bangla_exam_id)->first();
+            return str_replace("english_", "", $item);
+        })->all();
 
-            $english_model = Examination::where('id',$english_exam_id)->first();
 
-            // $input = $request->all();
-            // dd($model);
-            /*$company_group_id= $request->get('company_group_id');
+
+        $english_input = array_combine($english_input, $english->all());
+
+        $english_data['typed_words'] = $english_input['typed_words'];
+
+        $english_data['deleted_words'] = $english_input['total_words'] - $english_input['corrected_words'];
+
+        $english_data['inserted_words'] = $english_input['typed_words'] - $english_input['corrected_words'];
+
+
+
+        // dd($input);
+
+
+        $bangla_exam_id = $request->only('bangla_exam_id');
+
+        $english_exam_id = $request->only('english_exam_id');
+
+
+
+        $bangla_model = Examination::where('id', $bangla_exam_id)->first();
+
+        $english_model = Examination::where('id', $english_exam_id)->first();
+
+        // $input = $request->all();
+        // dd($model);
+        /*$company_group_id= $request->get('company_group_id');
             $company_group = CompanyGroup::find($company_group_id);
             $company_group_name = $company_group->group_name;
             $input['company_group_name'] = $company_group_name;*/
 
 
 
-            // $company_name = Input::get('company_name');
-            // $company_name_upper_case = ucwords($company_name);
-            // $input['company_name'] = $company_name_upper_case;
+        // $company_name = Input::get('company_name');
+        // $company_name_upper_case = ucwords($company_name);
+        // $input['company_name'] = $company_name_upper_case;
 
-            DB::beginTransaction();
-            try {
-                $bangla_model->update($bangla_data);
-                $english_model->update($english_data);
-                DB::commit();
-                Session::flash('message', "Successfully Updated");
-            }
-            catch ( Exception $e ){
-                //If there are any exceptions, rollback the transaction
-                DB::rollback();
-                //Session::flash('danger', $e->getMessage());
-                Session::flash('danger', "Couldn't Update Successfully. Please Try Again.");
-            }
-            return redirect()->back();
-
-            return redirect()->back();
-
-            return view('reports::short_typing_test_report.update_typing_test_details', compact($id));
-
+        DB::beginTransaction();
+        try {
+            $bangla_model->update($bangla_data);
+            $english_model->update($english_data);
+            DB::commit();
+            Session::flash('message', "Successfully Updated");
+        } catch (Exception $e) {
+            //If there are any exceptions, rollback the transaction
+            DB::rollback();
+            //Session::flash('danger', $e->getMessage());
+            Session::flash('danger', "Couldn't Update Successfully. Please Try Again.");
         }
+        return redirect()->back();
 
-        public function typing_test_manual_checking_details($bangla_exam_id, $english_exam_id){
+        return redirect()->back();
 
-            $page_title= 'Typing Test Information';
+        return view('reports::short_typing_test_report.update_typing_test_details', compact($id));
+    }
 
-            $bangla_text = Examination::findOrNew($bangla_exam_id);
-            $english_text = Examination::findOrNew($english_exam_id);
+    public function typing_test_manual_checking_details($bangla_exam_id, $english_exam_id)
+    {
 
-            $user_id = empty($bangla_text->user_id) ? $english_text->user_id : $bangla_text->user_id; 
-            
+        $page_title = 'Typing Test Information';
 
-            $user = User::with('relCompany','relDesignation')->find($user_id);
+        $bangla_text = Examination::findOrNew($bangla_exam_id);
+        $english_text = Examination::findOrNew($english_exam_id);
 
-
-            return view('reports::short_typing_test_report.typing_test_manual_checking_details', compact('page_title','bangla_text','english_text','user'));
-
-        }
-
+        $user_id = empty($bangla_text->user_id) ? $english_text->user_id : $bangla_text->user_id;
 
 
-        public function all_graph_report(){
+        $user = User::with('relCompany', 'relDesignation')->find($user_id);
 
-            $page_title= 'All Graph Report';
 
-            
-            $exam_code = Input::get('exam_code');
-            $company_id = Input::get('company_id');
-            $designation_id = Input::get('designation_id');
-            $exam_date_from = Input::get('exam_date_from');
-            $exam_date_to = Input::get('exam_date_to');
-            $bangla_speed = Input::get('bangla_speed');
-            $english_speed = Input::get('english_speed');
-            $remarks = Input::get('remarks');
+        return view('reports::short_typing_test_report.typing_test_manual_checking_details', compact('page_title', 'bangla_text', 'english_text', 'user'));
+    }
 
 
 
+    public function all_graph_report()
+    {
 
-            $header = DB::table( 'qselection_typing_test AS q' )
-                        ->select('e.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
-                        ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
-                        ->leftJoin( 'company as c', 'q.company_id', '=', 'c.id')
-                        ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id');
-                        
+        $page_title = 'All Graph Report';
 
 
-            $model = DB::table( 'user AS u' )
-                     ->select('u.roll_no','u.roll_no','u.started_exam','u.attended_typing_test','t.id AS exam_id','t.user_id','e.company_id','e.designation_id','e.exam_date','t.exam_time','t.exam_type','t.total_words','t.typed_words','t.deleted_words','t.inserted_words','t.original_text','t.answered_text')
-                    ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
-                    ->leftJoin( 'qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
-                    ->leftJoin( 'exam_code as e', 'e.id', '=', 'q.exam_code_id')
-                    ->orderBy('u.id'); 
+        $exam_code = Input::get('exam_code');
+        $company_id = Input::get('company_id');
+        $designation_id = Input::get('designation_id');
+        $exam_date_from = Input::get('exam_date_from');
+        $exam_date_to = Input::get('exam_date_to');
+        $bangla_speed = Input::get('bangla_speed');
+        $english_speed = Input::get('english_speed');
+        $remarks = Input::get('remarks');
 
 
-        if ($exam_code != ''){
 
-            $model = $model->where('e.exam_code_name','=',$exam_code);
-            $header = $header->where('e.exam_code_name','=',$exam_code);
 
-        }else{
+        $header = DB::table('qselection_typing_test AS q')
+            ->select('e.exam_date', 'c.company_name', 'c.address_one', 'c.address_two', 'c.address_three', 'c.address_four', 'd.designation_name')
+            ->leftJoin('exam_code as e', 'e.id', '=', 'q.exam_code_id')
+            ->leftJoin('company as c', 'q.company_id', '=', 'c.id')
+            ->leftJoin('designation as d', 'q.designation_id', '=', 'd.id');
 
-            if(isset($company_id) && !empty($company_id)){
-                $model = $model->where('e.company_id','=',$company_id);
-                $header = $header->where('e.company_id','=',$company_id);
+
+
+        $model = DB::table('user AS u')
+            ->select('u.roll_no', 'u.roll_no', 'u.started_exam', 'u.attended_typing_test', 't.id AS exam_id', 't.user_id', 'e.company_id', 'e.designation_id', 'e.exam_date', 't.exam_time', 't.exam_type', 't.total_words', 't.typed_words', 't.deleted_words', 't.inserted_words', 't.original_text', 't.answered_text')
+            ->leftJoin('typing_exam_result as t', 't.user_id', '=', 'u.id')
+            ->leftJoin('qselection_typing_test as q', 't.qselection_typing_id', '=', 'q.id')
+            ->leftJoin('exam_code as e', 'e.id', '=', 'q.exam_code_id')
+            ->orderBy('u.id');
+
+
+        if ($exam_code != '') {
+
+            $model = $model->where('e.exam_code_name', '=', $exam_code);
+            $header = $header->where('e.exam_code_name', '=', $exam_code);
+        } else {
+
+            if (isset($company_id) && !empty($company_id)) {
+                $model = $model->where('e.company_id', '=', $company_id);
+                $header = $header->where('e.company_id', '=', $company_id);
             }
 
-            if(isset($designation_id) && !empty($designation_id)){
-                $model = $model->where('e.designation_id','=',$designation_id);
-                $header = $header->where('e.designation_id','=',$designation_id);
+            if (isset($designation_id) && !empty($designation_id)) {
+                $model = $model->where('e.designation_id', '=', $designation_id);
+                $header = $header->where('e.designation_id', '=', $designation_id);
             }
 
-            if($exam_date_from == '' && $exam_date_to != ''){
+            if ($exam_date_from == '' && $exam_date_to != '') {
 
-                $model = $model->where('e.exam_date','=',$exam_date_to);
-                $header = $header->where('e.exam_date','=',$exam_date_to);
-
+                $model = $model->where('e.exam_date', '=', $exam_date_to);
+                $header = $header->where('e.exam_date', '=', $exam_date_to);
             }
 
-            if($exam_date_from != '' && $exam_date_to == ''){
+            if ($exam_date_from != '' && $exam_date_to == '') {
 
-                $model = $model->where('e.exam_date','=',$exam_date_from);
-                $header = $header->where('e.exam_date','=',$exam_date_from);
-
+                $model = $model->where('e.exam_date', '=', $exam_date_from);
+                $header = $header->where('e.exam_date', '=', $exam_date_from);
             }
 
-            if($exam_date_from != '' && $exam_date_to != ''){
+            if ($exam_date_from != '' && $exam_date_to != '') {
 
                 $model = $model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
                 $header = $header->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
-
             }
-
-
         }
 
-            $model = collect($model->get())->groupBy('user_id');
+        $model = collect($model->get())->groupBy('user_id');
 
-            unset($model['']);
+        unset($model['']);
 
-            $model->each(function ($values, $key)use($bangla_speed,$english_speed) {
+        $model->each(function ($values, $key) use ($bangla_speed, $english_speed) {
 
-                // $values = collect($values);
-                $null_object = StdClass::fromArray();
-                
-
-                $grouped_by_exam_type = $values->groupBy('exam_type');
-                
-                $bangla = $grouped_by_exam_type->get('bangla',[$null_object])[0];
-
-                $english = $grouped_by_exam_type->get('english',[$null_object])[0];
-                
-
-                
-                $exam_time = isset($bangla->exam_time) ? $bangla->exam_time: 1;
-                $bangla_exam_time = $bangla_speed;
-
-                //$english_exam_time = isset($english->exam_time) ? $english->exam_time: 1;
-                $english_exam_time = $english_speed;
-
-                $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
+            // $values = collect($values);
+            $null_object = StdClass::fromArray();
 
 
-                // dd($bangla_exam_time);
+            $grouped_by_exam_type = $values->groupBy('exam_type');
 
-                $bangla_wpm = round($bangla_corrected_words/$exam_time,3);
+            $bangla = $grouped_by_exam_type->get('bangla', [$null_object])[0];
 
-                $english_corrected_words = $english->typed_words - $english->inserted_words;
-
-                $english_wpm = round($english_corrected_words/$exam_time,3);
-
-                $values->total_typing_speed = $bangla_wpm + $english_wpm;
-
-                $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
+            $english = $grouped_by_exam_type->get('english', [$null_object])[0];
 
 
 
-                if(! $values->lists('attended_typing_test')->contains('true')){
+            $exam_time = isset($bangla->exam_time) ? $bangla->exam_time : 1;
+            $bangla_exam_time = $bangla_speed;
 
-                    $values->remarks = 'Absent';
+            //$english_exam_time = isset($english->exam_time) ? $english->exam_time: 1;
+            $english_exam_time = $english_speed;
 
-                }elseif($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed){
-
-                    $values->remarks = 'Pass';
-
-                }else{
-
-                    $values->remarks = 'Fail';
-                    
-                }
-
-                // dd($values);
-
-            });   
+            $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
 
 
-            $passed = $model->filter(function ($value) {
-                return $value->remarks == "Pass";
-            });
+            // dd($bangla_exam_time);
+
+            $bangla_wpm = round($bangla_corrected_words / $exam_time, 3);
+
+            $english_corrected_words = $english->typed_words - $english->inserted_words;
+
+            $english_wpm = round($english_corrected_words / $exam_time, 3);
+
+            $values->total_typing_speed = $bangla_wpm + $english_wpm;
+
+            $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
 
-            $failed = $model->filter(function ($value) {
-                return $value->remarks == "Fail";
-            });
+
+            if (!$values->lists('attended_typing_test')->contains('true')) {
+
+                $values->remarks = 'Absent';
+            } elseif ($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed) {
+
+                $values->remarks = 'Pass';
+            } else {
+
+                $values->remarks = 'Fail';
+            }
+
+            // dd($values);
+
+        });
 
 
-            $absent = $model->filter(function ($value) {
-                return $value->remarks == "Absent";
-            });
+        $passed = $model->filter(function ($value) {
+            return $value->remarks == "Pass";
+        });
+
+
+        $failed = $model->filter(function ($value) {
+            return $value->remarks == "Fail";
+        });
+
+
+        $absent = $model->filter(function ($value) {
+            return $value->remarks == "Absent";
+        });
 
 
 
 
-            $makeComparer = function($criteria) {
+        $makeComparer = function ($criteria) {
 
-              $comparer = function ($first, $second) use ($criteria) {
+            $comparer = function ($first, $second) use ($criteria) {
 
                 foreach ($criteria as $key => $orderType) {
 
-            // normalize sort direction
+                    // normalize sort direction
 
-                  $orderType = strtolower($orderType);
+                    $orderType = strtolower($orderType);
 
-                  if ( (int) $first->{$key} < (int) $second->{$key}) {
+                    if ((int) $first->{$key} < (int) $second->{$key}) {
 
-                    return $orderType === "asc" ? -1 : 1;
+                        return $orderType === "asc" ? -1 : 1;
+                    } else if ((int) $first->{$key} > (int) $second->{$key}) {
 
-                } else if ( (int) $first->{$key} > (int) $second->{$key}) {
-
-                    return $orderType === "asc" ? 1 : -1;
-
+                        return $orderType === "asc" ? 1 : -1;
+                    }
                 }
-            }
 
-            // all elements were equal
-            return 0;
-
+                // all elements were equal
+                return 0;
             };
 
-                return $comparer;
-
-            };
-
-
-            $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
-
-            $comparer = $makeComparer($criteria);
-            $passed = $passed->sort($comparer);
-
-            $comparer = $makeComparer($criteria);
-            $failed = $failed->sort($comparer);
-
-            $comparer = $makeComparer($criteria);
-            $absent = $absent->sort($comparer);
+            return $comparer;
+        };
 
 
-            if ($remarks == 'passed') {
-                $model = $passed;
-            }
+        $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
 
-            if ($remarks == 'failed') {
-                $model = $failed;
-            }
+        $comparer = $makeComparer($criteria);
+        $passed = $passed->sort($comparer);
 
-            if ($remarks == 'all') {
-                //$model = $passed->merge($failed)->merge($absent);
+        $comparer = $makeComparer($criteria);
+        $failed = $failed->sort($comparer);
 
-                $model = $model->sortBy(function ($value, $key) {
-                    return (int)$value->roll_no;
-                });
-
-            }
+        $comparer = $makeComparer($criteria);
+        $absent = $absent->sort($comparer);
 
 
-            return view('reports::short_typing_test_report.all_graph_report', compact('page_title','model','user'));
+        if ($remarks == 'passed') {
+            $model = $passed;
+        }
 
+        if ($remarks == 'failed') {
+            $model = $failed;
+        }
+
+        if ($remarks == 'all') {
+            //$model = $passed->merge($failed)->merge($absent);
+
+            $model = $model->sortBy(function ($value, $key) {
+                return (int)$value->roll_no;
+            });
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return view('reports::short_typing_test_report.all_graph_report', compact('page_title', 'model', 'user'));
+    }
 }

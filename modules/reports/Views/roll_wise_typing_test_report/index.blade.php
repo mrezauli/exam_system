@@ -243,8 +243,8 @@ form .col-sm-12:last-child{
                                 <th class="no-border"> <span>SL.</span> </th>
                                 <th class="no-border"> <span>Candidate SL.</span> </th>
                                 <th class="no-border"> <span>Roll No.</span> </th>
-                                <th class="no-border"> <span>Exam Code</span> </th>
                                 <th class="no-border"> <span>Name</span> </th>
+                                <th class="no-border"> <span>Exam Code</span> </th>
                                 <th class="no-border" style="border-right: 1.7px solid #8189fd !important"> <span>Answer Scripts View</span> </th>
                                 <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$spmDigit}} minutes</th>
                                 <th colspan="7">English in {{$spmDigit}} minutes</th>
@@ -361,12 +361,12 @@ form .col-sm-12:last-child{
                                     <td>{{$i}}</td>
                                     <td>{{$values[0]->sl}}</td>
                                     <td>{{$values[0]->roll_no}}</td>
-                                    <td>{{$values[0]->exam_code_name}}</td>
                                     <td class="table-name">
 
                                         {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}
 
                                     </td>
+                                    <td>{{$values[0]->exam_code_name}}</td>
 
                                     <td style="border-right: 1.7px solid #8189fd !important">
 
@@ -658,6 +658,7 @@ form .col-sm-12:last-child{
                 <th class="no-border"> <span>Candidate SL.</span> </th>
                 <th class="no-border"> <span>Roll No.</span> </th>
                 <th class="no-border"> <span>Name</span> </th>
+                <th class="no-border"> <span>Exam Code</span> </th>
                 <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$spmDigit}} minutes</th>
                 <th colspan="7">English in {{$spmDigit}} minutes</th>
                 <th class="no-border"> <span>Average Mark</span> </th>
@@ -666,6 +667,7 @@ form .col-sm-12:last-child{
 
 
             <tr>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -745,13 +747,15 @@ form .col-sm-12:last-child{
                 <tr class="gradeX">
 
                     <td>{{$i}}</td>
+                    <td>{{$values[0]->sl}}</td>
                     <td>{{$values[0]->roll_no}}</td>
-                    <td>{{$values[0]->exam_code_name}}</td>
+
                     <td class="table-name">
 
                         {{trim($values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name)}}
 
                     </td>
+                    <td>{{$values[0]->exam_code_name}}</td>
 
                     <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_characters }}</td>
                         <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_words }}</td>
@@ -1018,6 +1022,7 @@ form .col-sm-12:last-child{
                 <th class="no-border"> <span>Candidate SL.</span> </th>
                 <th class="no-border"> <span>Roll No.</span> </th>
                 <th class="no-border"> <span>Name</span> </th>
+                <th class="no-border"> <span>Exam Code</span> </th>
                 <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$spmDigit}} minutes</th>
                 <th colspan="7">English in {{$spmDigit}} minutes</th>
                 <th class="no-border"> <span>Average Mark</span> </th>
@@ -1026,6 +1031,7 @@ form .col-sm-12:last-child{
 
 
             <tr>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -1100,13 +1106,14 @@ form .col-sm-12:last-child{
                 <tr class="gradeX">
 
                     <td>{{$i}}</td>
+                    <td>{{$values[0]->sl}}</td>
                     <td>{{$values[0]->roll_no}}</td>
-                    <td>{{$values[0]->exam_code_name}}</td>
                     <td class="table-name">
 
                         {{trim($values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name)}}
 
                     </td>
+                    <td>{{$values[0]->exam_code_name}}</td>
 
                     <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_characters }}</td>
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_words }}</td>

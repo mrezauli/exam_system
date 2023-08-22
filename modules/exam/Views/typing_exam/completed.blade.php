@@ -51,7 +51,7 @@ input.exam_type{
    background: url(http://localhost/exam_system/public/assets/img/k1.jpg);
    /* background-color: white; */
    /*background-size: 100% 100%;*/
-   background-position-x:50%;  
+   background-position-x:50%;
 
    margin-bottom: 30px;
 }
@@ -116,35 +116,35 @@ label {
 }
 
 </style>
-  
+
   {{-- {{$first_exam_type}} --}}
-  
+
 <div class="form-block">
 
 
-  
+
   <div class="form-group image no-margin-hr panel-padding-h no-padding-t no-border-t">
     <div class="row">
 
 
-    
+
       <div class="col-sm-offset-2 col-sm-8 radios">
 
-      
+
       </div>
 
     </div>
   </div>
 
-  <h1 class="page-title text-center">Congratulations, Exam completed successfully.</h1>
+  <h1 class="page-title text-center">Congratulations, your examination has been completed successfully. Click the "Log Out" button.</h1>
 
 
-<div class="text-center"> <a class="btn btn-danger mt20 logout-button btn-sm" href="{{route('candidate-logout')}}">LogOut</a></div>
- 
+<div class="text-center"> <a class="btn btn-danger mt20 logout-button btn-sm" href="{{route('candidate-logout')}}">Log Out</a></div>
+
     <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.js') }}"></script>
 
  <script>
-    
+
  //Disabled Back Button ::
 
  window.history.forward();

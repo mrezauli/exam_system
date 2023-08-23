@@ -246,7 +246,7 @@
     @if (($first_exam_started && !$first_exam_completed) || ($last_exam_started && !$last_exam_completed))
 
         <div class="page-header text-center">
-            <h1>Question & Answer (View Only)</h1>
+            <h1>Submitted Answer Script (Only for View)</h1>
         </div>
 
         <div class="question-answer-block">

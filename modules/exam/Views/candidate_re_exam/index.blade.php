@@ -131,8 +131,11 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 {!! Form::label('cancel_comments', 'Remarks:', ['class' => 'control-label']) !!}
-                                {{-- {!! Form::textarea('cancel_comments', Input::old('cancel_comments'), ['id'=>'cancel_comments', 'class' =>'form-control cancel_comments', 'size' => '10x5']) !!} --}}
-                                {!! Form::select('cancel_comments', array(''=>'Select a Cancelletion Comments','Mistakenly submitted'=>'Mistakenly submitted','Network Problem'=>'Network Problem','Form error'=>'Form error','No calculation'=>'No calculation','Backward history'=>'Backward history','Forward history'=>'Forward history','Reconsider exam'=>'Reconsider exam','Evaluation again'=>'Evaluation again', 'Fake candidate' => 'Fake candidate', 'Proxy candidate' => 'Proxy candidate', 'Illegal device' => 'Illegal device', 'Cheat on exam' => 'Cheat on exam', 'Rough behavior' => 'Rough behavior', 'Others' => 'Manual entry'),Input::get('cancel_comments') ? Input::get('cancel_comments') : null, ['id'=>'cancel_comments', 'class' =>'form-control cancel_comments'], Input::old('cancel_comments')) !!}
+                                {!! Form::select('cancel_comments', array(''=>'Select a Cancelletion Comments','Mistakenly submitted'=>'Mistakenly submitted','Network Problem'=>'Network Problem','Form error'=>'Form error','No calculation'=>'No calculation','Backward history'=>'Backward history','Forward history'=>'Forward history','Reconsider exam'=>'Reconsider exam','Evaluation again'=>'Evaluation again', 'Fake candidate' => 'Fake candidate', 'Proxy candidate' => 'Proxy candidate', 'Illegal device' => 'Illegal device', 'Cheat on exam' => 'Cheat on exam', 'Rough behavior' => 'Rough behavior', 'Others' => 'Others'),Input::get('cancel_comments') ? Input::get('cancel_comments') : null, ['id'=>'cancel_comments', 'class' =>'form-control cancel_comments'], Input::old('cancel_comments')) !!}
+                                <br/>
+                                <div id="textboxContainer" style="display: none;">
+                                    {!! Form::textarea('cancel_comments_in_textbox', Input::old('cancel_comments_in_textbox'), ['id'=>'cancel_comments_in_textbox', 'class' =>'form-control cancel_comments_in_textbox', 'size' => '10x5']) !!}
+                                </div>
                             </div>
 
                         </div>
@@ -217,6 +220,17 @@
                 //$('.cancel_comments_block').hide().find('.form-control').val('');
             }
 
+        });
+
+        //produce cancel comments
+        const selectInput = document.getElementById("cancel_comments");
+        const textboxContainer = document.getElementById("textboxContainer");
+        selectInput.addEventListener("change", function() {
+            if (selectInput.value === "Others") {
+                textboxContainer.style.display = "block";
+            } else {
+                textboxContainer.style.display = "none";
+            }
         });
 
 

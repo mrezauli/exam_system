@@ -161,10 +161,11 @@ class CandidateReExamController extends Controller
 
             $user->first()->typing_status = $data['status'];
 
-            $user->first()->typing_exam_cancel_comments = $data['cancel_comments'];
-
-
-
+            if (isset($data['cancel_comments_in_textbox']) && !empty($data['cancel_comments_in_textbox'])) {
+                $user->first()->typing_exam_cancel_comments = $data['cancel_comments_in_textbox'];
+            } else {
+                $user->first()->typing_exam_cancel_comments = $data['cancel_comments'];
+            }
 
             DB::beginTransaction();
             try {

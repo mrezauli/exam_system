@@ -369,9 +369,7 @@
 
 
                         <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
-                        {!! !empty($bangla->process_text)
-                            ? '<p class="bangla-font" style="font-size:14px;">' . $bangla->process_text . '</p>'
-                            : '<p class="bangla-font">No answer is given.</p>' !!}
+                        <p class="fs-1 bangla-font">{!! !empty($bangla->process_text) ? $bangla->process_text : '<b class="fs-1 bangla-font">No answer is given.</b>' !!}</p>
 
                         <h3 style="font-size:18px;color:#0000dc">English Original Text</h3>
                         {!! !empty($english->original_text)
@@ -380,7 +378,7 @@
 
 
                         <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
-                        {!! !empty($english->process_text) ? '<p class="bangla-font">' . $english->process_text . '</p>' : '<p class="bangla-font">No answer is given.</p>' !!}
+                        <p class="fs-1 bangla-font">{!! !empty($english->process_text) ? $english->process_text : '<b class="fs-1 bangla-font">No answer is given.</b>' !!}</p>
                     </section>
 
                     {{-- <footer style="border:1px solid #577;padding:10px;text-align:center;">This script evaluated by system (Bangladesh Computer Council)</footer> --}}
@@ -807,13 +805,10 @@
                 <section style="border:1px solid #577;padding:20px;border-top:none;border-bottom:none;">
                     <h3 style="font-size:18px;color:#0000dc">Bangla Answered Text</h3>
 
-                    {!! !empty($bangla->process_text)
-                        ? '<p class="bangla-font" style="font-size:14px;">' . $bangla->process_text . '</p>'
-                        : '<p class="bangla-font">No answer is given.</p>' !!}
+                    <p class="fs-1 bangla-font">{!! !empty($bangla->process_text) ? $bangla->process_text : '<b class="fs-1 bangla-font">No answer is given.</b>' !!}</p>
 
                     <h3 style="font-size:18px;color:#0000dc">English Answered Text</h3>
-
-                    {!! !empty($english->process_text) ? '<p class="bangla-font">' . $english->process_text . '</p>' : '<p class="bangla-font">No answer is given.</p>' !!}
+                    <p class="fs-1 bangla-font">{!! !empty($english->process_text) ? $english->process_text : '<b class="fs-1 bangla-font">No answer is given.</b>' !!}</p>
                 </section>
 
                 {{-- <footer style="border:1px solid #577;padding:10px;text-align:center;">This script evaluated by system (Bangladesh Computer Council)</footer> --}}

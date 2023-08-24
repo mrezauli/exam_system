@@ -219,11 +219,15 @@ class CandidateReExamController extends Controller
 
         if (isset($user)) {
             $answered_text = !empty($user->typing_test_result()->where('exam_type', $_POST['exam_type'])->first()) ? $user->typing_test_result()->where('exam_type', $_POST['exam_type'])->first()->answered_text : '';
-            $username = $user->username;
+            if (isset($user->username) && !empty($user->username)) {
+                $username = $user->username;
+            } else {
+                $username = $user->roll_no;
+            }
         } else {
 
             $answered_text = '';
-            $username = '';
+            $username = 'No Name Found!';
         }
         $data['answered_text'] = strip_tags($answered_text);
         $data['username'] = $username;

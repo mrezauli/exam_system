@@ -25,7 +25,8 @@ class RollWiseAttendanceSheetReportController extends Controller
 {
 
 
-    public function attendance_sheet_report(){
+    public function attendance_sheet_report()
+    {
 
 
         $page_title = 'Roll Wise Attendance Sheet Report';
@@ -36,199 +37,164 @@ class RollWiseAttendanceSheetReportController extends Controller
 
         $exam_dates_string = '';
 
-        $company_list =  [''=>'Select organization'] + Company::where('status','active')->orderBy('id','desc')->lists('company_name','id')->all();
+        $company_list =  ['' => 'Select organization'] + Company::where('status', 'active')->orderBy('id', 'desc')->lists('company_name', 'id')->all();
 
-        $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
+        $designation_list =  ['' => 'Select designation'] + Designation::where('status', 'active')->orderBy('id', 'desc')->lists('designation_name', 'id')->all();
 
-        return view('reports::roll_wise_attendance_sheet_report.index', compact('page_title','company_list','designation_list','status','header','exam_dates_string'));
-
-
+        return view('reports::roll_wise_attendance_sheet_report.index', compact('page_title', 'company_list', 'designation_list', 'status', 'header', 'exam_dates_string'));
     }
 
- 
-
-
-    public function generate_attendance_sheet_report(Request $request){
-
-
+    public function generate_attendance_sheet_report(Request $request)
+    {
         $page_title = 'Roll Wise Attendance Sheet Report';
 
         $status = 2;
 
-
-
-        $exam_code = Input::get('exam_code','');
-        $aptitude_exam_code = Input::get('aptitude_exam_code','');
+        $exam_code = Input::get('exam_code', '');
+        $aptitude_exam_code = Input::get('aptitude_exam_code', '');
         $company_id = Input::get('company_id');
         $designation_id = Input::get('designation_id');
         $exam_date_from = Input::get('exam_date_from');
         $exam_date_to = Input::get('exam_date_to');
         $exam_type = Input::get('exam_type');
 
+        if (!isset($exam_type) && empty($exam_type)) {
 
-        if(! isset($exam_type) && empty($exam_type)){
-
-         $exam_type = isset(DB::table('exam_code')->where('exam_code_name',$exam_code)->first()->exam_type) ? DB::table('exam_code')->where('exam_code_name',$exam_code)->first()->exam_type : '';
-           
+            $exam_type = isset(DB::table('exam_code')->where('exam_code_name', $exam_code)->first()->exam_type) ? DB::table('exam_code')->where('exam_code_name', $exam_code)->first()->exam_type : '';
         }
-        
-
 
         $typing_exam_code = '';
         $aptitude_exam_code = '';
-        
 
-        if($exam_type == 'typing_test'){
+        if ($exam_type == 'typing_test') {
 
             $typing_exam_code = $exam_code;
-
         }
 
-        if($exam_type == 'aptitude_test'){
+        if ($exam_type == 'aptitude_test') {
 
             $aptitude_exam_code = $exam_code;
+        }
 
+        $company_list =  ['' => 'Select organization'] + Company::where('status', 'active')->orderBy('id', 'desc')->lists('company_name', 'id')->all();
+
+        $designation_list =  ['' => 'Select designation'] + Designation::where('status', 'active')->orderBy('id', 'desc')->lists('designation_name', 'id')->all();
+
+        $typing_model = DB::table('user AS u')
+            ->select('u.id', 'u.sl', 'u.roll_no', 'u.username', 'u.middle_name', 'u.last_name', 'u.started_exam', 'u.attended_typing_test', 'u.attended_aptitude_test', 'u.typing_status', 'u.aptitude_status', 'e.exam_type', 'e.company_id', 'e.designation_id', 'e.exam_date', 'c.company_name', 'c.address_one', 'c.address_two', 'c.address_three', 'c.address_four', 'd.designation_name')
+            ->leftJoin('exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')
+            ->leftJoin('company as c', 'u.company_id', '=', 'c.id')
+            ->leftJoin('designation as d', 'u.designation_id', '=', 'd.id')
+            ->where('u.role_id', 4)
+            ->orderBy('u.sl');
+
+        $aptitude_model = DB::table('user AS u')
+            ->select('u.id', 'u.sl', 'u.roll_no', 'u.username', 'u.middle_name', 'u.last_name', 'u.started_exam', 'u.attended_typing_test', 'u.attended_aptitude_test', 'u.typing_status', 'u.aptitude_status', 'e.exam_type', 'e.company_id', 'e.designation_id', 'e.exam_date', 'c.company_name', 'c.address_one', 'c.address_two', 'c.address_three', 'c.address_four', 'd.designation_name')
+            ->leftJoin('exam_code as e', 'e.id', '=', 'u.aptitude_exam_code_id')
+            ->leftJoin('company as c', 'u.company_id', '=', 'c.id')
+            ->leftJoin('designation as d', 'u.designation_id', '=', 'd.id')
+            ->where('u.role_id', 4)
+            ->orderBy('u.sl');
+
+
+
+        if ($typing_exam_code != '' || $aptitude_exam_code != '') {
+
+            $typing_model = $typing_model->where('e.exam_code_name', '=', $typing_exam_code);
+            $aptitude_model = $aptitude_model->where('e.exam_code_name', '=', $aptitude_exam_code);
+            $model_all = array_merge($typing_model->get(), $aptitude_model->get());
+        } elseif ($company_id != '') {
+
+
+            if (isset($company_id) && !empty($company_id)) {
+
+                $typing_model = $typing_model->where('e.company_id', '=', $company_id);
+                $aptitude_model = $aptitude_model->where('e.company_id', '=', $company_id);
+            }
+
+            if (isset($designation_id) && !empty($designation_id)) {
+
+                $typing_model = $typing_model->where('e.designation_id', '=', $designation_id);
+                $aptitude_model = $aptitude_model->where('e.designation_id', '=', $designation_id);
+            }
+
+
+            if ($exam_date_from == '' && $exam_date_to != '') {
+
+                $typing_model = $typing_model->where('e.exam_date', '=', $exam_date_to);
+                $aptitude_model = $aptitude_model->where('e.exam_date', '=', $exam_date_to);
+            }
+
+
+            if ($exam_date_from != '' && $exam_date_to == '') {
+
+                $typing_model = $typing_model->where('e.exam_date', '=', $exam_date_from);
+                $aptitude_model = $aptitude_model->where('e.exam_date', '=', $exam_date_from);
+            }
+
+
+            if ($exam_date_from != '' && $exam_date_to != '') {
+
+                $typing_model = $typing_model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
+                $aptitude_model = $aptitude_model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
+            }
+
+            if ($exam_type == 'typing_test') {
+                $model_all = $typing_model->get();
+            } else {
+                $model_all = $aptitude_model->get();
+            }
+        } else {
+            $model_all = [];
         }
 
 
 
-
-        $company_list =  [''=>'Select organization'] + Company::where('status','active')->orderBy('id','desc')->lists('company_name','id')->all();
-
-        $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
+        $model_collection = collect($model_all);
 
 
 
 
-        $typing_model = DB::table( 'user AS u' )
-         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.attended_aptitude_test','u.typing_status','u.aptitude_status','e.exam_type','e.company_id','e.designation_id','e.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
-         ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.typing_exam_code_id')
-         ->leftJoin( 'company as c', 'u.company_id', '=', 'c.id')
-         ->leftJoin( 'designation as d', 'u.designation_id', '=', 'd.id')
-        ->where('u.role_id',4)
-        ->orderBy('u.sl');
+
+        function presence($attendence, $status)
+        {
+
+            $ddd = $attendence ? 'Present' : 'Absent';
 
 
+            if ($ddd == 'Present') {
 
+                if ($status == 'expelled') {
+                    $ddd = 'Expelled';
+                }
 
-        $aptitude_model = DB::table( 'user AS u' )
-         ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.attended_aptitude_test','u.typing_status','u.aptitude_status','e.exam_type','e.company_id','e.designation_id','e.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
-         ->leftJoin( 'exam_code as e', 'e.id', '=', 'u.aptitude_exam_code_id')
-         ->leftJoin( 'company as c', 'u.company_id', '=', 'c.id')
-         ->leftJoin( 'designation as d', 'u.designation_id', '=', 'd.id')
-        ->where('u.role_id',4)
-        ->orderBy('u.sl');
+                if ($status == 'cancelled') {
+                    $ddd = 'Cancelled';
+                }
+            }
 
-
-
-    if ($typing_exam_code != '' || $aptitude_exam_code != ''){
-            
-        $typing_model = $typing_model->where('e.exam_code_name','=',$typing_exam_code);
-        $aptitude_model = $aptitude_model->where('e.exam_code_name','=',$aptitude_exam_code);
-        $model_all = array_merge($typing_model->get(),$aptitude_model->get());
-
-    }elseif($company_id !=''){
-       
-
-        if(isset($company_id) && !empty($company_id)){
-
-            $typing_model = $typing_model->where('e.company_id','=',$company_id);
-            $aptitude_model = $aptitude_model->where('e.company_id','=',$company_id);
-           
-        }
-
-        if(isset($designation_id) && !empty($designation_id)){
-
-            $typing_model = $typing_model->where('e.designation_id','=',$designation_id);
-            $aptitude_model = $aptitude_model->where('e.designation_id','=',$designation_id);
-            
-        }
- 
-
-        if($exam_date_from == '' && $exam_date_to != ''){
-
-            $typing_model = $typing_model->where('e.exam_date','=',$exam_date_to);
-            $aptitude_model = $aptitude_model->where('e.exam_date','=',$exam_date_to);
-
+            return $ddd;
         }
 
 
-        if($exam_date_from != '' && $exam_date_to == ''){
-
-            $typing_model = $typing_model->where('e.exam_date','=',$exam_date_from);
-            $aptitude_model = $aptitude_model->where('e.exam_date','=',$exam_date_from);
-          
-        }
+        $model_collection->each(function ($values, $key) {
 
 
-        if($exam_date_from != '' && $exam_date_to != ''){
+            if ($values->exam_type == 'typing_test') {
 
-            $typing_model = $typing_model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
-            $aptitude_model = $aptitude_model->whereBetween('e.exam_date', array($exam_date_from, $exam_date_to));
-            
-        }
+                $values->presence =  presence($values->attended_typing_test, $values->typing_status);
+            }
 
-        if($exam_type == 'typing_test') {
-           $model_all = $typing_model->get();
-        }else{
-           $model_all = $aptitude_model->get();
-        }
 
-    }else{
-           $model_all = [];
-    }
+            if ($values->exam_type == 'aptitude_test') {
+
+                $values->presence =  presence($values->attended_aptitude_test, $values->aptitude_status);
+            }
+        });
 
 
 
-    $model_collection = collect($model_all);
 
-
-
-    
-
-    function presence($attendence,$status){
-
-      $ddd = $attendence ? 'Present' : 'Absent';
-
-
-      if ($ddd == 'Present') {
-          
-        if ($status == 'expelled') {
-            $ddd = 'Expelled';
-        }
-
-        if ($status == 'cancelled') {
-            $ddd = 'Cancelled';
-        }
-
-      }
-
-      return $ddd;
-
-    }
-
-
-    $model_collection->each(function ($values, $key) {
-
-
-      if ($values->exam_type == 'typing_test') {
-
-        $values->presence =  presence($values->attended_typing_test,$values->typing_status); 
-
-    }
-
-
-    if ($values->exam_type == 'aptitude_test') {
-
-        $values->presence =  presence($values->attended_aptitude_test,$values->aptitude_status); 
-
-    }
-
-    });
-
-
-
-        
         $present = $model_collection->filter(function ($value) {
             return $value->presence == "Present";
         })->sortBy(function ($values, $key) {
@@ -248,7 +214,6 @@ class RollWiseAttendanceSheetReportController extends Controller
         $model_collection = $model_collection->sortBy(function ($value, $key) {
 
             return (int)$value->roll_no;
-
         });
 
         $model_all = $model_collection->all();
@@ -258,12 +223,11 @@ class RollWiseAttendanceSheetReportController extends Controller
 
         $exam_dates = $model_collection->groupBy('exam_date')->keys()->map(function ($values, $key) {
 
-         return implode('-', array_reverse(explode('-', $values)));
-
+            return implode('-', array_reverse(explode('-', $values)));
         })->toArray();
 
 
-        $exam_dates_string = implode(',',$exam_dates);
+        $exam_dates_string = implode(',', $exam_dates);
 
 
 
@@ -282,87 +246,72 @@ class RollWiseAttendanceSheetReportController extends Controller
         $header = $model_collection->first();
 
 
-        if(! empty($model_all)){
+        if (!empty($model_all)) {
             $model = new LengthAwarePaginator(array_slice($model_all, $offset, $perPage, true), count($model_all), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
-        }else{
+        } else {
             $model = [];
         }
 
-    
 
-        return view('reports::roll_wise_attendance_sheet_report.index', compact('page_title','status','company_id','designation_id','exam_date_from','exam_date_to','company_list','designation_list','model','model_all','header','exam_dates_string'));
 
+        return view('reports::roll_wise_attendance_sheet_report.index', compact('page_title', 'status', 'company_id', 'designation_id', 'exam_date_from', 'exam_date_to', 'company_list', 'designation_list', 'model', 'model_all', 'header', 'exam_dates_string'));
     }
 
+    public function attendance_sheet_report_pdf($company_id, $exam_date_from = "", $designation_id, $exam_date_to = "")
+    {
+        $model = DB::table('user AS u')
+            ->select('u.id', 'u.sl', 'u.roll_no', 'u.username', 'u.middle_name', 'u.last_name', 'u.started_exam', 'u.attended_typing_test', 'u.attended_aptitude_test', 'u.company_id', 'u.designation_id', 'u.exam_date', 'c.company_name', 'c.address_one', 'c.address_two', 'c.address_three', 'c.address_four', 'd.designation_name')
+            ->where('u.role_id', 4)
+            ->leftJoin('company as c', 'u.company_id', '=', 'c.id')
+            ->leftJoin('designation as d', 'u.designation_id', '=', 'd.id')
+            ->orderBy('u.sl');
 
 
 
+        if (isset($company_id) && !empty($company_id)) {
+
+            $model = $model->where('u.company_id', '=', $company_id);
+        }
 
 
-    
-        public function attendance_sheet_report_pdf($company_id, $exam_date_from="", $designation_id, $exam_date_to=""){
+        if (isset($designation_id) && !empty($designation_id)) {
+
+            $model = $model->where('u.designation_id', '=', $designation_id);
+        }
+
+        if ($exam_date_from == '' && $exam_date_to != '') {
+
+            $model = $model->where('u.exam_date', '=', $exam_date_to);
+        }
+
+        if ($exam_date_from != '' && $exam_date_to == '') {
+
+            $model = $model->where('u.exam_date', '=', $exam_date_from);
+        }
+
+        if ($exam_date_from != '' && $exam_date_to != '') {
+
+            $model = $model->whereBetween('u.exam_date', array($exam_date_from, $exam_date_to));
+        }
 
 
-      
-            $model = DB::table( 'user AS u' )
-                     ->select('u.id','u.sl','u.roll_no','u.username','u.middle_name','u.last_name','u.started_exam','u.attended_typing_test','u.attended_aptitude_test','u.company_id','u.designation_id','u.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
-                    ->where('u.role_id',4)
-                    ->leftJoin( 'company as c', 'u.company_id', '=', 'c.id')
-                    ->leftJoin( 'designation as d', 'u.designation_id', '=', 'd.id')
-                    ->orderBy('u.sl');
+        $model = collect($model->get());
+
+        $exam_dates = $model->groupBy('exam_date')->keys()->toArray();
+
+        $exam_dates_string = implode(',', $exam_dates);
 
 
 
-            if(isset($company_id) && !empty($company_id)){
+        $header = $model->first();
+        // dd($header);
 
-                $model = $model->where('u.company_id','=',$company_id);
-
-            }
-
-
-            if(isset($designation_id) && !empty($designation_id)){
-
-                $model = $model->where('u.designation_id','=',$designation_id);
-
-            }
-
-            if($exam_date_from == '' && $exam_date_to != ''){
-
-                $model = $model->where('u.exam_date','=',$exam_date_to);
-
-
-            }
-
-            if($exam_date_from != '' && $exam_date_to == ''){
-
-                $model = $model->where('u.exam_date','=',$exam_date_from);
-
-            }
-
-            if($exam_date_from != '' && $exam_date_to != ''){
-
-                $model = $model->whereBetween('u.exam_date', array($exam_date_from, $exam_date_to));
-
-            }
-
-
-            $model = collect($model->get());
-
-            $exam_dates = $model->groupBy('exam_date')->keys()->toArray();
-
-            $exam_dates_string = implode(',',$exam_dates);
-            
-        
-
-            $header = $model->first();
-            // dd($header);
-
-            $html = '
+        $html = '
 
     <style>
 
     th span{
-        word-wrap:break-word !important;    
+        word-wrap:break-word !important;
         font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -391,7 +340,7 @@ class RollWiseAttendanceSheetReportController extends Controller
     .tbl1 thead tr th:empty{
         border-right:none !important;
         border-top:none !important;
-    }   
+    }
 
     .tbl1 thead:first-child tr,.tbl1 thead tr th.no-border{
         border-bottom:0 !important;
@@ -404,7 +353,7 @@ class RollWiseAttendanceSheetReportController extends Controller
         top:18px;
         left:auto;
         right:auto;
-   
+
     }
 
 
@@ -428,14 +377,14 @@ class RollWiseAttendanceSheetReportController extends Controller
         padding: 7px 5px;
         font-weight: 500;
         color: #000;
-        text-align: center !important;     
+        text-align: center !important;
     }
 
     .tbl1 tbody td{
         padding: 5px 3px;
         font-weight: 500;
         color: #000;
-        text-align: center !important;    
+        text-align: center !important;
     }
 
     .table-name{
@@ -461,11 +410,11 @@ class RollWiseAttendanceSheetReportController extends Controller
     .header-section{
         margin-bottom: 20px;
     }
- 
+
 
     </style>';
 
-                $html = $html.'
+        $html = $html . '
 
                 <div class="header-section">
                     <p class="header">' . $header->company_name . '</p>
@@ -484,122 +433,101 @@ class RollWiseAttendanceSheetReportController extends Controller
                     </thead>
 
                     <tbody>';
-                    
-                    foreach($model as $values)
-                    {
 
-                        $presence = ($values->attended_typing_test == 'true' && $values->attended_aptitude_test == 'true') ? 'present' : 'absent';
-                        
+        foreach ($model as $values) {
+
+            $presence = ($values->attended_typing_test == 'true' && $values->attended_aptitude_test == 'true') ? 'present' : 'absent';
 
 
-                        $html = $html . "<tr class='gradeX'>
-                                                           
+
+            $html = $html . "<tr class='gradeX'>
+
                                     <td>" . $values->sl . "</td>
                                     <td>" . $values->roll_no . "</td>
                                     <td class='table-name'>" . $values->username . ' ' . $values->middle_name . ' ' . $values->last_name . "</td>
                                     <td>" . $presence . "</td>
-                                   
+
                                 </tr>";
-                   }
-
-
-                $html = $html.'</tbody></table>';
-            
-
-                $dompdf = new Dompdf();
-                $dompdf->loadHtml($html);
-
-                // (Optional) Setup the paper size and orientation
-                $dompdf->setPaper('A4', 'portrait');
-
-                // Render the HTML as PDF
-                $dompdf->render();
-
-                // Output the generated PDF to Browser
-                $dompdf->stream('exam_system.pdf',array('Attachment'=>0));
-
-
         }
 
 
+        $html = $html . '</tbody></table>';
 
 
-        public function attendance_sheet_details($bangla_exam_id,$english_exam_id){
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
 
-            $page_title= '';
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
 
-            $bangla_text = Examination::find($bangla_exam_id);
-            $english_text = Examination::find($english_exam_id);
+        // Render the HTML as PDF
+        $dompdf->render();
 
-            $user = User::with('relCompany','relDesignation')->find($bangla_text->user_id);
+        // Output the generated PDF to Browser
+        $dompdf->stream('exam_system.pdf', array('Attachment' => 0));
+    }
 
-            return view('reports::attendance_sheet_report.attendance_sheet_details', compact('page_title','bangla_text','english_text','user'));
 
+
+
+    public function attendance_sheet_details($bangla_exam_id, $english_exam_id)
+    {
+
+        $page_title = '';
+
+        $bangla_text = Examination::find($bangla_exam_id);
+        $english_text = Examination::find($english_exam_id);
+
+        $user = User::with('relCompany', 'relDesignation')->find($bangla_text->user_id);
+
+        return view('reports::attendance_sheet_report.attendance_sheet_details', compact('page_title', 'bangla_text', 'english_text', 'user'));
+    }
+
+
+
+    public function all_graph_report($company_id, $designation_id, $exam_date)
+    {
+
+        $page_title = '';
+
+
+        $header = DB::table('qselection_attendance_sheet AS q')
+            ->select('q.exam_date', 'c.company_name', 'c.address_one', 'c.address_two', 'c.address_three', 'c.address_four', 'd.designation_name')
+            ->leftJoin('company as c', 'q.company_id', '=', 'c.id')
+            ->leftJoin('designation as d', 'q.designation_id', '=', 'd.id');
+
+
+
+        $model = DB::table('user AS u')
+            ->select('u.roll_no', 'u.roll_no', 'u.started_exam', 'u.attended_attendance_sheet', 't.id AS exam_id', 't.user_id', 'u.company_id', 'u.designation_id', 'u.exam_date', 't.exam_time', 't.exam_type', 't.original_text', 't.answered_text')
+            ->leftJoin('typing_exam_result as t', 't.user_id', '=', 'u.id')
+            ->leftJoin('qselection_attendance_sheet as q', 't.qselection_typing_id', '=', 'q.id')
+            ->orderBy('u.id');
+
+
+
+
+        if (isset($company_id) && !empty($company_id)) {
+            $model = $model->where('u.company_id', '=', $company_id);
+            $header = $header->where('q.company_id', '=', $company_id);
         }
 
-
-
-        public function all_graph_report($company_id, $designation_id, $exam_date){
-
-            $page_title= '';
-
-            
-            $header = DB::table( 'qselection_attendance_sheet AS q' )
-                        ->select('q.exam_date','c.company_name','c.address_one','c.address_two','c.address_three','c.address_four','d.designation_name')
-                        ->leftJoin( 'company as c', 'q.company_id', '=', 'c.id')
-                        ->leftJoin( 'designation as d', 'q.designation_id', '=', 'd.id');
-                        
-
-
-            $model = DB::table( 'user AS u' )
-                     ->select('u.roll_no','u.roll_no','u.started_exam','u.attended_attendance_sheet','t.id AS exam_id','t.user_id','u.company_id','u.designation_id','u.exam_date','t.exam_time','t.exam_type','t.original_text','t.answered_text')
-                    ->leftJoin( 'typing_exam_result as t', 't.user_id', '=', 'u.id' )
-                    ->leftJoin( 'qselection_attendance_sheet as q', 't.qselection_typing_id', '=', 'q.id')
-                    ->orderBy('u.id'); 
-
-
-
-
-            if(isset($company_id) && !empty($company_id)){
-                $model = $model->where('u.company_id','=',$company_id);
-                $header = $header->where('q.company_id','=',$company_id);
-            }
-
-            if(isset($designation_id) && !empty($designation_id)){
-                $model = $model->where('u.designation_id','=',$designation_id);
-                $header = $header->where('q.designation_id','=',$designation_id);
-            }
-
-            if(isset($exam_date) && !empty($exam_date)){
-                $model = $model->where('u.exam_date','=',$exam_date);
-                $header = $header->where('q.exam_date','=',$exam_date);
-            }
-
-            $model = collect($model->get())->groupBy('user_id');
-
-            unset($model['']);
-
-            // dd($model);
-
-            return view('reports::attendance_sheet_report.all_graph_report', compact('page_title','model','user'));
-
+        if (isset($designation_id) && !empty($designation_id)) {
+            $model = $model->where('u.designation_id', '=', $designation_id);
+            $header = $header->where('q.designation_id', '=', $designation_id);
         }
 
+        if (isset($exam_date) && !empty($exam_date)) {
+            $model = $model->where('u.exam_date', '=', $exam_date);
+            $header = $header->where('q.exam_date', '=', $exam_date);
+        }
 
+        $model = collect($model->get())->groupBy('user_id');
 
+        unset($model['']);
 
+        // dd($model);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return view('reports::attendance_sheet_report.all_graph_report', compact('page_title', 'model', 'user'));
+    }
 }

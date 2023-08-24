@@ -76,10 +76,15 @@ class ExamCodeController extends Controller
         $input = $request->all();
 
         $exam_date_array = explode('-', $input['exam_date']);
+        //dd($exam_date_array);
 
         $time = (string)time();
 
         $exam_code = $exam_date_array[0][2] . $exam_date_array[0][3] . $exam_date_array[1] . $exam_date_array[2] . rand(10,99);
+        //dd($exam_date_array[0][2]);
+        //dd($exam_date_array[0][3]);
+        //dd($exam_date_array[1]);
+        dd($exam_date_array[2]);
 
         $exam_code_found = ExamCode::where('exam_code_name',$exam_code)->where('status','active')->first();
 
@@ -130,7 +135,7 @@ class ExamCodeController extends Controller
             //Session::flash('danger', $e->getMessage());
             Session::flash('danger', "Couldn't Save Successfully. Please Try Again.");
             return redirect()->back()->withInput();
-    
+
         }
 
         return redirect()->route('exam-code');
@@ -212,7 +217,7 @@ class ExamCodeController extends Controller
 
 
         if (isset($search_previous_data) && $search_previous_data->id != $id)  {
-            
+
             Session::flash('danger', "This Shift already has been Booked, Please Select another shift for this Organization.");
             return redirect()->back()->withInput();
 
@@ -241,7 +246,7 @@ class ExamCodeController extends Controller
         }
 
         return redirect()->route('exam-code');
-        
+
     }
 
 
@@ -277,7 +282,7 @@ class ExamCodeController extends Controller
 
 
         $model = ExamCode::findOrFail($id);
-       
+
         DB::beginTransaction();
         try {
 

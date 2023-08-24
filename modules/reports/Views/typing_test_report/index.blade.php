@@ -1238,10 +1238,8 @@ var table = $('#examples_report').DataTable( {
     "search": "Search:"
   },
   "aaSorting": [[1, 'asc']],
-  "pageLength": 50,
+  "pageLength": 1000,
 });
-
-
 
 $('#examples_report_filter input').on('keyup', function(){
    table

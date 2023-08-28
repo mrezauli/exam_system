@@ -84,7 +84,7 @@ class ExamCodeController extends Controller
         //dd($exam_date_array[0][2]);
         //dd($exam_date_array[0][3]);
         //dd($exam_date_array[1]);
-        dd($exam_date_array[2]);
+        //dd($exam_date_array[2]);
 
         $exam_code_found = ExamCode::where('exam_code_name',$exam_code)->where('status','active')->first();
 

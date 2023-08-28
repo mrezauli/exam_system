@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: UITS-Shajjad
@@ -6,9 +7,24 @@
  * Time: 11:48 AM
  */
 
-//------------- Without Authentication [ No Middleware ] ---------------//
-Route::group(array('prefix' => 'user','modules'=>'User', 'namespace' => 'Modules\User\Controllers','middleware'=>'access_control:user'), function() {
+use Carbon\Carbon;
+use Modules\Admin\ExamCode;
 
+//------------- Without Authentication [ No Middleware ] ---------------//
+
+Route::get('deactivate-exam-code', function () {
+    $examCodes = ExamCode::where('exam_date', Carbon::today())
+        ->where('status', 'active')
+        ->get();
+    if ($examCodes->count() > 0) {
+        ExamCode::where('exam_date', Carbon::today())->update(['status' => 'inactive']);
+        echo 'Successfully Deactivated!';
+    } else {
+        echo 'No Active Exam Code Found!';
+    }
+});
+
+Route::group(array('prefix' => 'user', 'modules' => 'User', 'namespace' => 'Modules\User\Controllers', 'middleware' => 'access_control:user'), function () {
 
     Route::any('forget-password-view', [
         'as' => 'forget-password-view',
@@ -16,13 +32,12 @@ Route::group(array('prefix' => 'user','modules'=>'User', 'namespace' => 'Modules
     ]);
 });
 
-Route::group(array('prefix' => 'user','modules'=>'User', 'namespace' => 'Modules\User\Controllers','middleware'=>'access_control:user'), function() {
+Route::group(array('prefix' => 'user', 'modules' => 'User', 'namespace' => 'Modules\User\Controllers', 'middleware' => 'access_control:user'), function () {
 
     include 'routes_adnan_user.php';
-
 });
 
-Route::group(array('prefix' => 'user','modules'=>'User', 'namespace' => 'Modules\User\Controllers','middleware'=>'access_control:user'), function() {
+Route::group(array('prefix' => 'user', 'modules' => 'User', 'namespace' => 'Modules\User\Controllers', 'middleware' => 'access_control:user'), function () {
 
     /*Candidate Information */
 
@@ -65,7 +80,7 @@ Route::group(array('prefix' => 'user','modules'=>'User', 'namespace' => 'Modules
         'uses' => 'CandidateController@destroy_candidate'
     ]);
 
-    
+
 
 
     /*User Information */
@@ -136,7 +151,7 @@ Route::group(array('prefix' => 'user','modules'=>'User', 'namespace' => 'Modules
     ]);
 
     Route::any('update-password', [
-       // 'middleware' => 'acl_access:update-password',
+        // 'middleware' => 'acl_access:update-password',
         'as' => 'update-password',
         'uses' => 'UserController@update_password'
     ]);
@@ -153,7 +168,7 @@ Route::group(array('prefix' => 'user','modules'=>'User', 'namespace' => 'Modules
         'uses' => 'UserController@edit_profile_image'
     ]);
     Route::any('update-profile-image/{user_image_id}', [
-       // 'middleware' => 'acl_access:update-profile-image/{user_image_id}',
+        // 'middleware' => 'acl_access:update-profile-image/{user_image_id}',
         'as' => 'update-profile-image',
         'uses' => 'UserController@update_profile_image'
     ]);
@@ -177,7 +192,7 @@ Route::group(array('prefix' => 'user','modules'=>'User', 'namespace' => 'Modules
     ]);
 
     Route::any('edit-meta-data/{id}', [
-       //'middleware' => 'acl_access:edit-meta-data/{id}',
+        //'middleware' => 'acl_access:edit-meta-data/{id}',
         'as' => 'edit-meta-data',
         'uses' => 'UserController@edit_meta_data'
     ]);
@@ -224,10 +239,11 @@ Route::group(array('prefix' => 'user','modules'=>'User', 'namespace' => 'Modules
         'uses' => 'UserController@password_reset_confirm'
     ]);
 
-    Route::any('user-save-new-password',[
+    Route::any('user-save-new-password', [
         //'middleware' => 'acl_access:user-save-new-password',
-        'as'=>'user-save-new-password',
-        'uses'=>'UserController@save_new_password']);
+        'as' => 'user-save-new-password',
+        'uses' => 'UserController@save_new_password'
+    ]);
 
     Route::any('signup', [
         //'middleware' => 'acl_access:signup',
@@ -331,8 +347,4 @@ Route::group(array('prefix' => 'user','modules'=>'User', 'namespace' => 'Modules
         'as' => 'index-permission-role',
         'uses' => 'PermissionRoleController@index'
     ]);
-
-
-
-
 });

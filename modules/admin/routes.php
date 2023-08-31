@@ -85,41 +85,41 @@ Route::group(array('prefix'=>'admin','modules'=>'Admin', 'namespace' => 'Modules
 
     /********Question Setup Typing*************/
 
-    Route::get("question-typing", [
-        //"middleware" => "acl_access:company",
-        "as"   => "question-typing",
-        "uses" => "QTypingMasterController@index"
-    ]);
+    // Route::get("question-typing", [
+    //     //"middleware" => "acl_access:company",
+    //     "as"   => "question-typing",
+    //     "uses" => "QTypingMasterController@index"
+    // ]);
 
-    Route::any("create-qtmaster", [
-        "as"   => "create-qtmaster",
-        "uses" => "QTypingMasterController@create"
-    ]);
+    // Route::any("create-qtmaster", [
+    //     "as"   => "create-qtmaster",
+    //     "uses" => "QTypingMasterController@create"
+    // ]);
 
-    Route::any("store-qtmaster", [
-        "as"   => "store-qtmaster",
-        "uses" => "QTypingMasterController@store"
-    ]);
+    // Route::any("store-qtmaster", [
+    //     "as"   => "store-qtmaster",
+    //     "uses" => "QTypingMasterController@store"
+    // ]);
 
-    Route::any("view-qtmaster/{id}", [
-        "as"   => "view-qtmaster",
-        "uses" => "QTypingMasterController@show"
-    ]);
+    // Route::any("view-qtmaster/{id}", [
+    //     "as"   => "view-qtmaster",
+    //     "uses" => "QTypingMasterController@show"
+    // ]);
 
-    Route::any("edit-qtmaster/{id}", [
-        "as"   => "edit-qtmaster",
-        "uses" => "QTypingMasterController@edit"
-    ]);
+    // Route::any("edit-qtmaster/{id}", [
+    //     "as"   => "edit-qtmaster",
+    //     "uses" => "QTypingMasterController@edit"
+    // ]);
 
-    Route::any("update-qtmaster/{id}", [
-        "as"   => "update-qtmaster",
-        "uses" => "QTypingMasterController@update"
-    ]);
+    // Route::any("update-qtmaster/{id}", [
+    //     "as"   => "update-qtmaster",
+    //     "uses" => "QTypingMasterController@update"
+    // ]);
 
-    Route::any("delete-qtmaster/{id}", [
-        "as"   => "delete-qtmaster",
-        "uses" => "QTypingMasterController@delete"
-    ]);
+    // Route::any("delete-qtmaster/{id}", [
+    //     "as"   => "delete-qtmaster",
+    //     "uses" => "QTypingMasterController@delete"
+    // ]);
 
 
 

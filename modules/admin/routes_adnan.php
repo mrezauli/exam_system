@@ -19,144 +19,144 @@ Route::get('dashboard', [
 
 /**Product Group**/
 
-Route::get('product-group', [
-    'as' => 'product-group',
-    'uses' => 'ProductGroupController@index'
-]);
+// Route::get('product-group', [
+//     'as' => 'product-group',
+//     'uses' => 'ProductGroupController@index'
+// ]);
 
-Route::any("store-product-group", [
-    "as"   => "store-product-group",
-    "uses" => "ProductGroupController@store"
-]);
+// Route::any("store-product-group", [
+//     "as"   => "store-product-group",
+//     "uses" => "ProductGroupController@store"
+// ]);
 
-Route::any("view-product-group/{id}", [
-    "as"   => "view-product-group",
-    "uses" => "ProductGroupController@show"
-]);
+// Route::any("view-product-group/{id}", [
+//     "as"   => "view-product-group",
+//     "uses" => "ProductGroupController@show"
+// ]);
 
-Route::any("edit-product-group/{id}", [
-    "as"   => "edit-product-group",
-    "uses" => "ProductGroupController@edit"
-]);
+// Route::any("edit-product-group/{id}", [
+//     "as"   => "edit-product-group",
+//     "uses" => "ProductGroupController@edit"
+// ]);
 
-Route::any("update-product-group/{id}", [
-    "as"   => "update-product-group",
-    "uses" => "ProductGroupController@update"
-]);
+// Route::any("update-product-group/{id}", [
+//     "as"   => "update-product-group",
+//     "uses" => "ProductGroupController@update"
+// ]);
 
-Route::any("delete-product-group/{id}", [
-    "as"   => "delete-product-group",
-    "uses" => "ProductGroupController@delete"
-]);
+// Route::any("delete-product-group/{id}", [
+//     "as"   => "delete-product-group",
+//     "uses" => "ProductGroupController@delete"
+// ]);
 
 
 
 
 /**Product**/
 
-Route::get('product', [
-    'as' => 'product',
-    'uses' => 'ProductController@index'
-]);
+// Route::get('product', [
+//     'as' => 'product',
+//     'uses' => 'ProductController@index'
+// ]);
 
-Route::any("store-product", [
-    "as"   => "store-product",
-    "uses" => "ProductController@store"
-]);
+// Route::any("store-product", [
+//     "as"   => "store-product",
+//     "uses" => "ProductController@store"
+// ]);
 
-Route::any("view-product/{id}", [
-    "as"   => "view-product",
-    "uses" => "ProductController@show"
-]);
+// Route::any("view-product/{id}", [
+//     "as"   => "view-product",
+//     "uses" => "ProductController@show"
+// ]);
 
-Route::any("edit-product/{id}", [
-    "as"   => "edit-product",
-    "uses" => "ProductController@edit"
-]);
+// Route::any("edit-product/{id}", [
+//     "as"   => "edit-product",
+//     "uses" => "ProductController@edit"
+// ]);
 
-Route::any("update-product/{id}", [
-    "as"   => "update-product",
-    "uses" => "ProductController@update"
-]);
+// Route::any("update-product/{id}", [
+//     "as"   => "update-product",
+//     "uses" => "ProductController@update"
+// ]);
 
-Route::any("delete-product/{id}", [
-    "as"   => "delete-product",
-    "uses" => "ProductController@delete"
-]);
+// Route::any("delete-product/{id}", [
+//     "as"   => "delete-product",
+//     "uses" => "ProductController@delete"
+// ]);
 
 
 
 
 /**Client Existing Product**/
 
-Route::get('client-existing-product', [
-    'as' => 'client-existing-product',
-    'uses' => 'ClientExistingProductController@index'
-]);
+// Route::get('client-existing-product', [
+//     'as' => 'client-existing-product',
+//     'uses' => 'ClientExistingProductController@index'
+// ]);
 
-Route::any("store-client-existing-product", [
-    "as"   => "store-client-existing-product",
-    "uses" => "ClientExistingProductController@store"
-]);
+// Route::any("store-client-existing-product", [
+//     "as"   => "store-client-existing-product",
+//     "uses" => "ClientExistingProductController@store"
+// ]);
 
-Route::any("view-client-existing-product/{id}", [
-    "as"   => "view-client-existing-product",
-    "uses" => "ClientExistingProductController@show"
-]);
+// Route::any("view-client-existing-product/{id}", [
+//     "as"   => "view-client-existing-product",
+//     "uses" => "ClientExistingProductController@show"
+// ]);
 
-Route::any("edit-client-existing-product/{id}", [
-    "as"   => "edit-client-existing-product",
-    "uses" => "ClientExistingProductController@edit"
-]);
+// Route::any("edit-client-existing-product/{id}", [
+//     "as"   => "edit-client-existing-product",
+//     "uses" => "ClientExistingProductController@edit"
+// ]);
 
-Route::any("update-client-existing-product/{id}", [
-    "as"   => "update-client-existing-product",
-    "uses" => "ClientExistingProductController@update"
-]);
+// Route::any("update-client-existing-product/{id}", [
+//     "as"   => "update-client-existing-product",
+//     "uses" => "ClientExistingProductController@update"
+// ]);
 
-Route::any("delete-client-existing-product/{id}", [
-    "as"   => "delete-client-existing-product",
-    "uses" => "ClientExistingProductController@delete"
-]);
+// Route::any("delete-client-existing-product/{id}", [
+//     "as"   => "delete-client-existing-product",
+//     "uses" => "ClientExistingProductController@delete"
+// ]);
 
-Route::any("delete-client-existing-product-all/{id}", [
-    "as"   => "delete-client-existing-product-all",
-    "uses" => "ClientExistingProductController@deleteAll"
-]);
+// Route::any("delete-client-existing-product-all/{id}", [
+//     "as"   => "delete-client-existing-product-all",
+//     "uses" => "ClientExistingProductController@deleteAll"
+// ]);
 
 
 
 /**Lead Category**/
 
-Route::get('lead-category', [
-    'as' => 'lead-category',
-    'uses' => 'LeadCategoryController@index'
-]);
+// Route::get('lead-category', [
+//     'as' => 'lead-category',
+//     'uses' => 'LeadCategoryController@index'
+// ]);
 
-Route::any("store-lead-category", [
-    "as"   => "store-lead-category",
-    "uses" => "LeadCategoryontroller@store"
-]);
+// Route::any("store-lead-category", [
+//     "as"   => "store-lead-category",
+//     "uses" => "LeadCategoryontroller@store"
+// ]);
 
-Route::any("view-lead-category/{id}", [
-    "as"   => "view-lead-category",
-    "uses" => "LeadCategoryController@show"
-]);
+// Route::any("view-lead-category/{id}", [
+//     "as"   => "view-lead-category",
+//     "uses" => "LeadCategoryController@show"
+// ]);
 
-Route::any("edit-lead-category/{id}", [
-    "as"   => "edit-lead-category",
-    "uses" => "LeadCategoryController@edit"
-]);
+// Route::any("edit-lead-category/{id}", [
+//     "as"   => "edit-lead-category",
+//     "uses" => "LeadCategoryController@edit"
+// ]);
 
-Route::any("update-lead-category/{id}", [
-    "as"   => "update-lead-category",
-    "uses" => "LeadCategoryController@update"
-]);
+// Route::any("update-lead-category/{id}", [
+//     "as"   => "update-lead-category",
+//     "uses" => "LeadCategoryController@update"
+// ]);
 
-Route::any("delete-lead-category/{id}", [
-    "as"   => "delete-lead-category",
-    "uses" => "LeadCategoryController@delete"
-]);
+// Route::any("delete-lead-category/{id}", [
+//     "as"   => "delete-lead-category",
+//     "uses" => "LeadCategoryController@delete"
+// ]);
 
 
 
@@ -208,35 +208,35 @@ Route::any("delete-designation/{id}", [
 
 /**Job Area**/
 
-Route::get('job-area', [
-    'as' => 'job-area',
-    'uses' => 'JobAreaController@index'
-]);
+// Route::get('job-area', [
+//     'as' => 'job-area',
+//     'uses' => 'JobAreaController@index'
+// ]);
 
-Route::any("store-job-area", [
-    "as"   => "store-job-area",
-    "uses" => "JobAreaController@store"
-]);
+// Route::any("store-job-area", [
+//     "as"   => "store-job-area",
+//     "uses" => "JobAreaController@store"
+// ]);
 
-Route::any("view-job-area/{id}", [
-    "as"   => "view-job-area",
-    "uses" => "JobAreaController@show"
-]);
+// Route::any("view-job-area/{id}", [
+//     "as"   => "view-job-area",
+//     "uses" => "JobAreaController@show"
+// ]);
 
-Route::any("edit-job-area/{id}", [
-    "as"   => "edit-job-area",
-    "uses" => "JobAreaController@edit"
-]);
+// Route::any("edit-job-area/{id}", [
+//     "as"   => "edit-job-area",
+//     "uses" => "JobAreaController@edit"
+// ]);
 
-Route::any("update-job-area/{id}", [
-    "as"   => "update-job-area",
-    "uses" => "JobAreaController@update"
-]);
+// Route::any("update-job-area/{id}", [
+//     "as"   => "update-job-area",
+//     "uses" => "JobAreaController@update"
+// ]);
 
-Route::any("delete-job-area/{id}", [
-    "as"   => "delete-job-area",
-    "uses" => "JobAreaController@delete"
-]);
+// Route::any("delete-job-area/{id}", [
+//     "as"   => "delete-job-area",
+//     "uses" => "JobAreaController@delete"
+// ]);
 
 
 
@@ -246,20 +246,20 @@ Route::any("delete-job-area/{id}", [
 
 
 
-Route::any("view-task-reminder", [
-    "as"   => "view-task-reminder",
-    "uses" => "TaskReminderController@show"
-]);
+// Route::any("view-task-reminder", [
+//     "as"   => "view-task-reminder",
+//     "uses" => "TaskReminderController@show"
+// ]);
 
-Route::any("edit-task-reminder", [
-    "as"   => "edit-task-reminder",
-    "uses" => "TaskReminderController@edit"
-]);
+// Route::any("edit-task-reminder", [
+//     "as"   => "edit-task-reminder",
+//     "uses" => "TaskReminderController@edit"
+// ]);
 
-Route::any("update-task-reminder/{id}", [
-    "as"   => "update-task-reminder",
-    "uses" => "TaskReminderController@update"
-]);
+// Route::any("update-task-reminder/{id}", [
+//     "as"   => "update-task-reminder",
+//     "uses" => "TaskReminderController@update"
+// ]);
 
 
 
@@ -272,35 +272,35 @@ Route::any("update-task-reminder/{id}", [
 
 /**Industry**/
 
-Route::get('industry', [
-    'as' => 'industry',
-    'uses' => 'IndustryController@index'
-]);
+// Route::get('industry', [
+//     'as' => 'industry',
+//     'uses' => 'IndustryController@index'
+// ]);
 
-Route::any("store-industry", [
-    "as"   => "store-industry",
-    "uses" => "IndustryController@store"
-]);
+// Route::any("store-industry", [
+//     "as"   => "store-industry",
+//     "uses" => "IndustryController@store"
+// ]);
 
-Route::any("view-industry/{id}", [
-    "as"   => "view-industry",
-    "uses" => "IndustryController@show"
-]);
+// Route::any("view-industry/{id}", [
+//     "as"   => "view-industry",
+//     "uses" => "IndustryController@show"
+// ]);
 
-Route::any("edit-industry/{id}", [
-    "as"   => "edit-industry",
-    "uses" => "IndustryController@edit"
-]);
+// Route::any("edit-industry/{id}", [
+//     "as"   => "edit-industry",
+//     "uses" => "IndustryController@edit"
+// ]);
 
-Route::any("update-industry/{id}", [
-    "as"   => "update-industry",
-    "uses" => "IndustryController@update"
-]);
+// Route::any("update-industry/{id}", [
+//     "as"   => "update-industry",
+//     "uses" => "IndustryController@update"
+// ]);
 
-Route::any("delete-industry/{id}", [
-    "as"   => "delete-industry",
-    "uses" => "IndustryController@delete"
-]);
+// Route::any("delete-industry/{id}", [
+//     "as"   => "delete-industry",
+//     "uses" => "IndustryController@delete"
+// ]);
 
 
 
@@ -364,35 +364,35 @@ Route::any("ajax-get-total-candidate-number/{id}", [
 
 /**Company Group**/
 
-Route::get('company-group', [
-    'as' => 'company-group',
-    'uses' => 'CompanyGroupController@index'
-]);
+// Route::get('company-group', [
+//     'as' => 'company-group',
+//     'uses' => 'CompanyGroupController@index'
+// ]);
 
-Route::any("store-company-group", [
-    "as"   => "store-company-group",
-    "uses" => "CompanyGroupController@store"
-]);
+// Route::any("store-company-group", [
+//     "as"   => "store-company-group",
+//     "uses" => "CompanyGroupController@store"
+// ]);
 
-Route::any("view-company-group/{id}", [
-    "as"   => "view-company-group",
-    "uses" => "CompanyGroupController@show"
-]);
+// Route::any("view-company-group/{id}", [
+//     "as"   => "view-company-group",
+//     "uses" => "CompanyGroupController@show"
+// ]);
 
-Route::any("edit-company-group/{id}", [
-    "as"   => "edit-company-group",
-    "uses" => "CompanyGroupController@edit"
-]);
+// Route::any("edit-company-group/{id}", [
+//     "as"   => "edit-company-group",
+//     "uses" => "CompanyGroupController@edit"
+// ]);
 
-Route::any("update-company-group/{id}", [
-    "as"   => "update-company-group",
-    "uses" => "CompanyGroupController@update"
-]);
+// Route::any("update-company-group/{id}", [
+//     "as"   => "update-company-group",
+//     "uses" => "CompanyGroupController@update"
+// ]);
 
-Route::any("delete-company-group/{id}", [
-    "as"   => "delete-company-group",
-    "uses" => "CompanyGroupController@delete"
-]);
+// Route::any("delete-company-group/{id}", [
+//     "as"   => "delete-company-group",
+//     "uses" => "CompanyGroupController@delete"
+// ]);
 
 
 
@@ -421,12 +421,12 @@ Route::any("delete-company-group/{id}", [
 //ajax request
 
 
-Route::any("get-client-existing-product/{id}", [
-    "as"   => "get-client-existing-product",
-    "uses" => "ClientExistingProductController@get_client_existing_product"
-]);
+// Route::any("get-client-existing-product/{id}", [
+//     "as"   => "get-client-existing-product",
+//     "uses" => "ClientExistingProductController@get_client_existing_product"
+// ]);
 
-Route::any("get-client-existing-product-task/{id}", [
-    "as"   => "get-client-existing-product-task",
-    "uses" => "ClientExistingProductController@get_client_existing_product_task"
-]);
+// Route::any("get-client-existing-product-task/{id}", [
+//     "as"   => "get-client-existing-product-task",
+//     "uses" => "ClientExistingProductController@get_client_existing_product_task"
+// ]);

@@ -7,18 +7,50 @@
  * Time: 11:48 AM
  */
 
+use App\User;
 use Carbon\Carbon;
 use Modules\Admin\ExamCode;
+use Modules\Exam\ExamProcess;
 
 //------------- Without Authentication [ No Middleware ] ---------------//
 
 Route::get('deactivate-exam-code', function () {
-    $examCodes = ExamCode::where('exam_date', Carbon::today())
+    $active_process = ExamProcess::where('exam_date', Carbon::today())
         ->where('status', 'active')
         ->get();
-    if ($examCodes->count() > 0) {
-        ExamCode::where('exam_date', Carbon::today())->update(['status' => 'inactive']);
-        echo 'Successfully Deactivated!';
+
+    if ($active_process->count() > 0) {
+        foreach ($active_process as $key => $value) {
+            $value->status = 'inactive';
+            if ($value->exam_code->exam_type == 'typing_test') {
+                $model = User::where('typing_exam_code_id', $value->exam_code_id)->whereBetween('sl', [$value->sl_from, $value->sl_to])->get();
+                $input_candidate['typing_status'] = 'inactive';
+            } elseif ($value->exam_code->exam_type == 'aptitude_test') {
+                $model = User::where('aptitude_exam_code_id', $value->exam_code_id)->whereBetween('sl', [$value->sl_from, $value->sl_to])->get();
+                $input_candidate['aptitude_status'] = 'inactive';
+            }
+            if (count($model) > 0) {
+                /* Transaction Start Here */
+                DB::beginTransaction();
+                try {
+                    $value->save();
+                    foreach ($model as $model_data) {
+                        $model_data->update($input_candidate);
+                    }
+                    DB::commit();
+                    echo('Process Successfully deactivated!');
+                    echo '<br/>';
+                } catch (\Exception $e) {
+                    //If there are any exceptions, rollback the transaction`
+                    DB::rollback();
+                    echo($e->getMessage());
+                    echo '<br/>';
+                }
+            } else {
+                echo("Please Check Organization name and Post Name");
+                echo '<br/>';
+            }
+        }
     } else {
         echo 'No Active Exam Code Found!';
     }

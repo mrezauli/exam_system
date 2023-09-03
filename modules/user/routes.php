@@ -24,10 +24,8 @@ Route::get('deactivate-exam-code', function () {
             $value->status = 'inactive';
             if ($value->exam_code->exam_type == 'typing_test') {
                 $model = User::where('typing_exam_code_id', $value->exam_code_id)->whereBetween('sl', [$value->sl_from, $value->sl_to])->get();
-                $input_candidate['typing_status'] = 'inactive';
             } elseif ($value->exam_code->exam_type == 'aptitude_test') {
                 $model = User::where('aptitude_exam_code_id', $value->exam_code_id)->whereBetween('sl', [$value->sl_from, $value->sl_to])->get();
-                $input_candidate['aptitude_status'] = 'inactive';
             }
             if (count($model) > 0) {
                 /* Transaction Start Here */
@@ -35,19 +33,22 @@ Route::get('deactivate-exam-code', function () {
                 try {
                     $value->save();
                     foreach ($model as $model_data) {
-                        $model_data->update($input_candidate);
+                        if ($model_data->typing_status == 'active' || $model_data->aptitude_status == 'active') {
+                            $input_candidate['typing_status'] = 'inactive';
+                            $model_data->update($input_candidate);
+                        }
                     }
                     DB::commit();
-                    echo('Process Successfully deactivated!');
+                    echo ('Process Successfully deactivated!');
                     echo '<br/>';
                 } catch (\Exception $e) {
                     //If there are any exceptions, rollback the transaction`
                     DB::rollback();
-                    echo($e->getMessage());
+                    echo ($e->getMessage());
                     echo '<br/>';
                 }
             } else {
-                echo("Please Check Organization name and Post Name");
+                echo ("Please Check Organization name and Post Name");
                 echo '<br/>';
             }
         }

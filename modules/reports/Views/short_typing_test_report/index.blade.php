@@ -211,7 +211,7 @@ form .col-sm-12:last-child{
                             $english_exam_time = $english_speed;
 
                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5);
+                            $bangla_typed_words = round($bangla_typed_characters/5) == 0 ? 1 : round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$spmDigit);
@@ -220,7 +220,7 @@ form .col-sm-12:last-child{
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5);
+                            $english_typed_words = round($english_typed_characters/5) == 0 ? 1 : round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$spmDigit);
@@ -482,7 +482,7 @@ form .col-sm-12:last-child{
                             $english_exam_time = $english_speed;
 
                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5);
+                            $bangla_typed_words = round($bangla_typed_characters/5) == 0 ? 1 : round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$spmDigit);
@@ -491,7 +491,7 @@ form .col-sm-12:last-child{
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5);
+                            $english_typed_words = round($english_typed_characters/5) == 0 ? 1 : round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$spmDigit);
@@ -773,7 +773,7 @@ form .col-sm-12:last-child{
                             $english_exam_time = $english_speed;
 
                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5);
+                            $bangla_typed_words = round($bangla_typed_characters/5) == 0 ? 1 : round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$spmDigit);
@@ -782,7 +782,7 @@ form .col-sm-12:last-child{
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5);
+                            $english_typed_words = round($english_typed_characters/5) == 0 ? 1 : round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$spmDigit);
@@ -1001,7 +1001,7 @@ form .col-sm-12:last-child{
                             $english_exam_time = $english_speed;
 
                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5);
+                            $bangla_typed_words = round($bangla_typed_characters/5) == 0 ? 1 : round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$spmDigit);
@@ -1010,7 +1010,7 @@ form .col-sm-12:last-child{
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5);
+                            $english_typed_words = round($english_typed_characters/5) == 0 ? 1 : round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$spmDigit);

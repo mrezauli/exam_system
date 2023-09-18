@@ -219,7 +219,7 @@ class ShortTypingTestReportController extends Controller
             $bangla_typed_words = round($bangla_typed_characters / 5);
             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words / 5) : 0;
             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words / 5) : 0;
-            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
+            //$bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
             $bangla_wpm = round($bangla_corrected_words / $bangla_time, 1);
             $bangla_wpm = round_to_integer($bangla_wpm);
             $bangla_round_marks = round((20 / $bangla_speed) * $bangla_wpm);
@@ -229,7 +229,7 @@ class ShortTypingTestReportController extends Controller
             $english_typed_words = round($english_typed_characters / 5);
             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words / 5) : 0;
-            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
+            //$english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
             $english_wpm = round($english_corrected_words / $english_time, 1);
             $english_wpm = round_to_integer($english_wpm);
             $english_round_marks = round((20 / $english_speed) * $english_wpm);

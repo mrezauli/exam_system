@@ -144,6 +144,12 @@ form .col-sm-12:last-child{
                         {!! Form::text('spmDigit', Input::get('spmDigit')? Input::get('spmDigit') : null,['spmDigit'=>'spmDigit','class' => 'form-control','placeholder'=>'spm digit', 'title'=>'spm digit','required'=>'required']) !!}
                     </div>
 
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('averageMark', 'Average Mark for Calculation:', ['class' => 'control-label']) !!}
+                        <small class="required">(Req.)</small>
+                        {!! Form::text('averageMark', Input::get('averageMark')? Input::get('averageMark') : null,['class' => 'form-control','placeholder'=>'average mark', 'title'=>'average mark','required'=>'required']) !!}
+                    </div>
+
                     <div class="col-lg-1 col-md-3 col-sm-6 filter-btn">
 
                       {!! Form::submit('Generate Result', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'submit-button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
@@ -336,20 +342,20 @@ form .col-sm-12:last-child{
                             $english_exam_time = $english_speed;
 
                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5) == 0 ? 1 : round($bangla_typed_characters/5);
+                            $bangla_typed_words = round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$spmDigit);
-                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
                             $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5) == 0 ? 1 : round($english_typed_characters/5);
+                            $english_typed_words = round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$spmDigit);
-                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_tolerance = $english_typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
                             $english_round_marks = round((20/$english_speed)* $english_wpm);
                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
@@ -411,7 +417,9 @@ form .col-sm-12:last-child{
                                     <td style="border-right: 1.7px solid #8189fd !important">{{$english_wpm}}</td>
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $english_tolerance }}</td>
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $english_marks }}</td>
-                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $average }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">
+                                        {{ $averageMark >= 0 ? $average : '' }}
+                                    </td>
 
                                     <td>
 
@@ -426,15 +434,23 @@ form .col-sm-12:last-child{
 
                                         @else
 
-                                            @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
-                                            <?php $remarks = 'Pass'; ?>
+                                            @if ($averageMark >= 0)
+                                                @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
+                                                <?php $remarks = '<b>Pass</b>'; ?>
+                                                @else
+                                                <?php $remarks = 'Fail'; ?>
+                                                @endif
                                             @else
-                                            <?php $remarks = 'Fail'; ?>
+                                                @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
+                                                <?php $remarks = '<b>Pass</b>'; ?>
+                                                @else
+                                                <?php $remarks = 'Fail'; ?>
+                                                @endif
                                             @endif
 
                                         @endif
 
-                                        {{$remarks}}
+                                        {!! $remarks !!}
 
                                    </td>
                                    <td>
@@ -723,20 +739,20 @@ form .col-sm-12:last-child{
                             $english_exam_time = $english_speed;
 
             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5) == 0 ? 1 : round($bangla_typed_characters/5);
+                            $bangla_typed_words = round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$spmDigit);
-                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
                             $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5) == 0 ? 1 : round($english_typed_characters/5);
+                            $english_typed_words = round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$spmDigit);
-                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_tolerance = $english_typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
                             $english_round_marks = round((20/$english_speed)* $english_wpm);
                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
@@ -771,7 +787,9 @@ form .col-sm-12:last-child{
                         <td style="border-right: 1.7px solid #8189fd !important">{{ $english_wpm }}</td>
                         <td style="border-right: 1.7px solid #8189fd !important">{{ $english_tolerance }}</td>
                         <td style="border-right: 1.7px solid #8189fd !important">{{ $english_marks }}</td>
-                        <td style="border-right: 1.7px solid #8189fd !important">{{ $average }}</td>
+                        <td style="border-right: 1.7px solid #8189fd !important">
+                            {{ $averageMark >= 0 ? $average : '' }}
+                        </td>
 
                                         <td>
 
@@ -786,19 +804,23 @@ form .col-sm-12:last-child{
 
                                             @else
 
-                                                @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
-
-                                                <?php $remarks = 'Pass'; $passed++; ?>
-
+                                                @if ($averageMark >= 0)
+                                                    @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
+                                                    <?php $remarks = '<b>Pass</b>'; $passed++; ?>
+                                                    @else
+                                                    <?php $remarks = 'Fail'; $failed++; ?>
+                                                    @endif
                                                 @else
-
-                                                <?php $remarks = 'Fail'; $failed++; ?>
-
+                                                    @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
+                                                    <?php $remarks = '<b>Pass</b>'; $passed++; ?>
+                                                    @else
+                                                    <?php $remarks = 'Fail'; $failed++; ?>
+                                                    @endif
                                                 @endif
 
                                             @endif
 
-                                            {{$remarks}}
+                                            {!! $remarks !!}
 
                                        </td>
 
@@ -1082,20 +1104,20 @@ form .col-sm-12:last-child{
                             $english_exam_time = $english_speed;
 
             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5) == 0 ? 1 : round($bangla_typed_characters/5);
+                            $bangla_typed_words = round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$spmDigit);
-                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
                             $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5) == 0 ? 1 : round($english_typed_characters/5);
+                            $english_typed_words = round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$spmDigit);
-                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_tolerance = $english_typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
                             $english_round_marks = round((20/$english_speed)* $english_wpm);
                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
@@ -1129,7 +1151,9 @@ form .col-sm-12:last-child{
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $english_wpm }}</td>
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $english_tolerance }}</td>
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $english_marks }}</td>
-                                    <td style="border-right: 1.7px solid #8189fd !important">{{ $average }}</td>
+                                    <td style="border-right: 1.7px solid #8189fd !important">
+                                        {{ $averageMark >= 0 ? $average : '' }}
+                                    </td>
                                     <td style="border-right: 1.7px solid #8189fd !important"></td>
 
                 </tr>

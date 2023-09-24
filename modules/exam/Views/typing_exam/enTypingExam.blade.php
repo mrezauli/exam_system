@@ -480,22 +480,22 @@
     }
 
 
-    $('#original_text').bind('cut copy paste drop', function (e) {
+    // $('#original_text').bind('cut copy paste drop', function (e) {
 
-     return false;
+    //  return false;
 
-    });
+    // });
 
     window.addEventListener('contextmenu', function(e) {
         e.preventDefault();
     });
 
 
-    $('#answered_text').bind('cut copy paste drop', function (e) {
+    // $('#answered_text').bind('cut copy paste drop', function (e) {
 
-     return false;
+    //  return false;
 
-    });
+    // });
 
     window.addEventListener('contextmenu', function(e) {
         e.preventDefault();

@@ -71,12 +71,14 @@ class ShortTypingTestReportController extends Controller
         $bangla_speed = Input::get('bangla_speed');
         $english_speed = Input::get('english_speed');
         $spmDigit = Input::get('spmDigit');
+        $averageMark = Input::get('averageMark');
         $remarks = Input::get('remarks');
 
         $validator = Validator::make($request->all(), [
             'bangla_speed' => 'required|integer',
             'english_speed' => 'required|integer',
             'spmDigit' => 'required|integer',
+            'averageMark' => 'required|integer',
         ]);
 
 
@@ -201,7 +203,7 @@ class ShortTypingTestReportController extends Controller
 
         // dd($model);
 
-        $model->each(function ($values, $key) use ($bangla_speed, $english_speed) {
+        $model->each(function ($values, $key) use ($bangla_speed, $english_speed, $averageMark) {
 
             // $values = collect($values);
             $null_object = StdClass::fromArray();
@@ -219,7 +221,7 @@ class ShortTypingTestReportController extends Controller
             $bangla_typed_words = round($bangla_typed_characters / 5);
             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words / 5) : 0;
             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words / 5) : 0;
-            //$bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
+            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
             $bangla_wpm = round($bangla_corrected_words / $bangla_time, 1);
             $bangla_wpm = round_to_integer($bangla_wpm);
             $bangla_round_marks = round((20 / $bangla_speed) * $bangla_wpm);
@@ -229,7 +231,7 @@ class ShortTypingTestReportController extends Controller
             $english_typed_words = round($english_typed_characters / 5);
             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words / 5) : 0;
-            //$english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
+            $english_tolerance = $english_typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
             $english_wpm = round($english_corrected_words / $english_time, 1);
             $english_wpm = round_to_integer($english_wpm);
             $english_round_marks = round((20 / $english_speed) * $english_wpm);
@@ -242,14 +244,20 @@ class ShortTypingTestReportController extends Controller
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
             if (!$values->lists('attended_typing_test')->contains('true')) {
-
                 $values->remarks = 'Absent';
-            } elseif ($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25) {
-
-                $values->remarks = 'Pass';
+            }
+            elseif ($averageMark >= 0) {
+                if ($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark) {
+                    $values->remarks = 'Pass';
+                } else {
+                    $values->remarks = 'Fail';
+                }
             } else {
-
-                $values->remarks = 'Fail';
+                if ($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5) {
+                    $values->remarks = 'Pass';
+                } else {
+                    $values->remarks = 'Fail';
+                }
             }
 
             if ($values->first()->typing_status == 'expelled' || $values->first()->typing_status == 'cancelled') {
@@ -294,7 +302,7 @@ class ShortTypingTestReportController extends Controller
 
 
         $failed = $model->filter(function ($value) {
-            return $value->remarks == "Fail";
+            return $value->remarks  == "Fail";
         });
 
 
@@ -402,7 +410,7 @@ class ShortTypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::short_typing_test_report.index', compact('page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'spmDigit', 'remarks', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'show_count'));
+        return view('reports::short_typing_test_report.index', compact('averageMark', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'spmDigit', 'remarks', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'show_count'));
     }
 
 

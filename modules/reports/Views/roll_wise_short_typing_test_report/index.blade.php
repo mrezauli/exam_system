@@ -97,7 +97,13 @@ form .col-sm-12:last-child{
                     <div class="col-lg-2 col-md-3 col-sm-6">
                         {!! Form::label('spmDigit', 'Calculation Digit (SPM):', ['class' => 'control-label']) !!}
                         <small class="required">(Req.)</small>
-                        {!! Form::text('spmDigit', Input::get('spmDigit')? Input::get('spmDigit') : null,['spmDigit'=>'spmDigit','class' => 'form-control','placeholder'=>'spm digit', 'title'=>'spm digit','required'=>'required']) !!}
+                        {!! Form::text('spmDigit', Input::get('spmDigit')? Input::get('spmDigit') : null,['class' => 'form-control','placeholder'=>'spm digit', 'title'=>'spm digit','required'=>'required']) !!}
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('averageMark', 'Average Mark for Calculation:', ['class' => 'control-label']) !!}
+                        <small class="required">(Req.)</small>
+                        {!! Form::text('averageMark', Input::get('averageMark')? Input::get('averageMark') : null,['class' => 'form-control','placeholder'=>'average mark', 'title'=>'average mark','required'=>'required']) !!}
                     </div>
 
                     <div class="col-lg-25 col-md-3 col-sm-6">
@@ -206,20 +212,20 @@ form .col-sm-12:last-child{
                             $english_exam_time = $english_speed;
 
                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5) == 0 ? 1 : round($bangla_typed_characters/5);
+                            $bangla_typed_words = round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$spmDigit);
-                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
                             $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5) == 0 ? 1 : round($english_typed_characters/5);
+                            $english_typed_words = round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$spmDigit);
-                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_tolerance = $english_typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
                             $english_round_marks = round((20/$english_speed)* $english_wpm);
                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
@@ -247,15 +253,19 @@ form .col-sm-12:last-child{
 
                                         @else
 
-                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
-
-                                        <?php $remarks = 'Pass'; ?>
-
-                                        @else
-
-                                        <?php $remarks = 'Fail'; ?>
-
-                                        @endif
+                                            @if ($averageMark >= 0)
+                                                @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
+                                                <?php $remarks = '<b>Pass</b>'; ?>
+                                                @else
+                                                <?php $remarks = 'Fail'; ?>
+                                                @endif
+                                            @else
+                                                @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
+                                                <?php $remarks = '<b>Pass</b>'; ?>
+                                                @else
+                                                <?php $remarks = 'Fail'; ?>
+                                                @endif
+                                            @endif
 
                                         @if($values->lists('typing_status')->contains('cancelled'))
 
@@ -271,7 +281,7 @@ form .col-sm-12:last-child{
 
                                         @endif
 
-                                        {{$remarks}}
+                                        {!! $remarks !!}
 
                                    </td>
 
@@ -478,20 +488,20 @@ form .col-sm-12:last-child{
                             $english_exam_time = $english_speed;
 
                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5) == 0 ? 1 : round($bangla_typed_characters/5);
+                            $bangla_typed_words = round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$spmDigit);
-                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
                             $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5) == 0 ? 1 : round($english_typed_characters/5);
+                            $english_typed_words = round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$spmDigit);
-                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_tolerance = $english_typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
                             $english_round_marks = round((20/$english_speed)* $english_wpm);
                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
@@ -516,15 +526,19 @@ form .col-sm-12:last-child{
 
                         @else
 
-                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= 25)
-
-                        <?php $remarks = 'Pass'; ?>
-
-                        @else
-
-                        <?php $remarks = 'Fail'; ?>
-
-                        @endif
+                            @if ($averageMark >= 0)
+                                @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
+                                <?php $remarks = '<b>Pass</b>'; ?>
+                                @else
+                                <?php $remarks = 'Fail'; ?>
+                                @endif
+                            @else
+                                @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
+                                <?php $remarks = '<b>Pass</b>'; ?>
+                                @else
+                                <?php $remarks = 'Fail'; ?>
+                                @endif
+                            @endif
 
                         @if($values->lists('typing_status')->contains('cancelled'))
 
@@ -540,7 +554,7 @@ form .col-sm-12:last-child{
 
                         @endif
 
-                        {{$remarks}}
+                        {!! $remarks !!}
 
                    </td>
 
@@ -805,20 +819,20 @@ form .col-sm-12:last-child{
                             $english_exam_time = $english_speed;
 
                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                            $bangla_typed_words = round($bangla_typed_characters/5) == 0 ? 1 : round($bangla_typed_characters/5);
+                            $bangla_typed_words = round($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
                             $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
                             $bangla_wpm = round($bangla_corrected_words/$spmDigit);
-                            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words ) * 100);
+                            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
                             $bangla_round_marks = round((20/$bangla_speed)* $bangla_wpm);
                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                            $english_typed_words = round($english_typed_characters/5) == 0 ? 1 : round($english_typed_characters/5);
+                            $english_typed_words = round($english_typed_characters/5);
                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
                             $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
                             $english_wpm = round($english_corrected_words/$spmDigit);
-                            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words ) * 100);
+                            $english_tolerance = $english_typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
                             $english_round_marks = round((20/$english_speed)* $english_wpm);
                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 

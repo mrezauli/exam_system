@@ -74,6 +74,8 @@ class TypingTestReportController extends Controller
         $bangla_speed = Input::get('bangla_speed');
         $english_speed = Input::get('english_speed');
         $spmDigit = Input::get('spmDigit');
+        $averageMark = Input::get('averageMark');
+
         if (empty($company_id)) {
             $companyIdArray = DB::table('exam_code')->select('company_id', 'designation_id', 'exam_date')->where('exam_code_name', Input::get('exam_code'))->get();
             foreach ($companyIdArray as $key => $value) {
@@ -91,6 +93,7 @@ class TypingTestReportController extends Controller
             'bangla_speed' => 'required|integer',
             'english_speed' => 'required|integer',
             'spmDigit' => 'required|integer',
+            'averageMark' => 'required|integer',
         ]);
 
 
@@ -405,7 +408,7 @@ class TypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::typing_test_report.index', compact('spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count'));
+        return view('reports::typing_test_report.index', compact('averageMark', 'spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count'));
     }
 
     public function typing_test_report_pdf($company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed, $spmDigit)
@@ -705,7 +708,7 @@ class TypingTestReportController extends Controller
             $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words / 5) : 0;
             $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words / 5) : 0;
             $bangla_wpm = round($bangla_corrected_words / $spmDigit);
-            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
+            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
             $bangla_round_marks = round((20 / 25) * $bangla_wpm);
             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
@@ -714,7 +717,7 @@ class TypingTestReportController extends Controller
             $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words / 5) : 0;
             $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words / 5) : 0;
             $english_wpm = round($english_corrected_words / $spmDigit);
-            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
+            $english_tolerance = $english_typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
             $english_round_marks = round((20 / 25) * $english_wpm);
             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
@@ -1088,7 +1091,7 @@ class TypingTestReportController extends Controller
             $bangla_deleted_words = isset($bangla->deleted_words) ? round($bangla->deleted_words / 5) : 0;
             $bangla_corrected_words = isset($bangla->inserted_words) ? round($bangla->inserted_words / 5) : 0;
             $bangla_wpm = round($bangla_corrected_words / $spmDigit);
-            $bangla_tolerance = $bangla->typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
+            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : round(($bangla_deleted_words / $bangla_typed_words) * 100);
             $bangla_round_marks = round((20 / 25) * $bangla_wpm);
             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
@@ -1097,7 +1100,7 @@ class TypingTestReportController extends Controller
             $english_deleted_words = isset($english->deleted_words) ? round($english->deleted_words / 5) : 0;
             $english_corrected_words = isset($english->inserted_words) ? round($english->inserted_words / 5) : 0;
             $english_wpm = round($english_corrected_words / $spmDigit);
-            $english_tolerance = $english->typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
+            $english_tolerance = $english_typed_words == 0 ? 0 : round(($english_deleted_words / $english_typed_words) * 100);
             $english_round_marks = round((20 / 25) * $english_wpm);
             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 

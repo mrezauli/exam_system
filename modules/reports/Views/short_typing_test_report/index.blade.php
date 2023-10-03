@@ -1274,7 +1274,7 @@ var table = $('#examples_report').DataTable( {
     "search": "Search:"
   },
   "aaSorting": [],
-  "pageLength": 50,
+  "pageLength": 1000,
 } );
 
 

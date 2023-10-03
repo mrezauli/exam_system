@@ -6,7 +6,7 @@
 @section('content')
 
 <style>
-    
+
 form{
     padding-top: 0;
 }
@@ -31,7 +31,7 @@ form .col-sm-12:last-child{
                 <div class="clearfix"></div>
             </div>
 
-          
+
             <div class="panel-body">
 
                 <ul class="alert alert-danger" style="margin-left: 30px;border-radius: 5px; display: none">
@@ -46,7 +46,7 @@ form .col-sm-12:last-child{
                         {!! Form::label('exam_code', 'Exam Code:', ['class' => 'control-label']) !!}
                         {!! Form::text('exam_code', @Input::get('exam_code')? Input::get('exam_code') : null,['id'=>'exam_code','class' => 'form-control','placeholder'=>'exam code', 'title'=>'exam code']) !!}
                     </div>
-                
+
                     <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
                         <small class="required jrequired">(Required)</small>
@@ -76,7 +76,7 @@ form .col-sm-12:last-child{
                         <button class="btn btn-danger calender-button" type="button"><i class="icon-calendar"></i></button>
                       </span>
                     </div>
-  
+
                 </div>
 
 
@@ -105,9 +105,9 @@ form .col-sm-12:last-child{
                         <small class="required jprequired">(Req.)</small>
                         {!! Form::text('ppt_pass_marks', Input::get('ppt_pass_marks')? Input::get('ppt_pass_marks') : null,['id'=>'ppt_pass_marks','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
                     </div>
-    
+
                     <div class="col-lg-2 col-md-3 col-sm-6 filter-btn">
-  
+
                       {!! Form::submit('Generate Report', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
                     </div>
 
@@ -118,7 +118,7 @@ form .col-sm-12:last-child{
                     @endif
 
                 </div>
-                            
+
                 <div class="pull-left pdf-report-button">
 
                     <a href="#" class="btn btn-danger print-button pdf_report_button">Print Result with Remarks</a>
@@ -131,7 +131,7 @@ form .col-sm-12:last-child{
                 {!! Form::close() !!}
 
 
-                
+
                 <br><br><br>
 
 
@@ -164,13 +164,13 @@ form .col-sm-12:last-child{
 
                             <th colspan="{{$ppt_question_no}}">MS PPT</th>
                             @endif
-                            
-            
+
+
                             <th class="no-border"> <span>Total Marks</span> </th>
                             <th class="no-border"> <span>Remarks</span> </th>
-                            
+
                         </tr>
-                       
+
                         <tr>
                             <th></th>
                             <th></th>
@@ -183,8 +183,8 @@ form .col-sm-12:last-child{
                             @if(! empty($group['word']))
 
                                 @foreach($group['word'] as $word_question)
- 
-                                <?php 
+
+                                <?php
 
                                 $mark = DB::table( 'question_set_qbank_aptitude_test AS p' )
                                 ->select('p.question_mark')
@@ -192,7 +192,7 @@ form .col-sm-12:last-child{
                                 ->where( 'p.qbank_aptitude_id', '=', $word_question->qbank_aptitude_id)
                                 ->first();
 
-                                $word_question_mark = $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';    
+                                $word_question_mark = $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';
 
                                 $total_question_marks += $question_mark;
 
@@ -210,7 +210,7 @@ form .col-sm-12:last-child{
 
                                 @foreach($group['excel'] as $excel_question)
 
-                                <?php 
+                                <?php
 
                                 $mark = DB::table( 'question_set_qbank_aptitude_test AS p' )
                                 ->select('p.question_mark')
@@ -218,7 +218,7 @@ form .col-sm-12:last-child{
                                 ->where( 'p.qbank_aptitude_id', '=', $excel_question->qbank_aptitude_id)
                                 ->first();
 
-                                $excel_question_mark = $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';    
+                                $excel_question_mark = $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';
 
                                 $total_question_marks += $question_mark;
 
@@ -236,7 +236,7 @@ form .col-sm-12:last-child{
 
                                 @foreach($group['ppt'] as $ppt_question)
 
-                                <?php 
+                                <?php
 
                                 $mark = DB::table( 'question_set_qbank_aptitude_test AS p' )
                                 ->select('p.question_mark')
@@ -244,7 +244,7 @@ form .col-sm-12:last-child{
                                 ->where( 'p.qbank_aptitude_id', '=', $ppt_question->qbank_aptitude_id)
                                 ->first();
 
-                                $ppt_question_mark = $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';    
+                                $ppt_question_mark = $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';
 
                                 $total_question_marks += $question_mark;
 
@@ -255,34 +255,34 @@ form .col-sm-12:last-child{
                                 @endforeach
 
                             @endif
-                        
+
                             <th></th>
                             <th></th>
 
-                            
+
                         </tr>
                         </thead>
-                        <tbody> 
-                        
+                        <tbody>
+
                         @if($status==2)
 
-                        <?php 
+                        <?php
 
                         $t =1;
 
                         $sl_no = isset($_GET['page']) ? ($_GET['page']-1)*2 + 0: 0;
-                        
+
                         //$model = collect(['0' => $model->get('1')]);
-                        
+
                         //dd($model);
                         ?>
-                    
+
                             @foreach($model as $values)
 
-                            <?php 
+                            <?php
 
-                            $sl_no++; 
- 
+                            $sl_no++;
+
                             // $values = collect($values);
 
                             $grouped_by_question_type = $values->groupBy('question_type')->sortBy('qselection_aptitude_id');
@@ -308,7 +308,7 @@ form .col-sm-12:last-child{
                                         if (! in_array($value->qselection_aptitude_id, $ddd)) {
 
                                         $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'exam_date'=>$value->exam_date,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
-                                        }  
+                                        }
                                     }
 
                                 }
@@ -320,17 +320,17 @@ form .col-sm-12:last-child{
 
                             $failed_in_any_exam = '';
 
-                            $remarks = ''; 
+                            $remarks = '';
 
-                            $pass_percentage = $bangla_speed;    
+                            $pass_percentage = $bangla_speed;
 
-                            unset($grouped_by_question_type['']);    
+                            unset($grouped_by_question_type['']);
 
 
 
 
                             foreach ($grouped_by_question_type as $key => $question_group) {
-                                  
+
                                 $question_paper = $question_group->where('attended_aptitude_test','true')->first();
 
                                 $exam_date = isset($question_paper) ?  $question_paper->exam_date : '';
@@ -339,12 +339,12 @@ form .col-sm-12:last-child{
                                     if ($exam_date && $value->exam_date != $exam_date) {
                                         unset($question_group[$key]);
                                     }
-                                    
+
                                 }
 
                                 //dd($ddd);
 
-                              }  
+                              }
 
 //dd($grouped_by_question_type);
 
@@ -352,23 +352,23 @@ form .col-sm-12:last-child{
                             ?>
 
                                 <tr class="gradeX">
-                                                           
+
                                     <td>{{$sl_no}}</td>
                                     <td>{{$values[0]->sl}}</td>
                                     <td>{{$values[0]->roll_no}}</td>
                                     <td>{{$values[0]->exam_code_name}}</td>
                                     <td class="table-name">
- 
-                                    {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}       
+
+                                    {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}
                                     </td>
-                                  
+
                                     @if(isset($grouped_by_question_type['word']))
-    
+
                                         @foreach($grouped_by_question_type['word']->sortBy('qselection_aptitude_id') as $data)
 
                                         <td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">{{$data->answer_marks + 0}}</td>
 
-                                        <?php $total_answer_marks += $data->answer_marks + 0; 
+                                        <?php $total_answer_marks += $data->answer_marks + 0;
 
                                         $pass_marks = ($data->question_marks*$pass_percentage)/100;
 
@@ -377,7 +377,7 @@ form .col-sm-12:last-child{
                                             $failed_in_any_exam = true;
                                         }
 
-                                        ?>  
+                                        ?>
 
                                         @endforeach
 
@@ -398,7 +398,7 @@ form .col-sm-12:last-child{
 
                                         <td style="border-right:1.7px solid #8189fd !important;">{{$data->answer_marks + 0}}</td>
 
-                                        <?php $total_answer_marks += $data->answer_marks + 0; 
+                                        <?php $total_answer_marks += $data->answer_marks + 0;
 
                                         $pass_marks2 = ($data->question_marks*$pass_percentage)/100;
 
@@ -427,7 +427,7 @@ form .col-sm-12:last-child{
 
                                         <td style="border-right:1.7px solid #8189fd !important;">{{$data->answer_marks + 0}}</td>
 
-                                        <?php $total_answer_marks += $data->answer_marks + 0; 
+                                        <?php $total_answer_marks += $data->answer_marks + 0;
 
                                         $pass_marks3 = ($data->question_marks*$pass_percentage)/100;
 
@@ -459,23 +459,23 @@ form .col-sm-12:last-child{
                                             $remarks = 'Absent';
 
                                         }else{
- 
+
                                             $remarks = $values->remarks;
 
                                         }
 
                                         ?>
-                                        
+
                                     {{$remarks}}
 
                                    </td>
-                                   
+
                                 </tr>
                             @endforeach
                         @endif
                         </tbody>
-                    </table>         
-        
+                    </table>
+
                     </div>
                 </div>
                 @if($status==2)
@@ -512,7 +512,7 @@ form .col-sm-12:last-child{
     }
 
 
-    @media print{      
+    @media print{
 
         *{
             text-align: center !important;
@@ -606,12 +606,12 @@ form .col-sm-12:last-child{
 
         thead tr th, tbody tr td,tr th, tr td {
             border: 1px solid #333 !important;
-        } 
+        }
 
-    } 
+    }
 
 </style>
-                        
+
 
 <div class="print-section print-show">
     <div class="header-section">
@@ -651,15 +651,15 @@ form .col-sm-12:last-child{
 
             <th colspan="{{$ppt_question_no}}">MS PPT</th>
             @endif
-            
+
             <th class="no-border" rowspan="2"> Total Marks </th>
 
             <th class="no-border" rowspan="2"> Remarks </th>
-            
+
         </tr>
-        
+
         <tr>
-            
+
             <?php $total_question_marks = 0; $j=0; $k=0; $l=0; ?>
 
             @if(! empty($group['word']))
@@ -667,7 +667,7 @@ form .col-sm-12:last-child{
             @foreach($group['word'] as $word_question)
 
 
-            <?php 
+            <?php
 
             $mark = DB::table( 'question_set_qbank_aptitude_test AS p' )
                     ->select('p.question_mark')
@@ -675,7 +675,7 @@ form .col-sm-12:last-child{
                     ->where( 'p.qbank_aptitude_id', '=', $word_question->qbank_aptitude_id)
                     ->first();
 
-            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';    
+            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';
 
             $total_question_marks += $question_mark;
 
@@ -693,7 +693,7 @@ form .col-sm-12:last-child{
 
             @foreach($group['excel'] as $excel_question)
 
-            <?php 
+            <?php
 
             $mark = DB::table( 'question_set_qbank_aptitude_test AS p' )
                     ->select('p.question_mark')
@@ -701,7 +701,7 @@ form .col-sm-12:last-child{
                     ->where( 'p.qbank_aptitude_id', '=', $excel_question->qbank_aptitude_id)
                     ->first();
 
-            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';    
+            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';
 
             $total_question_marks += $question_mark;
 
@@ -719,7 +719,7 @@ form .col-sm-12:last-child{
 
             @foreach($group['ppt'] as $ppt_question)
 
-            <?php 
+            <?php
 
             $mark = DB::table( 'question_set_qbank_aptitude_test AS p' )
                     ->select('p.question_mark')
@@ -727,7 +727,7 @@ form .col-sm-12:last-child{
                     ->where( 'p.qbank_aptitude_id', '=', $ppt_question->qbank_aptitude_id)
                     ->first();
 
-            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';    
+            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';
 
             $total_question_marks += $question_mark;
 
@@ -738,33 +738,33 @@ form .col-sm-12:last-child{
             @endforeach
 
             @endif
-     
+
         </tr>
         </thead>
         <tbody>
-        
+
         @if($status==2)
 
-        <?php 
+        <?php
 
         $t = 1;
 
-       $sl_no = isset($_GET['page']) ? ($_GET['page']-1)*2 + 0: 0; 
+       $sl_no = isset($_GET['page']) ? ($_GET['page']-1)*2 + 0: 0;
 
             $total_pass = 0;
             $total_fail = 0;
 
             ?>
 
-    
+
             @foreach($model_all as $values)
 
 
-            <?php 
+            <?php
 
-            $sl_no++; 
+            $sl_no++;
 
-            
+
 
             // $values = collect($values);
 
@@ -789,7 +789,7 @@ form .col-sm-12:last-child{
                                         if (! in_array($value->qselection_aptitude_id, $ddd)) {
 
                                          $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'exam_date'=>$value->exam_date,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
-                                        }  
+                                        }
                                     }
 
                                 }
@@ -803,16 +803,16 @@ form .col-sm-12:last-child{
 
                             $failed_in_any_exam = '';
 
-                            $remarks = ''; 
+                            $remarks = '';
 
-                            $pass_percentage = $bangla_speed;    
+                            $pass_percentage = $bangla_speed;
 
-                            unset($grouped_by_question_type['']);    
+                            unset($grouped_by_question_type['']);
 
 
 
                             foreach ($grouped_by_question_type as $key => $question_group) {
-                                  
+
                                 $question_paper = $question_group->where('attended_aptitude_test','true')->first();
 
                                 $exam_date = isset($question_paper) ? $question_paper->exam_date : '';
@@ -821,23 +821,23 @@ form .col-sm-12:last-child{
                                     if ($exam_date && $value->exam_date != $exam_date) {
                                         unset($question_group[$key]);
                                     }
-                                    
-                                }
- 
-                              }  
-            
 
-          
+                                }
+
+                              }
+
+
+
             ?>
 
                 <tr class="gradeX">
-                                           
+
                     <td>{{$sl_no}}</td>
                     <td>{{$values[0]->roll_no}}</td>
                     <td>{{$values[0]->exam_code_name}}</td>
                     <td class="table-name">
 
-                    {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}       
+                    {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}
                     </td>
 
                     @if(isset($grouped_by_question_type['word']))
@@ -846,7 +846,7 @@ form .col-sm-12:last-child{
 
                         <td>{{$data->answer_marks + 0}}</td>
 
-                        <?php $total_answer_marks += $data->answer_marks + 0; 
+                        <?php $total_answer_marks += $data->answer_marks + 0;
 
                         $pass_marks4 = ($data->question_marks*$pass_percentage)/100;
 
@@ -877,7 +877,7 @@ form .col-sm-12:last-child{
 
                         <td>{{$data->answer_marks + 0}}</td>
 
-                        <?php $total_answer_marks += $data->answer_marks + 0; 
+                        <?php $total_answer_marks += $data->answer_marks + 0;
 
                         $pass_marks5 = ($data->question_marks*$pass_percentage)/100;
 
@@ -909,7 +909,7 @@ form .col-sm-12:last-child{
 
                         <td>{{$data->answer_marks + 0}}</td>
 
-                        <?php $total_answer_marks += $data->answer_marks + 0; 
+                        <?php $total_answer_marks += $data->answer_marks + 0;
 
                         $pass_marks6 = ($data->question_marks*$pass_percentage)/100;
 
@@ -924,7 +924,7 @@ form .col-sm-12:last-child{
 
                     @else
 
-                    
+
 
                         @for ($i = 1; $i <= $ppt_question_no; $i++)
 
@@ -945,7 +945,7 @@ form .col-sm-12:last-child{
                         $remarks = 'Absent';
 
                     }else{
- 
+
                         $remarks = $values->remarks;
 
                     }
@@ -955,7 +955,7 @@ form .col-sm-12:last-child{
                     {{$remarks}}
 
                    </td>
-                   
+
                 </tr>
 
             @endforeach
@@ -998,7 +998,7 @@ form .col-sm-12:last-child{
 
 
 
- 
+
 
 <div class="table-primary print-report-table-wr-wrapper">
 
@@ -1015,10 +1015,10 @@ form .col-sm-12:last-child{
 
     .table-name{
         text-align: left !important;
-    } 
+    }
 
 
-    @media print{      
+    @media print{
 
         *{
             text-align: center !important;
@@ -1114,12 +1114,12 @@ form .col-sm-12:last-child{
 
         thead tr th, tbody tr td,tr th, tr td {
             border: 1px solid #333 !important;
-        } 
+        }
 
-    } 
+    }
 
 </style>
-                        
+
 
 <div class="print-section print-show">
     <div class="header-section">
@@ -1159,15 +1159,15 @@ form .col-sm-12:last-child{
 
             <th colspan="{{$ppt_question_no}}">MS PPT</th>
             @endif
-            
+
             <th class="no-border" rowspan="2"> Total Marks </th>
 
             <th class="no-border" rowspan="2"> Remarks </th>
-            
+
         </tr>
-        
+
         <tr>
-           
+
             <?php $total_question_marks = 0; $j=0; $k=0; $l=0; ?>
 
             @if(! empty($group['word']))
@@ -1175,7 +1175,7 @@ form .col-sm-12:last-child{
             @foreach($group['word'] as $word_question)
 
 
-            <?php 
+            <?php
 
             $mark = DB::table( 'question_set_qbank_aptitude_test AS p' )
                     ->select('p.question_mark')
@@ -1183,7 +1183,7 @@ form .col-sm-12:last-child{
                     ->where( 'p.qbank_aptitude_id', '=', $word_question->qbank_aptitude_id)
                     ->first();
 
-            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';    
+            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';
 
             $total_question_marks += $question_mark;
 
@@ -1201,7 +1201,7 @@ form .col-sm-12:last-child{
 
             @foreach($group['excel'] as $excel_question)
 
-            <?php 
+            <?php
 
             $mark = DB::table( 'question_set_qbank_aptitude_test AS p' )
                     ->select('p.question_mark')
@@ -1209,7 +1209,7 @@ form .col-sm-12:last-child{
                     ->where( 'p.qbank_aptitude_id', '=', $excel_question->qbank_aptitude_id)
                     ->first();
 
-            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';    
+            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';
 
             $total_question_marks += $question_mark;
 
@@ -1227,7 +1227,7 @@ form .col-sm-12:last-child{
 
             @foreach($group['ppt'] as $ppt_question)
 
-            <?php 
+            <?php
 
             $mark = DB::table( 'question_set_qbank_aptitude_test AS p' )
                     ->select('p.question_mark')
@@ -1235,7 +1235,7 @@ form .col-sm-12:last-child{
                     ->where( 'p.qbank_aptitude_id', '=', $ppt_question->qbank_aptitude_id)
                     ->first();
 
-            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';    
+            $question_mark = isset($mark->question_mark) ? $mark->question_mark : '0';
 
             $total_question_marks += $question_mark;
 
@@ -1246,26 +1246,26 @@ form .col-sm-12:last-child{
             @endforeach
 
             @endif
-        
+
         </tr>
         </thead>
         <tbody>
-        
+
         @if($status==2)
 
-        <?php 
+        <?php
 
         $t = 1;
 
         $sl_no = isset($_GET['page']) ? ($_GET['page']-1)*2 + 0: 0; ?>
 
-    
+
             @foreach($model_all as $values)
 
 
-            <?php 
+            <?php
 
-            $sl_no++; 
+            $sl_no++;
 
             // $values = collect($values);
 
@@ -1286,29 +1286,29 @@ form .col-sm-12:last-child{
                                         if (! in_array($value->qselection_aptitude_id, $ddd)) {
 
                                         $grouped_by_question_type[$group_key]->push((object)(['qselection_aptitude_id'=>$value->qselection_aptitude_id,'exam_date'=>$value->exam_date,'question_marks'=>$value->question_marks,'answer_marks'=>'0']));
-                                        }  
+                                        }
                                     }
 
                                 }
                             }
-                            
+
 
                             unset($grouped_by_question_type['']);
-            
+
                             $total_answer_marks = 0;
 
                             $failed_in_any_exam = '';
 
-                            $remarks = ''; 
+                            $remarks = '';
 
-                            $pass_percentage = $bangla_speed;    
+                            $pass_percentage = $bangla_speed;
 
-                            unset($grouped_by_question_type['']);    
+                            unset($grouped_by_question_type['']);
 
 
 
                             foreach ($grouped_by_question_type as $key => $question_group) {
-                                  
+
                                 $question_paper = $question_group->where('attended_aptitude_test','true')->first();
 
                                 $exam_date = isset($question_paper) ? $question_paper->exam_date : '';
@@ -1317,21 +1317,21 @@ form .col-sm-12:last-child{
                                     if ($exam_date && $value->exam_date != $exam_date) {
                                         unset($question_group[$key]);
                                     }
-                                    
+
                                 }
- 
+
                             }
-          
+
 
             ?>
                 <tr class="gradeX">
-                                           
+
                     <td>{{$sl_no}}</td>
                     <td>{{$values[0]->roll_no}}</td>
                     <td>{{$values[0]->exam_code_name}}</td>
                     <td class="table-name">
 
-                    {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}       
+                    {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}
                     </td>
 
                     @if(isset($grouped_by_question_type['word']))
@@ -1340,7 +1340,7 @@ form .col-sm-12:last-child{
 
                         <td>{{$data->answer_marks + 0}}</td>
 
-                        <?php $total_answer_marks += $data->answer_marks + 0; 
+                        <?php $total_answer_marks += $data->answer_marks + 0;
 
                         $pass_marks7 = ($data->question_marks*$pass_percentage)/100;
 
@@ -1371,7 +1371,7 @@ form .col-sm-12:last-child{
 
                         <td>{{$data->answer_marks + 0}}</td>
 
-                        <?php $total_answer_marks += $data->answer_marks + 0; 
+                        <?php $total_answer_marks += $data->answer_marks + 0;
 
                         $pass_marks8 = ($data->question_marks*$pass_percentage)/100;
 
@@ -1403,7 +1403,7 @@ form .col-sm-12:last-child{
 
                         <td>{{$data->answer_marks + 0}}</td>
 
-                        <?php $total_answer_marks += $data->answer_marks + 0; 
+                        <?php $total_answer_marks += $data->answer_marks + 0;
 
                         $pass_marks9 = ($data->question_marks*$pass_percentage)/100;
 
@@ -1418,7 +1418,7 @@ form .col-sm-12:last-child{
 
                     @else
 
-                    
+
 
                         @for ($i = 1; $i <= $ppt_question_no; $i++)
 
@@ -1451,14 +1451,14 @@ form .col-sm-12:last-child{
                     ?>
 
                    </td>
-                   
+
                 </tr>
 
             @endforeach
         @endif
         </tbody>
     </table>
-    
+
     </div>
 
     <footer class="print-show" style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
@@ -1493,7 +1493,7 @@ form .col-sm-12:last-child{
 <script type="text/javascript" src="{{ URL::asset('assets/js/date-and-timepicker-custom.js') }}"></script>
 <script>
 
- 
+
 function report_exam_code(){
 
     var exam_code = $('#exam_code').val();
@@ -1545,13 +1545,13 @@ function report_pass_marks(){
     report_exam_code();
 
     $('#exam_code').keyup(function(e) {
-    
+
         report_exam_code();
 
     });
 
     $('#exam_code').bind('input',function(e) {
-    
+
         report_exam_code();
 
     });
@@ -1561,19 +1561,19 @@ function report_pass_marks(){
     report_pass_marks();
 
     $('#bangla_speed').keyup(function(e) {
-    
+
         report_pass_marks();
 
     });
 
     $('#bangla_speed').bind('input',function(e) {
-    
+
         report_pass_marks();
 
     });
 
     // $('select, #exam_date').not('#exam_code_list, #exam_type').prop('disabled', true);
-                        
+
     $('form').on('submit', function(e) {
         $('select, #exam_date').prop('disabled', false);
     });
@@ -1620,13 +1620,13 @@ function report_pass_marks(){
 
 @section('custom-script')
 <script>
-    
+
 var table = $('#examples_report').DataTable( {
   "language": {
     "search": "Search:"
   },
   "aaSorting": [],
-  "pageLength": 50,
+  "pageLength": 1000,
 } );
 
 

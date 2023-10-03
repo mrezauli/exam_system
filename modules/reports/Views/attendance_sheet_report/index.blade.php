@@ -6,7 +6,7 @@
 @section('content')
 
 <style>
-    
+
 form{
     padding-top: 0;
 }
@@ -34,7 +34,7 @@ p{
                 <span class="panel-title">{{ $page_title }}</span>
                 <div class="clearfix"></div>
             </div>
-          
+
             <div class="panel-body">
 
                 <ul class="alert alert-danger" style="margin-left: 30px;border-radius: 5px; display: none">
@@ -54,7 +54,7 @@ p{
                         {!! Form::label('aptitude_exam_code', 'Aptitude Exam Code:', ['class' => 'control-label']) !!}
                         {!! Form::text('aptitude_exam_code', @Input::get('aptitude_exam_code')? Input::get('aptitude_exam_code') : null,['id'=>'aptitude_exam_code','class' => 'form-control','placeholder'=>'exam code', 'title'=>'exam code']) !!}
                     </div> --}}
-                
+
                     <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
                         <small class="required jrequired">(Required)</small>
@@ -95,7 +95,7 @@ p{
                       {!! Form::select('exam_type', array(''=>'Select exam type','typing_test'=>'Typing Test', 'aptitude_test'=>'Aptitude Test'),Input::get('exam_type'),['id'=>'exam_type','class' => 'form-control','title'=>'select exam type']) !!}
                     </div>
 
-            
+
                     <div class="col-lg-2 col-md-3 col-sm-6 filter-btn">
 
                       {!! Form::submit('Generate Report', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
@@ -111,13 +111,13 @@ p{
 
                 </div>
                 {!! Form::close() !!}
-  
+
 
 
                 <p><br><br><br><br><br></p>
                 <br><br><br>
-            
-                
+
+
 
 
                 {{------------- Filter :Ends ------------------------------------------}}
@@ -139,8 +139,8 @@ p{
 
                         <tbody>
 
-                        <?php  
-        
+                        <?php
+
                         //function presence($attendence){
                           //return $attendence ? '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"> Present </td>' : '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"> Absent </td>';
                         //}
@@ -190,41 +190,41 @@ p{
 
 
                         $sl_no = 0;
-                     
+
                         ?>
-                        
+
                         @if($status==2)
-                      
+
                             @foreach($model as $values)
-                     
+
                             <?php $sl_no++; ?>
 
                                 <tr class="gradeX">
-                                                           
+
                                     <td>{{$sl_no}}</td>
                                     <td>{{$values->roll_no}}</td>
                                     <td class="table-name">
                                         {{$values->username . ' ' . $values->middle_name . ' ' . $values->last_name}}
                                     </td>
                                     <td>{{$values->exam_type == 'typing_test' ? 'Typing Test' : 'Aptitude Test'}}</td>
-                                      
-                                    <?php 
+
+                                    <?php
 
 
                                     if ($values->exam_type == 'typing_test') {
 
-                                      echo presence($values->attended_typing_test,$values->typing_status); 
+                                      echo presence($values->attended_typing_test,$values->typing_status);
 
                                     }
 
                                     if ($values->exam_type == 'aptitude_test') {
 
-                                      echo presence($values->attended_aptitude_test,$values->aptitude_status); 
+                                      echo presence($values->attended_aptitude_test,$values->aptitude_status);
 
                                     }
 
 
-                                    
+
                                     // if (($values->attended_typing_test == 'true' || $values->attended_aptitude_test == 'true')) {
 
                                     //     echo '<td> Present </td>';
@@ -237,8 +237,8 @@ p{
 
 
                                     ?>
-                                    
-                                   
+
+
                                 </tr>
                             @endforeach
                         @endif
@@ -246,9 +246,9 @@ p{
                     </table>
                 </div>
                 @if($status==2)
-                
+
                     {{-- <span class="pull-right">{!! str_replace('/?', '?',  $model->appends(Input::except('page'))->render() ) !!} </span> --}}
-                    
+
                 @endif
             </div>
         </div>
@@ -271,7 +271,7 @@ p{
     }
 
 
-    @media print{      
+    @media print{
 
         *{
             text-align: center !important;
@@ -319,7 +319,7 @@ p{
 </style>
 
 
-                                
+
 
 <div class="print-section print-show">
     <div class="header-section">
@@ -332,29 +332,29 @@ p{
         <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
         <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
     </div>
-    
-    
+
+
     <table width="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
         <thead>
-        <tr> 
-    
+        <tr>
+
             <th> ক্রমিক নং </th>
             <th> পরীক্ষার্থীর রোল নং </th>
             <th> পরীক্ষার্থীর নাম </th>
-            <th> পরীক্ষার ধরণ </th>            
+            <th> পরীক্ষার ধরণ </th>
             <th> মন্তব্য </th>
-    
+
         </tr>
         </thead>
 
         <tbody>
 
-           <?php   
+           <?php
 
            if(isset($model_all) && ! empty($model_all)){
 
             $count_model = collect($model_all);
-            
+
             $total = $count_model->count();
 
             if ($count_model->first()->exam_type == 'typing_test') {
@@ -374,7 +374,7 @@ p{
 
                 $absent = $total - $present;
 
-                $present = $present - $expelled - $cancelled; 
+                $present = $present - $expelled - $cancelled;
 
             }
 
@@ -414,15 +414,15 @@ p{
            $sl_no = 0;
 
            ?>
-        
+
         @if($status==2 && isset($model_all) && ! empty($model_all))
-       
+
             @foreach($model_all as $values)
 
             <?php $sl_no++; ?>
-           
+
                 <tr class="gradeX">
-                                           
+
                     <td>{{$sl_no}}</td>
                     <td>{{$values->roll_no}}</td>
                     <td class="table-name">
@@ -431,34 +431,34 @@ p{
 
                     <td>{{$values->exam_type == 'typing_test' ? 'Typing Test' : 'Aptitude Test'}}</td>
 
-                      
-                    <?php 
-    
+
+                    <?php
+
                     if (($values->attended_typing_test == 'true' || $values->attended_aptitude_test == 'true')) {
-    
+
                         //echo '<td> উপস্থিত </td>';
-    
+
                     }else{
-    
+
                         //echo '<td> অনুপস্থিত </td>';
-    
+
                     }
 
 
                     if ($values->exam_type == 'typing_test') {
 
-                      echo presence_bangla($values->attended_typing_test,$values->typing_status); 
+                      echo presence_bangla($values->attended_typing_test,$values->typing_status);
 
                     }
 
                     if ($values->exam_type == 'aptitude_test') {
 
-                      echo presence_bangla($values->attended_aptitude_test,$values->aptitude_status); 
+                      echo presence_bangla($values->attended_aptitude_test,$values->aptitude_status);
 
                     }
-                    
+
                     ?>
-                    
+
                 </tr>
             @endforeach
         </tbody>
@@ -469,7 +469,7 @@ p{
         <th>উপস্থিত</th>
         <th>উপস্থিত (%)</th>
         <th>অনুপস্থিত</th>
-        <th>অনুপস্থিত (%)</th> 
+        <th>অনুপস্থিত (%)</th>
         <th>বহিষ্কৃত</th>
         <th>বহিষ্কৃত (%)</th>
         <th>বাতিল করা হয়েছে</th>
@@ -545,7 +545,7 @@ function report_exam_code(ddd){
     //    $('.jrequired').hide();
 
     //    $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').attr('required', false);
-      
+
 
     // }else if(aptitude_exam_code != ''){
 
@@ -622,10 +622,10 @@ function report_exam_code_3(ddd){
         report_exam_code(ddd);
 
     });
-    
+
 
     $('#exam_code,#aptitude_exam_code').bind('input',function(e) {
-    
+
         var ddd = $(this);
 
         report_exam_code(ddd);
@@ -665,7 +665,7 @@ function report_exam_code_3(ddd){
 
 
     // $('select, #exam_date').not('#exam_code_list, #exam_type').prop('disabled', true);
-                        
+
     $('form').on('submit', function(e) {
         $('select, #exam_date').prop('disabled', false);
     });
@@ -704,13 +704,13 @@ function report_exam_code_3(ddd){
 
 @section('custom-script')
 <script>
-    
+
 var table = $('#examples_report').DataTable( {
   "language": {
     "search": "Search:"
   },
   "aaSorting": [],
-  "pageLength": 50,
+  "pageLength": 1000,
 } );
 
 

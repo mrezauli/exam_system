@@ -6,7 +6,7 @@
 @section('content')
 
 <style>
-    
+
 form{
     padding-top: 0;
 }
@@ -31,7 +31,7 @@ form .col-sm-12:last-child{
                 <div class="clearfix"></div>
             </div>
 
-          
+
             <div class="panel-body">
 
                 <ul class="alert alert-danger" style="margin-left: 30px;border-radius: 5px; display: none">
@@ -46,7 +46,7 @@ form .col-sm-12:last-child{
                         {!! Form::label('exam_code', 'Exam Code:', ['class' => 'control-label']) !!}
                         {!! Form::text('exam_code', @Input::get('exam_code')? Input::get('exam_code') : null,['id'=>'exam_code','class' => 'form-control','placeholder'=>'exam code', 'title'=>'exam code']) !!}
                     </div>
-                
+
                     <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
                         <small class="required jrequired">(Required)</small>
@@ -58,7 +58,7 @@ form .col-sm-12:last-child{
                         <small class="required jrequired">(Required)</small>
                         {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control js-select','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
                     </div>
-  
+
                 </div>
 
 
@@ -87,9 +87,9 @@ form .col-sm-12:last-child{
                         <small class="required jrequired">(Required)</small>
                         {!! Form::Select('remarks',['passed'=>'Pass','failed'=>'Fail','expelled'=>'Expelled','cancelled'=>'Cancelled','all'=>'All'], @Input::get('remarks')? Input::get('remarks') : null,['id'=>'remarks','class' => 'form-control remarks','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
                     </div>
-    
+
                   {{--   <div class="col-lg-2 col-md-3 col-sm-6 filter-btn">
-  
+
                       {!! Form::submit('Generate Report', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
                     </div> --}}
 
@@ -120,9 +120,9 @@ form .col-sm-12:last-child{
                         <small class="required jprequired">(Req.)</small>
                         {!! Form::text('ppt_pass_marks', Input::get('ppt_pass_marks')? Input::get('ppt_pass_marks') : null,['id'=>'ppt_pass_marks','class' => 'form-control','placeholder'=>'pass marks %', 'title'=>'pass marks %']) !!}
                     </div>
-    
+
                     <div class="col-lg-2 col-md-3 col-sm-6 filter-btn">
-  
+
                       {!! Form::submit('Generate Report', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
                     </div>
 
@@ -133,11 +133,11 @@ form .col-sm-12:last-child{
                     <div class="pull-left"><a href="#" class="btn btn-danger print-button pdf_report_button">Print</a>
 
                     <a href="#" class="btn btn-danger short-print-button pdf_report_button">Short Report Print</a></div>
-                    
+
                     @endif
 
                 </div>
-                                
+
                 </div>
                 {!! Form::close() !!}
 
@@ -159,14 +159,14 @@ form .col-sm-12:last-child{
                             <th> <span>Exam Code</span> </th>
                             <th> <span>Name</span> </th>
                             <th style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"> <span>Remarks</span> </th>
-                            
+
                         </tr>
                         </thead>
                         <tbody>
-                        
+
                         @if($status==2)
 
-                        <?php 
+                        <?php
 
                         $t =1;
 
@@ -174,24 +174,24 @@ form .col-sm-12:last-child{
 
                         ?>
 
-                   
+
                             @foreach($model_all as $values)
 
                             <?php $sl_no++; ?>
 
                                 <tr class="gradeX">
-                                                           
+
                                     <td>{{$sl_no}}</td>
                                     <td>{{$values[0]->sl}}</td>
                                     <td>{{$values[0]->roll_no}}</td>
                                     <td>{{$values[0]->exam_code_name}}</td>
                                     <td class="table-name">
- 
-                                    {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}       
+
+                                    {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}
                                     </td>
 
                                     <td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">{{ucfirst($values->remarks)}}</td>
-                                   
+
                                 </tr>
                             @endforeach
                         @endif
@@ -229,7 +229,7 @@ form .col-sm-12:last-child{
     }
 
 
-    @media print{      
+    @media print{
 
         *{
             text-align: center !important;
@@ -259,7 +259,7 @@ form .col-sm-12:last-child{
         thead tr th:empty{
             border-right:none !important;
             border-top:none !important;
-        }   
+        }
 
         thead:first-child tr, thead tr th.no-border{
             border-bottom:0 !important;
@@ -315,10 +315,10 @@ form .col-sm-12:last-child{
             /*font-weight: 500;*/
         }
 
-    } 
+    }
 
 </style>
-                       
+
 
 <div class="print-section print-show">
     <div class="header-section">
@@ -342,37 +342,37 @@ form .col-sm-12:last-child{
             <th> <span>Exam Code</span> </th>
             <th> <span>Name</span> </th>
             <th> <span>Remarks</span> </th>
-            
+
         </tr>
         </thead>
 
         <tbody>
-        
+
         @if($status==2)
 
-        <?php 
+        <?php
 
         $t =1;
 
         $sl_no = isset($_GET['page']) ? ($_GET['page']-1)*2 + 0: 0; ?>
 
-     
+
             @foreach($model_all as $values)
 
 
             <?php $sl_no++; ?>
                 <tr class="gradeX">
-                                           
+
                     <td>{{$sl_no}}</td>
                     <td>{{$values[0]->roll_no}}</td>
                     <td>{{$values[0]->exam_code_name}}</td>
                     <td class="table-name">
 
-                    {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}       
+                    {{$values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name}}
                     </td>
 
                     <td>{{ucfirst($values->remarks)}}</td>
-                   
+
                 </tr>
 
             @endforeach
@@ -383,8 +383,8 @@ form .col-sm-12:last-child{
 
 
 
-{{--     @if ($remarks == 'all') 
-        
+{{--     @if ($remarks == 'all')
+
     <table style="margin:20px;width:30%;margin-left:70%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
       <tr>
         <th>Pass</th>
@@ -450,7 +450,7 @@ form .col-sm-12:last-child{
     }
 
 
-    @media print{      
+    @media print{
 
         *{
             text-align: center !important;
@@ -476,7 +476,7 @@ form .col-sm-12:last-child{
         thead tr th:empty{
             border-right:none !important;
             border-top:none !important;
-        }   
+        }
 
         thead:first-child tr, thead tr th.no-border{
             border-bottom:0 !important;
@@ -532,10 +532,10 @@ form .col-sm-12:last-child{
             /*font-weight: 500;*/
         }
 
-    } 
+    }
 
 </style>
-                       
+
 
 <div class="print-section print-show">
     <div class="header-section">
@@ -557,31 +557,31 @@ form .col-sm-12:last-child{
             <th> <span>SL.</span> </th>
             <th> <span>Roll No.</span> </th>
             <th> <span>Remarks</span> </th>
-            
+
         </tr>
         </thead>
 
         <tbody>
-        
+
         @if($status==2)
 
-        <?php 
+        <?php
 
         $t =1;
 
         $sl_no = isset($_GET['page']) ? ($_GET['page']-1)*2 + 0: 0; ?>
 
-     
+
             @foreach($model_all as $values)
 
 
             <?php $sl_no++; ?>
                 <tr class="gradeX">
-                                           
+
                     <td>{{$sl_no}}</td>
                     <td>{{$values[0]->roll_no}}</td>
                     <td>{{$values->remarks}}</td>
-                   
+
                 </tr>
 
             @endforeach
@@ -592,8 +592,8 @@ form .col-sm-12:last-child{
 
 
 
-{{--     @if ($remarks == 'all') 
-        
+{{--     @if ($remarks == 'all')
+
     <table style="margin:20px;width:30%;margin-left:70%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
       <tr>
         <th>Pass</th>
@@ -645,7 +645,7 @@ form .col-sm-12:last-child{
 <script type="text/javascript" src="{{ URL::asset('assets/js/date-and-timepicker-custom.js') }}"></script>
 <script>
 
- 
+
 function report_exam_code(){
 
     var exam_code = $('#exam_code').val();
@@ -672,13 +672,13 @@ function report_exam_code(){
     report_exam_code();
 
     $('#exam_code').keyup(function(e) {
-    
+
         report_exam_code();
 
     });
 
     $('#exam_code').bind('input',function(e) {
-    
+
         report_exam_code();
 
     });
@@ -713,13 +713,13 @@ function report_exam_code(){
     report_pass_marks();
 
     $('#bangla_speed').keyup(function(e) {
-    
+
         report_pass_marks();
 
     });
 
     $('#bangla_speed').bind('input',function(e) {
-    
+
         report_pass_marks();
 
     });
@@ -727,7 +727,7 @@ function report_exam_code(){
     var all_fields = '#bangla_speed,#word_pass_marks,#excel_pass_marks,#ppt_pass_marks';
 
     $('#remarks').change(function(e) {
-    
+
         $value = $(this).val();
 
         if ($value == 'cancelled' || $value == 'expelled') {
@@ -748,7 +748,7 @@ function report_exam_code(){
     $('#remarks').trigger('change');
 
 
-                        
+
     $('form').on('submit', function(e) {
         $('select, #exam_date').prop('disabled', false);
     });
@@ -793,13 +793,13 @@ function report_exam_code(){
 
 @section('custom-script')
 <script>
-    
+
 var table = $('#examples_report').DataTable( {
   "language": {
     "search": "Search:"
   },
   "aaSorting": [],
-  "pageLength": 50,
+  "pageLength": 1000,
 } );
 
 

@@ -6,7 +6,7 @@
 @section('content')
 
 <style>
-    
+
 form{
     padding-top: 0;
 }
@@ -31,7 +31,7 @@ form .col-sm-12:last-child{
                 <div class="clearfix"></div>
             </div>
 
-          
+
             <div class="panel-body">
 
                 <ul class="alert alert-danger" style="margin-left: 30px;border-radius: 5px; display: none">
@@ -41,7 +41,7 @@ form .col-sm-12:last-child{
                 {{-------------- Filter :Starts ------------------------------------------}}
                 {!! Form::open(['method' =>'GET','route'=>'generate-examination-summary-report','class'=>'report-form']) !!}
                 <div class="col-sm-12">
-                
+
                     <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
                         {!! Form::Select('company_id',$company_list, @Input::get('company_id')? Input::get('company_id') : null,['id'=>'company_list','class' => 'form-control js-select','placeholder'=>'select company', 'title'=>'select company']) !!}
@@ -72,7 +72,7 @@ form .col-sm-12:last-child{
 
                     <a href="#" class="btn btn-danger print-button pdf_report_button">Print Result</a>
 
-                </div>        
+                </div>
 
                 {!! Form::close() !!}
 
@@ -94,22 +94,22 @@ form .col-sm-12:last-child{
                         </tr>
                         </thead>
                         <tbody>
-                        
+
                         @if($status==2)
 
                             <?php $sl_no = '0'; ?>
 
                             @foreach($all_model as $values)
 
-                            <?php 
+                            <?php
 
-                            $sl_no++; 
+                            $sl_no++;
 
                             $exam_type = ucwords(implode(' ',explode('_', $values->exam_type)));
- 
+
                             ?>
 
-                                <tr class="gradeX">                   
+                                <tr class="gradeX">
                                     <td>{{$sl_no}}</td>
                                     <td>{{$values->company_name}}</td>
                                     <td>{{$exam_type}}</td>
@@ -132,7 +132,7 @@ form .col-sm-12:last-child{
                         <td>{{$total_no_of_candidates}}</td>
                     </tr>
                     </table>
-        
+
                 </div>
                 @if($status==2)
                     {{-- <span class="pull-right">{!! str_replace('/?', '?',  $model->render() ) !!} </span> --}}
@@ -172,7 +172,7 @@ form .col-sm-12:last-child{
     }
 
 
-    @media print{      
+    @media print{
 
         *{
             text-align: center !important;
@@ -259,12 +259,12 @@ form .col-sm-12:last-child{
 
         thead tr th, tbody tr td,tr th, tr td {
             border: 1px solid #333 !important;
-        } 
+        }
 
-    } 
+    }
 
 </style>
-                        
+
 
 <div class="print-section print-show">
     <div class="header-section">
@@ -284,7 +284,7 @@ form .col-sm-12:last-child{
         </tr>
         </thead>
         <tbody>
-        
+
         @if($status==2)
 
         <?php
@@ -297,12 +297,12 @@ form .col-sm-12:last-child{
 
             @foreach($all_model as $values)
 
-                <?php 
+                <?php
 
-                $sl_no++; 
+                $sl_no++;
 
                 $exam_type = ucwords(implode(' ',explode('_', $values->exam_type)));
- 
+
                 ?>
 
                 <tr class="gradeX">
@@ -313,7 +313,7 @@ form .col-sm-12:last-child{
                     <td>{{$values->no_of_candidates}}</td>
                 </tr>
             @endforeach
-            
+
         @endif
         </tbody>
     </table>
@@ -324,7 +324,7 @@ form .col-sm-12:last-child{
         <th>Total Organizations</th>
         <th>No. of Candidates</th>
       </tr>
-      
+
       <tr>
         <td>{{$total_organizations}}</td>
         <td>{{$total_no_of_candidates}}</td>
@@ -396,7 +396,7 @@ var table = $('#examples_report').DataTable( {
     "search": "Search:"
   },
   //"aaSorting": [['1','asc'],['2','desc'],['3','asc']],
-  "pageLength": 50,
+  "pageLength": 1000,
 });
 
 

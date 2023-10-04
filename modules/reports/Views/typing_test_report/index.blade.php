@@ -408,36 +408,36 @@ form .col-sm-12:last-child{
                                     </td>
 
                                     <td>
-
-                                        @if(! $values->lists('attended_typing_test')->contains('true'))
-                                        <?php $remarks = 'Absent'; ?>
-
-                                        @elseif($values->lists('typing_status')->contains('cancelled'))
-                                        <?php $remarks = 'Cancelled'; ?>
-
-                                        @elseif($values->lists('typing_status')->contains('expelled'))
-                                        <?php $remarks = 'Expelled'; ?>
-
-                                        @else
-
-                                            @if ($averageMark >= 0)
-                                                @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
-                                                <?php $remarks = '<b>Pass</b>'; ?>
-                                                @else
-                                                <?php $remarks = 'Fail'; ?>
-                                                @endif
+                                        @if($values->lists('attended_typing_test')->contains('true'))
+                                            @if($values->lists('typing_status')->contains('cancelled'))
+                                                <?php $remarks = 'Cancelled'; ?>
+                                            @elseif($values->lists('typing_status')->contains('expelled'))
+                                                <?php $remarks = 'Expelled'; ?>
                                             @else
-                                                @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
-                                                <?php $remarks = '<b>Pass</b>'; ?>
+                                                @if ($averageMark >= 0)
+                                                    @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
+                                                        <?php $remarks = '<b>Pass</b>'; ?>
+                                                    @else
+                                                        <?php $remarks = 'Fail'; ?>
+                                                    @endif
                                                 @else
-                                                <?php $remarks = 'Fail'; ?>
+                                                    @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
+                                                        <?php $remarks = '<b>Pass</b>'; ?>
+                                                    @else
+                                                        <?php $remarks = 'Fail'; ?>
+                                                    @endif
                                                 @endif
                                             @endif
-
+                                        @else
+                                            @if($values->lists('typing_status')->contains('cancelled'))
+                                                <?php $remarks = 'Cancelled'; ?>
+                                            @elseif($values->lists('typing_status')->contains('expelled'))
+                                                <?php $remarks = 'Expelled'; ?>
+                                            @else
+                                                <?php $remarks = 'Absent'; ?>
+                                            @endif
                                         @endif
-
                                         {!! $remarks !!}
-
                                    </td>
                                    <td>
                                        @if($bangla->exam_id != 0 || $english->exam_id != 0)
@@ -764,37 +764,37 @@ form .col-sm-12:last-child{
                         </td>
 
                                         <td>
-
-                                            @if(! $values->lists('attended_typing_test')->contains('true'))
-                                            <?php $remarks = 'Absent'; ?>
-
-                                            @elseif($values->lists('typing_status')->contains('cancelled'))
-                                            <?php $remarks = 'Cancelled'; $cancelled++; ?>
-
-                                            @elseif($values->lists('typing_status')->contains('expelled'))
-                                            <?php $remarks = 'Expelled'; $expelled++; ?>
-
-                                            @else
-
-                                                @if ($averageMark >= 0)
-                                                    @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
-                                                    <?php $remarks = '<b>Pass</b>'; $passed++; ?>
-                                                    @else
-                                                    <?php $remarks = 'Fail'; $failed++; ?>
-                                                    @endif
+                                            @if($values->lists('attended_typing_test')->contains('true'))
+                                                @if($values->lists('typing_status')->contains('cancelled'))
+                                                    <?php $remarks = 'Cancelled'; $cancelled++; ?>
+                                                @elseif($values->lists('typing_status')->contains('expelled'))
+                                                    <?php $remarks = 'Expelled'; $expelled++; ?>
                                                 @else
-                                                    @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
-                                                    <?php $remarks = '<b>Pass</b>'; $passed++; ?>
+                                                    @if ($averageMark >= 0)
+                                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
+                                                            <?php $remarks = '<b>Pass</b>'; $passed++; ?>
+                                                        @else
+                                                            <?php $remarks = 'Fail'; $failed++; ?>
+                                                        @endif
                                                     @else
-                                                    <?php $remarks = 'Fail'; $failed++; ?>
+                                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
+                                                            <?php $remarks = '<b>Pass</b>'; $passed++; ?>
+                                                        @else
+                                                            <?php $remarks = 'Fail'; $failed++; ?>
+                                                        @endif
                                                     @endif
                                                 @endif
-
+                                            @else
+                                                @if($values->lists('typing_status')->contains('cancelled'))
+                                                    <?php $remarks = 'Cancelled'; $cancelled++; ?>
+                                                @elseif($values->lists('typing_status')->contains('expelled'))
+                                                    <?php $remarks = 'Expelled'; $expelled++; ?>
+                                                @else
+                                                    <?php $remarks = 'Absent'; ?>
+                                                @endif
                                             @endif
-
                                             {!! $remarks !!}
-
-                                       </td>
+                                        </td>
 
                     </tr>
                 @endforeach

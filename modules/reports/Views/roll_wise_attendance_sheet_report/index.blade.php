@@ -146,48 +146,34 @@ p{
                         //}
 
 
-                        function presence($attendence,$status){
-
-                          $ddd = $attendence ? 'Present' : 'Absent';
-
-
-                          if ($ddd == 'Present') {
-
-                            if ($status == 'expelled') {
-                                $ddd = 'Expelled';
+                        function presence($attendence_status, $typing_status){
+                            if($attendence_status) {
+                                if($typing_status == 'cancelled') {
+                                                $remarks = 'Cancelled';
+                                            }
+                                            elseif($typing_status == 'expelled') {
+                                                $remarks = 'Expelled';
+                                            }
+                                            else {
+                                                $remarks = 'Present';
+                                            }
+                            }
+                            else {
+                                if($typing_status == 'cancelled') {
+                                                $remarks = 'Cancelled';
+                                            }
+                                            elseif($typing_status == 'expelled') {
+                                                $remarks = 'Expelled';
+                                            }
+                                            else {
+                                                $remarks = 'Absent';
+                                            }
                             }
 
-                            if ($status == 'cancelled') {
-                                $ddd = 'Cancelled';
-                            }
+                            return '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">' . $remarks .  '</td>';
 
                         }
 
-                        return '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">' . $ddd .  '</td>';
-
-                        }
-
-
-                        function presence_bangla($attendence,$status){
-
-                          $ddd = $attendence ? 'উপস্থিত' : 'অনুপস্থিত';
-
-
-                          if ($ddd == 'উপস্থিত') {
-
-                            if ($status == 'expelled') {
-                                $ddd = 'বহিষ্কৃত';
-                            }
-
-                            if ($status == 'cancelled') {
-                                $ddd = 'বাতিল করা হয়েছে';
-                            }
-
-                        }
-
-                        return '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">' . $ddd .  '</td>';
-
-                        }
 
                         $sl_no = 0;
 
@@ -211,7 +197,7 @@ p{
                                     <?php
 
 
-                                     if ($values->exam_type == 'typing_test') {
+                                    if ($values->exam_type == 'typing_test') {
 
                                       echo presence($values->attended_typing_test,$values->typing_status);
 
@@ -341,11 +327,11 @@ p{
         <thead>
         <tr>
 
-            <th> ক্রমিক নং </th>
-            <th> পরীক্ষার্থীর রোল নং </th>
-            <th> পরীক্ষার্থীর নাম </th>
-            <th> পরীক্ষার ধরন </th>
-            <th> মন্তব্য </th>
+            <th> SL </th>
+            <th> Roll No </th>
+            <th> Name </th>
+            <th> Type </th>
+            <th> Remarks </th>
 
         </tr>
         </thead>
@@ -359,29 +345,6 @@ p{
             $count_model = collect($model_all);
 
             $total = $count_model->count();
-
-            if ($count_model->first()->exam_type == 'typing_test') {
-
-                $present = collect($model_all)->lists('attended_typing_test')->filter(function ($value) {
-                    return $value == 'true';
-                })->count();
-
-                $expelled = collect($model_all)->lists('typing_status')->filter(function ($value) {
-                    return $value == 'expelled';
-                })->count();
-
-                $cancelled = collect($model_all)->lists('typing_status')->filter(function ($value) {
-                    return $value == 'cancelled';
-                })->count();
-
-
-                $absent = $total - $present;
-
-                $present = $present - $expelled - $cancelled;
-
-            }
-
-
 
             if ($count_model->first()->exam_type == 'aptitude_test') {
 
@@ -404,26 +367,22 @@ p{
 
             }
 
-
-            $present_percentage = round($present/$total * 100,2);
-
-            $absent_percentage = round($absent/$total * 100,2);
-
-            $expelled_percentage = round($expelled/$total * 100,2);
-
-            $cancelled_percentage = round($cancelled/$total * 100,2);
-
            }
 
-           $sl_no = 0;
-
            ?>
+
+            <?php $expelled = 0; ?>
+            <?php $cancelled = 0; ?>
+            <?php $total = 0; ?>
+            <?php $sl_no = 0; ?>
+            <?php $absented = 0; ?>
+            <?php $presented = 0; ?>
 
         @if($status==2 && isset($model_all) && ! empty($model_all))
 
             @foreach($model_all as $values)
 
-            <?php $sl_no++; ?>
+                <?php $sl_no++; ?>
 
                 <tr class="gradeX">
 
@@ -451,14 +410,37 @@ p{
 
                     if ($values->exam_type == 'typing_test') {
 
-                      echo presence_bangla($values->attended_typing_test,$values->typing_status);
+                      echo presence($values->attended_typing_test,$values->typing_status);
 
                     }
 
                     if ($values->exam_type == 'aptitude_test') {
 
-                      echo presence_bangla($values->attended_aptitude_test,$values->aptitude_status);
+                      echo presence($values->attended_aptitude_test,$values->aptitude_status);
 
+                    }
+
+                    $total++;
+                    if ($values->attended_typing_test) {
+                        if($values->typing_status == 'cancelled') {
+                            $cancelled++;
+                        }
+                        elseif($values->typing_status == 'expelled') {
+                            $expelled++;
+                        }
+                        else {
+                            $presented++;
+                        }
+                    } else {
+                        if($values->typing_status == 'cancelled') {
+                            $cancelled++;
+                        }
+                        elseif($values->typing_status == 'expelled') {
+                            $expelled++;
+                        }
+                        else {
+                            $absented++;
+                        }
                     }
 
                     ?>
@@ -469,28 +451,24 @@ p{
     </table>
 
     <table style="margin-top:20px;width:80%;margin-left: 20%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
-      <tr>
-        <th>উপস্থিত</th>
-        <th>উপস্থিত (%)</th>
-        <th>অনুপস্থিত</th>
-        <th>অনুপস্থিত (%)</th>
-        <th>বহিষ্কৃত</th>
-        <th>বহিষ্কৃত (%)</th>
-        <th>বাতিল করা হয়েছে</th>
-        <th>বাতিল করা হয়েছে (%)</th>
-        <th>মোট</th>
-      </tr>
-      <tr>
-        <td>{{$present}}</td>
-        <td>{{$present_percentage}}</td>
-        <td>{{$absent}}</td>
-        <td>{{$absent_percentage}}</td>
-        <td>{{$expelled}}</td>
-        <td>{{$expelled_percentage}}</td>
-        <td>{{$cancelled}}</td>
-        <td>{{$cancelled_percentage}}</td>
-        <td>{{$total}}</td>
-      </tr>
+        <tr>
+            <th colspan="2">Present</th>
+            <th colspan="2">Absent</th>
+            <th colspan="2">Expel</th>
+            <th colspan="2">Cancel</th>
+            <th>Total</th>
+          </tr>
+          <tr>
+            <td>{{$presented}}</td>
+            <td>{{ round($presented/$total * 100, 0) . '%' }}</td>
+            <td>{{$absented}}</td>
+            <td>{{ round($absented/$total * 100, 0) . '%' }}</td>
+            <td>{{$expelled}}</td>
+            <td>{{ round($expelled/$total * 100, 0) . '%' }}</td>
+            <td>{{$cancelled}}</td>
+            <td>{{ round($cancelled/$total * 100, 0) . '%' }}</td>
+            <td>{{$total}}</td>
+          </tr>
     </table>
     @endif
     <div class="float:none;clear:both;"></div>

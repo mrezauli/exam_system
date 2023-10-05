@@ -260,13 +260,13 @@ form .col-sm-12:last-child{
                                             @else
                                                 @if ($averageMark >= 0)
                                                     @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
-                                                        <?php $remarks = '<b>Pass</b>'; ?>
+                                                        <?php $remarks = '<b><i>Pass</i></b>'; ?>
                                                     @else
                                                         <?php $remarks = 'Fail'; ?>
                                                     @endif
                                                 @else
                                                     @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
-                                                        <?php $remarks = '<b>Pass</b>'; ?>
+                                                        <?php $remarks = '<b><i>Pass</i></b>'; ?>
                                                     @else
                                                         <?php $remarks = 'Fail'; ?>
                                                     @endif
@@ -524,13 +524,13 @@ form .col-sm-12:last-child{
                                             @else
                                                 @if ($averageMark >= 0)
                                                     @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
-                                                        <?php $remarks = '<b>Pass</b>'; ?>
+                                                        <?php $remarks = '<b><i>Pass</i></b>'; ?>
                                                     @else
                                                         <?php $remarks = 'Fail'; ?>
                                                     @endif
                                                 @else
                                                     @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
-                                                        <?php $remarks = '<b>Pass</b>'; ?>
+                                                        <?php $remarks = '<b><i>Pass</i></b>'; ?>
                                                     @else
                                                         <?php $remarks = 'Fail'; ?>
                                                     @endif
@@ -1034,13 +1034,13 @@ form .col-sm-12:last-child{
                                             @else
                                                 @if ($averageMark >= 0)
                                                     @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
-                                                        <?php $remarks = '<b>Pass</b>'; ?>
+                                                        <?php $remarks = '<b><i>Pass</i></b>'; ?>
                                                     @else
                                                         <?php $remarks = 'Fail'; ?>
                                                     @endif
                                                 @else
                                                     @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
-                                                        <?php $remarks = '<b>Pass</b>'; ?>
+                                                        <?php $remarks = '<b><i>Pass</i></b>'; ?>
                                                     @else
                                                         <?php $remarks = 'Fail'; ?>
                                                     @endif

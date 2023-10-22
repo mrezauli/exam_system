@@ -34,7 +34,7 @@ class ExaminationSummaryReportController extends Controller
 
         $exam_dates_string = '';
 
-        $company_list =  [''=>'Select organization'] + Company::where('status','active')->orderBy('id','desc')->lists('company_name','id')->all();
+        $company_list =  [''=>'Select All Organization'] + Company::where('status','active')->orderBy('id','desc')->lists('company_name','id')->all();
 
         $designation_list =  [''=>'Select designation'] + Designation::where('status','active')->orderBy('id','desc')->lists('designation_name','id')->all();
 
@@ -72,7 +72,7 @@ class ExaminationSummaryReportController extends Controller
         $validator = Validator::make($request->all(), [
             'bangla_speed' => 'integer',
         ]);
-        
+
         // dd($bangla_speed);
 
 
@@ -91,7 +91,7 @@ class ExaminationSummaryReportController extends Controller
           $comparer = function ($first, $second) use ($criteria) {
 
             foreach ($criteria as $key => $orderType) {
-                
+
         // normalize sort direction
 
               $orderType = strtolower($orderType);
@@ -136,7 +136,7 @@ class ExaminationSummaryReportController extends Controller
 
         if(isset($company_id) && !empty($company_id)){
             $model = $model->where('u.company_id','=',$company_id);
-            
+
         }
 
         if(isset($designation_id) && !empty($designation_id)){
@@ -184,7 +184,7 @@ class ExaminationSummaryReportController extends Controller
 
         $all_model = $all_model->sort($comparer);
 
-  
+
 
 
         $total_organizations = count($all_model->groupBy('company_name')->map(function ($people) {
@@ -198,11 +198,11 @@ class ExaminationSummaryReportController extends Controller
             return $carry + $item->no_of_candidates;
         });
 
-        
 
 
-     
-     
+
+
+
 
 
 

@@ -417,7 +417,6 @@ p{
 
                     }
 
-                    $sl_no++;
                     $total++;
                     if ($values->attended_typing_test) {
                         if($values->typing_status == 'cancelled') {

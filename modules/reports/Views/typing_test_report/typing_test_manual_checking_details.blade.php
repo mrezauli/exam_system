@@ -280,22 +280,22 @@
 
 <?php
 $bangla_total_characters = isset($bangla->total_words) ? $bangla->total_words : 0;
-$bangla_total_words = round($bangla_total_characters / 5);
+$bangla_total_words = ceil($bangla_total_characters / 5);
 $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-$bangla_typed_words = round($bangla_typed_characters / 5);
+$bangla_typed_words = ceil($bangla_typed_characters / 5);
 $bangla_deleted_characters = isset($bangla->deleted_words) ? $bangla->deleted_words : 0;
-$bangla_deleted_words = round($bangla_deleted_characters / 5);
+$bangla_deleted_words = floor($bangla_deleted_characters / 5);
 $bangla_corrected_characters = isset($bangla->inserted_words) ? $bangla->inserted_words : 0;
-$bangla_corrected_words = round($bangla_corrected_characters / 5);
+$bangla_corrected_words = ceil($bangla_corrected_characters / 5);
 
 $english_total_characters = isset($english->total_words) ? $english->total_words : 0;
-$english_total_words = round($english_total_characters / 5);
+$english_total_words = ceil($english_total_characters / 5);
 $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-$english_typed_words = round($english_typed_characters / 5);
+$english_typed_words = ceil($english_typed_characters / 5);
 $english_deleted_characters = isset($english->deleted_words) ? $english->deleted_words : 0;
-$english_deleted_words = round($english_deleted_characters / 5);
+$english_deleted_words = floor($english_deleted_characters / 5);
 $english_corrected_characters = isset($english->inserted_words) ? $english->inserted_words : 0;
-$english_corrected_words = round($english_corrected_characters / 5);
+$english_corrected_words = ceil($english_corrected_characters / 5);
 ?>
 
 

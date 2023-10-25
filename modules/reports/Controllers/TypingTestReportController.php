@@ -60,7 +60,6 @@ class TypingTestReportController extends Controller
 
     public function generate_typing_test_report(Request $request)
     {
-
         $page_title = 'Typing Test Report';
 
         $status = 2;
@@ -1157,7 +1156,6 @@ class TypingTestReportController extends Controller
 
     public function typing_test_details($bangla_exam_id, $english_exam_id)
     {
-
         $page_title = 'Typing Test Information';
 
         $bangla = Examination::findOrNew($bangla_exam_id);

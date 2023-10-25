@@ -980,11 +980,11 @@ class RollWiseTypingTestReportController extends Controller
 
             // dd($bangla_exam_time);
 
-            $bangla_wpm = round($bangla_corrected_words / $exam_time, 3);
+            $bangla_wpm = ceil($bangla_corrected_words / $exam_time, 3);
 
             $english_corrected_words = $english->typed_words - $english->inserted_words;
 
-            $english_wpm = round($english_corrected_words / $exam_time, 3);
+            $english_wpm = ceil($english_corrected_words / $exam_time, 3);
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
 

@@ -56,9 +56,6 @@ class RollWiseTypingTestReportController extends Controller
         return view('reports::roll_wise_typing_test_report.index', compact('page_title', 'company_list', 'designation_list', 'exam_code_list', 'status', 'header', 'exam_dates_string', 'model_all', 'bangla_speed', 'english_speed', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count', 'absent_count'));
     }
 
-
-
-
     public function generate_typing_test_report(Request $request)
     {
 
@@ -216,58 +213,60 @@ class RollWiseTypingTestReportController extends Controller
 
         $ddd = [];
 
-        $model->each(function ($values, $key) use ($bangla_speed, $english_speed, &$ddd) {
-
+        $model->each(function ($values, $key) use ($bangla_speed, $english_speed, $spmDigit, $averageMark, &$ddd) {
 
             $values = collect($values);
             $null_object = StdClass::fromArray();
 
-
-
             $grouped_by_exam_type = $values->groupBy('exam_type');
 
             $bangla = $grouped_by_exam_type->get('bangla', [$null_object])[0];
-
             $english = $grouped_by_exam_type->get('english', [$null_object])[0];
 
+            //revamped calculation from mopa
+            $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+            $bangla_typed_words = ceil($bangla_typed_characters/5);
+            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
+            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
+            $bangla_wpm = ceil($bangla_corrected_words/$spmDigit);
+            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : floor(($bangla_deleted_words / $bangla_typed_words) * 100);
+            $bangla_round_marks = ceil((20/$bangla_speed)* $bangla_wpm);
+            $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
-            $bangla_time = isset($bangla->exam_time) ? $bangla->exam_time - 1 : 1;
+            $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+            $english_typed_words = ceil($english_typed_characters/5);
+            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
+            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
+            $english_wpm = ceil($english_corrected_words/$spmDigit);
+            $english_tolerance = $english_typed_words == 0 ? 0 : floor(($english_deleted_words / $english_typed_words) * 100);
+            $english_round_marks = ceil((20/$english_speed)* $english_wpm);
+            $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
-            $english_time = isset($bangla->exam_time) ? $bangla->exam_time - 1 : 1;
-
-
-            $bangla_exam_time = $bangla_speed;
-
-            //$english_exam_time = isset($english->exam_time) ? $english->exam_time: 1;
-            $english_exam_time = $english_speed;
-
-            $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
-
-            $bangla_wpm = round($bangla_corrected_words / $bangla_time, 1);
-
-            $bangla_wpm = round_to_integer($bangla_wpm);
-
-            $english_corrected_words = $english->typed_words - $english->inserted_words;
-
-            $english_wpm = round($english_corrected_words / $english_time, 1);
-
-            $english_wpm = round_to_integer($english_wpm);
+            $average = ceil(($bangla_marks + $english_marks) / 2);
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
-            // dd($values);
-
             if (!$values->lists('attended_typing_test')->contains('true')) {
-
                 $values->remarks = 'Absent';
-            } elseif ($bangla_wpm >= $bangla_speed && $english_wpm >= $english_speed) {
-
-                $values->remarks = 'Pass';
+            }
+            elseif ($averageMark >= 0) {
+                if ($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5 && $average >= $averageMark) {
+                    $values->remarks = 'Pass';
+                } else {
+                    $values->remarks = 'Fail';
+                }
             } else {
+                if ($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5) {
+                    $values->remarks = 'Pass';
+                } else {
+                    $values->remarks = 'Fail';
+                }
+            }
 
-                $values->remarks = 'Fail';
+            if ($values->first()->typing_status == 'expelled' || $values->first()->typing_status == 'cancelled') {
+                $values->remarks = $values->first()->typing_status;
             }
 
             $ddd[$key] = $values;
@@ -318,12 +317,12 @@ class RollWiseTypingTestReportController extends Controller
 
 
         $expelled = $model->filter(function ($value) {
-            return $value['0']->typing_status == "expelled";
+            return $value->remarks == "expelled";
         });
 
 
         $cancelled = $model->filter(function ($value) {
-            return $value['0']->typing_status == "cancelled";
+            return $value->remarks == "cancelled";
         });
 
 
@@ -368,9 +367,6 @@ class RollWiseTypingTestReportController extends Controller
 
         $total_count = $passed_count + $failed_count + $expelled_count + $cancelled_count + $absent_count;
 
-        // dd($passed);
-
-
         $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
 
         $comparer = $makeComparer($criteria);
@@ -384,21 +380,12 @@ class RollWiseTypingTestReportController extends Controller
 
 
         $model = $model->sortBy(function ($value, $key) {
-
             return (int)$value->roll_no;
         });
 
-
-        //$model = $model->diff($absent);
-
-
         $model_all = $model;
 
-
-        // dd($model);
-
         $page = Input::get('page', 1);
-
 
         $perPage = 1000;
         $offset = ($page * $perPage) - $perPage;
@@ -409,9 +396,6 @@ class RollWiseTypingTestReportController extends Controller
 
         return view('reports::roll_wise_typing_test_report.index', compact('averageMark', 'spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count', 'absent_count'));
     }
-
-
-
 
     public function typing_test_report_pdf($company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed)
     {
@@ -967,30 +951,17 @@ class RollWiseTypingTestReportController extends Controller
 
             $english = $grouped_by_exam_type->get('english', [$null_object])[0];
 
-
-
-            $exam_time = isset($bangla->exam_time) ? $bangla->exam_time : 1;
-            $bangla_exam_time = $bangla_speed;
-
-            //$english_exam_time = isset($english->exam_time) ? $english->exam_time: 1;
-            $english_exam_time = $english_speed;
-
             $bangla_corrected_words = $bangla->typed_words - $bangla->inserted_words;
 
-
-            // dd($bangla_exam_time);
-
-            $bangla_wpm = ceil($bangla_corrected_words / $exam_time, 3);
+            $bangla_wpm = ceil($bangla_corrected_words / $bangla_speed);
 
             $english_corrected_words = $english->typed_words - $english->inserted_words;
 
-            $english_wpm = ceil($english_corrected_words / $exam_time, 3);
+            $english_wpm = ceil($english_corrected_words / $english_speed);
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
-
-
 
             if (!$values->lists('attended_typing_test')->contains('true')) {
 

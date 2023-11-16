@@ -203,7 +203,7 @@ class ShortTypingTestReportController extends Controller
 
         // dd($model);
 
-        $model->each(function ($values, $key) use ($bangla_speed, $english_speed, $averageMark) {
+        $model->each(function ($values, $key) use ($bangla_speed, $english_speed, $spmDigit, $averageMark) {
 
             // $values = collect($values);
             $null_object = StdClass::fromArray();
@@ -213,28 +213,23 @@ class ShortTypingTestReportController extends Controller
             $bangla = $grouped_by_exam_type->get('bangla', [$null_object])[0];
             $english = $grouped_by_exam_type->get('english', [$null_object])[0];
 
-            $bangla_time = isset($bangla->exam_time) && $bangla->exam_time > 10 ? $bangla->exam_time - 1 : 1;
-            $english_time = isset($english->exam_time) && $bangla->exam_time > 10 ? $english->exam_time - 1 : 1;
-
-            //from mopa explanation
+            //revamped calculation from mopa
             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-            $bangla_typed_words = ceil($bangla_typed_characters / 5);
-            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words / 5) : 0;
-            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words / 5) : 0;
+            $bangla_typed_words = ceil($bangla_typed_characters/5);
+            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
+            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
+            $bangla_wpm = ceil($bangla_corrected_words/$spmDigit);
             $bangla_tolerance = $bangla_typed_words == 0 ? 0 : floor(($bangla_deleted_words / $bangla_typed_words) * 100);
-            $bangla_wpm = round($bangla_corrected_words / $bangla_time, 1);
-            $bangla_wpm = round_to_integer($bangla_wpm);
-            $bangla_round_marks = round((20 / $bangla_speed) * $bangla_wpm);
+            $bangla_round_marks = ceil((20/$bangla_speed)* $bangla_wpm);
             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-            $english_typed_words = ceil($english_typed_characters / 5);
-            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
-            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words / 5) : 0;
+            $english_typed_words = ceil($english_typed_characters/5);
+            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
+            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
+            $english_wpm = ceil($english_corrected_words/$spmDigit);
             $english_tolerance = $english_typed_words == 0 ? 0 : floor(($english_deleted_words / $english_typed_words) * 100);
-            $english_wpm = round($english_corrected_words / $english_time, 1);
-            $english_wpm = round_to_integer($english_wpm);
-            $english_round_marks = round((20 / $english_speed) * $english_wpm);
+            $english_round_marks = ceil((20/$english_speed)* $english_wpm);
             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
             $average = ceil(($bangla_marks + $english_marks) / 2);
@@ -247,13 +242,13 @@ class ShortTypingTestReportController extends Controller
                 $values->remarks = 'Absent';
             }
             elseif ($averageMark >= 0) {
-                if ($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark) {
+                if ($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5 && $average >= $averageMark) {
                     $values->remarks = 'Pass';
                 } else {
                     $values->remarks = 'Fail';
                 }
             } else {
-                if ($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5) {
+                if ($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5) {
                     $values->remarks = 'Pass';
                 } else {
                     $values->remarks = 'Fail';
@@ -261,7 +256,6 @@ class ShortTypingTestReportController extends Controller
             }
 
             if ($values->first()->typing_status == 'expelled' || $values->first()->typing_status == 'cancelled') {
-
                 $values->remarks = $values->first()->typing_status;
             }
 
@@ -339,29 +333,11 @@ class ShortTypingTestReportController extends Controller
         $cancelled = $cancelled->sort($comparer);
 
 
-        $passed_count = $model->filter(function ($value) {
-
-            if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled', 'cancelled'])) {
-
-                return false;
-            } else {
-
-                return $value->remarks == "Pass";
-            }
-        })->count();
+        $passed_count = $passed->count();
 
 
 
-        $failed_count = $model->filter(function ($value) {
-
-            if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled', 'cancelled'])) {
-
-                return false;
-            } else {
-
-                return $value->remarks == "Fail";
-            }
-        })->count();
+        $failed_count = $failed->count();
 
 
         $expelled_count = $expelled->count();

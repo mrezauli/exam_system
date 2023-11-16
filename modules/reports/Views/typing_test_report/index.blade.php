@@ -115,13 +115,13 @@ form .col-sm-12:last-child{
                     </div>
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
-                        {!! Form::label('bangla_speed', 'Minimum Speed in Bangla:', ['class' => 'control-label']) !!}
+                        {!! Form::label('bangla_speed', 'Minimum Bangla Speed:', ['class' => 'control-label']) !!}
                         <small class="required">(Req.)</small>
                         {!! Form::text('bangla_speed', Input::get('bangla_speed')? Input::get('bangla_speed') : null,['id'=>'bangla_speed','class' => 'form-control','placeholder'=>'bangla speed', 'title'=>'bangla speed','required'=>'required']) !!}
                     </div>
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
-                        {!! Form::label('english_speed', 'Minimum Speed in English:', ['class' => 'control-label']) !!}
+                        {!! Form::label('english_speed', 'Minimum English Speed:', ['class' => 'control-label']) !!}
                         <small class="required">(Req.)</small>
                         {!! Form::text('english_speed', Input::get('english_speed')? Input::get('english_speed') : null,['english_speed'=>'english_speed','class' => 'form-control','placeholder'=>'english speed', 'title'=>'english speed','required'=>'required']) !!}
                     </div>
@@ -133,7 +133,7 @@ form .col-sm-12:last-child{
                     </div>
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
-                        {!! Form::label('averageMark', 'Average Mark for Calculation:', ['class' => 'control-label']) !!}
+                        {!! Form::label('averageMark', 'Average Mark for Remarks:', ['class' => 'control-label']) !!}
                         <small class="required">(Req.)</small>
                         {!! Form::text('averageMark', Input::get('averageMark')? Input::get('averageMark') : null,['class' => 'form-control','placeholder'=>'average mark', 'title'=>'average mark','required'=>'required']) !!}
                     </div>
@@ -155,8 +155,8 @@ form .col-sm-12:last-child{
                     <a target="_blank" style="color:white" href="{{ $ddd }}">View All Answer Scripts</a>
                 </div>
 
-                <a class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>
                 <a class="btn btn-danger print-button pull-right">Print Result with Remarks</a>
+                <a class="btn btn-danger print-button-wr pull-right">Print Result without Remarks</a>
 
                 {{-- <div class="col-lg-3 col-sm-6 input-group">
 
@@ -204,17 +204,13 @@ form .col-sm-12:last-child{
                     $grouped_by_exam_type = $value->groupBy('exam_type');
 
                     $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0]:StdClass::fromArray();
-                    //dd($bangla);
 
                     $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
-
 
                     $bangla_times[] = isset($bangla->exam_time) ? $bangla->exam_time : 1;
 
                     $english_times[] = isset($english->exam_time) ? $english->exam_time : 1;
-
                 }
-
 
                 $bangla_time = collect($bangla_times)->max();
 
@@ -223,7 +219,6 @@ form .col-sm-12:last-child{
                 $spmDigit = isset($spmDigit) ? $spmDigit : '';
 
                 $averageMark = isset($averageMark) ? $averageMark : '';
-
 
                 ?>
 
@@ -318,15 +313,7 @@ form .col-sm-12:last-child{
 
                             $english = $grouped_by_exam_type->get('english',[$null_object])[0];
 
-
-
-                            $bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
-
-                            $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
-
-                            $bangla_exam_time = $bangla_speed;
-                            $english_exam_time = $english_speed;
-
+                            //revamped calculation from mopa
                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
                             $bangla_typed_words = ceil($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
@@ -415,13 +402,13 @@ form .col-sm-12:last-child{
                                                 <?php $remarks = 'Expelled'; ?>
                                             @else
                                                 @if ($averageMark >= 0)
-                                                    @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
+                                                    @if($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5 && $average >= $averageMark)
                                                         <?php $remarks = '<b><i>Pass</i></b>'; ?>
                                                     @else
                                                         <?php $remarks = 'Fail'; ?>
                                                     @endif
                                                 @else
-                                                    @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
+                                                    @if($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5)
                                                         <?php $remarks = '<b><i>Pass</i></b>'; ?>
                                                     @else
                                                         <?php $remarks = 'Fail'; ?>
@@ -689,11 +676,9 @@ form .col-sm-12:last-child{
             @if($status==2)
             <?php $i = isset($_GET['page']) ? ($_GET['page']-1)*1 + 0: 0; ?>
 
-
                 @foreach($model_all as $values)
 
                 <?php $i++;
-
 
                 $values = collect($values);
 
@@ -703,15 +688,7 @@ form .col-sm-12:last-child{
 
                 $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
 
-
-                $bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
-
-                $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
-
-
-                $bangla_exam_time = $bangla_speed;
-                                $english_exam_time = $english_speed;
-
+                                //revamped calculation from mopa
                                 $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
                                 $bangla_typed_words = ceil($bangla_typed_characters/5);
                                 $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
@@ -731,7 +708,6 @@ form .col-sm-12:last-child{
                                 $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
                                 $average = ceil(($bangla_marks + $english_marks) / 2);
-
 
                 ?>
                     <tr class="gradeX">
@@ -771,13 +747,13 @@ form .col-sm-12:last-child{
                                                     <?php $remarks = 'Expelled'; $expelled++; ?>
                                                 @else
                                                     @if ($averageMark >= 0)
-                                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5 && $average >= $averageMark)
+                                                        @if($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5 && $average >= $averageMark)
                                                             <?php $remarks = '<b><i>Pass</i></b>'; $passed++; ?>
                                                         @else
                                                             <?php $remarks = 'Fail'; $failed++; ?>
                                                         @endif
                                                     @else
-                                                        @if($bangla_wpm >= $bangla_speed && $bangla_tolerance <= 5 && $english_wpm >= $english_speed && $english_tolerance <= 5)
+                                                        @if($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5)
                                                             <?php $remarks = '<b><i>Pass</i></b>'; $passed++; ?>
                                                         @else
                                                             <?php $remarks = 'Fail'; $failed++; ?>
@@ -1007,6 +983,7 @@ form .col-sm-12:last-child{
             <th class="no-border"> <span>Candidate SL.</span> </th>
             <th class="no-border"> <span>Roll No.</span> </th>
             <th class="no-border"> <span>Name</span> </th>
+            <th class="no-border"> <span>Exam Code</span> </th>
             <th colspan="7" style="border-right: 1.7px solid #8189fd !important">Bangla in {{$spmDigit}} minutes</th>
             <th colspan="7">English in {{$spmDigit}} minutes</th>
             <th class="no-border"> <span>Average Mark</span> </th>
@@ -1055,14 +1032,7 @@ form .col-sm-12:last-child{
 
             $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0]:StdClass::fromArray();
 
-
-            $bangla_exam_time3 = isset($bangla->exam_time) ? $bangla->exam_time - 1: 1;
-
-            $english_exam_time3 = isset($english->exam_time) ? $english->exam_time - 1: 1;
-
-            $bangla_exam_time = $bangla_speed;
-                            $english_exam_time = $english_speed;
-
+                            //revamped calculation from mopa
                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
                             $bangla_typed_words = ceil($bangla_typed_characters/5);
                             $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
@@ -1095,6 +1065,7 @@ form .col-sm-12:last-child{
                         {{trim($values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name)}}
 
                     </td>
+                    <td>{{$values[0]->exam_code_name}}</td>
 
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_characters }}</td>
                                     <td style="border-right: 1.7px solid #8189fd !important">{{ $bangla_typed_words }}</td>

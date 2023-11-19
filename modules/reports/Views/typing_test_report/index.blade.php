@@ -79,6 +79,9 @@ form .col-sm-12:last-child{
                         {!! Form::text('exam_code', @Input::get('exam_code')? Input::get('exam_code') : null,['id'=>'exam_code','class' => 'form-control','placeholder'=>'exam code', 'title'=>'exam code']) !!}
                     </div>
 
+                </div>
+
+                <div class="col-sm-12">
                     <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
                         <small class="required jrequired">(Required)</small>
@@ -103,15 +106,21 @@ form .col-sm-12:last-child{
                       </span>
                     </div>
 
+                    <div class="col-lg-25 col-md-3 col-sm-6">
+                        {!! Form::label('designation_id', 'Post Name:', ['class' => 'control-label']) !!}
+                        <small class="required jrequired">(Required)</small>
+                        {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control js-select','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
+                    </div>
+
 
                     </div>
 
                 <div class="col-sm-12">
 
-                    <div class="col-lg-25 col-md-3 col-sm-6">
-                        {!! Form::label('designation_id', 'Post Name:', ['class' => 'control-label']) !!}
-                        <small class="required jrequired">(Required)</small>
-                        {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control js-select','placeholder'=>'select industry type', 'title'=>'select industry type','required'=>'required']) !!}
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('spmDigit', 'Calculation Digit (SPM):', ['class' => 'control-label']) !!}
+                        <small class="required">(Req.)</small>
+                        {!! Form::text('spmDigit', Input::get('spmDigit')? Input::get('spmDigit') : null,['class' => 'form-control','placeholder'=>'spm digit', 'title'=>'spm digit','required'=>'required']) !!}
                     </div>
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
@@ -126,10 +135,20 @@ form .col-sm-12:last-child{
                         {!! Form::text('english_speed', Input::get('english_speed')? Input::get('english_speed') : null,['english_speed'=>'english_speed','class' => 'form-control','placeholder'=>'english speed', 'title'=>'english speed','required'=>'required']) !!}
                     </div>
 
+                </div>
+
+                <div class="col-sm-12">
+
                     <div class="col-lg-2 col-md-3 col-sm-6">
-                        {!! Form::label('spmDigit', 'Calculation Digit (SPM):', ['class' => 'control-label']) !!}
+                        {!! Form::label('passMark', 'Pass Mark for Remarks:', ['class' => 'control-label']) !!}
                         <small class="required">(Req.)</small>
-                        {!! Form::text('spmDigit', Input::get('spmDigit')? Input::get('spmDigit') : null,['class' => 'form-control','placeholder'=>'spm digit', 'title'=>'spm digit','required'=>'required']) !!}
+                        {!! Form::text('passMark', Input::get('passMark')? Input::get('passMark') : null,['class' => 'form-control','placeholder'=>'pass mark', 'title'=>'pass mark','required'=>'required']) !!}
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        {!! Form::label('tolerance', 'Tolerance for Remarks:', ['class' => 'control-label']) !!}
+                        <small class="required">(Req.)</small>
+                        {!! Form::text('tolerance', Input::get('tolerance')? Input::get('tolerance') : null,['class' => 'form-control','placeholder'=>'tolerance', 'title'=>'tolerance','required'=>'required']) !!}
                     </div>
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
@@ -396,25 +415,7 @@ form .col-sm-12:last-child{
 
                                     <td>
                                         @if($values->lists('attended_typing_test')->contains('true'))
-                                            @if($values->lists('typing_status')->contains('cancelled'))
-                                                <?php $remarks = 'Cancelled'; ?>
-                                            @elseif($values->lists('typing_status')->contains('expelled'))
-                                                <?php $remarks = 'Expelled'; ?>
-                                            @else
-                                                @if ($averageMark >= 0)
-                                                    @if($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5 && $average >= $averageMark)
-                                                        <?php $remarks = '<b><i>Pass</i></b>'; ?>
-                                                    @else
-                                                        <?php $remarks = 'Fail'; ?>
-                                                    @endif
-                                                @else
-                                                    @if($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5)
-                                                        <?php $remarks = '<b><i>Pass</i></b>'; ?>
-                                                    @else
-                                                        <?php $remarks = 'Fail'; ?>
-                                                    @endif
-                                                @endif
-                                            @endif
+                                            
                                         @else
                                             @if($values->lists('typing_status')->contains('cancelled'))
                                                 <?php $remarks = 'Cancelled'; ?>
@@ -741,25 +742,7 @@ form .col-sm-12:last-child{
 
                                         <td>
                                             @if($values->lists('attended_typing_test')->contains('true'))
-                                                @if($values->lists('typing_status')->contains('cancelled'))
-                                                    <?php $remarks = 'Cancelled'; $cancelled++; ?>
-                                                @elseif($values->lists('typing_status')->contains('expelled'))
-                                                    <?php $remarks = 'Expelled'; $expelled++; ?>
-                                                @else
-                                                    @if ($averageMark >= 0)
-                                                        @if($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5 && $average >= $averageMark)
-                                                            <?php $remarks = '<b><i>Pass</i></b>'; $passed++; ?>
-                                                        @else
-                                                            <?php $remarks = 'Fail'; $failed++; ?>
-                                                        @endif
-                                                    @else
-                                                        @if($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5)
-                                                            <?php $remarks = '<b><i>Pass</i></b>'; $passed++; ?>
-                                                        @else
-                                                            <?php $remarks = 'Fail'; $failed++; ?>
-                                                        @endif
-                                                    @endif
-                                                @endif
+
                                             @else
                                                 @if($values->lists('typing_status')->contains('cancelled'))
                                                     <?php $remarks = 'Cancelled'; $cancelled++; ?>

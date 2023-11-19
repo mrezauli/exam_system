@@ -211,13 +211,13 @@
         <div class="row">
 
             <?php
-
+            
             if ($exam_type == 'bangla') {
                 $font_size = 'form-control bangla-font';
             } else {
                 $font_size = 'form-control english-font';
             }
-
+            
             ?>
 
 
@@ -353,7 +353,7 @@
                             <td><b>&nbsp; ৩. টাইপিং টেস্ট শুরু হলে আপনার মনিটরের ডানপাশে উপরের দিকে “Countdown Timer”
                                     দেখতে পারবেন। </b></td>
                         </tr>
-                        {{-- <tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    ইংরেজী টাইপিং এর জন্য পূনরায় “Ctrl+Alt+U” দিয়ে ইংরেজী কিবোর্ড নির্বাচন করুন। </b></td></tr>
+                        {{-- <tr style="font-size: 22px!important;"><td><b>&nbsp; ৪.    ইংরেজী টাইপিং এর জন্য পূনরায় “Ctrl+Alt+V” দিয়ে ইংরেজী কিবোর্ড নির্বাচন করুন। </b></td></tr>
                 <tr style="font-size: 22px!important;"><td><b>&nbsp; ৫.    বাংলা অথবা ইংরেজী যে কোন ০১(একটি) বাটনে “ক্লিক” করে টাইপিং শুরু করুন। </b></td></tr> --}}
                         <tr style="font-size: 22px!important;">
                             <td><b>&nbsp; ৪. নির্ধারিত বক্স নির্বাচন করে ইংরেজী টাইপিং শুরু করুন। ইংরেজী টাইপিং সমাপ্ত

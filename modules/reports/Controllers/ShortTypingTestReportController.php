@@ -67,10 +67,11 @@ class ShortTypingTestReportController extends Controller
         $designation_id = Input::get('designation_id');
         $exam_date_from = Input::get('exam_date_from');
         $exam_date_to = Input::get('exam_date_to');
-
         $bangla_speed = Input::get('bangla_speed');
         $english_speed = Input::get('english_speed');
         $spmDigit = Input::get('spmDigit');
+        $passMark = Input::get('passMark');
+        $tolerance = Input::get('tolerance');
         $averageMark = Input::get('averageMark');
         $remarks = Input::get('remarks');
 
@@ -78,6 +79,8 @@ class ShortTypingTestReportController extends Controller
             'bangla_speed' => 'required|integer',
             'english_speed' => 'required|integer',
             'spmDigit' => 'required|integer',
+            'passMark' => 'required|integer',
+            'tolerance' => 'required|integer',
             'averageMark' => 'required|integer',
         ]);
 
@@ -203,7 +206,7 @@ class ShortTypingTestReportController extends Controller
 
         // dd($model);
 
-        $model->each(function ($values, $key) use ($bangla_speed, $english_speed, $spmDigit, $averageMark) {
+        $model->each(function ($values, $key) use ($bangla_speed, $english_speed, $spmDigit, $passMark, $tolerance, $averageMark) {
 
             // $values = collect($values);
             $null_object = StdClass::fromArray();
@@ -215,21 +218,21 @@ class ShortTypingTestReportController extends Controller
 
             //revamped calculation from mopa
             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-            $bangla_typed_words = ceil($bangla_typed_characters/5);
-            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words/5) : 0;
-            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words/5) : 0;
-            $bangla_wpm = ceil($bangla_corrected_words/$spmDigit);
+            $bangla_typed_words = ceil($bangla_typed_characters / 5);
+            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words / 5) : 0;
+            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words / 5) : 0;
+            $bangla_wpm = ceil($bangla_corrected_words / $spmDigit);
             $bangla_tolerance = $bangla_typed_words == 0 ? 0 : floor(($bangla_deleted_words / $bangla_typed_words) * 100);
-            $bangla_round_marks = ceil((20/$bangla_speed)* $bangla_wpm);
+            $bangla_round_marks = ceil((20 / $bangla_speed) * $bangla_wpm);
             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-            $english_typed_words = ceil($english_typed_characters/5);
-            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words/5) : 0;
-            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words/5) : 0;
-            $english_wpm = ceil($english_corrected_words/$spmDigit);
+            $english_typed_words = ceil($english_typed_characters / 5);
+            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
+            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words / 5) : 0;
+            $english_wpm = ceil($english_corrected_words / $spmDigit);
             $english_tolerance = $english_typed_words == 0 ? 0 : floor(($english_deleted_words / $english_typed_words) * 100);
-            $english_round_marks = ceil((20/$english_speed)* $english_wpm);
+            $english_round_marks = ceil((20 / $english_speed) * $english_wpm);
             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
             $average = ceil(($bangla_marks + $english_marks) / 2);
@@ -238,29 +241,84 @@ class ShortTypingTestReportController extends Controller
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
 
-            if (!$values->lists('attended_typing_test')->contains('true')) {
-                $values->remarks = 'Absent';
-            }
-            elseif ($averageMark >= 0) {
-                if ($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5 && $average >= $averageMark) {
-                    $values->remarks = 'Pass';
+            if ($values->lists('attended_typing_test')->contains('true')) {
+                if ($values->lists('typing_status')->contains('cancelled')) {
+                    $values->remarks = 'cancelled';
+                } elseif ($values->lists('typing_status')->contains('expelled')) {
+                    $values->remarks = 'expelled';
                 } else {
-                    $values->remarks = 'Fail';
+                    if ($averageMark >= 0) {
+                        if ($passMark >= 0) {
+                            if ($tolerance >= 0) {
+                                if ($bangla_marks >= $passMark && $bangla_tolerance <= $tolerance && $english_marks >= $passMark && $english_tolerance <= $tolerance && $average >= $averageMark) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            } else {
+                                if ($bangla_marks >= $passMark  && $english_marks >= $passMark && $average >= $averageMark) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            }
+                        } else {
+                            if ($tolerance >= 0) {
+                                if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance && $average >= $averageMark) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            } else {
+                                if ($average >= $averageMark) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            }
+                        }
+                    } else {
+                        if ($passMark >= 0) {
+                            if ($tolerance >= 0) {
+                                if ($bangla_marks >= $passMark && $bangla_tolerance <= $tolerance && $english_marks >= $passMark && $english_tolerance <= $tolerance) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            } else {
+                                if ($bangla_marks >= $passMark && $english_marks >= $passMark) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            }
+                        } else {
+                            if ($tolerance >= 0) {
+                                if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            } else {
+                                $values->remarks =  'spm';
+                            }
+                        }
+                    }
                 }
             } else {
-                if ($bangla_marks >= 20 && $bangla_tolerance <= 5 && $english_marks >= 20 && $english_tolerance <= 5) {
-                    $values->remarks = 'Pass';
+                if ($values->lists('typing_status')->contains('cancelled')) {
+                    $values->remarks = 'cancelled';
+                } elseif ($values->lists('typing_status')->contains('expelled')) {
+                    $values->remarks = 'expelled';
                 } else {
-                    $values->remarks = 'Fail';
+                    $values->remarks = 'Absent';
                 }
-            }
-
-            if ($values->first()->typing_status == 'expelled' || $values->first()->typing_status == 'cancelled') {
-                $values->remarks = $values->first()->typing_status;
             }
 
             // dd($values);
         });
+
+        //dd($model);
 
 
         $makeComparer = function ($criteria) {
@@ -314,6 +372,20 @@ class ShortTypingTestReportController extends Controller
             return $value->remarks == "cancelled";
         });
 
+        $spm = $model->filter(function ($value) {
+            return $value->remarks == "spm";
+        });
+
+        $passed_count = $passed->count();
+        $failed_count = $failed->count();
+        $expelled_count = $expelled->count();
+        $cancelled_count = $cancelled->count();
+        $spm_count = $spm->count();
+        if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
+            $total_count = $spm_count + $expelled_count + $cancelled_count;
+        } else {
+            $total_count = $passed_count + $failed_count + $expelled_count + $cancelled_count;
+        }
 
         $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
 
@@ -324,43 +396,35 @@ class ShortTypingTestReportController extends Controller
         $failed = $failed->sort($comparer);
 
         $comparer = $makeComparer($criteria);
-        $absent = $absent->sort($comparer);
-
-        $comparer = $makeComparer($criteria);
         $expelled = $expelled->sort($comparer);
 
         $comparer = $makeComparer($criteria);
         $cancelled = $cancelled->sort($comparer);
 
-
-        $passed_count = $passed->count();
-
-
-
-        $failed_count = $failed->count();
-
-
-        $expelled_count = $expelled->count();
-
-        $cancelled_count = $cancelled->count();
-
-        $total_count = $passed_count + $failed_count + $expelled_count + $cancelled_count;
-
+        $comparer = $makeComparer($criteria);
+        $spm = $spm->sort($comparer);
 
         if ($remarks == 'passed') {
-            $model = $passed;
-            $show_count = 'Pass:' . ' ' . $passed_count;
+            if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
+            } else {
+                $model = $passed;
+                $show_count = 'Pass:' . ' ' . $passed_count;
+            }
         }
 
         if ($remarks == 'failed') {
-            $model = $failed;
-            $show_count = 'Fail:' . ' ' . $failed_count;
+            if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
+            } else {
+                $model = $failed;
+                $show_count = 'Fail:' . ' ' . $failed_count;
+            }
         }
 
         if ($remarks == 'expelled') {
             $show_count = 'Expelled:' . ' ' . $expelled_count;
             $model = $expelled;
         }
+        //dd($model);
 
         if ($remarks == 'cancelled') {
             $show_count = 'Cancelled:' . ' ' . $cancelled_count;
@@ -368,12 +432,13 @@ class ShortTypingTestReportController extends Controller
         }
 
         if ($remarks == 'all') {
-            $model = $passed->merge($failed)->merge($expelled)->merge($cancelled);
+            if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
+            } else {
+                $model = $passed->merge($failed)->merge($expelled)->merge($cancelled);
+            }
         }
 
-
-
-        $model_all = $model;
+        //dd($model);
 
 
         $page = Input::get('page', 1);
@@ -386,7 +451,7 @@ class ShortTypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::short_typing_test_report.index', compact('averageMark', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'spmDigit', 'remarks', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'show_count'));
+        return view('reports::short_typing_test_report.index', compact('spm_count', 'spm', 'passMark', 'tolerance', 'averageMark', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'bangla_speed', 'english_speed', 'spmDigit', 'remarks', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'show_count'));
     }
 
 

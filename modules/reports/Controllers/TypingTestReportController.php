@@ -34,7 +34,7 @@ class TypingTestReportController extends Controller
 
         $page_title = 'Typing Test Report';
         //$bangla_speed = $english_speed = ExamTime::where('exam_type','typing_exam')->first()->exam_time;
-        $bangla_speed = $english_speed = $passed_count = $failed_count = $expelled_count = $cancelled_count = $total_count = '';
+        $bangla_speed = $english_speed = $passed_count = $failed_count = $expelled_count = $cancelled_count = $total_count = $passMark = $tolerance = $averageMark = '';
 
 
 
@@ -52,7 +52,7 @@ class TypingTestReportController extends Controller
 
         $exam_code_list =  ['' => 'Select exam code'] + ExamCode::where('exam_type', 'typing_test')->where('status', 'active')->orderBy('id', 'desc')->lists('exam_code_name', 'id')->all();
 
-        return view('reports::typing_test_report.index', compact('page_title', 'company_list', 'designation_list', 'exam_code_list', 'status', 'header', 'exam_dates_string', 'model_all', 'bangla_speed', 'english_speed', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count'));
+        return view('reports::typing_test_report.index', compact('passMark', 'tolerance', 'averageMark', 'page_title', 'company_list', 'designation_list', 'exam_code_list', 'status', 'header', 'exam_dates_string', 'model_all', 'bangla_speed', 'english_speed', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count'));
     }
 
 
@@ -229,7 +229,7 @@ class TypingTestReportController extends Controller
         $ddd = [];
 
         $model->each(function ($values, $key) use ($bangla_speed, $english_speed, $spmDigit, $averageMark, $passMark, $tolerance, &$ddd) {
-
+            //dd($values);
             $values = collect($values);
             $null_object = StdClass::fromArray();
 
@@ -262,76 +262,89 @@ class TypingTestReportController extends Controller
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
 
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
+            //dd($values->lists('typing_status')->contains('cancelled'));
 
-            if (!$values->lists('attended_typing_test')->contains('true')) {
-                $values->remarks = 'Absent';
-            } elseif ($averageMark >= 0) {
-                if ($passMark >= 0) {
-                    if ($tolerance >= 0) {
-                        if ($bangla_marks >= $passMark && $bangla_tolerance <= $tolerance && $english_marks >= $passMark && $english_tolerance <= $tolerance && $average >= $averageMark) {
-                            $values->remarks = 'Pass';
-                        } else {
-                            $values->remarks = 'Fail';
-                        }
-                    } else {
-                        if ($bangla_marks >= $passMark  && $english_marks >= $passMark && $average >= $averageMark) {
-                            $values->remarks = 'Pass';
-                        } else {
-                            $values->remarks = 'Fail';
-                        }
-                    }
+            if ($values->lists('attended_typing_test')->contains('true')) {
+                if ($values->lists('typing_status')->contains('cancelled')) {
+                    $values->remarks = 'cancelled';
+                } elseif ($values->lists('typing_status')->contains('expelled')) {
+                    $values->remarks = 'expelled';
                 } else {
-                    if ($tolerance >= 0) {
-                        if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance && $average >= $averageMark) {
-                            $values->remarks = 'Pass';
+                    if ($averageMark >= 0) {
+                        if ($passMark >= 0) {
+                            if ($tolerance >= 0) {
+                                if ($bangla_marks >= $passMark && $bangla_tolerance <= $tolerance && $english_marks >= $passMark && $english_tolerance <= $tolerance && $average >= $averageMark) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            } else {
+                                if ($bangla_marks >= $passMark  && $english_marks >= $passMark && $average >= $averageMark) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            }
                         } else {
-                            $values->remarks = 'Fail';
+                            if ($tolerance >= 0) {
+                                if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance && $average >= $averageMark) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            } else {
+                                if ($average >= $averageMark) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            }
                         }
                     } else {
-                        if ($average >= $averageMark) {
-                            $values->remarks = 'Pass';
+                        if ($passMark >= 0) {
+                            if ($tolerance >= 0) {
+                                if ($bangla_marks >= $passMark && $bangla_tolerance <= $tolerance && $english_marks >= $passMark && $english_tolerance <= $tolerance) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            } else {
+                                if ($bangla_marks >= $passMark && $english_marks >= $passMark) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            }
                         } else {
-                            $values->remarks = 'Fail';
+                            if ($tolerance >= 0) {
+                                if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance) {
+                                    $values->remarks = 'Pass';
+                                } else {
+                                    $values->remarks = 'Fail';
+                                }
+                            } else {
+                                $values->remarks =  'spm';
+                            }
                         }
                     }
                 }
             } else {
-                if ($passMark >= 0) {
-                    if ($tolerance >= 0) {
-                        if ($bangla_marks >= $passMark && $bangla_tolerance <= $tolerance && $english_marks >= $passMark && $english_tolerance <= $tolerance) {
-                            $values->remarks = 'Pass';
-                        } else {
-                            $values->remarks = 'Fail';
-                        }
-                    } else {
-                        if ($bangla_marks >= $passMark && $english_marks >= $passMark) {
-                            $values->remarks = 'Pass';
-                        } else {
-                            $values->remarks = 'Fail';
-                        }
-                    }
+                if ($values->lists('typing_status')->contains('cancelled')) {
+                    $values->remarks = 'cancelled';
+                } elseif ($values->lists('typing_status')->contains('expelled')) {
+                    $values->remarks = 'expelled';
                 } else {
-                    if ($tolerance >= 0) {
-                        if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance) {
-                            $values->remarks = 'Pass';
-                        } else {
-                            $values->remarks = 'Fail';
-                        }
-                    } else {
-                            $values->remarks =  $bangla_wpm + $english_wpm;
-                    }
+                    $values->remarks = 'Absent';
                 }
             }
 
-            if ($values->first()->typing_status == 'expelled' || $values->first()->typing_status == 'cancelled') {
-                $values->remarks = $values->first()->typing_status;
-            }
-
             $ddd[$key] = $values;
+            //dd($values);
         });
 
 
         $model = collect($ddd);
+        //dd($model);
 
 
 
@@ -379,7 +392,6 @@ class TypingTestReportController extends Controller
 
 
         $expelled = $model->filter(function ($value) {
-            //dd($value);
             return $value->remarks == "expelled";
         });
 
@@ -388,43 +400,38 @@ class TypingTestReportController extends Controller
             return $value->remarks == "cancelled";
         });
 
+        $spm = $model->filter(function ($value) {
+            return $value->remarks == "spm";
+        });
+
 
         $passed_count = $model->filter(function ($value) {
-
             if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled', 'cancelled'])) {
-
                 return false;
             } else if ($value->remarks == "Pass" && in_array($value['0']->typing_status, ['expelled', 'cancelled'])) {
-
                 return false;
             } else {
-
                 return $value->remarks == "Pass";
             }
         })->count();
-
-
-
         $failed_count = $model->filter(function ($value) {
-
             if ($value->remarks == "Fail" && in_array($value['0']->typing_status, ['expelled', 'cancelled'])) {
-
                 return false;
             } else if ($value->remarks == "Pass" && in_array($value['0']->typing_status, ['expelled', 'cancelled'])) {
-
                 return false;
             } else {
-
                 return $value->remarks == "Fail";
             }
         })->count();
-
-
         $expelled_count = $expelled->count();
-
         $cancelled_count = $cancelled->count();
+        $spm_count = $spm->count();
 
-        $total_count = $passed_count + $failed_count + $expelled_count + $cancelled_count;
+        if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
+            $total_count = $spm_count + $expelled_count + $cancelled_count;
+        } else {
+            $total_count = $passed_count + $failed_count + $expelled_count + $cancelled_count;
+        }
 
         $criteria = ["total_typing_speed" => "desc", "roll_no" => "asc"];
 
@@ -435,18 +442,21 @@ class TypingTestReportController extends Controller
         $failed = $failed->sort($comparer);
 
         $comparer = $makeComparer($criteria);
-        $cancelled = $cancelled->sort($comparer);
-
-        $comparer = $makeComparer($criteria);
         $expelled = $expelled->sort($comparer);
 
         $comparer = $makeComparer($criteria);
-        $absent = $absent->sort($comparer);
+        $cancelled = $cancelled->sort($comparer);
 
+        $comparer = $makeComparer($criteria);
+        $spm = $spm->sort($comparer);
 
-        $model = $passed->merge($failed)->merge($cancelled)->merge($expelled);
+        if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
+            $model = $cancelled->merge($expelled)->merge($spm);
+        } else {
+            $model = $passed->merge($failed)->merge($cancelled)->merge($expelled);
+        }
 
-        $model_all = $model;
+        //dd($expelled_count);
 
         $page = Input::get('page', 1);
 
@@ -458,7 +468,7 @@ class TypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::typing_test_report.index', compact('passMark', 'tolerance', 'averageMark', 'spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count'));
+        return view('reports::typing_test_report.index', compact('spm_count', 'spm', 'passMark', 'tolerance', 'averageMark', 'spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'bangla_speed', 'english_speed', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count'));
     }
 
     public function typing_test_report_pdf($company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed, $spmDigit)

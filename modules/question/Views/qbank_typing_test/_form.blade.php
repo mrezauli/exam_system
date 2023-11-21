@@ -21,7 +21,7 @@
         <div class="row">
 
             <div class="col-sm-12">
-                {!! Form::label('words_count', 'Characters Count:', ['class' => 'control-label']) !!}
+                {!! Form::label('words_count', 'Word Count:', ['class' => 'control-label']) !!}
                 {!! Form::text('words_count[]', Input::old('words_count'), ['class' => 'form-control words-count', 'readonly']) !!}
             </div>
 

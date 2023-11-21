@@ -11,19 +11,15 @@
 
         $('body').on('keyup', '.typing_question', function(event) {
 
-            //var words_count = $(this).val().trim().split(/\s+/).length;
-            var character_count = $(this).val().trim().length;
+            var words_count = Math.round($(this).val().trim().length / 5);
 
             if ($(this).val().trim() == '') {
-                //words_count = 0;
-                character_count = 0;
+                words_count = 0;
             }
 
-            //$(this).closest('.repeater-block').find('.words-count').val(words_count);
-            $(this).closest('.repeater-block').find('.words-count').val(character_count);
+            $(this).closest('.repeater-block').find('.words-count').val(words_count);
 
-            //$(this).closest('.typing-test-modal').find('.words-count').val(words_count);
-            $(this).closest('.typing-test-modal').find('.words-count').val(character_count);
+            $(this).closest('.typing-test-modal').find('.words-count').val(words_count);
 
         });
 

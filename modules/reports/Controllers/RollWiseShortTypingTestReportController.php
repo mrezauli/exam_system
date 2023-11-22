@@ -422,40 +422,36 @@ class RollWiseShortTypingTestReportController extends Controller
         $comparer = $makeComparer($criteria);
         $spm = $spm->sort($comparer);
 
-        if ($remarks == 'passed') {
-            if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
-            } else {
+        if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
+            $model = collect(new stdClass());
+        } else {
+            if ($remarks == 'passed') {
                 $model = $passed;
                 $show_count = 'Pass:' . ' ' . $passed_count;
             }
-        }
 
-        if ($remarks == 'failed') {
-            if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
-            } else {
+            if ($remarks == 'failed') {
                 $model = $failed;
                 $show_count = 'Fail:' . ' ' . $failed_count;
             }
-        }
 
-        if ($remarks == 'expelled') {
-            $show_count = 'Expelled:' . ' ' . $expelled_count;
-            $model = $expelled;
-        }
+            if ($remarks == 'expelled') {
+                $show_count = 'Expelled:' . ' ' . $expelled_count;
+                $model = $expelled;
+            }
 
-        if ($remarks == 'cancelled') {
-            $show_count = 'Cancelled:' . ' ' . $cancelled_count;
-            $model = $cancelled;
-        }
+            if ($remarks == 'cancelled') {
+                $show_count = 'Cancelled:' . ' ' . $cancelled_count;
+                $model = $cancelled;
+            }
 
-        if ($remarks == 'all') {
-            if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
-            } else {
+            if ($remarks == 'all') {
                 $model = $model->sortBy(function ($value, $key) {
                     return (int)$value->roll_no;
                 });
             }
         }
+
 
 
         $page = Input::get('page', 1);

@@ -248,6 +248,9 @@
 
                     <?php
                     $spmDigit = isset($spmDigit) ? $spmDigit : '';
+                    $passMark = isset($passMark) ? $passMark : '';
+                    $tolerance = isset($tolerance) ? $tolerance : '';
+                    $averageMark = isset($averageMark) ? $averageMark : '';
                     function round_to_integer($number)
                     {
                         if (is_integer($number)) {
@@ -279,7 +282,8 @@
                                     <th> <span>Name</span> </th>
                                     <th
                                         style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"">
-                                        <span>Remarks</span> </th>
+                                        <span>Remarks</span>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -287,140 +291,146 @@
                                 @if ($status == 2)
                                     <?php $i = isset($_GET['page']) ? ($_GET['page'] - 1) * 1 + 0 : 0; ?>
 
-                                    @foreach ($model as $values)
-                                    <?php $i++;
+                                    @if ($model->count() > 0)
+                                        @foreach ($model as $values)
+                                            <?php $i++;
 
-                                    $values = collect($values);
+                                            $values = collect($values);
 
-                                    $grouped_by_exam_type = $values->groupBy('exam_type');
+                                            $grouped_by_exam_type = $values->groupBy('exam_type');
 
-                                    $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0] : StdClass::fromArray();
+                                            $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0] : StdClass::fromArray();
 
-                                    $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0] : StdClass::fromArray();
+                                            $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0] : StdClass::fromArray();
 
-                                        //revamped calculation from mopa
-                                        $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                                        $bangla_typed_words = ceil($bangla_typed_characters / 5);
-                                        $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words / 5) : 0;
-                                        $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words / 5) : 0;
-                                        $bangla_wpm = ceil($bangla_corrected_words / $spmDigit);
-                                        $bangla_tolerance = $bangla_typed_words == 0 ? 0 : floor(($bangla_deleted_words / $bangla_typed_words) * 100);
-                                        $bangla_round_marks = ceil((20 / $bangla_speed) * $bangla_wpm);
-                                        $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
+                                            //revamped calculation from mopa
+                                            $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
+                                            $bangla_typed_words = ceil($bangla_typed_characters / 5);
+                                            $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words / 5) : 0;
+                                            $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words / 5) : 0;
+                                            $bangla_wpm = ceil($bangla_corrected_words / $spmDigit);
+                                            $bangla_tolerance = $bangla_typed_words == 0 ? 0 : floor(($bangla_deleted_words / $bangla_typed_words) * 100);
+                                            $bangla_round_marks = ceil((20 / $bangla_speed) * $bangla_wpm);
+                                            $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
-                                        $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                                        $english_typed_words = ceil($english_typed_characters / 5);
-                                        $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
-                                        $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words / 5) : 0;
-                                        $english_wpm = ceil($english_corrected_words / $spmDigit);
-                                        $english_tolerance = $english_typed_words == 0 ? 0 : floor(($english_deleted_words / $english_typed_words) * 100);
-                                        $english_round_marks = ceil((20 / $english_speed) * $english_wpm);
-                                        $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
+                                            $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                                            $english_typed_words = ceil($english_typed_characters / 5);
+                                            $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
+                                            $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words / 5) : 0;
+                                            $english_wpm = ceil($english_corrected_words / $spmDigit);
+                                            $english_tolerance = $english_typed_words == 0 ? 0 : floor(($english_deleted_words / $english_typed_words) * 100);
+                                            $english_round_marks = ceil((20 / $english_speed) * $english_wpm);
+                                            $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
-                                        $average = ceil(($bangla_marks + $english_marks) / 2);
+                                            $average = ceil(($bangla_marks + $english_marks) / 2);
 
-                                        ?>
-                                        <tr class="gradeX">
+                                            ?>
+                                            <tr class="gradeX">
 
-                                            <td>{{ $i }}</td>
-                                            <td>{{ $values[0]->sl }}</td>
-                                            <td>{{ $values[0]->roll_no }}</td>
-                                            <td>{{ $values[0]->exam_code_name }}</td>
-                                            <td class="table-name">
+                                                <td>{{ $i }}</td>
+                                                <td>{{ $values[0]->sl }}</td>
+                                                <td>{{ $values[0]->roll_no }}</td>
+                                                <td>{{ $values[0]->exam_code_name }}</td>
+                                                <td class="table-name">
 
-                                                {{ $values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name }}
+                                                    {{ $values[0]->username . ' ' . $values[0]->middle_name . ' ' . $values[0]->last_name }}
 
-                                            </td>
+                                                </td>
 
-                                            <td
-                                                style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">
-                                                @if ($values->lists('attended_typing_test')->contains('true'))
-                                                    @if ($values->lists('typing_status')->contains('cancelled'))
-                                                        <?php $remarks = 'Cancelled'; ?>
-                                                    @elseif($values->lists('typing_status')->contains('expelled'))
-                                                        <?php $remarks = 'Expelled'; ?>
-                                                    @else
-                                                        @if ($averageMark >= 0)
-                                                            @if ($passMark >= 0)
-                                                                @if ($tolerance >= 0)
-                                                                    @if (
-                                                                        $bangla_marks >= $passMark &&
-                                                                            $bangla_tolerance <= $tolerance &&
-                                                                            $english_marks >= $passMark &&
-                                                                            $english_tolerance <= $tolerance &&
-                                                                            $average >= $averageMark)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @else
-                                                                    @if ($bangla_marks >= $passMark && $english_marks >= $passMark && $average >= $averageMark)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @endif
-                                                            @else
-                                                                @if ($tolerance >= 0)
-                                                                    @if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance && $average >= $averageMark)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @else
-                                                                    @if ($average >= $averageMark)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @endif
-                                                            @endif
+                                                <td
+                                                    style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">
+                                                    @if ($values->lists('attended_typing_test')->contains('true'))
+                                                        @if ($values->lists('typing_status')->contains('cancelled'))
+                                                            <?php $remarks = 'Cancelled'; ?>
+                                                        @elseif($values->lists('typing_status')->contains('expelled'))
+                                                            <?php $remarks = 'Expelled'; ?>
                                                         @else
-                                                            @if ($passMark >= 0)
-                                                                @if ($tolerance >= 0)
-                                                                    @if (
-                                                                        $bangla_marks >= $passMark &&
-                                                                            $bangla_tolerance <= $tolerance &&
-                                                                            $english_marks >= $passMark &&
-                                                                            $english_tolerance <= $tolerance)
-                                                                        <?php $remarks = 'Pass'; ?>
+                                                            @if ($averageMark >= 0)
+                                                                @if ($passMark >= 0)
+                                                                    @if ($tolerance >= 0)
+                                                                        @if (
+                                                                            $bangla_marks >= $passMark &&
+                                                                                $bangla_tolerance <= $tolerance &&
+                                                                                $english_marks >= $passMark &&
+                                                                                $english_tolerance <= $tolerance &&
+                                                                                $average >= $averageMark)
+                                                                            <?php $remarks = 'Pass'; ?>
+                                                                        @else
+                                                                            <?php $remarks = 'Fail'; ?>
+                                                                        @endif
                                                                     @else
-                                                                        <?php $remarks = 'Fail'; ?>
+                                                                        @if ($bangla_marks >= $passMark && $english_marks >= $passMark && $average >= $averageMark)
+                                                                            <?php $remarks = 'Pass'; ?>
+                                                                        @else
+                                                                            <?php $remarks = 'Fail'; ?>
+                                                                        @endif
                                                                     @endif
                                                                 @else
-                                                                    @if ($bangla_marks >= $passMark && $english_marks >= $passMark)
-                                                                        <?php $remarks = 'Pass'; ?>
+                                                                    @if ($tolerance >= 0)
+                                                                        @if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance && $average >= $averageMark)
+                                                                            <?php $remarks = 'Pass'; ?>
+                                                                        @else
+                                                                            <?php $remarks = 'Fail'; ?>
+                                                                        @endif
                                                                     @else
-                                                                        <?php $remarks = 'Fail'; ?>
+                                                                        @if ($average >= $averageMark)
+                                                                            <?php $remarks = 'Pass'; ?>
+                                                                        @else
+                                                                            <?php $remarks = 'Fail'; ?>
+                                                                        @endif
                                                                     @endif
                                                                 @endif
                                                             @else
-                                                                @if ($tolerance >= 0)
-                                                                    @if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance)
-                                                                        <?php $remarks = 'Pass'; ?>
+                                                                @if ($passMark >= 0)
+                                                                    @if ($tolerance >= 0)
+                                                                        @if (
+                                                                            $bangla_marks >= $passMark &&
+                                                                                $bangla_tolerance <= $tolerance &&
+                                                                                $english_marks >= $passMark &&
+                                                                                $english_tolerance <= $tolerance)
+                                                                            <?php $remarks = 'Pass'; ?>
+                                                                        @else
+                                                                            <?php $remarks = 'Fail'; ?>
+                                                                        @endif
                                                                     @else
-                                                                        <?php $remarks = 'Fail'; ?>
+                                                                        @if ($bangla_marks >= $passMark && $english_marks >= $passMark)
+                                                                            <?php $remarks = 'Pass'; ?>
+                                                                        @else
+                                                                            <?php $remarks = 'Fail'; ?>
+                                                                        @endif
                                                                     @endif
                                                                 @else
-                                                                    <?php $remarks = $bangla_wpm + $english_wpm; ?>
+                                                                    @if ($tolerance >= 0)
+                                                                        @if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance)
+                                                                            <?php $remarks = 'Pass'; ?>
+                                                                        @else
+                                                                            <?php $remarks = 'Fail'; ?>
+                                                                        @endif
+                                                                    @else
+                                                                        <?php $remarks = $bangla_wpm + $english_wpm; ?>
+                                                                    @endif
                                                                 @endif
                                                             @endif
                                                         @endif
-                                                    @endif
-                                                @else
-                                                    @if ($values->lists('typing_status')->contains('cancelled'))
-                                                        <?php $remarks = 'Cancelled'; ?>
-                                                    @elseif($values->lists('typing_status')->contains('expelled'))
-                                                        <?php $remarks = 'Expelled'; ?>
                                                     @else
-                                                        <?php $remarks = 'Absent'; ?>
+                                                        @if ($values->lists('typing_status')->contains('cancelled'))
+                                                            <?php $remarks = 'Cancelled'; ?>
+                                                        @elseif($values->lists('typing_status')->contains('expelled'))
+                                                            <?php $remarks = 'Expelled'; ?>
+                                                        @else
+                                                            <?php $remarks = 'Absent'; ?>
+                                                        @endif
                                                     @endif
-                                                @endif
-                                                {!! $remarks !!}
-                                            </td>
+                                                    {!! $remarks !!}
+                                                </td>
 
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="6">no pass or fail</td>
                                         </tr>
-                                    @endforeach
+                                    @endif
                                 @endif
                             </tbody>
                         </table>
@@ -648,87 +658,87 @@
                                     </td>
                                     <td>
                                         @if ($values->lists('attended_typing_test')->contains('true'))
-                                                    @if ($values->lists('typing_status')->contains('cancelled'))
-                                                        <?php $remarks = 'Cancelled'; ?>
-                                                    @elseif($values->lists('typing_status')->contains('expelled'))
-                                                        <?php $remarks = 'Expelled'; ?>
-                                                    @else
-                                                        @if ($averageMark >= 0)
-                                                            @if ($passMark >= 0)
-                                                                @if ($tolerance >= 0)
-                                                                    @if (
-                                                                        $bangla_marks >= $passMark &&
-                                                                            $bangla_tolerance <= $tolerance &&
-                                                                            $english_marks >= $passMark &&
-                                                                            $english_tolerance <= $tolerance &&
-                                                                            $average >= $averageMark)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @else
-                                                                    @if ($bangla_marks >= $passMark && $english_marks >= $passMark && $average >= $averageMark)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @endif
+                                            @if ($values->lists('typing_status')->contains('cancelled'))
+                                                <?php $remarks = 'Cancelled'; ?>
+                                            @elseif($values->lists('typing_status')->contains('expelled'))
+                                                <?php $remarks = 'Expelled'; ?>
+                                            @else
+                                                @if ($averageMark >= 0)
+                                                    @if ($passMark >= 0)
+                                                        @if ($tolerance >= 0)
+                                                            @if (
+                                                                $bangla_marks >= $passMark &&
+                                                                    $bangla_tolerance <= $tolerance &&
+                                                                    $english_marks >= $passMark &&
+                                                                    $english_tolerance <= $tolerance &&
+                                                                    $average >= $averageMark)
+                                                                <?php $remarks = 'Pass'; ?>
                                                             @else
-                                                                @if ($tolerance >= 0)
-                                                                    @if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance && $average >= $averageMark)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @else
-                                                                    @if ($average >= $averageMark)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @endif
+                                                                <?php $remarks = 'Fail'; ?>
                                                             @endif
                                                         @else
-                                                            @if ($passMark >= 0)
-                                                                @if ($tolerance >= 0)
-                                                                    @if (
-                                                                        $bangla_marks >= $passMark &&
-                                                                            $bangla_tolerance <= $tolerance &&
-                                                                            $english_marks >= $passMark &&
-                                                                            $english_tolerance <= $tolerance)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @else
-                                                                    @if ($bangla_marks >= $passMark && $english_marks >= $passMark)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @endif
+                                                            @if ($bangla_marks >= $passMark && $english_marks >= $passMark && $average >= $averageMark)
+                                                                <?php $remarks = 'Pass'; ?>
                                                             @else
-                                                                @if ($tolerance >= 0)
-                                                                    @if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance)
-                                                                        <?php $remarks = 'Pass'; ?>
-                                                                    @else
-                                                                        <?php $remarks = 'Fail'; ?>
-                                                                    @endif
-                                                                @else
-                                                                    <?php $remarks = $bangla_wpm + $english_wpm; ?>
-                                                                @endif
+                                                                <?php $remarks = 'Fail'; ?>
+                                                            @endif
+                                                        @endif
+                                                    @else
+                                                        @if ($tolerance >= 0)
+                                                            @if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance && $average >= $averageMark)
+                                                                <?php $remarks = 'Pass'; ?>
+                                                            @else
+                                                                <?php $remarks = 'Fail'; ?>
+                                                            @endif
+                                                        @else
+                                                            @if ($average >= $averageMark)
+                                                                <?php $remarks = 'Pass'; ?>
+                                                            @else
+                                                                <?php $remarks = 'Fail'; ?>
                                                             @endif
                                                         @endif
                                                     @endif
                                                 @else
-                                                    @if ($values->lists('typing_status')->contains('cancelled'))
-                                                        <?php $remarks = 'Cancelled'; ?>
-                                                    @elseif($values->lists('typing_status')->contains('expelled'))
-                                                        <?php $remarks = 'Expelled'; ?>
+                                                    @if ($passMark >= 0)
+                                                        @if ($tolerance >= 0)
+                                                            @if (
+                                                                $bangla_marks >= $passMark &&
+                                                                    $bangla_tolerance <= $tolerance &&
+                                                                    $english_marks >= $passMark &&
+                                                                    $english_tolerance <= $tolerance)
+                                                                <?php $remarks = 'Pass'; ?>
+                                                            @else
+                                                                <?php $remarks = 'Fail'; ?>
+                                                            @endif
+                                                        @else
+                                                            @if ($bangla_marks >= $passMark && $english_marks >= $passMark)
+                                                                <?php $remarks = 'Pass'; ?>
+                                                            @else
+                                                                <?php $remarks = 'Fail'; ?>
+                                                            @endif
+                                                        @endif
                                                     @else
-                                                        <?php $remarks = 'Absent'; ?>
+                                                        @if ($tolerance >= 0)
+                                                            @if ($bangla_tolerance <= $tolerance && $english_tolerance <= $tolerance)
+                                                                <?php $remarks = 'Pass'; ?>
+                                                            @else
+                                                                <?php $remarks = 'Fail'; ?>
+                                                            @endif
+                                                        @else
+                                                            <?php $remarks = $bangla_wpm + $english_wpm; ?>
+                                                        @endif
                                                     @endif
                                                 @endif
+                                            @endif
+                                        @else
+                                            @if ($values->lists('typing_status')->contains('cancelled'))
+                                                <?php $remarks = 'Cancelled'; ?>
+                                            @elseif($values->lists('typing_status')->contains('expelled'))
+                                                <?php $remarks = 'Expelled'; ?>
+                                            @else
+                                                <?php $remarks = 'Absent'; ?>
+                                            @endif
+                                        @endif
                                         {!! $remarks !!}
                                     </td>
 
@@ -986,24 +996,24 @@
 
                                 //revamped calculation from mopa
                                 $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
-                                        $bangla_typed_words = ceil($bangla_typed_characters / 5);
-                                        $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words / 5) : 0;
-                                        $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words / 5) : 0;
-                                        $bangla_wpm = ceil($bangla_corrected_words / $spmDigit);
-                                        $bangla_tolerance = $bangla_typed_words == 0 ? 0 : floor(($bangla_deleted_words / $bangla_typed_words) * 100);
-                                        $bangla_round_marks = ceil((20 / $bangla_speed) * $bangla_wpm);
-                                        $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
+                                $bangla_typed_words = ceil($bangla_typed_characters / 5);
+                                $bangla_deleted_words = isset($bangla->deleted_words) ? floor($bangla->deleted_words / 5) : 0;
+                                $bangla_corrected_words = isset($bangla->inserted_words) ? ceil($bangla->inserted_words / 5) : 0;
+                                $bangla_wpm = ceil($bangla_corrected_words / $spmDigit);
+                                $bangla_tolerance = $bangla_typed_words == 0 ? 0 : floor(($bangla_deleted_words / $bangla_typed_words) * 100);
+                                $bangla_round_marks = ceil((20 / $bangla_speed) * $bangla_wpm);
+                                $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
 
-                                        $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
-                                        $english_typed_words = ceil($english_typed_characters / 5);
-                                        $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
-                                        $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words / 5) : 0;
-                                        $english_wpm = ceil($english_corrected_words / $spmDigit);
-                                        $english_tolerance = $english_typed_words == 0 ? 0 : floor(($english_deleted_words / $english_typed_words) * 100);
-                                        $english_round_marks = ceil((20 / $english_speed) * $english_wpm);
-                                        $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
+                                $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
+                                $english_typed_words = ceil($english_typed_characters / 5);
+                                $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
+                                $english_corrected_words = isset($english->inserted_words) ? ceil($english->inserted_words / 5) : 0;
+                                $english_wpm = ceil($english_corrected_words / $spmDigit);
+                                $english_tolerance = $english_typed_words == 0 ? 0 : floor(($english_deleted_words / $english_typed_words) * 100);
+                                $english_round_marks = ceil((20 / $english_speed) * $english_wpm);
+                                $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
 
-                                        $average = ceil(($bangla_marks + $english_marks) / 2);
+                                $average = ceil(($bangla_marks + $english_marks) / 2);
 
                                 ?>
                                 <tr class="gradeX">

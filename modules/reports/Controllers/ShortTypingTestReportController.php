@@ -404,36 +404,33 @@ class ShortTypingTestReportController extends Controller
         $comparer = $makeComparer($criteria);
         $spm = $spm->sort($comparer);
 
-        if ($remarks == 'passed') {
-            if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
-            } else {
+        if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
+            $model = collect(new stdClass());
+        } else {
+            if ($remarks == 'passed') {
                 $model = $passed;
                 $show_count = 'Pass:' . ' ' . $passed_count;
             }
-        }
 
-        if ($remarks == 'failed') {
-            if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
-            } else {
+            if ($remarks == 'failed') {
+
                 $model = $failed;
                 $show_count = 'Fail:' . ' ' . $failed_count;
             }
-        }
 
-        if ($remarks == 'expelled') {
-            $show_count = 'Expelled:' . ' ' . $expelled_count;
-            $model = $expelled;
-        }
-        //dd($model);
+            if ($remarks == 'expelled') {
+                $show_count = 'Expelled:' . ' ' . $expelled_count;
+                $model = $expelled;
+            }
+            //dd($model);
 
-        if ($remarks == 'cancelled') {
-            $show_count = 'Cancelled:' . ' ' . $cancelled_count;
-            $model = $cancelled;
-        }
+            if ($remarks == 'cancelled') {
+                $show_count = 'Cancelled:' . ' ' . $cancelled_count;
+                $model = $cancelled;
+            }
 
-        if ($remarks == 'all') {
-            if ($passMark < 0 && $tolerance < 0 && $averageMark < 0) {
-            } else {
+            if ($remarks == 'all') {
+
                 $model = $passed->merge($failed)->merge($expelled)->merge($cancelled);
             }
         }

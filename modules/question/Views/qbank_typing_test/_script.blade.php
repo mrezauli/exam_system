@@ -11,7 +11,7 @@
 
         $('body').on('keyup', '.typing_question', function(event) {
 
-            var words_count = Math.round($(this).val().trim().length / 5);
+            var words_count = Math.floor($(this).val().trim().length / 5);
 
             if ($(this).val().trim() == '') {
                 words_count = 0;

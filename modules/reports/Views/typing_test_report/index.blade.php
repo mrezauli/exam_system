@@ -283,7 +283,8 @@
                     <?php
 
                     $spmDigit = isset($spmDigit) ? $spmDigit : '';
-
+                    $passMark = isset($passMark) ? $passMark : '';
+                    $tolerance = isset($tolerance) ? $tolerance : '';
                     $averageMark = isset($averageMark) ? $averageMark : '';
 
                     ?>

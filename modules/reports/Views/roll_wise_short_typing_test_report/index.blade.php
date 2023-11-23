@@ -293,15 +293,18 @@
 
                                     @if ($model->count() > 0)
                                         @foreach ($model as $values)
-                                            <?php $i++;
+                                        <?php $i++;
 
-                                            $values = collect($values);
 
-                                            $grouped_by_exam_type = $values->groupBy('exam_type');
+                                        $values = collect($values);
+                                        $null_object = StdClass::fromArray();
 
-                                            $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0] : StdClass::fromArray();
 
-                                            $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0] : StdClass::fromArray();
+                                        $grouped_by_exam_type = $values->groupBy('exam_type');
+
+                                        $bangla = $grouped_by_exam_type->get('bangla',[$null_object])[0];
+
+                                        $english = $grouped_by_exam_type->get('english',[$null_object])[0];
 
                                             //revamped calculation from mopa
                                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
@@ -613,7 +616,7 @@
                         @if ($status == 2)
                             <?php $i = isset($_GET['page']) ? ($_GET['page'] - 1) * 1 + 0 : 0; ?>
 
-                            @foreach ($model as $values)
+                            @foreach ($model_all as $values)
                                 <?php $i++;
 
                                 $values = collect($values);
@@ -983,7 +986,7 @@
                         @if ($status == 2)
                             <?php $i = isset($_GET['page']) ? ($_GET['page'] - 1) * 1 + 0 : 0; ?>
 
-                            @foreach ($model as $values)
+                            @foreach ($model_all as $values)
                                 <?php $i++;
 
                                 $values = collect($values);

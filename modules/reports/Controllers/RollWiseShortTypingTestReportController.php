@@ -452,7 +452,7 @@ class RollWiseShortTypingTestReportController extends Controller
             }
         }
 
-
+        $model_all = $model;
 
         $page = Input::get('page', 1);
 
@@ -464,7 +464,7 @@ class RollWiseShortTypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::roll_wise_short_typing_test_report.index', compact('spm_count', 'spm', 'passMark', 'tolerance', 'averageMark', 'spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'bangla_speed', 'english_speed', 'remarks', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'show_count'));
+        return view('reports::roll_wise_short_typing_test_report.index', compact('spm_count', 'spm', 'passMark', 'tolerance', 'averageMark', 'spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'remarks', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'show_count'));
     }
 
 

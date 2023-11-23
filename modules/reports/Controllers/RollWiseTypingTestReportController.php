@@ -448,6 +448,8 @@ class RollWiseTypingTestReportController extends Controller
             return (int)$value->roll_no;
         });
 
+        $model_all = $model;
+
         $page = Input::get('page', 1);
 
         $perPage = 1000;
@@ -457,7 +459,7 @@ class RollWiseTypingTestReportController extends Controller
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 
-        return view('reports::roll_wise_typing_test_report.index', compact('spm_count', 'spm', 'passMark', 'tolerance', 'averageMark', 'spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'bangla_speed', 'english_speed', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count', 'absent_count'));
+        return view('reports::roll_wise_typing_test_report.index', compact('spm_count', 'spm', 'passMark', 'tolerance', 'averageMark', 'spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count', 'absent_count'));
     }
 
     public function typing_test_report_pdf($company_id, $designation_id, $exam_date_from, $exam_date_to, $bangla_speed, $english_speed)

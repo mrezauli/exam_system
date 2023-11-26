@@ -110,7 +110,7 @@
                                     'placeholder' => 'select industry type',
                                     'title' => 'select industry type',
                                     'required' => 'required',
-                                ]
+                                ],
                             ) !!}
                         </div>
 
@@ -204,7 +204,7 @@
                                     'placeholder' => 'select industry type',
                                     'title' => 'select industry type',
                                     'required' => 'required',
-                                ]
+                                ],
                             ) !!}
                         </div>
 
@@ -229,7 +229,7 @@
                             {{-- <a href="{{ route('typing-test-report-pdf', [$company_id,$designation_id,$exam_date_from,$exam_date_to,$bangla_speed,$english_speed]) }}" class="pdf_report_button pull-right" target="_blank"><img src="{{ URL::asset('assets/img/pdf-icon.png') }}" alt=""></a> --}}
 
                             <?php
-
+                            
                             $ddd = URL('/') . '/reports/roll-wise-all-short-graph-report' . '?exam_code=' . $exam_code . '&company_id=' . $company_id . '&designation_id=' . $designation_id . '&exam_date_from=' . $exam_date_from . '&exam_date_to=' . $exam_date_to . '&bangla_speed=' . $bangla_speed . '&english_speed=' . $english_speed . '&remarks=' . $remarks; ?>
 
                             {{-- <div class="btn btn-primary btn-sm pull-right"><a target="_blank" style="color:white" href="{{ $ddd }}">View All Answer Scripts</a></div> --}}
@@ -256,16 +256,16 @@
                         if (is_integer($number)) {
                             return $number;
                         }
-
+                    
                         $parts = explode('.', $number);
-
+                    
                         if (isset($parts[1]) && (int) $parts[1] >= 5) {
                             return $parts[0] + 1;
                         } else {
                             return $number;
                         }
                     }
-
+                    
                     ?>
 
 
@@ -293,19 +293,17 @@
 
                                     @if ($model->count() > 0)
                                         @foreach ($model as $values)
-                                        <?php $i++;
-
-
-                                        $values = collect($values);
-                                        $null_object = StdClass::fromArray();
-
-
-                                        $grouped_by_exam_type = $values->groupBy('exam_type');
-
-                                        $bangla = $grouped_by_exam_type->get('bangla',[$null_object])[0];
-
-                                        $english = $grouped_by_exam_type->get('english',[$null_object])[0];
-
+                                            <?php $i++;
+                                            
+                                            $values = collect($values);
+                                            $null_object = StdClass::fromArray();
+                                            
+                                            $grouped_by_exam_type = $values->groupBy('exam_type');
+                                            
+                                            $bangla = $grouped_by_exam_type->get('bangla', [$null_object])[0];
+                                            
+                                            $english = $grouped_by_exam_type->get('english', [$null_object])[0];
+                                            
                                             //revamped calculation from mopa
                                             $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
                                             $bangla_typed_words = ceil($bangla_typed_characters / 5);
@@ -315,7 +313,7 @@
                                             $bangla_tolerance = $bangla_typed_words == 0 ? 0 : floor(($bangla_deleted_words / $bangla_typed_words) * 100);
                                             $bangla_round_marks = ceil((20 / $bangla_speed) * $bangla_wpm);
                                             $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
-
+                                            
                                             $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
                                             $english_typed_words = ceil($english_typed_characters / 5);
                                             $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
@@ -324,9 +322,9 @@
                                             $english_tolerance = $english_typed_words == 0 ? 0 : floor(($english_deleted_words / $english_typed_words) * 100);
                                             $english_round_marks = ceil((20 / $english_speed) * $english_wpm);
                                             $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
-
+                                            
                                             $average = ceil(($bangla_marks + $english_marks) / 2);
-
+                                            
                                             ?>
                                             <tr class="gradeX">
 
@@ -618,15 +616,15 @@
 
                             @foreach ($model_all as $values)
                                 <?php $i++;
-
+                                
                                 $values = collect($values);
-
+                                
                                 $grouped_by_exam_type = $values->groupBy('exam_type');
-
+                                
                                 $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0] : StdClass::fromArray();
-
+                                
                                 $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0] : StdClass::fromArray();
-
+                                
                                 //revamped calculation from mopa
                                 $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
                                 $bangla_typed_words = ceil($bangla_typed_characters / 5);
@@ -636,7 +634,7 @@
                                 $bangla_tolerance = $bangla_typed_words == 0 ? 0 : floor(($bangla_deleted_words / $bangla_typed_words) * 100);
                                 $bangla_round_marks = ceil((20 / $bangla_speed) * $bangla_wpm);
                                 $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
-
+                                
                                 $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
                                 $english_typed_words = ceil($english_typed_characters / 5);
                                 $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
@@ -645,9 +643,9 @@
                                 $english_tolerance = $english_typed_words == 0 ? 0 : floor(($english_deleted_words / $english_typed_words) * 100);
                                 $english_round_marks = ceil((20 / $english_speed) * $english_wpm);
                                 $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
-
+                                
                                 $average = ceil(($bangla_marks + $english_marks) / 2);
-
+                                
                                 ?>
                                 <tr class="gradeX">
 
@@ -988,15 +986,15 @@
 
                             @foreach ($model_all as $values)
                                 <?php $i++;
-
+                                
                                 $values = collect($values);
-
+                                
                                 $grouped_by_exam_type = $values->groupBy('exam_type');
-
+                                
                                 $bangla = isset($grouped_by_exam_type['bangla']) ? $grouped_by_exam_type['bangla'][0] : StdClass::fromArray();
-
+                                
                                 $english = isset($grouped_by_exam_type['english']) ? $grouped_by_exam_type['english'][0] : StdClass::fromArray();
-
+                                
                                 //revamped calculation from mopa
                                 $bangla_typed_characters = isset($bangla->typed_words) ? $bangla->typed_words : 0;
                                 $bangla_typed_words = ceil($bangla_typed_characters / 5);
@@ -1006,7 +1004,7 @@
                                 $bangla_tolerance = $bangla_typed_words == 0 ? 0 : floor(($bangla_deleted_words / $bangla_typed_words) * 100);
                                 $bangla_round_marks = ceil((20 / $bangla_speed) * $bangla_wpm);
                                 $bangla_marks = $bangla_round_marks > 50 ? 50 : $bangla_round_marks;
-
+                                
                                 $english_typed_characters = isset($english->typed_words) ? $english->typed_words : 0;
                                 $english_typed_words = ceil($english_typed_characters / 5);
                                 $english_deleted_words = isset($english->deleted_words) ? floor($english->deleted_words / 5) : 0;
@@ -1015,9 +1013,9 @@
                                 $english_tolerance = $english_typed_words == 0 ? 0 : floor(($english_deleted_words / $english_typed_words) * 100);
                                 $english_round_marks = ceil((20 / $english_speed) * $english_wpm);
                                 $english_marks = $english_round_marks > 50 ? 50 : $english_round_marks;
-
+                                
                                 $average = ceil(($bangla_marks + $english_marks) / 2);
-
+                                
                                 ?>
                                 <tr class="gradeX">
 
@@ -1175,7 +1173,7 @@
                 "search": "Search:"
             },
             "aaSorting": [],
-            "pageLength": 1000,
+            "pageLength": 10000,
         });
 
 

@@ -1,558 +1,571 @@
 @extends('admin::layouts.master')
 @section('sidebar')
-@include('admin::layouts.sidebar')
+    @include('admin::layouts.sidebar')
 @stop
 
 @section('content')
 
-<style>
+    <style>
+        form {
+            padding-top: 0;
+        }
 
-form{
-    padding-top: 0;
-}
-
-form .col-sm-12{
-    margin-bottom: 20px;
-}
+        form .col-sm-12 {
+            margin-bottom: 20px;
+        }
 
 
-form .col-sm-12:last-child{
-    margin-bottom: 30px;
-}
+        form .col-sm-12:last-child {
+            margin-bottom: 30px;
+        }
 
-p{
-    display: block !important;
-}
+        p {
+            display: block !important;
+        }
+    </style>
 
-</style>
+    <!-- page start-->
+    <div class="row task-report-index report-index">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title">{{ $page_title }}</span>
+                    <div class="clearfix"></div>
+                </div>
 
-<!-- page start-->
-<div class="row task-report-index report-index">
-    <div class="col-sm-12">
-        <div class="panel">
-            <div class="panel-heading">
-                <span class="panel-title">{{ $page_title }}</span>
-                <div class="clearfix"></div>
-            </div>
+                <div class="panel-body">
 
-            <div class="panel-body">
+                    <ul class="alert alert-danger" style="margin-left: 30px;border-radius: 5px; display: none">
+                        <li class="msg"></li>
+                    </ul>
+                    {{-- ------------ Filter :Starts ---------------------------------------- --}}
+                    {!! Form::open(['method' => 'GET', 'route' => 'generate-attendance-sheet-report', 'class' => 'report-form']) !!}
 
-                <ul class="alert alert-danger" style="margin-left: 30px;border-radius: 5px; display: none">
-                    <li class="msg"></li>
-                </ul>
-                {{-------------- Filter :Starts ------------------------------------------}}
-                {!! Form::open(['method' =>'GET','route'=>'generate-attendance-sheet-report','class'=>'report-form']) !!}
+                    <div class="col-sm-12">
 
-                <div class="col-sm-12">
+                        <div class="col-lg-25 col-md-3 col-sm-6">
+                            {!! Form::label('exam_code', 'Exam Code:', ['class' => 'control-label']) !!}
+                            {!! Form::text('exam_code', @Input::get('exam_code') ? Input::get('exam_code') : null, [
+                                'id' => 'exam_code',
+                                'class' => 'form-control',
+                                'placeholder' => 'exam code',
+                                'title' => 'exam code',
+                            ]) !!}
+                        </div>
 
-                    <div class="col-lg-25 col-md-3 col-sm-6">
-                    {!! Form::label('exam_code', 'Exam Code:', ['class' => 'control-label']) !!}
-                        {!! Form::text('exam_code', @Input::get('exam_code')? Input::get('exam_code') : null,['id'=>'exam_code','class' => 'form-control','placeholder'=>'exam code', 'title'=>'exam code']) !!}
-                    </div>
-
-                    {{-- <div class="col-lg-25 col-md-3 col-sm-6">
+                        {{-- <div class="col-lg-25 col-md-3 col-sm-6">
                         {!! Form::label('aptitude_exam_code', 'Aptitude Exam Code:', ['class' => 'control-label']) !!}
                         {!! Form::text('aptitude_exam_code', @Input::get('aptitude_exam_code')? Input::get('aptitude_exam_code') : null,['id'=>'aptitude_exam_code','class' => 'form-control','placeholder'=>'exam code', 'title'=>'exam code']) !!}
                     </div> --}}
 
-                    <div class="col-lg-25 col-md-3 col-sm-6">
-                        {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
-                        <small class="required jrequired">(Required)</small>
-                        {!! Form::Select('company_id',$company_list, @Input::get('company_id')? Input::get('company_id') : null,['id'=>'company_list','class' => 'form-control js-select','placeholder'=>'select company', 'title'=>'select company']) !!}
+                        <div class="col-lg-25 col-md-3 col-sm-6">
+                            {!! Form::label('company_id', 'Organization:', ['class' => 'control-label']) !!}
+                            <small class="required jrequired">(Required)</small>
+                            {!! Form::Select('company_id', $company_list, @Input::get('company_id') ? Input::get('company_id') : null, [
+                                'id' => 'company_list',
+                                'class' => 'form-control js-select',
+                                'placeholder' => 'select company',
+                                'title' => 'select company',
+                            ]) !!}
+                        </div>
+
+                        <div class="col-lg-25 col-md-3 col-sm-6">
+                            {!! Form::label('designation_id', 'Post Name:', ['class' => 'control-label']) !!}
+                            <small class="required jrequired">(Required)</small>
+                            {!! Form::Select(
+                                'designation_id',
+                                $designation_list,
+                                @Input::get('designation_id') ? Input::get('designation_id') : null,
+                                [
+                                    'id' => 'designation_list',
+                                    'class' => 'form-control js-select',
+                                    'placeholder' => 'select industry type',
+                                    'title' => 'select industry type',
+                                ],
+                            ) !!}
+                        </div>
+
                     </div>
 
-                    <div class="col-lg-25 col-md-3 col-sm-6">
-                        {!! Form::label('designation_id', 'Post Name:', ['class' => 'control-label']) !!}
-                        <small class="required jrequired">(Required)</small>
-                        {!! Form::Select('designation_id',$designation_list, @Input::get('designation_id')? Input::get('designation_id') : null,['id'=>'designation_list','class' => 'form-control js-select','placeholder'=>'select industry type', 'title'=>'select industry type']) !!}
+                    <div class="col-sm-12">
+
+                        <div class="col-lg-25 col-md-3 col-sm-6">
+                            {!! Form::label('exam_date_from', 'Exam Date From:', ['class' => 'control-label']) !!}
+                            <small class="required jrequired">(Required)</small>
+                            {!! Form::text('exam_date_from', Input::get('exam_date_from') ? Input::get('exam_date_from') : null, [
+                                'id' => 'exam_date_from',
+                                'class' => 'form-control datepicker',
+                            ]) !!}
+                            <span class="input-group-btn add-on">
+                                <button class="btn btn-danger calender-button" type="button"><i
+                                        class="icon-calendar"></i></button>
+                            </span>
+                        </div>
+
+                        <div class="col-lg-25 col-md-3 col-sm-6">
+                            {!! Form::label('exam_date_to', 'Exam Date To:', ['class' => 'control-label']) !!}
+                            <small class="required jrequired">(Required)</small>
+                            {!! Form::text('exam_date_to', Input::get('exam_date_to') ? Input::get('exam_date_to') : null, [
+                                'id' => 'exam_date_to',
+                                'class' => 'form-control datepicker',
+                            ]) !!}
+                            <span class="input-group-btn add-on">
+                                <button class="btn btn-danger calender-button" type="button"><i
+                                        class="icon-calendar"></i></button>
+                            </span>
+                        </div>
+
+                        <div class="col-lg-25 col-md-3 col-sm-6">
+                            {!! Form::label('exam_type', 'Exam Type:', ['class' => 'control-label']) !!}
+                            <small class="required jrequired">(Required)</small>
+                            {!! Form::select(
+                                'exam_type',
+                                ['' => 'Select exam type', 'typing_test' => 'Typing Test', 'aptitude_test' => 'Aptitude Test'],
+                                Input::get('exam_type'),
+                                ['id' => 'exam_type', 'class' => 'form-control', 'title' => 'select exam type'],
+                            ) !!}
+                        </div>
+
+
+                        <div class="col-lg-2 col-md-3 col-sm-6 filter-btn">
+
+                            {!! Form::submit('Generate Report', [
+                                'class' => 'btn btn-primary btn-xs pull-left',
+                                'id' => 'button',
+                                'style' => 'padding:9px 17px!important',
+                                'data-placement' => 'right',
+                                'data-content' =>
+                                    'type user name or select branch or both in specific field then click search button for required information',
+                            ]) !!}
+                        </div>
+
+                        @if (isset($model_all) && !empty($model_all))
+                            {{-- <a href="{{ route('attendance-sheet-report-pdf', [$company_id,$exam_date_from,$designation_id,$exam_date_to]) }}" class="pdf_report_button" target="_blank"><img src="{{ URL::asset('assets/img/pdf-icon.png') }}" alt=""></a> --}}
+
+                            <a href="#" class="btn btn-danger print-button pdf_report_button">Print</a>
+                        @endif
+
                     </div>
-
-                </div>
-
-                <div class="col-sm-12">
-
-                    <div class="col-lg-25 col-md-3 col-sm-6">
-                      {!! Form::label('exam_date_from', 'Exam Date From:', ['class' => 'control-label']) !!}
-                      <small class="required jrequired">(Required)</small>
-                      {!! Form::text('exam_date_from', Input::get('exam_date_from')? Input::get('exam_date_from') : null, ['id'=>'exam_date_from', 'class' => 'form-control datepicker']) !!}
-                      <span class="input-group-btn add-on">
-                        <button class="btn btn-danger calender-button" type="button"><i class="icon-calendar"></i></button>
-                      </span>
-                    </div>
-
-                    <div class="col-lg-25 col-md-3 col-sm-6">
-                      {!! Form::label('exam_date_to', 'Exam Date To:', ['class' => 'control-label']) !!}
-                      <small class="required jrequired">(Required)</small>
-                      {!! Form::text('exam_date_to', Input::get('exam_date_to')? Input::get('exam_date_to') : null, ['id'=>'exam_date_to', 'class' => 'form-control datepicker']) !!}
-                      <span class="input-group-btn add-on">
-                        <button class="btn btn-danger calender-button" type="button"><i class="icon-calendar"></i></button>
-                      </span>
-                    </div>
-
-                    <div class="col-lg-25 col-md-3 col-sm-6">
-                      {!! Form::label('exam_type', 'Exam Type:', ['class' => 'control-label']) !!}
-                      <small class="required jrequired">(Required)</small>
-                      {!! Form::select('exam_type', array(''=>'Select exam type','typing_test'=>'Typing Test', 'aptitude_test'=>'Aptitude Test'),Input::get('exam_type'),['id'=>'exam_type','class' => 'form-control','title'=>'select exam type']) !!}
-                    </div>
-
-
-                    <div class="col-lg-2 col-md-3 col-sm-6 filter-btn">
-
-                      {!! Form::submit('Generate Report', array('class'=>'btn btn-primary btn-xs pull-left','id'=>'button','style'=>'padding:9px 17px!important', 'data-placement'=>'right', 'data-content'=>'type user name or select branch or both in specific field then click search button for required information')) !!}
-                    </div>
-
-                    @if(isset($model_all) && ! empty($model_all))
-
-                          {{-- <a href="{{ route('attendance-sheet-report-pdf', [$company_id,$exam_date_from,$designation_id,$exam_date_to]) }}" class="pdf_report_button" target="_blank"><img src="{{ URL::asset('assets/img/pdf-icon.png') }}" alt=""></a> --}}
-
-                          <a href="#" class="btn btn-danger print-button pdf_report_button">Print</a>
-
-                    @endif
-
-                </div>
-                {!! Form::close() !!}
+                    {!! Form::close() !!}
 
 
 
-                <p><br><br><br><br><br></p>
-                <br><br><br>
+                    <p><br><br><br><br><br></p>
+                    <br><br><br>
 
 
 
 
-                {{------------- Filter :Ends ------------------------------------------}}
-                <div class="table-primary report-table-wrapper">
+                    {{-- ----------- Filter :Ends ---------------------------------------- --}}
+                    <div class="table-primary report-table-wrapper">
 
-                    <table width="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples_report">
-                        <thead>
-                        <tr>
+                        <table width="100%" cellpadding="3" cellspacing="0" border="1"
+                            class="table table-striped table-bordered report-table" id="examples_report">
+                            <thead>
+                                <tr>
 
-                            <th> SL. </th>
-                            <th> Roll No. </th>
-                            <th> Name </th>
-                            <th> Exam Type </th>
-                            <th style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"> Presence </th>
-
-                        </tr>
-                        </thead>
-
-
-                        <tbody>
-
-                        <?php
-
-                        //function presence($attendence){
-                          //return $attendence ? '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"> Present </td>' : '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"> Absent </td>';
-                        //}
-
-                        function presence($attendence_status, $typing_status){
-                            if($attendence_status) {
-                                if($typing_status == 'cancelled') {
-                                                $remarks = 'Cancelled';
-                                            }
-                                            elseif($typing_status == 'expelled') {
-                                                $remarks = 'Expelled';
-                                            }
-                                            else {
-                                                $remarks = 'Present';
-                                            }
-                            }
-                            else {
-                                if($typing_status == 'cancelled') {
-                                                $remarks = 'Cancelled';
-                                            }
-                                            elseif($typing_status == 'expelled') {
-                                                $remarks = 'Expelled';
-                                            }
-                                            else {
-                                                $remarks = 'Absent';
-                                            }
-                            }
-
-                            return '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">' . $remarks .  '</td>';
-
-                        }
-
-                        $sl_no = 0;
-
-                        ?>
-
-                        @if($status==2)
-
-                            @foreach($model as $values)
-
-                            <?php $sl_no++; ?>
-
-                                <tr class="gradeX">
-
-                                    <td>{{$sl_no}}</td>
-                                    <td>{{$values->roll_no}}</td>
-                                    <td class="table-name">
-                                        {{$values->username . ' ' . $values->middle_name . ' ' . $values->last_name}}
-                                    </td>
-                                    <td>{{$values->exam_type == 'typing_test' ? 'Typing Test' : 'Aptitude Test'}}</td>
-
-                                    <?php
-
-
-                                    if ($values->exam_type == 'typing_test') {
-
-                                      echo presence($values->attended_typing_test,$values->typing_status);
-
-                                    }
-
-                                    if ($values->exam_type == 'aptitude_test') {
-
-                                      echo presence($values->attended_aptitude_test,$values->aptitude_status);
-
-                                    }
-
-
-
-                                    // if (($values->attended_typing_test == 'true' || $values->attended_aptitude_test == 'true')) {
-
-                                    //     echo '<td> Present </td>';
-
-                                    // }else{
-
-                                    //     echo '<td> Absent </td>';
-
-                                    // }
-
-
-                                    ?>
-
+                                    <th> SL. </th>
+                                    <th> Roll No. </th>
+                                    <th> Name </th>
+                                    <th> Exam Type </th>
+                                    <th
+                                        style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">
+                                        Presence </th>
 
                                 </tr>
-                            @endforeach
-                        @endif
-                        </tbody>
-                    </table>
+                            </thead>
+
+
+                            <tbody>
+
+                                <?php
+                                
+                                //function presence($attendence){
+                                //return $attendence ? '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"> Present </td>' : '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"> Absent </td>';
+                                //}
+                                
+                                function presence($attendence_status, $typing_status)
+                                {
+                                    if ($attendence_status) {
+                                        if ($typing_status == 'cancelled') {
+                                            $remarks = 'Cancelled';
+                                        } elseif ($typing_status == 'expelled') {
+                                            $remarks = 'Expelled';
+                                        } else {
+                                            $remarks = 'Present';
+                                        }
+                                    } else {
+                                        if ($typing_status == 'cancelled') {
+                                            $remarks = 'Cancelled';
+                                        } elseif ($typing_status == 'expelled') {
+                                            $remarks = 'Expelled';
+                                        } else {
+                                            $remarks = 'Absent';
+                                        }
+                                    }
+                                
+                                    return '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">' . $remarks . '</td>';
+                                }
+                                
+                                $sl_no = 0;
+                                
+                                ?>
+
+                                @if ($status == 2)
+
+                                    @foreach ($model as $values)
+                                        <?php $sl_no++; ?>
+
+                                        <tr class="gradeX">
+
+                                            <td>{{ $sl_no }}</td>
+                                            <td>{{ $values->roll_no }}</td>
+                                            <td class="table-name">
+                                                {{ $values->username . ' ' . $values->middle_name . ' ' . $values->last_name }}
+                                            </td>
+                                            <td>{{ $values->exam_type == 'typing_test' ? 'Typing Test' : 'Aptitude Test' }}
+                                            </td>
+
+                                            <?php
+                                            
+                                            if ($values->exam_type == 'typing_test') {
+                                                echo presence($values->attended_typing_test, $values->typing_status);
+                                            }
+                                            
+                                            if ($values->exam_type == 'aptitude_test') {
+                                                echo presence($values->attended_aptitude_test, $values->aptitude_status);
+                                            }
+                                            
+                                            // if (($values->attended_typing_test == 'true' || $values->attended_aptitude_test == 'true')) {
+                                            
+                                            //     echo '<td> Present </td>';
+                                            
+                                            // }else{
+                                            
+                                            //     echo '<td> Absent </td>';
+                                            
+                                            // }
+                                            
+                                            ?>
+
+
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    @if ($status == 2)
+                        {{-- <span class="pull-right">{!! str_replace('/?', '?',  $model->appends(Input::except('page'))->render() ) !!} </span> --}}
+                    @endif
                 </div>
-                @if($status==2)
-
-                    {{-- <span class="pull-right">{!! str_replace('/?', '?',  $model->appends(Input::except('page'))->render() ) !!} </span> --}}
-
-                @endif
             </div>
         </div>
     </div>
-</div>
 
 
 
 
-<div class="table-primary print-report-table-wrapper">
+    <div class="table-primary print-report-table-wrapper">
 
-<style>
+        <style>
+            .print-show {
+                display: none;
+            }
 
-    .print-show{
-        display: none;
-    }
-
-    .table-name{
-        text-align: left !important;
-    }
-
-
-    @media print{
-
-        *{
-            text-align: center !important;
-            font-size: 14px !important;
-        }
-
-        .table-name{
-            text-align: left !important;
-        }
-
-        .report-table th{
-            vertical-align: top !important;
-        }
-
-        table#examples{
-            border-collapse: collapse !important;
-        }
-
-        .print-hide{
-            display: none !important;
-        }
-
-        .print-show{
-            display: block !important;
-        }
-
-        .header{
-            /*font-family: SolaimanLipi !important;
-            font-size: 15px !important;*/
-            text-align: center;
-            max-width: 400px;
-            margin: 5px auto;
-        }
-
-        .header-section{
-            margin-bottom: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #333s;
-        }
-
-    }
-
-</style>
-
-
-
-
-<div class="print-section print-show">
-    <div class="header-section">
-        <p class="header"> {{ isset($header->company_name) ? $header->company_name : ''}}</p>
-        <p class="header">{{ isset($header->address_one) ? $header->address_one : ''}}</p>
-        <p class="header">{{ isset($header->address_two) ? $header->address_two : ''}}</p>
-        <p class="header">{{ isset($header->address_three) ? $header->address_three : ''}}</p>
-        <p class="header">{{ isset($header->address_four) ? $header->address_four : ''}}</p>
-        <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : ''}}</p>
-        <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
-        <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
-    </div>
-
-
-    <table width="100%" cellpadding="3" cellspacing="0" border="1" class="table table-striped table-bordered report-table" id="examples">
-        <thead>
-        <tr>
-
-            <th> SL </th>
-            <th> Roll No </th>
-            <th> Name </th>
-            <th> Type </th>
-            <th> Remarks </th>
-
-        </tr>
-        </thead>
-
-        <tbody>
-
-           <?php
-
-           if(isset($model_all) && ! empty($model_all)){
-
-            $count_model = collect($model_all);
-
-            $total = $count_model->count();
-
-
-
-
-            if ($count_model->first()->exam_type == 'aptitude_test') {
-
-                $present = collect($model_all)->lists('attended_aptitude_test')->filter(function ($value) {
-                    return $value == 'true';
-                })->count();
-
-                $expelled = collect($model_all)->lists('aptitude_status')->filter(function ($value) {
-                    return $value == 'expelled';
-                })->count();
-
-                $cancelled = collect($model_all)->lists('aptitude_status')->filter(function ($value) {
-                    return $value == 'cancelled';
-                })->count();
-
-
-                $absent = $total - $present;
-
-                $present = $present - $expelled - $cancelled;
-
+            .table-name {
+                text-align: left !important;
             }
 
 
+            @media print {
 
-           }
-           ?>
+                * {
+                    text-align: center !important;
+                    font-size: 14px !important;
+                }
 
-            <?php $expelled = 0; ?>
-            <?php $cancelled = 0; ?>
-            <?php $total = 0; ?>
-            <?php $sl_no = 0; ?>
-            <?php $absented = 0; ?>
-            <?php $presented = 0; ?>
-        @if($status==2 && isset($model_all) && ! empty($model_all))
+                .table-name {
+                    text-align: left !important;
+                }
 
-            @foreach($model_all as $values)
-                <?php $sl_no++; ?>
+                .report-table th {
+                    vertical-align: top !important;
+                }
 
-                <tr class="gradeX">
+                table#examples {
+                    border-collapse: collapse !important;
+                }
 
-                    <td>{{$sl_no}}</td>
-                    <td>{{$values->roll_no}}</td>
-                    <td class="table-name">
-                        {{$values->username . ' ' . $values->middle_name . ' ' . $values->last_name}}
-                    </td>
+                .print-hide {
+                    display: none !important;
+                }
 
-                    <td>{{$values->exam_type == 'typing_test' ? 'Typing Test' : 'Aptitude Test'}}</td>
+                .print-show {
+                    display: block !important;
+                }
 
+                .header {
+                    /*font-family: SolaimanLipi !important;
+                font-size: 15px !important;*/
+                    text-align: center;
+                    max-width: 400px;
+                    margin: 5px auto;
+                }
+
+                .header-section {
+                    margin-bottom: 20px;
+                }
+
+                table,
+                th,
+                td {
+                    border: 1px solid #333s;
+                }
+
+            }
+        </style>
+
+
+
+
+        <div class="print-section print-show">
+            <div class="header-section">
+                <p class="header"> {{ isset($header->company_name) ? $header->company_name : '' }}</p>
+                <p class="header">{{ isset($header->address_one) ? $header->address_one : '' }}</p>
+                <p class="header">{{ isset($header->address_two) ? $header->address_two : '' }}</p>
+                <p class="header">{{ isset($header->address_three) ? $header->address_three : '' }}</p>
+                <p class="header">{{ isset($header->address_four) ? $header->address_four : '' }}</p>
+                <p class="header">পদের নাম: {{ isset($header->designation_name) ? $header->designation_name : '' }}</p>
+                <p class="header">পরীক্ষার তারিখ: {{ $exam_dates_string }}</p>
+                <p class="header">পরীক্ষা গ্রহণে: বাংলাদেশ কম্পিউটার কাউন্সিল।</p>
+            </div>
+
+
+            <table width="100%" cellpadding="3" cellspacing="0" border="1"
+                class="table table-striped table-bordered report-table" id="examples">
+                <thead>
+                    <tr>
+
+                        <th> SL </th>
+                        <th> Roll No </th>
+                        <th> Name </th>
+                        <th> Type </th>
+                        <th> Remarks </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
 
                     <?php
-
-                    if (($values->attended_typing_test == 'true' || $values->attended_aptitude_test == 'true')) {
-
-                        //echo '<td> উপস্থিত </td>';
-
-                    }else{
-
-                        //echo '<td> অনুপস্থিত </td>';
-
-                    }
-
-
-                    if ($values->exam_type == 'typing_test') {
-
-                      echo presence($values->attended_typing_test,$values->typing_status);
-
-                    }
-
-                    if ($values->exam_type == 'aptitude_test') {
-
-                      echo presence($values->attended_aptitude_test,$values->aptitude_status);
-
-                    }
-
-                    $total++;
-                    if ($values->attended_typing_test) {
-                        if($values->typing_status == 'cancelled') {
-                            $cancelled++;
-                        }
-                        elseif($values->typing_status == 'expelled') {
-                            $expelled++;
-                        }
-                        else {
-                            $presented++;
-                        }
-                    } else {
-                        if($values->typing_status == 'cancelled') {
-                            $cancelled++;
-                        }
-                        elseif($values->typing_status == 'expelled') {
-                            $expelled++;
-                        }
-                        else {
-                            $absented++;
+                    
+                    if (isset($model_all) && !empty($model_all)) {
+                        $count_model = collect($model_all);
+                    
+                        $total = $count_model->count();
+                    
+                        if ($count_model->first()->exam_type == 'aptitude_test') {
+                            $present = collect($model_all)
+                                ->lists('attended_aptitude_test')
+                                ->filter(function ($value) {
+                                    return $value == 'true';
+                                })
+                                ->count();
+                    
+                            $expelled = collect($model_all)
+                                ->lists('aptitude_status')
+                                ->filter(function ($value) {
+                                    return $value == 'expelled';
+                                })
+                                ->count();
+                    
+                            $cancelled = collect($model_all)
+                                ->lists('aptitude_status')
+                                ->filter(function ($value) {
+                                    return $value == 'cancelled';
+                                })
+                                ->count();
+                    
+                            $absent = $total - $present;
+                    
+                            $present = $present - $expelled - $cancelled;
                         }
                     }
-
                     ?>
 
+                    <?php $expelled = 0; ?>
+                    <?php $cancelled = 0; ?>
+                    <?php $total = 0; ?>
+                    <?php $sl_no = 0; ?>
+                    <?php $absented = 0; ?>
+                    <?php $presented = 0; ?>
+                    @if ($status == 2 && isset($model_all) && !empty($model_all))
+
+                        @foreach ($model_all as $values)
+                            <?php $sl_no++; ?>
+
+                            <tr class="gradeX">
+
+                                <td>{{ $sl_no }}</td>
+                                <td>{{ $values->roll_no }}</td>
+                                <td class="table-name">
+                                    {{ $values->username . ' ' . $values->middle_name . ' ' . $values->last_name }}
+                                </td>
+
+                                <td>{{ $values->exam_type == 'typing_test' ? 'Typing Test' : 'Aptitude Test' }}</td>
+
+
+                                <?php
+                                
+                                if ($values->attended_typing_test == 'true' || $values->attended_aptitude_test == 'true') {
+                                    //echo '<td> উপস্থিত </td>';
+                                } else {
+                                    //echo '<td> অনুপস্থিত </td>';
+                                }
+                                
+                                if ($values->exam_type == 'typing_test') {
+                                    echo presence($values->attended_typing_test, $values->typing_status);
+                                }
+                                
+                                if ($values->exam_type == 'aptitude_test') {
+                                    echo presence($values->attended_aptitude_test, $values->aptitude_status);
+                                }
+                                
+                                $total++;
+                                if ($values->attended_typing_test) {
+                                    if ($values->typing_status == 'cancelled') {
+                                        $cancelled++;
+                                    } elseif ($values->typing_status == 'expelled') {
+                                        $expelled++;
+                                    } else {
+                                        $presented++;
+                                    }
+                                } else {
+                                    if ($values->typing_status == 'cancelled') {
+                                        $cancelled++;
+                                    } elseif ($values->typing_status == 'expelled') {
+                                        $expelled++;
+                                    } else {
+                                        $absented++;
+                                    }
+                                }
+                                
+                                ?>
+
+                            </tr>
+                        @endforeach
+                </tbody>
+            </table>
+
+            <table style="margin-top:20px;width:80%;margin-left: 20%;" cellspacing="1" border="1"
+                class="table table-striped table-bordered report-table" id="examples">
+                <tr>
+                    <th colspan="2">Present</th>
+                    <th colspan="2">Absent</th>
+                    <th colspan="2">Expel</th>
+                    <th colspan="2">Cancel</th>
+                    <th>Total</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    <table style="margin-top:20px;width:80%;margin-left: 20%;" cellspacing="1" border="1" class="table table-striped table-bordered report-table" id="examples">
-      <tr>
-        <th colspan="2">Present</th>
-        <th colspan="2">Absent</th>
-        <th colspan="2">Expel</th>
-        <th colspan="2">Cancel</th>
-        <th>Total</th>
-      </tr>
-      <tr>
-        <td>{{$presented}}</td>
-        <td>{{ round($presented/$total * 100, 0) . '%' }}</td>
-        <td>{{$absented}}</td>
-        <td>{{ round($absented/$total * 100, 0) . '%' }}</td>
-        <td>{{$expelled}}</td>
-        <td>{{ round($expelled/$total * 100, 0) . '%' }}</td>
-        <td>{{$cancelled}}</td>
-        <td>{{ round($cancelled/$total * 100, 0) . '%' }}</td>
-        <td>{{$total}}</td>
-      </tr>
-    </table>
-    @endif
-    <div class="float:none;clear:both;"></div>
+                <tr>
+                    <td>{{ $presented }}</td>
+                    <td>{{ round(($presented / $total) * 100, 0) . '%' }}</td>
+                    <td>{{ $absented }}</td>
+                    <td>{{ round(($absented / $total) * 100, 0) . '%' }}</td>
+                    <td>{{ $expelled }}</td>
+                    <td>{{ round(($expelled / $total) * 100, 0) . '%' }}</td>
+                    <td>{{ $cancelled }}</td>
+                    <td>{{ round(($cancelled / $total) * 100, 0) . '%' }}</td>
+                    <td>{{ $total }}</td>
+                </tr>
+            </table>
+            @endif
+            <div class="float:none;clear:both;"></div>
 
 
 
-</div>
+        </div>
 
-<footer class="float:none;clear:both;" style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is System Generated.</footer>
+        <footer class="float:none;clear:both;" style="margin-top:10px;padding:10px;text-align:center;">N.B. This Report is
+            System Generated.</footer>
 
-</div>
+    </div>
 
-<!-- page end-->
+    <!-- page end-->
 
-<!--script for this page only-->
+    <!--script for this page only-->
 
-<script type="text/javascript" src="{{ URL::asset('assets/js/date-and-timepicker-custom.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('assets/js/date-and-timepicker-custom.js') }}"></script>
 
-<script>
-
-
-function report_exam_code(ddd){
-
-
-    // var typing_exam_code = $('#typing_exam_code').val();
-
-    // var aptitude_exam_code = $('#aptitude_exam_code').val();
-
-    if ($(ddd).val() != '' && $(ddd).val() != undefined) {
-        $('#typing_exam_code,#aptitude_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').not(ddd).prop('disabled', true);
-        $('#typing_exam_code,#aptitude_exam_code').not(ddd).val('');
-
-        $('#exam_date_from,#exam_date_to,#exam_type').val([]);
-
-        $('#company_list,#designation_list').select2('val','ALL');
-
-    }else{
-
-        $('#typing_exam_code,#aptitude_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').prop('disabled', false);
-    }
-
-// if (aptitude_exam_code != 0) {
-//     $('.report-form input,.report-form select').not(ddd).prop('disabled', true);
-// }else{
-//     $('.report-form input,.report-form select').prop('disabled', false);
-// }
+    <script>
+        function report_exam_code(ddd) {
 
 
+            // var typing_exam_code = $('#typing_exam_code').val();
 
-    // if (typing_exam_code != '') {
+            // var aptitude_exam_code = $('#aptitude_exam_code').val();
 
-    //    $('#aptitude_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').prop('disabled', true);
+            if ($(ddd).val() != '' && $(ddd).val() != undefined) {
+                $('#typing_exam_code,#aptitude_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type')
+                    .not(ddd).prop('disabled', true);
+                $('#typing_exam_code,#aptitude_exam_code').not(ddd).val('');
 
-    //    $('#aptitude_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').val('').trigger('change');
+                $('#exam_date_from,#exam_date_to,#exam_type').val([]);
 
-    //    $('.jrequired').hide();
+                $('#company_list,#designation_list').select2('val', 'ALL');
 
-    //    $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').attr('required', false);
+            } else {
 
+                $('#typing_exam_code,#aptitude_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type')
+                    .prop('disabled', false);
+            }
 
-    // }else if(aptitude_exam_code != ''){
-
-    //     $('#typing_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').prop('disabled', true);
-
-    //     $('#typing_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').val('').trigger('change');
-
-    //     $('.jrequired').hide();
-
-    //     $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').attr('required', false);
-
-
-    // }else{
-
-    //     $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').prop('disabled', true);
-
-    //     $('.jrequired').show();
-
-    //     $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').attr('required', false);
-
-    // }
-
-}
+            // if (aptitude_exam_code != 0) {
+            //     $('.report-form input,.report-form select').not(ddd).prop('disabled', true);
+            // }else{
+            //     $('.report-form input,.report-form select').prop('disabled', false);
+            // }
 
 
-//$('.report-form input,.report-form select').not('#typing_exam_code,#aptitude_exam_code,.btn').prop('disabled', true);
 
-$('.required').css('visibility', 'hidden');
+            // if (typing_exam_code != '') {
+
+            //    $('#aptitude_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').prop('disabled', true);
+
+            //    $('#aptitude_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').val('').trigger('change');
+
+            //    $('.jrequired').hide();
+
+            //    $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').attr('required', false);
+
+
+            // }else if(aptitude_exam_code != ''){
+
+            //     $('#typing_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').prop('disabled', true);
+
+            //     $('#typing_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').val('').trigger('change');
+
+            //     $('.jrequired').hide();
+
+            //     $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').attr('required', false);
+
+
+            // }else{
+
+            //     $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').prop('disabled', true);
+
+            //     $('.jrequired').show();
+
+            //     $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').attr('required', false);
+
+            // }
+
+        }
+
+
+        //$('.report-form input,.report-form select').not('#typing_exam_code,#aptitude_exam_code,.btn').prop('disabled', true);
+
+        $('.required').css('visibility', 'hidden');
 
 
 
@@ -560,148 +573,146 @@ $('.required').css('visibility', 'hidden');
 
 
 
-function report_exam_code_3(ddd){
+        function report_exam_code_3(ddd) {
 
-        if ($(ddd).val() != '' && $(ddd).val() != undefined) {
-            $('#exam_code,#aptitude_exam_code').prop('disabled', true);
-            $('#exam_code,#aptitude_exam_code').val('');
+            if ($(ddd).val() != '' && $(ddd).val() != undefined) {
+                $('#exam_code,#aptitude_exam_code').prop('disabled', true);
+                $('#exam_code,#aptitude_exam_code').val('');
 
-            $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').attr('required', 'required');
-            $('.required').css('visibility', 'visible');
+                $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').attr('required', 'required');
+                $('.required').css('visibility', 'visible');
+            }
+
+
+            var exam_code = $('#company_list').val();
+            var designation_list = $('#designation_list').val();
+            var exam_date_from = $('#exam_date_from').val();
+            var exam_date_to = $('#exam_date_to').val();
+            var exam_type = $('#exam_type').val();
+
+
+            if (exam_code == '' && designation_list == '' && exam_date_from == '' && exam_date_to == '' && exam_type ==
+                '') {
+
+                $('#exam_code,#aptitude_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type')
+                    .prop('disabled', false);
+
+                $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').removeAttr('required');
+                $('.required').css('visibility', 'hidden');
+
+
+            }
         }
 
 
-        var exam_code = $('#company_list').val();
-        var designation_list = $('#designation_list').val();
-        var exam_date_from = $('#exam_date_from').val();
-        var exam_date_to = $('#exam_date_to').val();
-        var exam_type = $('#exam_type').val();
-
-
-        if(exam_code == '' && designation_list == '' && exam_date_from == '' && exam_date_to == '' && exam_type == ''){
-
-            $('#exam_code,#aptitude_exam_code,#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').prop('disabled', false);
-
-            $('#company_list,#designation_list,#exam_date_from,#exam_date_to,#exam_type').removeAttr('required');
-            $('.required').css('visibility', 'hidden');
-
-
-        }
-}
 
 
 
 
+        $('#exam_code,#aptitude_exam_code').keyup(function(e) {
+
+            var ddd = $(this);
+
+            report_exam_code(ddd);
+
+        });
 
 
-    $('#exam_code,#aptitude_exam_code').keyup(function(e) {
+        $('#exam_code,#aptitude_exam_code').bind('input', function(e) {
 
-        var ddd = $(this);
+            var ddd = $(this);
 
-        report_exam_code(ddd);
+            report_exam_code(ddd);
 
-    });
-
-
-    $('#exam_code,#aptitude_exam_code').bind('input',function(e) {
-
-        var ddd = $(this);
-
-        report_exam_code(ddd);
-
-    });
+        });
 
 
-    $('#company_list,#designation_list,#exam_type').on('change',function(e) {
+        $('#company_list,#designation_list,#exam_type').on('change', function(e) {
 
-        var ddd = $(this);
+            var ddd = $(this);
 
-        report_exam_code_3(ddd);
+            report_exam_code_3(ddd);
 
-    });
+        });
 
 
-    $('#exam_date_from,#exam_date_to').on('changeDate',function(e) {
-        // alert('qqq');
+        $('#exam_date_from,#exam_date_to').on('changeDate', function(e) {
+            // alert('qqq');
 
-        var ddd = $(this);
+            var ddd = $(this);
 
-        report_exam_code_3(ddd);
+            report_exam_code_3(ddd);
 
-    });
+        });
 
-    $('#exam_date_from,#exam_date_to').bind('input',function(e) {
-        // alert('ttt');
+        $('#exam_date_from,#exam_date_to').bind('input', function(e) {
+            // alert('ttt');
 
-        var ddd = $(this);
+            var ddd = $(this);
 
-        report_exam_code_3(ddd);
+            report_exam_code_3(ddd);
 
-    });
+        });
 
 
 
 
 
-    // $('select, #exam_date').not('#exam_code_list, #exam_type').prop('disabled', true);
+        // $('select, #exam_date').not('#exam_code_list, #exam_type').prop('disabled', true);
 
-    $('form').on('submit', function(e) {
-        $('select, #exam_date').prop('disabled', false);
-    });
-
-
-    // $('#button').click(function(e){
-
-    //     var company_id = $('#company_id').val();
-    //     var designation_id = $('#designation_id').val();
-    //     var exam_date_from = $('#exam_date_from').val();
-    //     var exam_date_to = $('#exam_date_to').val();
-    //     if(company_id.length <= 0 || designation_id.length <= 0 || exam_date_from.length <= 0 || exam_date_to.length <= 0 ){
-    //         $('.alert-danger').show();
-    //         $('.msg').html('Please fill out all input field!');
-    //     }else{
-    //         $('.report-form').submit();
-    //     }
-
-    // })
+        $('form').on('submit', function(e) {
+            $('select, #exam_date').prop('disabled', false);
+        });
 
 
-    $('.print-button').click(function(event) {
+        // $('#button').click(function(e){
 
-    w=window.open();
-    w.document.write(document.getElementsByClassName('print-report-table-wrapper')[0].outerHTML);
-    w.print();
-    w.close();
+        //     var company_id = $('#company_id').val();
+        //     var designation_id = $('#designation_id').val();
+        //     var exam_date_from = $('#exam_date_from').val();
+        //     var exam_date_to = $('#exam_date_to').val();
+        //     if(company_id.length <= 0 || designation_id.length <= 0 || exam_date_from.length <= 0 || exam_date_to.length <= 0 ){
+        //         $('.alert-danger').show();
+        //         $('.msg').html('Please fill out all input field!');
+        //     }else{
+        //         $('.report-form').submit();
+        //     }
 
-    });
+        // })
 
-</script>
+
+        $('.print-button').click(function(event) {
+
+            w = window.open();
+            w.document.write(document.getElementsByClassName('print-report-table-wrapper')[0].outerHTML);
+            w.print();
+            w.close();
+
+        });
+    </script>
 
 @stop
 
 
 
 @section('custom-script')
-<script>
+    <script>
+        var table = $('#examples_report').DataTable({
+            "language": {
+                "search": "Search:"
+            },
+            "aaSorting": [],
+            "pageLength": 10000,
+        });
 
-var table = $('#examples_report').DataTable( {
-  "language": {
-    "search": "Search:"
-  },
-  "aaSorting": [],
-  "pageLength": 1000,
-} );
 
+        $('#examples_report_filter input').on('keyup', function() {
 
-$('#examples_report_filter input').on('keyup', function(){
+            table
+                .column(1)
+                .search(this.value)
+                .draw();
 
-   table
-   .column(1)
-   .search(this.value)
-   .draw();
-
- });
-
-</script>
+        });
+    </script>
 @stop
-

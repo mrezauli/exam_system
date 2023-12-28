@@ -238,8 +238,8 @@ class ShortTypingTestReportController extends Controller
             $average = ceil(($bangla_marks + $english_marks) / 2);
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
-
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
+            $values->sl = isset($values->first()->sl) ? $values->first()->sl : '';
 
             if ($values->lists('attended_typing_test')->contains('true')) {
                 if ($values->lists('typing_status')->contains('cancelled')) {
@@ -434,6 +434,10 @@ class ShortTypingTestReportController extends Controller
                 $model = $passed->merge($failed)->merge($expelled)->merge($cancelled);
             }
         }
+
+        $model = $model->sortBy(function ($value, $key) {
+            return (int)$value->sl;
+        });
 
         $model_all = $model;
 

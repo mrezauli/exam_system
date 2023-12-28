@@ -260,8 +260,8 @@ class TypingTestReportController extends Controller
             $average = ceil(($bangla_marks + $english_marks) / 2);
 
             $values->total_typing_speed = $bangla_wpm + $english_wpm;
-
             $values->roll_no = isset($values->first()->roll_no) ? $values->first()->roll_no : '';
+            $values->sl = isset($values->first()->sl) ? $values->first()->sl : '';
             //dd($values->lists('typing_status')->contains('cancelled'));
 
             if ($values->lists('attended_typing_test')->contains('true')) {
@@ -437,6 +437,7 @@ class TypingTestReportController extends Controller
 
         $comparer = $makeComparer($criteria);
         $passed = $passed->sort($comparer);
+        //dd($passed);
 
         $comparer = $makeComparer($criteria);
         $failed = $failed->sort($comparer);
@@ -456,6 +457,10 @@ class TypingTestReportController extends Controller
             $model = $passed->merge($failed)->merge($cancelled)->merge($expelled);
         }
 
+        $model = $model->sortBy(function ($value, $key) {
+            return (int)$value->sl;
+        });
+
         $model_all = $model;
 
         $page = Input::get('page', 1);
@@ -467,7 +472,7 @@ class TypingTestReportController extends Controller
 
         $model = new LengthAwarePaginator(array_slice($model->toArray(), $offset, $perPage, true), count($model->toArray()), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
-
+        //dd($model);
         return view('reports::typing_test_report.index', compact('spm_count', 'spm', 'passMark', 'tolerance', 'averageMark', 'spmDigit', 'page_title', 'status', 'company_id', 'designation_id', 'exam_code', 'exam_date', 'exam_time', 'company_list', 'designation_list', 'exam_code_list', 'model', 'model_all', 'bangla_speed', 'english_speed', 'exam_date_from', 'exam_date_to', 'header', 'exam_dates_string', 'passed_count', 'failed_count', 'expelled_count', 'cancelled_count', 'total_count'));
     }
 

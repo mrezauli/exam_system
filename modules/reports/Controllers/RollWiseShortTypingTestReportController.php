@@ -452,6 +452,10 @@ class RollWiseShortTypingTestReportController extends Controller
             }
         }
 
+        $model = $model->sortBy(function ($value, $key) {
+            return (int)$value->roll_no;
+        });
+
         $model_all = $model;
 
         $page = Input::get('page', 1);

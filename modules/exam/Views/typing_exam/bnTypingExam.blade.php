@@ -211,13 +211,13 @@
         <div class="row">
 
             <?php
-            
+
             if ($exam_type == 'bangla') {
                 $font_size = 'form-control bangla-font';
             } else {
                 $font_size = 'form-control english-font';
             }
-            
+
             ?>
 
 
@@ -479,20 +479,20 @@
         window.history.forward();
     }
 
-    // $('#original_text').bind('cut copy paste drop', function (e) {
+    $('#original_text').bind('cut copy paste drop', function (e) {
 
-    //  return false;
+     return false;
 
-    // });
+    });
 
     window.addEventListener('contextmenu', function(e) {
         e.preventDefault();
     });
 
 
-    // $('#answered_text').bind('cut copy paste drop', function (e) {
-    //   return false;
-    // });
+    $('#answered_text').bind('cut copy paste drop', function (e) {
+      return false;
+    });
 
     window.addEventListener('contextmenu', function(e) {
         e.preventDefault();

@@ -81,7 +81,7 @@
                                     'class' => 'form-control js-select',
                                     'placeholder' => 'select industry type',
                                     'title' => 'select industry type',
-                                ],
+                                ]
                             ) !!}
                         </div>
 
@@ -122,7 +122,7 @@
                                 'exam_type',
                                 ['' => 'Select exam type', 'typing_test' => 'Typing Test', 'aptitude_test' => 'Aptitude Test'],
                                 Input::get('exam_type'),
-                                ['id' => 'exam_type', 'class' => 'form-control', 'title' => 'select exam type'],
+                                ['id' => 'exam_type', 'class' => 'form-control', 'title' => 'select exam type']
                             ) !!}
                         </div>
 
@@ -179,11 +179,11 @@
                             <tbody>
 
                                 <?php
-                                
+
                                 //function presence($attendence){
                                 //return $attendence ? '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"> Present </td>' : '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;"> Absent </td>';
                                 //}
-                                
+
                                 function presence($attendence_status, $typing_status)
                                 {
                                     if ($attendence_status) {
@@ -203,12 +203,12 @@
                                             $remarks = 'Absent';
                                         }
                                     }
-                                
+
                                     return '<td style="border-left:1.7px solid #8189fd !important;border-right:1.7px solid #8189fd !important;">' . $remarks . '</td>';
                                 }
-                                
+
                                 $sl_no = 0;
-                                
+
                                 ?>
 
                                 @if ($status == 2)
@@ -227,25 +227,25 @@
                                             </td>
 
                                             <?php
-                                            
+
                                             if ($values->exam_type == 'typing_test') {
                                                 echo presence($values->attended_typing_test, $values->typing_status);
                                             }
-                                            
+
                                             if ($values->exam_type == 'aptitude_test') {
                                                 echo presence($values->attended_aptitude_test, $values->aptitude_status);
                                             }
-                                            
+
                                             // if (($values->attended_typing_test == 'true' || $values->attended_aptitude_test == 'true')) {
-                                            
+
                                             //     echo '<td> Present </td>';
-                                            
+
                                             // }else{
-                                            
+
                                             //     echo '<td> Absent </td>';
-                                            
+
                                             // }
-                                            
+
                                             ?>
 
 
@@ -359,12 +359,12 @@
                 <tbody>
 
                     <?php
-                    
+
                     if (isset($model_all) && !empty($model_all)) {
                         $count_model = collect($model_all);
-                    
+
                         $total = $count_model->count();
-                    
+
                         if ($count_model->first()->exam_type == 'aptitude_test') {
                             $present = collect($model_all)
                                 ->lists('attended_aptitude_test')
@@ -372,23 +372,23 @@
                                     return $value == 'true';
                                 })
                                 ->count();
-                    
+
                             $expelled = collect($model_all)
                                 ->lists('aptitude_status')
                                 ->filter(function ($value) {
                                     return $value == 'expelled';
                                 })
                                 ->count();
-                    
+
                             $cancelled = collect($model_all)
                                 ->lists('aptitude_status')
                                 ->filter(function ($value) {
                                     return $value == 'cancelled';
                                 })
                                 ->count();
-                    
+
                             $absent = $total - $present;
-                    
+
                             $present = $present - $expelled - $cancelled;
                         }
                     }
@@ -417,21 +417,21 @@
 
 
                                 <?php
-                                
+
                                 if ($values->attended_typing_test == 'true' || $values->attended_aptitude_test == 'true') {
                                     //echo '<td> উপস্থিত </td>';
                                 } else {
                                     //echo '<td> অনুপস্থিত </td>';
                                 }
-                                
+
                                 if ($values->exam_type == 'typing_test') {
                                     echo presence($values->attended_typing_test, $values->typing_status);
                                 }
-                                
+
                                 if ($values->exam_type == 'aptitude_test') {
                                     echo presence($values->attended_aptitude_test, $values->aptitude_status);
                                 }
-                                
+
                                 $total++;
                                 if ($values->attended_typing_test) {
                                     if ($values->typing_status == 'cancelled') {
@@ -450,7 +450,7 @@
                                         $absented++;
                                     }
                                 }
-                                
+
                                 ?>
 
                             </tr>

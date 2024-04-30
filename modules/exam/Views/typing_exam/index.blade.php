@@ -477,7 +477,7 @@
                                 <td>&nbsp; ২. বাংলা টাইপ করার জন্য ১০ (দশ) মিনিট সময় পাবেন। </td>
                             </tr>
                             <tr style="font-size: 22px!important; color: blue;">
-                                <td>&nbsp; ৩. বাংলায় লিখার জন্য "বিজয় কীবোর্ড" হলে "Ctrl+Alt+V" অথবা "অভ্র কীবোর্ড" হলে
+                                <td>&nbsp; ৩. বাংলায় লিখার জন্য "বিজয় কীবোর্ড" হলে "Ctrl+Alt+B" অথবা "অভ্র কীবোর্ড" হলে
                                     "F12" দিয়ে ইউনিকোড লেয়াউট সিলেক্ট করুন। </td>
                             </tr>
                             <tr style="font-size: 22px!important;">
@@ -598,18 +598,18 @@
     }
 
 
-    $('#original_text').bind('cut copy paste drop', function(e) {
+    // $('#original_text').bind('cut copy paste drop', function(e) {
 
-        return false;
+    //     return false;
 
-    });
+    // });
 
 
-    $('#answered_text').bind('cut copy paste drop', function(e) {
+    // $('#answered_text').bind('cut copy paste drop', function(e) {
 
-        return false;
+    //     return false;
 
-    });
+    // });
 
     var answered_text_length = 0;
 
